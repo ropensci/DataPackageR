@@ -2,11 +2,12 @@
 An R package to allow `R CMD preprocessData packagename` to run some preprocessing (i.e. data tidying) on raw data by running code in `packagename/data-raw` and generate standardied data sets or objects in `packagename/data`.
 
 ## Origins
-This brings together some ideas by Robert Gentleman,  Yihui Xie, Hadley Wickham, and many others that have been around as long as R and the idea of *literate programming*. We need to standardize a lot of data, across many projects, distribute it, and many people will be working with it. Not all of these data consumers will be R experts. We need to ensure they all work with the same version of the data (which can change over time). 
+This brings together some ideas by Robert Gentleman,  Yihui Xie, Hadley Wickham, and many others. Most of these concepts have been around as long as R and the idea of *literate programming*. Effort and time invested by the people above in building fantastic tools has made generating reproducible research easier than ever before. 
 
 ## Motivation
+Our group needs to standardize a lot of data, across many projects, distribute it, and many people will be working with it. Not all of these data consumers will be R experts. We need to ensure they all work with the same version of the data (which can change over time). 
 
-You work in R. Say you have raw data that you'd like to clean up, preprocess, and standardize in order to share it with others or use in your own projects. You could do this with a series of shell scripts, and R script, a `knitr` markdown document, or any other number of ways to generate some `.csv` files or R `data.frames` or `data.tables` or other complex R objects that represent your data. You might then save these into the `/data` directory of your new R package, build and distribute. 
+Say you work in R. Say you have raw data that you'd like to clean up, preprocess, and standardize in order to share it with others or use in your own projects. You could do this with a series of shell scripts, and R script, a `knitr` markdown document, or any other number of ways to generate some `.csv` files or R `data.frames` or `data.tables` or other complex R objects that represent your data. You might then save these into the `/data` directory of your new R package, build and distribute. 
 
 But what if your raw data change? Say you gather or receive more data? Because your data are in an R package, you get versioning for free. So, just process your data again and update the `.rda` files in `/data` and you're good to go.
 
