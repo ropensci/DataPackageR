@@ -13,7 +13,7 @@ But what if your raw data change? Say you gather or receive more data? Because y
 
 But where did you put that processing code? Maybe you were clever and it's under version control somewhere. Or maybe you weren't so clever, and it's in some directory, now you need to find it.. but is this the version of the code that generated the data in that package? Ideally, the code and the data would live together. This is the general idea behind the whole *literate programming* paradigm.
 
-R package support this during **build** by running code in **vignettes**, but that doesn't quite fit what we want to do here, as the vignettes may rely on some of the data they are supposed to generate, and so forth, and do you really need to generate a 50-page document detailing how the data was cleaned each time the package is built? Ideally, we'd like to separete out the data preprocessing from the build stage, but still have it be an integral part of the R package. 
+R packages process *markdown* or *Sweave* documents in the `/vignettes` directory during the build process, but that doesn't quite fit what we need to do. The vignettes may rely on some of the data they are supposed to generate, the vignette build process needs to take no more than a certain amount of time in order for packages to meet CRAN and Bioconductor guidelines, and, do you really need to generate a 50-page document detailing how the data was cleaned each time the package is built? Ideally, we'd like to separete out the data preprocessing from the build stage, but still have it be an integral part of the R package. 
 
 ## How it works
 
@@ -39,8 +39,8 @@ Using the pacakge build system we get:
 
 ## Ongoing work
 
-While tools like `packrat` and others aim to do the above by fixing the version of all packages used for a project, this can be a bit of overkill, particularly if all consumers of a data set are using the same environment. Recording the `sessionInfo()` may be sufficient in many cases (since we are only concerned with data tidying). Some new tools from Robert Gentleman's group could enable users to store and verify the versions of packages used for preprocessing data sets between package builds. 
+While tools like `packrat` and others aim to do the above by fixing the version of all packages used for a project into a local library bundle that can be distributed, this can be a bit of overkill, particularly if all consumers of a data set are using the same environment. Recording the `sessionInfo()` may be sufficient in many cases (since we are mostly only concerned with data tidying). Some new tools from Robert Gentleman's group could enable users to store and verify the versions of packages used for preprocessing data sets between package builds. This remains to be explored further.
 
-Documentation could be embedded in the `.R` files under `/data-raw`, which could be parsed out by `processData()` and placed in `/R` then `roxygenized`, eliminating the need for this additional step.
+Documentation could be embedded in the `.R` files under `/data-raw`, which could be parsed out by `preprocessData()` code and placed in `/R` then `roxygenized`, eliminating the need for this additional step.
 
 
