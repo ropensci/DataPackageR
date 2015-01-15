@@ -19,9 +19,15 @@ R packages process *markdown* or *Sweave* documents in the `/vignettes` director
 
 That's where `preprocessData` comes in. It enables the `R CMD preprocessData` command. Based upon `BiocCheck` developed by the BioConductor team, it installs a script (requires admin rights) into `$R_HOME/bin` that enables `R CMD preprocessData packagename` which does the following (based on ideas by Hadley Wickham and Yihui Xie):
 
-- Looks for all `.R` files under the directory `packagename/data-raw` and sources them.
+- Looks for `.R` files under the directory `packagename/data-raw` and sources them in its own environments.
+- Checks the objects created by the R files.
+- Computes a digest of the R objects and compares it against a DATADIGEST file in the package source directory if it exists.
+- If the digests don't match, checks whether the DataVersion string in the DESCRIPTION file has been updated comapred to what is in the DATADIGEST file, enforcing bumping the data version when data changes.
+- If all is well, writes a new DATADIGEST to the package source directory and writes the data objects to an .rda in the /data directory.
 
-These `.R` files should read some raw data from a source (could be a url, or from `/inst/extdata`, tidy the data, standardize it, and save standardized `data.table`, `data.frame` or other complex `R objects` into `/data`. 
+These `.R` file should read some raw data from a source (could be a url, or from `/inst/extdata`, tidy the data, standardize it. The `preprocessData` package takes care of saving the data to the `/data` directory, provided it 
+1. Has not changed based on an md5 digest of the object.
+2. If it has changed, the DataVersion (new) string has been incremented in the DESCRIPTION file.
 
 - The user writes `roxygen` documentation for each data set and places it in `/R`.
 
@@ -31,7 +37,7 @@ These `.R` files should read some raw data from a source (could be a url, or fro
 ## Benefits
 
 Using the pacakge build system we get:
-- Versioning
+- Versioning of data and package versioning.
 - Relatively standardized build, install, and distribution mechanism
 - Enforced dependencies between packages ( meaning we can have packages that wrap up an analysis of a project and depend on a specific version of a data package).
 - Standard mechanism to run unit tests to verify the integrity of the data (these go into `/tests` and are run automatically during build). 
@@ -42,5 +48,10 @@ Using the pacakge build system we get:
 While tools like `packrat` and others aim to do the above by fixing the version of all packages used for a project into a local library bundle that can be distributed, this can be a bit of overkill, particularly if all consumers of a data set are using the same environment. Recording the `sessionInfo()` may be sufficient in many cases (since we are mostly only concerned with data tidying). Some new tools from Robert Gentleman's group could enable users to store and verify the versions of packages used for preprocessing data sets between package builds. This remains to be explored further.
 
 Documentation could be embedded in the `.R` files under `/data-raw`, which could be parsed out by `preprocessData()` code and placed in `/R` then `roxygenized`, eliminating the need for this additional step.
+
+## Known limitations.
+
+- As mentioned, documentation needs to be parsed from the .r files in /data-raw
+- The current code parsed a single .R file in the /data-raw directory. This needs to be fixed to support multiple .R files by testing for name collisions and properly comparing against the DATADIGEST file. 
 
 
