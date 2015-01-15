@@ -1,4 +1,0 @@
-#!/bin/bash
-
-R_SCRIPT="library(processData);processData:::processData();"
-echo "$R_SCRIPT" | $R_HOME/bin/R --vanilla --slave --args $*

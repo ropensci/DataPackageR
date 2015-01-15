@@ -1,10 +1,10 @@
 .installScript<-function () 
 {
   onWindows <- (.Platform$OS.type == "windows")
-  files <- "processData"
+  files <- "preprocessData"
   if (onWindows) 
-    files <- "processData.bat"
-  srcDir <- system.file("script", package = "processData")
+    files <- "preprocessData.bat"
+  srcDir <- system.file("script", package = "preprocessData")
   srcFile <- file.path(srcDir, files)
   destDir <- file.path(Sys.getenv("R_HOME"), "bin")
   destFile <- file.path(destDir, files)
@@ -20,9 +20,9 @@
       func <- packageStartupMessage
     else func <- message
     if (is.null(res) || !res || res == -1) {
-      script <- "processData"
+      script <- "preprocessData"
       if (onWindows) 
-        script <- "BiocCheck.bat"
+        script <- "preprocessData"
       msg <- strwrap(paste("Failed to copy the", paste0("script/", 
                                                         script), "script to", paste0(file.path(Sys.getenv("R_HOME"), 
                                                                                                "bin"), "."), "If you want to be able to run 'R CMD BiocCheck' you'll", 
@@ -31,19 +31,19 @@
       for (i in 1:length(msg)) func(msg[i])
     }
     else {
-      func("processData script installed.")
+      func("preprocessData script installed.")
     }
   }
 }
 
 .isScriptInstalled<-function () 
 {
-  if (nchar(Sys.which("processData"))) 
+  if (nchar(Sys.which("preprocessData"))) 
     return(TRUE)
   onWindows <- (.Platform$OS.type == "windows")
   if (onWindows) 
-    file <- "processData.bat"
-  else file <- "processData"
+    file <- "preprocessData.bat"
+  else file <- "preprocessData"
   path <- file.path(Sys.getenv("R_HOME"), "bin")
   all(file.exists(file.path(path, file)))
 }
