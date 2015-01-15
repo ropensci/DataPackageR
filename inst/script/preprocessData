@@ -1,0 +1,4 @@
+#!/bin/bash
+
+R_SCRIPT="library(preprocessData);preprocessData:::preprocessData();"
+echo "$R_SCRIPT" | $R_HOME/bin/R --vanilla --slave --args $*
