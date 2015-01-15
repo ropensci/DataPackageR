@@ -7,10 +7,17 @@
 \description{
 Package to install the preprocessData script that can be called via the R CMD mechanism.
 R CMD preprocessData packagename looks for .R files in "data-raw" within the "packagename" package source tree.
-It sources all the .R files in "data-raw". The .R files are expected to read "raw data" from some source, like
-"inst/extdata", or from an online url, process them in some way, such that they are tidy and standardized, and
-save the resulting data frames or data.tables in "data".  The user should also document the data sets either
+It sources a "master" .R file in "data-raw" named "datasets.R". The "datasets.R" file can source other files in "/data-raw".
+The "datasets.R" file and files it sources are expected to read raw data from
+"inst/extdata", or other sources, process them in some way, such that they are tidy and standardized.  The
+objects remaining in the environment after the code is run are presumed to be the data sets that will be written to
+"/data". The user should also document these data sets either
 using "roxygen2"  by including an .R file under the "R" directory, or in user-written .Rd files under the "man"
-directory. After the data have been generated, the user can call R CMD build packagename.
+directory. The "preprocessData" code will compare the digest of these data set objects against the contents of a "DATADIGEST" file
+in the package source tree (if present), and will also look for a "DataVersion: x.y.z" string in the DESCRIPTION file of the
+package. If the data have changed, the user will be warned that the DataVersion needs to be incemented. If no DATADIGEST file exists, one will be created.
+If the DataVersion string has been incremented and the digest matches DATADIGEST (if it exists), or if the data hasn't changed and the DataVersion string
+is unchanged, the code will write the data objects to "/data". The user can then build the package with
+R CMD build packagename.
 }
 
