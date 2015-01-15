@@ -1,8 +1,10 @@
 # preprocessData
 An R package to allow `R CMD preprocessData packagename` to run some preprocessing (i.e. data tidying) on raw data by running code in `packagename/data-raw` and generate standardied data sets or objects in `packagename/data`.
 
+## Origins
+This brings together some ideas by Robert Gentleman,  Yihui Xie, Hadley Wickham, and many others that have been around as long as R and the idea of *literate programming*. We need to standardize a lot of data, across many projects, distribute it, and many people will be working with it. Not all of these data consumers will be R experts. We need to ensure they all work with the same version of the data (which can change over time). 
 
-## Why?
+## Motivation
 
 You work in R. Say you have raw data that you'd like to clean up, preprocess, and standardize in order to share it with others or use in your own projects. You could do this with a series of shell scripts, and R script, a `knitr` markdown document, or any other number of ways to generate some `.csv` files or R `data.frames` or `data.tables` or other complex R objects that represent your data. You might then save these into the `/data` directory of your new R package, build and distribute. 
 
@@ -27,9 +29,12 @@ These `.R` files should read some raw data from a source (could be a url, or fro
 
 ## Benefits
 
-Using the pacakge build system, the data are versioned, and the code to generate the data is also versioned. There's less room for error in letting data and related analysis to get out of sync, improving reproducibility. As an example, an analysis based on a data set could appear as a `vignette` or series of `vignettes` in the package. Alternately, analysis code can explicitly test the installed *version* of a data package.
-
-Unit tests to verify the integrity of the data can be built into `/tests` and run automatically during build. 
+Using the pacakge build system we get:
+- Versioning
+- Relatively standardized build, install, and distribution mechanism
+- Enforced dependencies between packages ( meaning we can have packages that wrap up an analysis of a project and depend on a specific version of a data package).
+- Standard mechanism to run unit tests to verify the integrity of the data (these go into `/tests` and are run automatically during build). 
+- All of this improves reproducibility and takes some of the worry out of working on multiple projects simultaneously.
 
 ## Ongoing work
 
