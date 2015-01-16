@@ -122,7 +122,7 @@
 
 .save_data <- function (new_data_digest, pkg_description, object_names, dataEnv) {
   .save_digest(new_data_digest)
-  message("Saving to /data")
+  message("Saving to data")
   data_save_rda_path = file.path("data",paste0(pkg_description$Package,".rda"))
   save(list=object_names,file=data_save_rda_path,envir = dataEnv)
 }

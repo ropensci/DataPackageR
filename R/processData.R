@@ -47,9 +47,12 @@ preprocessData <- function(arg=NULL){
     }
     old<-getwd()
     tryCatch({
-      message("Processing data")
       # cd into the package directory
       setwd(pkg_dir)
+      if(!file_test("R",op = "-d")){
+        stop("You need a valid package data strucutre. Missing /R directory.")
+      }
+      message("Processing data")
       r_files <- dir(path = raw_data_dir,pattern="datasets.R",full=TRUE)
       old_data_digest<-.parse_data_digest()
       pkg_description<-try(roxygen2:::read.description("DESCRIPTION"),silent=TRUE)
@@ -66,6 +69,7 @@ preprocessData <- function(arg=NULL){
         stop("data-raw must contain a an .R named datasets.R. This file can source other .R files in the directory.")
       }
       do_documentation<-FALSE
+      
       for(i in seq_along(r_files)){
         cat(i," of ",length(r_files),": ",r_files[i],"\n")
         #Source an R file
@@ -99,7 +103,7 @@ preprocessData <- function(arg=NULL){
         if(do_documentation){
           #extract documentation and write to /R
           #FIXME this code is terrible and can be improved.. need to see how this is done in roxygen2
-          all_r_files<-dir(raw_data_dir,pattern=".R",full=TRUE)
+          all_r_files<-dir(raw_data_dir,pattern="\\.R$",full=TRUE)
           sources<-lapply(all_r_files,function(x)parse(x,keep.source=TRUE))
           docs<-lapply(sources,function(x)roxygen2:::comments(utils:::getSrcref(x)))
           docs<-lapply(docs,function(x)lapply(x,as.character))
