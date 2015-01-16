@@ -50,7 +50,11 @@ preprocessData <- function(arg=NULL){
       setwd(pkg_dir)
       r_files <- dir(path = raw_data_dir,pattern="datasets.R",full=TRUE)
       old_data_digest<-.parse_data_digest()
-      pkg_description<-roxygen2:::read.description("DESCRIPTION")
+      pkg_description<-try(roxygen2:::read.description("DESCRIPTION"),silent=TRUE)
+      if(inherits(pkg_description,"try-error")){
+        stop("You need a valid package DESCRIPTION file. Please see Writing R Extensions (http://cran.r-project.org/doc/manuals/r-release/R-exts.html#The-DESCRIPTION-file)")
+      }
+      
       #FIXME ensure that there are no name conflicts across multiple files.
       #FIXME ensure that the DATADIGEST holds info for all files. 
       #FIXME currently only valid for a single R file..
