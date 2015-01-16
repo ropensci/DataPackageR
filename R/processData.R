@@ -6,9 +6,9 @@
 #' The "datasets.R" file and files it sources are expected to read raw data from 
 #' "inst/extdata", or other sources, process them in some way, such that they are tidy and standardized.  The 
 #' objects remaining in the environment after the code is run are presumed to be the data sets that will be written to
-#' "/data". The user should also document these data sets either 
-#' using "roxygen2"  by including an .R file under the "R" directory, or in user-written .Rd files under the "man" 
-#' directory. The "preprocessData" code will compare the digest of these data set objects against the contents of a "DATADIGEST" file 
+#' "/data". The user should also document these data sets  
+#' using "roxygen2" in the .R files under the "data-raw" directory. The package will extract documentation for the data objects it finds, as well as for 
+#' a data set with the name of the package, if present, and place it in the "/R" directory under the name "packagename.R". The "preprocessData" code will compare the digest of these data set objects against the contents of a "DATADIGEST" file 
 #' in the package source tree (if present), and will also look for a "DataVersion: x.y.z" string in the DESCRIPTION file of the
 #' package. If the data have changed, the user will be warned that the DataVersion needs to be incemented. If no DATADIGEST file exists, one will be created.
 #' If the DataVersion string has been incremented and the digest matches DATADIGEST (if it exists), or if the data hasn't changed and the DataVersion string 
@@ -59,6 +59,7 @@ preprocessData <- function(arg=NULL){
       if(length(r_files)!=1){
         stop("data-raw must contain a an .R named datasets.R. This file can source other .R files in the directory.")
       }
+      do_documentation<-FALSE
       for(i in seq_along(r_files)){
         cat(i," of ",length(r_files),": ",r_files[i],"\n")
         #Source an R file
@@ -81,12 +82,38 @@ preprocessData <- function(arg=NULL){
           }
           if(can_write){
             .save_data(new_data_digest,pkg_description,object_names,dataEnv)
+            do_documentation<-TRUE
           }else{
             message("Some data has changed, but the DataVersion string has not been incremented or\nis less than the version in DATADIGEST \nUpdate the DataVersion string to be greater than ",old_data_digest$DataVersion," in the DESCRIPTION file\nand re-run R CMD preprocessData.")
           }
         }else{
           .save_data(new_data_digest,pkg_description,object_names,dataEnv)
-        }        
+          do_documenatation<-TRUE
+        }
+        if(do_documentation){
+          #extract documentation and write to /R
+          #FIXME this code is terrible and can be improved.. need to see how this is done in roxygen2
+          all_r_files<-dir(raw_data_dir,pattern=".R",full=TRUE)
+          sources<-lapply(all_r_files,function(x)parse(x,keep.source=TRUE))
+          docs<-lapply(sources,function(x)roxygen2:::comments(utils:::getSrcref(x)))
+          docs<-lapply(docs,function(x)lapply(x,as.character))
+          indx <- lapply(lapply(docs,function(x)lapply(x,function(y)sum(grepl("#'",y)))),function(x)unlist(x,use.names=FALSE)>0)
+          docs<-lapply(1:length(docs),function(j)docs[[j]][indx[[j]]])
+          #Extract @name
+          doc_names<-lapply(docs,function(x)unlist(lapply(x,function(y)gsub(".+@name (\\D+)","\\1",{y[grepl("@name",y)]})),use.names=FALSE))
+          save_docs<-NULL
+          for(j in seq_along(doc_names)){
+            #allow doc with @name of package to document the complete dataset
+            save_docs<-c(save_docs,docs[[j]][doc_names[[j]]%in%c(object_names,pkg_description$Package)])
+          }
+          docfile<-file(file.path("R",paste0(pkg_description$Package,".R")),open = "w")
+          sapply(save_docs,function(x){
+            writeLines(text=x,con = docfile)
+            writeLines("NULL",con=docfile)
+            })
+          close(docfile)
+          message("Copied documentation to ",file.path("R",paste0(pkg_description$Package,".R")))
+        }
         eval(expr=expression(rm(list=ls())),envir = dataEnv)
       }
     },finally=setwd(old))
