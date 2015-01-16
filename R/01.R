@@ -25,9 +25,9 @@
         script <- "preprocessData"
       msg <- strwrap(paste("Failed to copy the", paste0("script/", 
                                                         script), "script to", paste0(file.path(Sys.getenv("R_HOME"), 
-                                                                                               "bin"), "."), "If you want to be able to run 'R CMD BiocCheck' you'll", 
+                                                                                               "bin"), "."), "If you want to be able to run 'R CMD preprocessData' you'll", 
                            "need to copy it yourself to a directory on your PATH,", 
-                           "making sure it is executable.", "See the BiocCheck vignette for more information."))
+                           "making sure it is executable."))
       for (i in 1:length(msg)) func(msg[i])
     }
     else {
