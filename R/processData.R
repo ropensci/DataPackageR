@@ -53,7 +53,7 @@ preprocessData <- function(arg=NULL){
         stop("You need a valid package data strucutre. Missing /R directory.")
       }
       message("Processing data")
-      r_files <- dir(path = raw_data_dir,pattern="datasets.R",full=TRUE)
+      r_files <- dir(path = raw_data_dir,pattern="^datasets.R$",full=TRUE)
       old_data_digest<-.parse_data_digest()
       pkg_description<-try(roxygen2:::read.description("DESCRIPTION"),silent=TRUE)
       if(inherits(pkg_description,"try-error")){
