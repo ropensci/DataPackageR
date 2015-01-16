@@ -1,0 +1,48 @@
+---
+title: "Using preprocessData"
+author: "Greg Finak <gfinak@fredhutch.org>"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{A quick guide to using preprocessData}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+  \usepackage{graphicx}
+---
+
+## Overview
+
+This package enables the command `R CMD preprocessData <packagename>`. The `preprocessData` command is meant to run user-defined code in an `R` package to process, transform, tidy, or otherwise standardize raw data into data sets or objects to be stored in the `pacakgename/data` directory.
+
+Additionally, it supports data versioning via a `DataVersion: x.y.z` string in the package `DESCRIPTION` file, and automatically checks if data has changed between invocations. Furthermore, if `roxygen` documenation is available for the data sets as part of the user-defined data processing code, it will be extracted and copied to `packagename/R` where it can be parsed by the `roxygen` package.
+
+### Credit where it's due
+
+The concepts here are borrowed from a variety of ideas floating around the R user community, from people like Yihui Xie, Hadley Wickham, and Robert Gentleman. This package just puts some of that together into a single framework.
+
+## Why not use the existing `data` package mechanism?
+
+R packages run `.R` code in `/data` as part of the build process. This code is invoked each time a data set is attached using `data()`. However, in many instances, the processing that needs to be done to a raw data set may be exceedingly complex (particularly in bioinformatics), or too time consuming to be part of the regular build process. Since the build time is a consideration for packages getting accepted into various repositories, there's some motivation for having a separate process for data processing.
+
+Additionally, data versioning and consistency checks are nice to have, as is the ability to keep code that generates data together with the data. 
+
+## How to build a data package that uses preprocessData
+We assume the package is called `mypackage`
+- Set up the usual structure for a package. 
+- Write your R code to process your raw data into data.frame, data.table, or other R objects.
+- The .R files to do the processing go in a new directory under `mypackage/data-raw`
+- Add a file called `datasets.R` in `mypackage/data-raw`. This file should source your R files as needed (`sys.source("my_data_processing_code.R", env=topenv())`). 
+- Add a the string `DataVersion: x.y.z` to your DESCRIPTION file (replacing x.y.z with a version number). 
+- Ensure your data sets are commented using `roxygen` code appropriate for data sets. The `@name` attribute for a data set should be the same as the R object it generates. (i.e If the code generates a `data.table` called `neutralizing_antibody_results`, the roxygen comments for that data set should contain `@name neutralizing_antibody_results`). 
+
+Run `R CMD preprocessData mypackage`. This will run the processing code and generate `mypackage/R/mypackage.R` containing the roxygen code, `mypackage/DATADIGEST` containing version information about your processed data set, and `mypackage/data/mypackage.rda` containing your data sets stored as an `.rda` file. 
+
+Next, fire up R and `roxygenize` your package, this will generate the `.Rd` files from the `roxygen` code.
+
+Finally, run `R CMD build mypackage`, to build a source tarball for your package. It will contain the source code for processing your raw data, and (may) contain your raw data if you've put it in the package source tree, but it won't need to be run each time someone attaches your data set with `data(mypackage)`. 
+
+You can have analysis reports depend on your versioned data by using `dataVersion("mypackage")` to retreive the DataVersion string. It return an error if the package doesn't contain a DataVersion string. 
+
+
+
+
