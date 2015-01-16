@@ -8,7 +8,8 @@ preprocessData(arg = NULL)
 }
 \description{
 Assumes .R files in "data-raw" generate rda files to be stored in "data".
-Sources each of these .R files.
+Sources datasets.R which can source other R files.
+R files sourced by datasets.R must invoke \code{sys.source("myRfile.R",env=topenv())}.
 Meant to be called before R CMD build.
 }
 

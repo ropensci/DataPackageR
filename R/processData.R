@@ -2,7 +2,8 @@
 #' 
 #' Package to install the preprocessData script that can be called via the R CMD mechanism.
 #' R CMD preprocessData packagename looks for .R files in "data-raw" within the "packagename" package source tree.
-#' It sources a "master" .R file in "data-raw" named "datasets.R". The "datasets.R" file can source other files in "/data-raw".
+#' It sources a an .R file in "data-raw" named "datasets.R". The "datasets.R" file can source other files in "/data-raw".
+#' This must be done via a call like: \code{sys.source("myRfile.R",env=topenv())}.
 #' The "datasets.R" file and files it sources are expected to read raw data from 
 #' "inst/extdata", or other sources, process them in some way, such that they are tidy and standardized.  The 
 #' objects remaining in the environment after the code is run are presumed to be the data sets that will be written to
@@ -21,7 +22,8 @@ NULL
 #' Process data generation code in "data-raw" 
 #' 
 #' Assumes .R files in "data-raw" generate rda files to be stored in "data".
-#' Sources each of these .R files. 
+#' Sources datasets.R which can source other R files. 
+#' R files sourced by datasets.R must invoke \code{sys.source("myRfile.R",env=topenv())}.
 #' Meant to be called before R CMD build.
 #' @name preprocessData
 #' @import optparse roxygen2
@@ -35,8 +37,8 @@ preprocessData <- function(arg=NULL){
     pkg_dir<-arg
   }
   raw_data_dir <- "data-raw"
-  target <- file.path(".",pkg_dir,raw_data_dir)
-  data_dir <- file.path(".",pkg_dir,"data")
+  target <- file.path(pkg_dir,raw_data_dir)
+  data_dir <- file.path(pkg_dir,"data")
   if(!file.exists(target)){
     stop("Directory ",target," doesn't exist.")
   }else{
@@ -52,14 +54,14 @@ preprocessData <- function(arg=NULL){
       old_data_digest<-.parse_data_digest()
       pkg_description<-try(roxygen2:::read.description("DESCRIPTION"),silent=TRUE)
       if(inherits(pkg_description,"try-error")){
-        stop("You need a valid package DESCRIPTION file. Please see Writing R Extensions (http://cran.r-project.org/doc/manuals/r-release/R-exts.html#The-DESCRIPTION-file)")
+        stop("You need a valid package DESCRIPTION file. Please see Writing R Extensions (http://cran.r-project.org/doc/manuals/r-release/R-exts.html#The-DESCRIPTION-file).\n",pkg_description)
       }
       
       #FIXME ensure that there are no name conflicts across multiple files.
       #FIXME ensure that the DATADIGEST holds info for all files. 
       #FIXME currently only valid for a single R file..
       #environment for the data
-      dataEnv<-new.env(hash=TRUE)
+      dataEnv<-new.env(hash=TRUE,parent = .GlobalEnv)
       if(length(r_files)!=1){
         stop("data-raw must contain a an .R named datasets.R. This file can source other .R files in the directory.")
       }
@@ -67,7 +69,7 @@ preprocessData <- function(arg=NULL){
       for(i in seq_along(r_files)){
         cat(i," of ",length(r_files),": ",r_files[i],"\n")
         #Source an R file
-        sys.source(file=r_files[i],envir = dataEnv,keep.source=TRUE,chdir = TRUE)
+        sys.source(file=r_files[i],envir = dataEnv,keep.source=FALSE,chdir = TRUE)
         #The created objects
         object_names <- ls(dataEnv)
         message("Found ",length(object_names), " data objects in file ",basename(r_files[i]))

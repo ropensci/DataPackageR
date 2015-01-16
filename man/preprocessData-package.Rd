@@ -7,7 +7,8 @@
 \description{
 Package to install the preprocessData script that can be called via the R CMD mechanism.
 R CMD preprocessData packagename looks for .R files in "data-raw" within the "packagename" package source tree.
-It sources a "master" .R file in "data-raw" named "datasets.R". The "datasets.R" file can source other files in "/data-raw".
+It sources a an .R file in "data-raw" named "datasets.R". The "datasets.R" file can source other files in "/data-raw".
+This must be done via a call like: \code{sys.source("myRfile.R",env=topenv())}.
 The "datasets.R" file and files it sources are expected to read raw data from
 "inst/extdata", or other sources, process them in some way, such that they are tidy and standardized.  The
 objects remaining in the environment after the code is run are presumed to be the data sets that will be written to
