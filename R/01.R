@@ -126,3 +126,21 @@
   data_save_rda_path = file.path("data",paste0(pkg_description$Package,".rda"))
   save(list=object_names,file=data_save_rda_path,envir = dataEnv)
 }
+
+#' Get the DataVersion for a package
+#' 
+#' Retreives the DataVersion of a package if available
+#' @param pkg \code{character} the package name
+#' @param lib.loc \code{character} path to library location. 
+#' @seealso \link{utils:packageVersion}
+#' @import utils
+#' @export 
+dataVersion<-function (pkg, lib.loc = NULL) 
+{
+  res <- suppressWarnings(packageDescription(pkg, lib.loc = lib.loc, 
+                                             fields = "DataVersion"))
+  if (!is.na(res)) 
+    package_version(res)
+  else stop(gettextf("package %s not found or has no DataVersion string", sQuote(pkg)), 
+            domain = NA)
+}
