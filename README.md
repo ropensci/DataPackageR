@@ -5,7 +5,7 @@ An R package to allow `R CMD preprocessData packagename` to run some preprocessi
 Your code must source other R files via `sys.source("myotherRfile.R",env=topenv())`, otherwise bad things can happen.
 
 ## Origins
-This brings together some ideas by Robert Gentleman,  Yihui Xie, Hadley Wickham, and many others. Most of these concepts have been around as long as R and the idea of *literate programming*. Effort and time invested by the people above in building fantastic tools has made generating reproducible research easier than ever before. 
+This brings together ideas by Robert Gentleman,  Yihui Xie, Hadley Wickham, and many others. Most of these concepts have been around as long as R and the idea of *literate programming*. Effort and time invested by the people above in building fantastic tools has made generating reproducible research easier than ever before. 
 
 ## Motivation
 Our group needs to standardize a lot of data across many projects and distribute it to many people. The data can change over time. We need to ensure they all work with the same version of the data. 
@@ -39,6 +39,16 @@ The `datasets.R` file and any files it sources can read raw data from any source
 - `R CMD build packagename` generates `packagename_x.y.z.tar.gz` with documented and standardized data available via the usual `data()` mechanism. 
 - Unless `data-raw` is placed in `.Rbuildignore` the code to generate the data sets is distributed with the package.
 
+**Shortcuts and convenience functions**
+The package provides an R function to process, document, and build a package with a single call. 
+`buildDataSetPackage("mypackage")` is equivalent to:   
+
+`$ R CMD preprocessData mypackage`  
+`$ Rscript -e 'roxygen2::roxygenize("mypackage")'`  
+`$ R CMD build mypackage`  
+
+`dataVersion("packagename")` returns the DataVersion of the specified package.
+`datapackage.skeleton()` invokes `package.skeleton()` and populates the directory with additional information required by `preprocessData`. 
 
 ## Benefits
 

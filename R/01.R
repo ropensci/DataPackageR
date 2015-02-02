@@ -144,3 +144,60 @@ dataVersion<-function (pkg, lib.loc = NULL)
   else stop(gettextf("package %s not found or has no DataVersion string", sQuote(pkg)), 
             domain = NA)
 }
+
+#' Create a Data Package skeleton for use with preprocessData.
+#' 
+#' Creates a package skeleton for use with preprpocessData. Creates the additional information needed for versioning
+#' datasets, namely the DataVersion string in DESCRIPTION, DATADIGEST, and the data-raw directory. Updates Read-and-delete-me
+#' to reflect the additional necessary steps. 
+#' @name datapackage.skeleton
+#' @param name \code{character} see \code{\link{utils:package.skeleton}}
+#' @param list see \code{\link{utils:package.skeleton}}
+#' @param environment see \code{\link{utils:package.skeleton}}
+#' @param path see \code{\link{utils:package.skeleton}}
+#' @param force see \code{\link{utils:package.skeleton}}
+#' @param code_files see \code{\link{utils:package.skeleton}}
+#' @export 
+#' @examples
+#' data.package.skeleton(name="MyDataPackage",path="/tmp")
+datapackage.skeleton <- function(name = "anRpackage", list = character(), environment = .GlobalEnv, path = ".", force = FALSE, code_files = character()){
+  if(length(list)==0)
+    package.skeleton(name=name, environment=environment, path=path,force=force,code_file=code_files)
+  else
+    package.skeleton(name=name, list=list,environment=environment, path=path,force=force,code_file=code_files)
+  #create the rest of the necessary elements in the package 
+  package_path<-file.path(path,name)
+  description<-roxygen2:::read.description(file = file.path(package_path,"DESCRIPTION"))
+  description$DataVersion<-"0.1.0"
+  message("Adding DataVersion string to DESCRIPTION")
+  roxygen2:::write.description(description,file=file.path(package_path,"DESCRIPTION"))
+  message("Creating data and data-raw directories")
+  dir.create(file.path(package_path,"data-raw"),showWarnings = FALSE,recursive = TRUE)
+  dir.create(file.path(package_path,"data"),showWarnings = FALSE,recursive = TRUE)
+  con<-file(file.path(package_path,"Read-and-delete-me"),open = "w")
+  writeLines(c("Edit the DESCRIPTION file to reflect the contents of your package.",
+    "Optionally put your raw data under 'inst/extdata'.",
+    "If the datasets are large, they may reside elsewhere outside the package.",
+    "Copy .R files that do preprocessing of your data to 'data-raw'",
+    "Edit 'data-raw/datasets.R' to source your R files.",
+    "Document your data sets using roxygen markup."),con)
+  close(con)
+  con<-file(file.path(package_path,"data-raw","datasets.R"))
+  writeLines(c("sys.source('myPreprocessingCode.R',envir=topenv())"),con)
+  close(con)
+}
+
+#' Preprocess, document and build a data package
+#' 
+#' Combines the preprocessing, documentation, and build steps into one.
+#' 
+#' @param packageName \code{character} path to package source directory.
+#' @export
+buildDataSetPackage<-function(packageName=NULL){
+  if(is.null(packageName)){
+    stop("Must provide a package name")
+  }
+  preprocessData:::preprocessData(arg = packageName)
+  roxygen2:::roxygenise(packageName)
+  devtools::build(packageName)
+}
