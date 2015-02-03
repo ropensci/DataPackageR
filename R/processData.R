@@ -86,9 +86,12 @@ preprocessData <- function(arg=NULL){
           if(.compare_digests(old_data_digest,new_data_digest)&string_check$isequal){
             can_write<-TRUE
             message("Processed data sets match existing data sets at version ",new_data_digest$DataVersion)
-          }else if(.compare_digests(old_data_digest,new_data_digest)&string_check$isgreater){
+          }else if((!.compare_digests(old_data_digest,new_data_digest))&string_check$isgreater){
             can_write<-TRUE
             message("Data has been updated and DataVersion string incremented to ",new_data_digest$DataVersion)
+          }else if(.compare_digests(old_data_digest,new_data_digest)&string_check$isgreater){
+            can_write<-FALSE
+            message("Data hasn't changed but the DataVersion has been bumped. Stopping")
           }
           if(can_write){
             .save_data(new_data_digest,pkg_description,object_names,dataEnv)
