@@ -34,6 +34,9 @@ preprocessData <- function(arg=NULL){
     opt = arguments$options
     pkg_dir <- arguments$args
   }else{
+    if(arg=="./"){
+        stop("You can't call preprocessData with arg=\"./\" : Move out of the package directory and provide a proper package name.")
+     }
     pkg_dir<-arg
   }
   raw_data_dir <- "data-raw"
