@@ -197,7 +197,20 @@ buildDataSetPackage<-function(packageName=NULL){
   if(is.null(packageName)){
     stop("Must provide a package name")
   }
-  preprocessData:::preprocessData(arg = packageName)
+  success<-preprocessData:::preprocessData(arg = packageName)
+  if(!success){
+    stop("Preprocessing failed. Address the issues above and try again.")
+  }
   roxygen2:::roxygenise(packageName)
   devtools::build(packageName)
+}
+
+#'Specify which data objects to keep
+#'
+#'Specify the names of the data objects to keep. To be called after all preprocessing code.
+#'@param obj \code{character} vector of object names
+#'@export
+keepDataObjects<-function(obj){
+  #remove everything except the objects specified in obj
+  rm(list=setdiff(objects(envir=parent.frame()),obj),envir = parent.frame() )
 }

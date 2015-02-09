@@ -6,6 +6,9 @@
 \usage{
 preprocessData(arg = NULL)
 }
+\value{
+logical TRUE if succesful, FALSE, if not.
+}
 \description{
 Assumes .R files in "data-raw" generate rda files to be stored in "data".
 Sources datasets.R which can source other R files.
