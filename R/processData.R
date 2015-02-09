@@ -26,6 +26,7 @@ NULL
 #' R files sourced by datasets.R must invoke \code{sys.source("myRfile.R",env=topenv())}.
 #' Meant to be called before R CMD build.
 #' @name preprocessData
+#' @return logical TRUE if succesful, FALSE, if not.
 #' @import optparse roxygen2
 preprocessData <- function(arg=NULL){
   if(is.null(arg)){
@@ -72,7 +73,7 @@ preprocessData <- function(arg=NULL){
         stop("data-raw must contain a an .R named datasets.R. This file can source other .R files in the directory.")
       }
       do_documentation<-FALSE
-      
+      can_write<-FALSE
       for(i in seq_along(r_files)){
         cat(i," of ",length(r_files),": ",r_files[i],"\n")
         #Source an R file
@@ -93,9 +94,8 @@ preprocessData <- function(arg=NULL){
             can_write<-TRUE
             message("Data has been updated and DataVersion string incremented to ",new_data_digest$DataVersion)
           }else if(.compare_digests(old_data_digest,new_data_digest)&string_check$isgreater){
-            can_write<-FALSE
-            message("Data hasn't changed but the DataVersion has been bumped. Stopping")
-            stop("Don't increase the DataVersion if the data hasn't changed")
+            can_write<-TRUE
+            message("Data hasn't changed but the DataVersion has been bumped.")
           }
           if(can_write){
             .save_data(new_data_digest,pkg_description,object_names,dataEnv)
@@ -136,5 +136,10 @@ preprocessData <- function(arg=NULL){
     },finally=setwd(old))
   }
   message("Done")
+  if(can_write){
+    return(TRUE)
+  }else{
+    return(FALSE)
+  }
 }
 

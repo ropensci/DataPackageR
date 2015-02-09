@@ -3,6 +3,7 @@
 export(buildDataSetPackage)
 export(dataVersion)
 export(datapackage.skeleton)
+export(keepDataObjects)
 import(optparse)
 import(roxygen2)
 import(utils)
