@@ -174,6 +174,7 @@ datapackage.skeleton <- function(name = "anRpackage", list = character(), enviro
   message("Creating data and data-raw directories")
   dir.create(file.path(package_path,"data-raw"),showWarnings = FALSE,recursive = TRUE)
   dir.create(file.path(package_path,"data"),showWarnings = FALSE,recursive = TRUE)
+  dir.create(file.path(package_path,"R"),showWarnings = FALSE, recursive = TRUE)
   con<-file(file.path(package_path,"Read-and-delete-me"),open = "w")
   writeLines(c("Edit the DESCRIPTION file to reflect the contents of your package.",
     "Optionally put your raw data under 'inst/extdata'.",

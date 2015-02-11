@@ -1,0 +1,273 @@
+---
+title: "Using preprocessData"
+author: "Greg Finak <gfinak@fredhutch.org>"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{A quick guide to using preprocessData}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+  \usepackage{graphicx}
+---
+
+## Overview
+
+This package enables the command `R CMD preprocessData <packagename>`. The `preprocessData` command is meant to run user-defined code in an `R` package to process, transform, tidy, or otherwise standardize raw data into data sets or objects to be stored in the `pacakgename/data` directory.
+
+Additionally, it supports data versioning via a `DataVersion: x.y.z` string in the package `DESCRIPTION` file, and automatically checks if data has changed between invocations. Furthermore, if `roxygen` documenation is available for the data sets as part of the user-defined data processing code, it will be extracted and copied to `packagename/R` where it can be parsed by the `roxygen` package.
+
+### Credit where it's due
+
+The concepts here are borrowed from a variety of ideas floating around the R user community, from people like Yihui Xie, Hadley Wickham, and Robert Gentleman. This package just puts some of that together into a single framework.
+
+## Why not use the existing `data` directory mechanism?
+
+R packages run `.R` code in `/data` as part of the build process. However, this code is invoked each time a data set is attached using `data()`. In many instances, the processing that needs to be done to a raw data set may be complex and too time consuming to be part of the regular build process. Since the build time is a consideration for packages getting accepted into various repositories, there's a need for a separate data processing step that precedes the usual `build`.
+
+Additionally, data versioning and consistency checks are nice to have, as is the ability to keep code that generates data together with the data. 
+
+## How to build a data package that uses preprocessData
+We assume we want to build a data package called `myDataPackage`. We load the `preprocessData` library and use its convenience functions to get started.
+
+```{r startingout,echo=2:3}
+system("rm -rf /tmp/MyDataPackage")
+test<-""
+library(preprocessData)
+datapackage.skeleton("MyDataPackage", path="/tmp",list="test")
+system("rm /tmp/MyDataPackage/man/test.Rd")
+system("rm /tmp/MyDataPackage/man/*.Rd")
+```
+
+The command above sets up the package skeleton in the `/tmp` directory for our new package. 
+
+Let's generate some "raw data" that we want to process.
+
+```{r raw_data}
+library(tidyr)
+mat<-spread(data.frame(sample=1:100,
+          measurement=matrix(sapply(c(1,2,5,10),
+           function(x)rnorm(100,mean=x)),ncol=1),
+          subject_id=gl(4,100,labels=c("Subject_1",
+                        "Subject_2","Subject_3","Subject_4"))),
+          key=subject_id,value=measurement)
+head(mat)
+```
+
+We pretend that our raw data arrives as above: something is measured for four subjects, 100 times per subject, but each subject's data is in a separate column. This is "wide" data, and generally doesn't follow the tidy data paradigm of one variable per column. This data file will live in the `inst/extdata` directory beneath the package source tree.
+
+We create `inst/extdata` beneath the package source tree and move our "raw data" into place.
+```{r move_raw_data_in_place}
+dir.create(path="/tmp/MyDataPackage/inst/extdata",recursive = TRUE)
+write.csv(mat,file="/tmp/MyDataPackage/inst/extdata/raw_data.csv",row.names=FALSE)
+```
+
+Next we write our R code to do the data processing. 
+
+- The R code reads the raw data and reshapes it such that each column is a separate variable. Our processed data object is entitled `study_processed`. 
+
+
+```{r r_code,eval=FALSE}
+data<-read.csv("../inst/extdata/raw_data.csv",stringsAsFactors=FALSE)
+study_processed<-gather(data,key=subject_id,value=measurement,-sample)
+```
+
+
+```{r r_code_real,eval=TRUE,echo=FALSE}
+library(tidyr)
+data<-read.csv("/tmp/MyDataPackage/inst/extdata/raw_data.csv",stringsAsFactors=FALSE)
+study_processed<-gather(data,key=subject_id,value=measurement,-sample)
+```
+
+Let's see what this looks like:
+
+```{r inspect}
+head(study_processed)
+```
+
+Our data are now in long format.
+
+- This R code is placed in an `.R` file entitled `process_assay.R` within the `data-raw` directory.
+- The `datasets.R` file in `data-raw` is edited to contain:
+
+```{r datasets_r,eval=FALSE}
+sys.source("process_assay.R",env=topenv()) #Ensures that process_assay.R is sourced properly
+keepDataObjects("study_processed")  #Specifies which data objects we want to keep in the package.
+```
+
+The first line ensures the processing code is called when the package is built and the second line specifies which data objects are kept in the package. Next we need some doucmentation for our data object.
+We use `roxygen` code to document our data objects as follows: this code is placed at the end of the `process_assay.R` file to document the data set.
+
+```{r roxygen_code,eval=FALSE,echo=TRUE}
+#'Processed assay data for our fake data pacakge from our fake study.
+#'
+#'This data set contains the processed data for our fake 
+#'assay, with 100 replicated measurements for each of four subjects.
+#'@docType data
+#'@format This is a data.frame in long format with 400 rows and 3 columns
+#'\describe{
+#'\item{sample}{The sample id}
+#'\item{subject_id}{The subject id}
+#'\item{measurement}{A measurement of some type of value  from our fake assay.}
+#'}
+#'@source The data were generated by the Fake lab for the CAVD.
+#'@note Some additional important notes to consider.
+#'@author The name of the person who wrote the code to process the data.
+#'@name study_processed
+#'@title Some fake assay data for four our fake package.
+NULL
+
+```
+
+The roxygen code must have a `@name` tag that matches the object name you are documenting. A `@title` is also required. It is good practice to document the data format, the provenance of the data,  what the data represent, and so forth, and describe any transformations applied to the data (i.e. positivity calls). Also note the `@docType` tag, is `data`.
+
+
+You want to ensure you document the package as well. The following code could be placed in the `datasets.R` file. Note the `@docType` tag is `package`.
+
+```{r roxygen_code_package,eval=FALSE,echo=TRUE}
+#'Fake data package for a fake study
+#'
+#'This package contains standardized fake data sets for our fake study.
+#'@docType package
+#'@author The name of the person who wrote the package.
+#'@name MyDataPackage
+#'@title Fake data pacakge for a fake study.
+NULL
+
+```
+
+
+```{r echo=FALSE,eval=TRUE,results='hide'}
+write("sys.source(\"process_assay.R\",env=topenv()) #Ensures that process_assay.R is sourced properly
+keepDataObjects(\"study_processed\")  #Specifies which data objects we want to keep in the package.
+#'Fake data package for a fake study
+#'
+#'This package contains standardized fake data sets for our fake study.
+#'@docType package
+#'@author The name of the person who wrote the package.
+#'@name MyDataPackage
+#'@aliases MyDataPackage-package
+#'@title Fake data package for a fake study.
+NULL
+",file="/tmp/MyDataPackage/data-raw/datasets.R")
+
+write("library(tidyr)
+data<-read.csv(\"../inst/extdata/raw_data.csv\",stringsAsFactors=FALSE)
+study_processed<-gather(data,key=subject_id,value=measurement,-sample)
+
+#'Processed assay data for our fake data pacakge from our fake study.
+#'
+#'This data set contains the processed data for our fake assay, with 100 replicated measurements for each of four subjects.
+#'@docType data
+#'@format This is a data.frame in long format with 400 rows and 3 columns
+#'\\describe{
+#'\\item{sample}{The sample id}
+#'\\item{subject_id}{The subject id}
+#'\\item{measurement}{A measurement of some type of value  from our fake assay.}
+#'}
+#'@source The data were generated by the Fake lab for the CAVD.
+#'@note Some additional important notes to consider.
+#'@author The name of the person who wrote the code to process the data.
+#'@name study_processed
+#'@title Some fake assay data for four our fake package.
+NULL
+",file="/tmp/MyDataPackage/data-raw/process_assay.R")
+```
+
+Next we edit our package DESCRIPTION file. This file is autogenerated by `datapacakge.skeleton()`, it contains metatdata about our package, and should be edited to describe the package appropriately:
+
+```{r description_original,eval=FALSE,echo=TRUE}
+Package: MyDataPackage
+Type: Package
+Title: Fake Study Data Package
+Version: 1.0.0
+Date: 2015-01-14
+Author: Greg Finak
+Maintainer: Greg Finak <gfinak@fredhutch.org>
+Description: This is a data package for a fake study with 
+standardized assay data for our fake assay.
+License: "file LICENSE"
+DataVersion: 1.0.0
+```
+
+```{r rewrite_description,echo=FALSE}
+write("Package: MyDataPackage
+Type: Package
+Title: Fake Study Data Package
+Version: 1.0.0
+Date: 2015-01-14
+Author: Greg Finak
+Maintainer: Greg Finak <gfinak@fredhutch.org>
+Description: This is a data package for a fake study with standardized assay data for our fake assay.
+License: \"file LICENSE\"
+DataVersion: 1.0.0
+",file="/tmp/MyDataPackage/DESCRIPTION")
+
+```
+
+Note `Package:` is the package name, `DataVersion:` is a version string for the data set, `Version:` is a version string for the package. The version might be bumped if the processing code or documentation changes. The `DataVersion` would be bumped whenever the underlying data objects created by the processing code change. The build process will warn you when this happens.
+
+The `License:` string specifies a non-standard license present in a file entitled `LICENSE`. Ensure this file is present. For the time-being we put something like the following in the LICENSE file: 
+
+```{r license,echo=TRUE, eval=FALSE}
+This data package is governed by the CAVD DATA & MATERIALS SHARING AGREEMENT.
+https://www.cavd.org/about/Pages/LegalAgreements.aspx
+```
+
+```{r license_add,echo=FALSE,eval=TRUE,results='hide'}
+write("This data package is governed by the CAVD DATA & MATERIALS SHARING AGREEMENT.
+https://www.cavd.org/about/Pages/LegalAgreements.aspx
+",file="/tmp/MyDataPackage/LICENSE")
+```
+
+## Run the process, document, build pipeline.
+
+The data package is essentially done. Next we want to run the processing code, build the documentation, and then build the package. There are two ways to do this.. 
+
+1. From the command line   
+
+- Run `R CMD preprocessData MyDataPackage` from the `/tmp` directory. This will run the processing code and generate data sets.   
+- Next run `roxygenize("MyDataPackage")` from within R to generate the `Rd` documentation files.  
+- Finally build your package using `R CMD build MyDataPackage`.
+
+It's simpler to do all this at once from within R using the `buildDataSetPackage` command.
+
+2. Within R run `buildDataSet("MyDataPackage")`, which will run the processing, build the documentation and build the package.
+
+- Address any errors. 
+    - If you get errors, fix them. Most importantly, if your data has changed, but the `DataVersion` string has not been incremented in the `DESCRIPTION` file, the pacakge will not build. 
+
+```{r install,echo=TRUE,eval=FALSE,message=FALSE,warning=FALSE,error=FALSE}
+library(preprocessData)
+buildDataSetPackage("/tmp/MyDataPackage")
+install.packages("/tmp/MyDataPackage_1.0.0.tar.gz",repos = NULL)
+```
+
+## Next steps
+
+Check the built package.  
+
+- Run `R CMD check MyDataPackage_1.0.0.tar.gz` to check that the package is error-free and can be installed.
+
+Install the package
+
+- In the usual way, `R CMD INSTALL MyDataPackage_1.0.0.tar.gz`.
+
+The data are now availalbe within R by running
+
+```{r using,eval=FALSE}
+library(MyDataPackage) #Load the data package
+data(MyDataPackage) #Attach the data sets
+?MyDataPackage #Get help
+```
+
+
+You can have analysis reports depend on your versioned data by using `dataVersion("mypackage")` to retreive the DataVersion string. 
+
+```{r dataversion,eval=FALSE}
+dataVersion("MyDataPackage")
+```
+
+<pre>
+## [1] '1.0.0'
+</pre>
+
