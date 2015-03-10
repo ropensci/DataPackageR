@@ -216,13 +216,13 @@ datapackage.skeleton <- function(name = "anRpackage", list = character(), enviro
                ),con)
   close(con)
   oldrdfiles<-list.files(path=file.path(package_path,"man"),pattern="Rd",full=TRUE)
-  file.remove(oldrdfiles) #Remove redundant man files
   nmspc<-list.files(path=file.path(package_path),pattern="NAMESPACE",full=TRUE)
   file.create(nmspc,showWarnings = FALSE) #create a blank NAMESPACE file
-  oldrdfiles<-list.files(path=file.path(package_path,"data"),pattern="rda",full=TRUE)
+  oldrdafiles<-list.files(path=file.path(package_path,"data"),pattern="rda",full=TRUE)
   oldrfiles<-list.files(path=file.path(package_path,"R"),pattern="R",full=TRUE)
-  file.remove(oldrdfiles)
+  file.remove(oldrdafiles)
   file.remove(oldrfiles)
+  file.remove(ordrdfiles)
   invisible(NULL)
 }
 
