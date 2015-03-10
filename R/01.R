@@ -181,11 +181,49 @@ datapackage.skeleton <- function(name = "anRpackage", list = character(), enviro
     "If the datasets are large, they may reside elsewhere outside the package.",
     "Copy .R files that do preprocessing of your data to 'data-raw'",
     "Edit 'data-raw/datasets.R' to source your R files.",
-    "Document your data sets using roxygen markup."),con)
+    "Document your data sets using roxygen markup (see examples in datasets.R)",
+    "NOTES",
+    "If your code relies on other packages, add those to the @import tag of the roxygen markup.",
+    "The R object names you create must match the roxygen @name tags and \nmust be called out by keepDataObjects() in datasets.R"),con)
   close(con)
   con<-file(file.path(package_path,"data-raw","datasets.R"))
-  writeLines(c("sys.source('myPreprocessingCode.R',envir=topenv())"),con)
+  writeLines(c("sys.source('myPreprocessingCode.R',envir=topenv())",
+               "keepDataObjects('mydataset')",
+               "",
+               "#' MyDataPackage",
+               "#' A data package for study XXXXX",
+               "#' @docType package",
+               "#' @aliases MyDataPackage-package",
+               "#' @title MyDataPackage",
+               "#' @name MyDataPackage",
+               "#' @description a description of the package.",
+               "#' @details Additional details.",
+               "#' @import data.table",
+               "#' @seealso \\link{mydataset}",
+               "NULL",
+               "",
+               "#' Data from an assay, entitled mydataset",
+               "#'@name mydataset",
+               "#'@docType data",
+               "#'@title Data from an assay.",
+               "#'@format a \\code{data.table} containing the following fields",
+               "#'\\describe{",
+               "#'\\item{column_name}{description}",
+               "#'\\item{column_name_2}{description}",
+               "#'}",
+               "#'@source Describe the source of the data (i.e. lab, etc)",
+               "#'@seealso \\link{MyDataPackage}"
+               ),con)
   close(con)
+  oldrdfiles<-list.files(path=file.path(package_path,"man"),pattern="Rd",full=TRUE)
+  file.remove(oldrdfiles) #Remove redundant man files
+  nmspc<-list.files(path=file.path(package_path),pattern="NAMESPACE",full=TRUE)
+  file.create(nmspc,showWarnings = FALSE) #create a blank NAMESPACE file
+  oldrdfiles<-list.files(path=file.path(package_path,"data"),pattern="rda",full=TRUE)
+  oldrfiles<-list.files(path=file.path(package_path,"R"),pattern="R",full=TRUE)
+  file.remove(oldrdfiles)
+  file.remove(oldrfiles)
+  invisible(NULL)
 }
 
 #' Preprocess, document and build a data package
