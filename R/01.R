@@ -186,6 +186,10 @@ datapackage.skeleton <- function(name = "anRpackage", list = character(), enviro
   con<-file(file.path(package_path,"data-raw","datasets.R"))
   writeLines(c("sys.source('myPreprocessingCode.R',envir=topenv())"),con)
   close(con)
+  oldrdfiles<-list.files(path=file.path(package_path,"man"),pattern="Rd",full=TRUE)
+  file.remove(oldrdfiles) #Remove redundant man files
+  nmspc<-list.files(path=file.path(package_path),pattern="NAMESPACE",full=TRUE)
+  file.create(nmspc,showWarnings = FALSE) #create a blank NAMESPACE file
 }
 
 #' Preprocess, document and build a data package
