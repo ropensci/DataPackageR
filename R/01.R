@@ -222,7 +222,7 @@ datapackage.skeleton <- function(name = "anRpackage", list = character(), enviro
   oldrfiles<-list.files(path=file.path(package_path,"R"),pattern="R",full=TRUE)
   file.remove(oldrdafiles)
   file.remove(oldrfiles)
-  file.remove(ordrdfiles)
+  file.remove(oldrdfiles)
   invisible(NULL)
 }
 
@@ -240,8 +240,11 @@ buildDataSetPackage<-function(packageName=NULL){
   if(!success){
     stop("Preprocessing failed. Address the issues above and try again.")
   }
+  message("Building documentation")
   roxygen2:::roxygenise(packageName)
-  devtools::build(packageName)
+  devtools::build_vignettes(packageName)#build vignettes explicitly, ensures they are installed properly
+  message("Building package")
+  devtools::build(packageName,vignettes=FALSE)
 }
 
 #'Specify which data objects to keep

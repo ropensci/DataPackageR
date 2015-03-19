@@ -63,10 +63,6 @@ preprocessData <- function(arg=NULL){
       if(inherits(pkg_description,"try-error")){
         stop("You need a valid package DESCRIPTION file. Please see Writing R Extensions (http://cran.r-project.org/doc/manuals/r-release/R-exts.html#The-DESCRIPTION-file).\n",pkg_description)
       }
-      
-      #FIXME ensure that there are no name conflicts across multiple files.
-      #FIXME ensure that the DATADIGEST holds info for all files. 
-      #FIXME currently only valid for a single R file..
       #environment for the data
       dataEnv<-new.env(hash=TRUE,parent = .GlobalEnv)
       if(length(r_files)!=1){
@@ -74,6 +70,14 @@ preprocessData <- function(arg=NULL){
       }
       do_documentation<-FALSE
       can_write<-FALSE
+      #log to the log file
+      #Create a log directory in inst/extdata
+      dir.create("inst/extdata/Logfiles/",recursive = TRUE,showWarnings = FALSE) 
+      #open a log files
+      message("Logging to ",file.path("inst/extdata/Logfiles","processing.log"))
+      LOGFILE<-file(file.path("inst/extdata/Logfiles","processing.log")) 
+      sink(LOGFILE,append=TRUE)
+      sink(LOGFILE,append=TRUE,type = "message")
       for(i in seq_along(r_files)){
         cat(i," of ",length(r_files),": ",r_files[i],"\n")
         #Source an R file
@@ -136,6 +140,8 @@ preprocessData <- function(arg=NULL){
     },finally=setwd(old))
   }
   message("Done")
+  sink()
+  sink(type="message")
   if(can_write){
     return(TRUE)
   }else{
