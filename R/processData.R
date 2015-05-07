@@ -76,8 +76,8 @@ preprocessData <- function(arg=NULL){
       #open a log files
       message("Logging to ",file.path("inst/extdata/Logfiles","processing.log"))
       LOGFILE<-file(file.path("inst/extdata/Logfiles","processing.log")) 
-      sink(LOGFILE,append=TRUE)
-      sink(LOGFILE,append=TRUE,type = "message")
+      sink(LOGFILE,append=TRUE,split = TRUE)
+      sink(LOGFILE,append=TRUE,type = "message",split = TRUE)
       for(i in seq_along(r_files)){
         cat(i," of ",length(r_files),": ",r_files[i],"\n")
         #Source an R file
@@ -137,11 +137,9 @@ preprocessData <- function(arg=NULL){
         }
         eval(expr=expression(rm(list=ls())),envir = dataEnv)
       }
-    },finally=setwd(old))
+    },finally={setwd(old);sink();sink(type="message")})
   }
   message("Done")
-  sink()
-  sink(type="message")
   if(can_write){
     return(TRUE)
   }else{
