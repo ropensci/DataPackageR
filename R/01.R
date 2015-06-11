@@ -284,7 +284,7 @@ datapackage.skeleton <-
 #'
 #' @param packageName \code{character} path to package source directory.
 #' @export
-buildDataSetPackage <- function(packageName = NULL) {
+buildDataSetPackage <- function(packageName = NULL,vignettes=FALSE) {
   if (is.null(packageName)) {
     stop("Must provide a package name")
   }
@@ -294,9 +294,11 @@ buildDataSetPackage <- function(packageName = NULL) {
   }
   message("Building documentation")
   roxygen2:::roxygenise(packageName)
-  devtools::build_vignettes(packageName)#build vignettes explicitly, ensures they are installed properly
+  if(vignettes){
+    devtools::build_vignettes(packageName)#build vignettes explicitly, ensures they are installed properly
+  }
   message("Building package")
-  devtools::build(packageName,vignettes = FALSE)
+  devtools::build(packageName,vignettes = vignettes)
 }
 
 #'Specify which data objects to keep
