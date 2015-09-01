@@ -86,7 +86,8 @@ preprocessData <- function(arg = NULL) {
       message("Logging to ",file.path("inst/extdata/Logfiles","processing.log"))
       LOGFILE <-
         file(file.path("inst/extdata/Logfiles","processing.log"))
-      sink(LOGFILE,append = TRUE,split = TRUE)
+      #sink(LOGFILE,append = TRUE,split = TRUE)
+      txtStart(file = LOGFILE,append=TRUE,commands = TRUE, results = TRUE)
       #sink(LOGFILE,append=TRUE,type = "message",split = TRUE)
       for (i in seq_along(r_files)) {
         cat(i," of ",length(r_files),": ",r_files[i],"\n")
@@ -181,7 +182,8 @@ preprocessData <- function(arg = NULL) {
         eval(expr = expression(rm(list = ls())),envir = dataEnv)
       }
     },finally = {
-      setwd(old);sink();sink(type = "message")
+      setwd(old);#sink();sink(type = "message")
+      txtStop()
     })
   }
   message("Done")
