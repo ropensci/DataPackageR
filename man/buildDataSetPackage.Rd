@@ -4,10 +4,14 @@
 \alias{buildDataSetPackage}
 \title{Preprocess, document and build a data package}
 \usage{
-buildDataSetPackage(packageName = NULL, vignettes = FALSE)
+buildDataSetPackage(packageName = NULL, vignettes = FALSE, outpath = NULL)
 }
 \arguments{
-\item{packageName}{\code{character} path to package source directory.}
+\item{packageName}{\code{character} path to package source directory. Defaults to the current path when NULL.}
+
+\item{vignettes}{\code{logical} specify whether to build vignettes. Default FALSE.}
+
+\item{outpath}{\code{character} path to output the built package. Defaults to the parent of the current directory when NULL.}
 }
 \description{
 Combines the preprocessing, documentation, and build steps into one.
