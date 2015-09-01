@@ -27,7 +27,7 @@ NULL
 #' Meant to be called before R CMD build.
 #' @name preprocessData
 #' @return logical TRUE if succesful, FALSE, if not.
-#' @import optparse roxygen2 TeachingDemos
+#' @import optparse roxygen2 
 preprocessData <- function(arg = NULL) {
   if (is.null(arg)) {
     parser <-
@@ -86,8 +86,8 @@ preprocessData <- function(arg = NULL) {
       message("Logging to ",file.path("inst/extdata/Logfiles","processing.log"))
       LOGFILE <-
         file(file.path("inst/extdata/Logfiles","processing.log"))
-      #sink(LOGFILE,append = TRUE,split = TRUE)
-      TeachingDemos::txtStart(file = LOGFILE,append=TRUE,commands = TRUE, results = TRUE)
+      sink(LOGFILE,append = TRUE,split = TRUE)
+      #TeachingDemos::txtStart(file = LOGFILE,append=TRUE,commands = TRUE, results = TRUE)
       #sink(LOGFILE,append=TRUE,type = "message",split = TRUE)
       for (i in seq_along(r_files)) {
         cat(i," of ",length(r_files),": ",r_files[i],"\n")
@@ -182,8 +182,8 @@ preprocessData <- function(arg = NULL) {
         eval(expr = expression(rm(list = ls())),envir = dataEnv)
       }
     },finally = {
-      setwd(old);#sink();sink(type = "message")
-      TeachingDemos::txtStop()
+      setwd(old);sink();sink(type = "message")
+      #TeachingDemos::txtStop()
     })
   }
   message("Done")
