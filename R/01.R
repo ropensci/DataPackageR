@@ -282,9 +282,11 @@ datapackage.skeleton <-
 #'
 #' Combines the preprocessing, documentation, and build steps into one.
 #'
-#' @param packageName \code{character} path to package source directory.
+#' @param packageName \code{character} path to package source directory. Defaults to the current path when NULL.
+#' @param vignettes \code{logical} specify whether to build vignettes. Default FALSE.
+#' @param outpath \code{character} path to output the built package. Defaults to the parent of the current directory when NULL.
 #' @export
-buildDataSetPackage <- function(packageName = NULL,vignettes=FALSE) {
+buildDataSetPackage <- function(packageName = NULL,vignettes=FALSE,outpath = NULL) {
   if (is.null(packageName)) {
     packageName = "./"
     # does the current directory hold a description file?
@@ -306,7 +308,7 @@ buildDataSetPackage <- function(packageName = NULL,vignettes=FALSE) {
     devtools::build_vignettes(packageName)#build vignettes explicitly, ensures they are installed properly
   }
   message("Building package")
-  devtools::build(packageName,vignettes = vignettes)
+  devtools::build(packageName,vignettes = vignettes,path = outpath)
 }
 
 #'Specify which data objects to keep
