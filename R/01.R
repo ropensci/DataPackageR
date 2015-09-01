@@ -297,6 +297,9 @@ buildDataSetPackage <- function(packageName = NULL,vignettes=FALSE) {
   if (!success) {
     stop("Preprocessing failed. Address the issues above and try again.")
   }
+  message("Removing old documentation.")
+  manfiles = list.files(path=packageName,pattern = "rd",ignore.case = TRUE,full=TRUE,recursive=TRUE)
+  sapply(manfiles,file.remove)
   message("Building documentation")
   roxygen2:::roxygenise(packageName)
   if(vignettes){
