@@ -286,7 +286,12 @@ datapackage.skeleton <-
 #' @export
 buildDataSetPackage <- function(packageName = NULL,vignettes=FALSE) {
   if (is.null(packageName)) {
-    stop("Must provide a package name")
+    packageName = "./"
+    # does the current directory hold a description file?
+    success = try(roxygen2:::read_pkg_description(packageName),silent=TRUE)
+    if(inherits(success,"try-error")){
+      stop("Can't find package DESCRIPTION in ",packageName)
+    }
   }
   success <- preprocessData:::preprocessData(arg = packageName)
   if (!success) {
