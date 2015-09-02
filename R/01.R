@@ -145,7 +145,7 @@
 #' @param packageName \code{character} the package name
 #' @export
 load_all_datasets = function(packageName){
-  lapply(sapply(data(package=packageName)$results[,"Item"],function(x)substitute(data(x),list(x=x))),eval)
+  invisible(lapply(sapply(data(package=packageName)$results[,"Item"],function(x)substitute(try(data(x),silent=TRUE),list(x=x))),eval))
 }
 
 .save_data <-
