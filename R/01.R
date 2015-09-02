@@ -139,13 +139,24 @@
   return(valid)
 }
 
+#' @name load_all_datasets
+#' @title Load all datasets in a package
+#' @description loads all datasets in a package
+#' @param packageName \code{character} the package name
+#' @export
+load_all_datasets = function(packageName){
+  invisible(lapply(sapply(data(package=packageName)$results[,"Item"],function(x)substitute(try(data(x),silent=TRUE),list(x=x))),eval))
+}
 
 .save_data <-
   function (new_data_digest, pkg_description, object_names, dataEnv) {
     .save_digest(new_data_digest)
     message("Saving to data")
-    data_save_rda_path = file.path("data",paste0(pkg_description$Package,".rda"))
-    save(list = object_names,file = data_save_rda_path,envir = dataEnv)
+    #TODO get the names of each data object and save them separately. Provide a function to load all.
+    sapply(object_names,function(obj){
+      data_save_rda_path = file.path("data",paste0(obj,".rda"))
+      save(list = obj,file = data_save_rda_path,envir = dataEnv)
+    })
   }
 
 #' Get the DataVersion for a package
@@ -288,7 +299,7 @@ datapackage.skeleton <-
 #' @export
 buildDataSetPackage <- function(packageName = NULL,vignettes=FALSE,outpath = NULL) {
   if (is.null(packageName)) {
-    packageName = "./"
+    packageName = "."
     # does the current directory hold a description file?
     success = try(roxygen2:::read_pkg_description(packageName),silent=TRUE)
     if(inherits(success,"try-error")){
@@ -300,7 +311,7 @@ buildDataSetPackage <- function(packageName = NULL,vignettes=FALSE,outpath = NUL
     stop("Preprocessing failed. Address the issues above and try again.")
   }
   message("Removing old documentation.")
-  manfiles = list.files(path=packageName,pattern = "rd",ignore.case = TRUE,full=TRUE,recursive=TRUE)
+  manfiles = list.files(path=packageName,pattern = "\\.Rd$",ignore.case = FALSE,full=TRUE,recursive=TRUE)
   sapply(manfiles,file.remove)
   message("Building documentation")
   roxygen2:::roxygenise(packageName)
