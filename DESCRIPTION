@@ -8,5 +8,6 @@ Maintainer: Greg Finak <gfinak@fredhutch.org>
 Description: Installs a script enabling the user to run R CMD processData. This will source R files under "data-raw". These R files should process raw data into standardized form and save them in "data". On build, the package contains standardized data sets.
 License: Artistic-2.0
 Imports: optparse, utils,
-    TeachingDemos
+    TeachingDemos,
+    rmarkdown
 VignetteBuilder: knitr
