@@ -210,6 +210,7 @@ datapackage.skeleton <-
     description <-
       roxygen2:::read.description(file = file.path(package_path,"DESCRIPTION"))
     description$DataVersion <- "0.1.0"
+    description$Package = name
     message("Adding DataVersion string to DESCRIPTION")
     roxygen2:::write.description(description,file = file.path(package_path,"DESCRIPTION"))
     message("Creating data and data-raw directories")
@@ -238,16 +239,16 @@ datapackage.skeleton <-
     close(con)
     con <- file(file.path(package_path,"data-raw","datasets.R"))
     writeLines(
-      c(
-        "sys.source('myPreprocessingCode.R',envir=topenv())",
+      c("library(rmarkdown)",
+        "rmarkdown('myPreprocessingCode.R',envir=topenv(),output_dir='../inst/extdata/Logfiles',intermediate_dir='../inst/extdata/Logfiles',clean=FALSE)",
         "keepDataObjects('mydataset')",
         "",
-        "#' MyDataPackage",
-        "#' A data package for study XXXXX",
+        paste0("#' ",name),
+        paste0("#' A data package for study ",name),
         "#' @docType package",
-        "#' @aliases MyDataPackage-package",
-        "#' @title MyDataPackage",
-        "#' @name MyDataPackage",
+        paste0("#' @aliases ",name,"-package"),
+        paste0("#' @title ",name),
+        paste0("#' @name ",name),
         "#' @description a description of the package.",
         "#' @details Additional details.",
         "#' @import data.table",
@@ -264,10 +265,52 @@ datapackage.skeleton <-
         "#'\\item{column_name_2}{description}",
         "#'}",
         "#'@source Describe the source of the data (i.e. lab, etc)",
-        "#'@seealso \\link{MyDataPackage}"
+        paste0("#'@seealso \\link{",name,"}")
       ),con
     )
     close(con)
+    con = file(file.path(package_path,"R","utils.R"))
+    writeLines(c("
+.openFileInOS <- function(f) {",
+  
+"                 if (missing(f)) {",
+"                 stop('No file to open!')",
+"                 }",
+                 
+"                 f <- path.expand(f)",
+                 
+"                 if (!file.exists(f)) {",
+"                 stop('File not found!')",
+"                 }",
+                 
+"                 if (grepl('w|W', .Platform$OS.type)) {",
+"                 # we are on Windows",
+"                 shell.exec(f) #nolint",
+"                 } else {",
+"                 if (grepl('darwin', version$os)) {",
+"                 # Mac",
+"                 system(paste(shQuote('open'), shQuote(f)), wait = FALSE, ignore.stderr = TRUE)",
+"                 } else {",
+"                 # Linux-like",
+"                 system(paste(shQuote('/usr/bin/xdg-open'), shQuote(f)), #nolint",
+"                 wait = FALSE,",
+"                 ignore.stdout = TRUE)",
+"                 }",
+"                 }",
+"                 ",
+"  }",
+                 
+"                 #' @name viewProcessingLog",
+"                 #' @title View the Processing Log for the data sets.",
+"                 #' @param pkg the package name",
+"                 #' @export ",
+paste0("                 viewProcessingLog = function(pkg = ",name,"){"),
+"                 f = system.file('extdata/LogFiles',package=pkg)",
+"f = list.files(path='f',pattern='html')",
+"                 sapply(f,function(x).openFileInOS(x))",
+"                 }"
+                 ),con)
+    close(con);
     oldrdfiles <-
       list.files(
         path = file.path(package_path,"man"),pattern = "Rd",full = TRUE
