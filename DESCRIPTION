@@ -1,7 +1,7 @@
 Package: preprocessData
 Type: Package
 Title: Scripts to pre-process data sets from "data-raw" to "data".
-Version: 0.10.1
+Version: 0.10.2
 Date: 2015-01-14
 Author: Greg Finak
 Maintainer: Greg Finak <gfinak@fredhutch.org>
