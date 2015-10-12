@@ -270,8 +270,8 @@ datapackage.skeleton <-
     )
     close(con)
     con = file(file.path(package_path,"R","utils.R"))
-    writeLines(c("
-.openFileInOS <- function(f) {",
+    writeLines(c("openFileinOS taken from pander package.https://github.com/cran/pander/blob/master/man/openFileInOS.Rd by Gergely Daroczi",
+".openFileInOS <- function(f) {",
   
 "                 if (missing(f)) {",
 "                 stop('No file to open!')",
