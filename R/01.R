@@ -240,7 +240,7 @@ datapackage.skeleton <-
     con <- file(file.path(package_path,"data-raw","datasets.R"))
     writeLines(
       c("library(rmarkdown)",
-        "render('myPreprocessingCode.Rmd',envir=topenv(),output_dir='../inst/extdata/Logfiles',intermediate_dir='../inst/extdata/Logfiles',clean=FALSE)",
+        "render('myPreprocessingCode.Rmd',envir=topenv(),output_dir='../inst/extdata/Logfiles',intermediates_dir='../inst/extdata/Logfiles',clean=FALSE)",
         "keepDataObjects('mydataset')",
         "",
         paste0("#' ",name),
