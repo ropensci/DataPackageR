@@ -237,38 +237,11 @@ datapackage.skeleton <-
       ),con
     )
     close(con)
-    con <- file(file.path(package_path,"data-raw","datasets.R"))
-    writeLines(
-      c("library(rmarkdown)",
-        "render('myPreprocessingCode.Rmd',envir=topenv(),output_dir='../inst/extdata/Logfiles',intermediates_dir='../inst/extdata/Logfiles',clean=FALSE)",
-        "keepDataObjects('mydataset')",
-        "",
-        paste0("#' ",name),
-        paste0("#' A data package for study ",name),
-        "#' @docType package",
-        paste0("#' @aliases ",name,"-package"),
-        paste0("#' @title ",name),
-        paste0("#' @name ",name),
-        "#' @description a description of the package.",
-        "#' @details Additional details.",
-        "#' @import data.table",
-        "#' @seealso \\link{mydataset}",
-        "NULL",
-        "",
-        "#' Data from an assay, entitled mydataset",
-        "#'@name mydataset",
-        "#'@docType data",
-        "#'@title Data from an assay.",
-        "#'@format a \\code{data.table} containing the following fields",
-        "#'\\describe{",
-        "#'\\item{column_name}{description}",
-        "#'\\item{column_name_2}{description}",
-        "#'}",
-        "#'@source Describe the source of the data (i.e. lab, etc)",
-        paste0("#'@seealso \\link{",name,"}")
-      ),con
-    )
-    close(con)
+
+    file.copy(file.path(Sys.getenv("R_LIBS_USER"), "preprocessData/extdata/datasets.R"), file.path(package_path, "data-raw"), overwrite=TRUE)
+    file.copy(file.path(Sys.getenv("R_LIBS_USER"), "preprocessData/extdata/autoDoc.R"), file.path(package_path, "data-raw"), overwrite=TRUE)
+    message("Creating datasets.R and autoDoc.R from template")
+
     con = file(file.path(package_path,"R","utils.R"))
     writeLines(c("openFileinOS taken from pander package.https://github.com/cran/pander/blob/master/man/openFileInOS.Rd by Gergely Daroczi",
 ".openFileInOS <- function(f) {",
