@@ -1,430 +1,226 @@
 <!DOCTYPE html>
-<html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
-<title>Overview</title>
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
 
-<script type="text/javascript">
-window.onload = function() {
-  var imgs = document.getElementsByTagName('img'), i, img;
-  for (i = 0; i < imgs.length; i++) {
-    img = imgs[i];
-    // center an image if it is the only element of its parent
-    if (img.parentElement.childElementCount === 1)
-      img.parentElement.style.textAlign = 'center';
+<meta name="author" content="Greg Finak gfinak@fredhutch.org" />
+
+<meta name="date" content="2016-01-13" />
+
+<title>Using preprocessData</title>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; }
+code > span.dt { color: #902000; }
+code > span.dv { color: #40a070; }
+code > span.bn { color: #40a070; }
+code > span.fl { color: #40a070; }
+code > span.ch { color: #4070a0; }
+code > span.st { color: #4070a0; }
+code > span.co { color: #60a0b0; font-style: italic; }
+code > span.ot { color: #007020; }
+code > span.al { color: #ff0000; font-weight: bold; }
+code > span.fu { color: #06287e; }
+code > span.er { color: #ff0000; font-weight: bold; }
+</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
   }
-};
-</script>
-
-<!-- Styles for R syntax highlighter -->
-<style type="text/css">
-   pre .operator,
-   pre .paren {
-     color: rgb(104, 118, 135)
-   }
-
-   pre .literal {
-     color: #990073
-   }
-
-   pre .number {
-     color: #099;
-   }
-
-   pre .comment {
-     color: #998;
-     font-style: italic
-   }
-
-   pre .keyword {
-     color: #900;
-     font-weight: bold
-   }
-
-   pre .identifier {
-     color: rgb(0, 0, 0);
-   }
-
-   pre .string {
-     color: #d14;
-   }
-</style>
-
-<!-- R syntax highlighter -->
-<script type="text/javascript">
-var hljs=new function(){function m(p){return p.replace(/&/gm,"&amp;").replace(/</gm,"&lt;")}function f(r,q,p){return RegExp(q,"m"+(r.cI?"i":"")+(p?"g":""))}function b(r){for(var p=0;p<r.childNodes.length;p++){var q=r.childNodes[p];if(q.nodeName=="CODE"){return q}if(!(q.nodeType==3&&q.nodeValue.match(/\s+/))){break}}}function h(t,s){var p="";for(var r=0;r<t.childNodes.length;r++){if(t.childNodes[r].nodeType==3){var q=t.childNodes[r].nodeValue;if(s){q=q.replace(/\n/g,"")}p+=q}else{if(t.childNodes[r].nodeName=="BR"){p+="\n"}else{p+=h(t.childNodes[r])}}}if(/MSIE [678]/.test(navigator.userAgent)){p=p.replace(/\r/g,"\n")}return p}function a(s){var r=s.className.split(/\s+/);r=r.concat(s.parentNode.className.split(/\s+/));for(var q=0;q<r.length;q++){var p=r[q].replace(/^language-/,"");if(e[p]){return p}}}function c(q){var p=[];(function(s,t){for(var r=0;r<s.childNodes.length;r++){if(s.childNodes[r].nodeType==3){t+=s.childNodes[r].nodeValue.length}else{if(s.childNodes[r].nodeName=="BR"){t+=1}else{if(s.childNodes[r].nodeType==1){p.push({event:"start",offset:t,node:s.childNodes[r]});t=arguments.callee(s.childNodes[r],t);p.push({event:"stop",offset:t,node:s.childNodes[r]})}}}}return t})(q,0);return p}function k(y,w,x){var q=0;var z="";var s=[];function u(){if(y.length&&w.length){if(y[0].offset!=w[0].offset){return(y[0].offset<w[0].offset)?y:w}else{return w[0].event=="start"?y:w}}else{return y.length?y:w}}function t(D){var A="<"+D.nodeName.toLowerCase();for(var B=0;B<D.attributes.length;B++){var C=D.attributes[B];A+=" "+C.nodeName.toLowerCase();if(C.value!==undefined&&C.value!==false&&C.value!==null){A+='="'+m(C.value)+'"'}}return A+">"}while(y.length||w.length){var v=u().splice(0,1)[0];z+=m(x.substr(q,v.offset-q));q=v.offset;if(v.event=="start"){z+=t(v.node);s.push(v.node)}else{if(v.event=="stop"){var p,r=s.length;do{r--;p=s[r];z+=("</"+p.nodeName.toLowerCase()+">")}while(p!=v.node);s.splice(r,1);while(r<s.length){z+=t(s[r]);r++}}}}return z+m(x.substr(q))}function j(){function q(x,y,v){if(x.compiled){return}var u;var s=[];if(x.k){x.lR=f(y,x.l||hljs.IR,true);for(var w in x.k){if(!x.k.hasOwnProperty(w)){continue}if(x.k[w] instanceof Object){u=x.k[w]}else{u=x.k;w="keyword"}for(var r in u){if(!u.hasOwnProperty(r)){continue}x.k[r]=[w,u[r]];s.push(r)}}}if(!v){if(x.bWK){x.b="\\b("+s.join("|")+")\\s"}x.bR=f(y,x.b?x.b:"\\B|\\b");if(!x.e&&!x.eW){x.e="\\B|\\b"}if(x.e){x.eR=f(y,x.e)}}if(x.i){x.iR=f(y,x.i)}if(x.r===undefined){x.r=1}if(!x.c){x.c=[]}x.compiled=true;for(var t=0;t<x.c.length;t++){if(x.c[t]=="self"){x.c[t]=x}q(x.c[t],y,false)}if(x.starts){q(x.starts,y,false)}}for(var p in e){if(!e.hasOwnProperty(p)){continue}q(e[p].dM,e[p],true)}}function d(B,C){if(!j.called){j();j.called=true}function q(r,M){for(var L=0;L<M.c.length;L++){if((M.c[L].bR.exec(r)||[null])[0]==r){return M.c[L]}}}function v(L,r){if(D[L].e&&D[L].eR.test(r)){return 1}if(D[L].eW){var M=v(L-1,r);return M?M+1:0}return 0}function w(r,L){return L.i&&L.iR.test(r)}function K(N,O){var M=[];for(var L=0;L<N.c.length;L++){M.push(N.c[L].b)}var r=D.length-1;do{if(D[r].e){M.push(D[r].e)}r--}while(D[r+1].eW);if(N.i){M.push(N.i)}return f(O,M.join("|"),true)}function p(M,L){var N=D[D.length-1];if(!N.t){N.t=K(N,E)}N.t.lastIndex=L;var r=N.t.exec(M);return r?[M.substr(L,r.index-L),r[0],false]:[M.substr(L),"",true]}function z(N,r){var L=E.cI?r[0].toLowerCase():r[0];var M=N.k[L];if(M&&M instanceof Array){return M}return false}function F(L,P){L=m(L);if(!P.k){return L}var r="";var O=0;P.lR.lastIndex=0;var M=P.lR.exec(L);while(M){r+=L.substr(O,M.index-O);var N=z(P,M);if(N){x+=N[1];r+='<span class="'+N[0]+'">'+M[0]+"</span>"}else{r+=M[0]}O=P.lR.lastIndex;M=P.lR.exec(L)}return r+L.substr(O,L.length-O)}function J(L,M){if(M.sL&&e[M.sL]){var r=d(M.sL,L);x+=r.keyword_count;return r.value}else{return F(L,M)}}function I(M,r){var L=M.cN?'<span class="'+M.cN+'">':"";if(M.rB){y+=L;M.buffer=""}else{if(M.eB){y+=m(r)+L;M.buffer=""}else{y+=L;M.buffer=r}}D.push(M);A+=M.r}function G(N,M,Q){var R=D[D.length-1];if(Q){y+=J(R.buffer+N,R);return false}var P=q(M,R);if(P){y+=J(R.buffer+N,R);I(P,M);return P.rB}var L=v(D.length-1,M);if(L){var O=R.cN?"</span>":"";if(R.rE){y+=J(R.buffer+N,R)+O}else{if(R.eE){y+=J(R.buffer+N,R)+O+m(M)}else{y+=J(R.buffer+N+M,R)+O}}while(L>1){O=D[D.length-2].cN?"</span>":"";y+=O;L--;D.length--}var r=D[D.length-1];D.length--;D[D.length-1].buffer="";if(r.starts){I(r.starts,"")}return R.rE}if(w(M,R)){throw"Illegal"}}var E=e[B];var D=[E.dM];var A=0;var x=0;var y="";try{var s,u=0;E.dM.buffer="";do{s=p(C,u);var t=G(s[0],s[1],s[2]);u+=s[0].length;if(!t){u+=s[1].length}}while(!s[2]);if(D.length>1){throw"Illegal"}return{r:A,keyword_count:x,value:y}}catch(H){if(H=="Illegal"){return{r:0,keyword_count:0,value:m(C)}}else{throw H}}}function g(t){var p={keyword_count:0,r:0,value:m(t)};var r=p;for(var q in e){if(!e.hasOwnProperty(q)){continue}var s=d(q,t);s.language=q;if(s.keyword_count+s.r>r.keyword_count+r.r){r=s}if(s.keyword_count+s.r>p.keyword_count+p.r){r=p;p=s}}if(r.language){p.second_best=r}return p}function i(r,q,p){if(q){r=r.replace(/^((<[^>]+>|\t)+)/gm,function(t,w,v,u){return w.replace(/\t/g,q)})}if(p){r=r.replace(/\n/g,"<br>")}return r}function n(t,w,r){var x=h(t,r);var v=a(t);var y,s;if(v){y=d(v,x)}else{return}var q=c(t);if(q.length){s=document.createElement("pre");s.innerHTML=y.value;y.value=k(q,c(s),x)}y.value=i(y.value,w,r);var u=t.className;if(!u.match("(\\s|^)(language-)?"+v+"(\\s|$)")){u=u?(u+" "+v):v}if(/MSIE [678]/.test(navigator.userAgent)&&t.tagName=="CODE"&&t.parentNode.tagName=="PRE"){s=t.parentNode;var p=document.createElement("div");p.innerHTML="<pre><code>"+y.value+"</code></pre>";t=p.firstChild.firstChild;p.firstChild.cN=s.cN;s.parentNode.replaceChild(p.firstChild,s)}else{t.innerHTML=y.value}t.className=u;t.result={language:v,kw:y.keyword_count,re:y.r};if(y.second_best){t.second_best={language:y.second_best.language,kw:y.second_best.keyword_count,re:y.second_best.r}}}function o(){if(o.called){return}o.called=true;var r=document.getElementsByTagName("pre");for(var p=0;p<r.length;p++){var q=b(r[p]);if(q){n(q,hljs.tabReplace)}}}function l(){if(window.addEventListener){window.addEventListener("DOMContentLoaded",o,false);window.addEventListener("load",o,false)}else{if(window.attachEvent){window.attachEvent("onload",o)}else{window.onload=o}}}var e={};this.LANGUAGES=e;this.highlight=d;this.highlightAuto=g;this.fixMarkup=i;this.highlightBlock=n;this.initHighlighting=o;this.initHighlightingOnLoad=l;this.IR="[a-zA-Z][a-zA-Z0-9_]*";this.UIR="[a-zA-Z_][a-zA-Z0-9_]*";this.NR="\\b\\d+(\\.\\d+)?";this.CNR="\\b(0[xX][a-fA-F0-9]+|(\\d+(\\.\\d*)?|\\.\\d+)([eE][-+]?\\d+)?)";this.BNR="\\b(0b[01]+)";this.RSR="!|!=|!==|%|%=|&|&&|&=|\\*|\\*=|\\+|\\+=|,|\\.|-|-=|/|/=|:|;|<|<<|<<=|<=|=|==|===|>|>=|>>|>>=|>>>|>>>=|\\?|\\[|\\{|\\(|\\^|\\^=|\\||\\|=|\\|\\||~";this.ER="(?![\\s\\S])";this.BE={b:"\\\\.",r:0};this.ASM={cN:"string",b:"'",e:"'",i:"\\n",c:[this.BE],r:0};this.QSM={cN:"string",b:'"',e:'"',i:"\\n",c:[this.BE],r:0};this.CLCM={cN:"comment",b:"//",e:"$"};this.CBLCLM={cN:"comment",b:"/\\*",e:"\\*/"};this.HCM={cN:"comment",b:"#",e:"$"};this.NM={cN:"number",b:this.NR,r:0};this.CNM={cN:"number",b:this.CNR,r:0};this.BNM={cN:"number",b:this.BNR,r:0};this.inherit=function(r,s){var p={};for(var q in r){p[q]=r[q]}if(s){for(var q in s){p[q]=s[q]}}return p}}();hljs.LANGUAGES.cpp=function(){var a={keyword:{"false":1,"int":1,"float":1,"while":1,"private":1,"char":1,"catch":1,"export":1,virtual:1,operator:2,sizeof:2,dynamic_cast:2,typedef:2,const_cast:2,"const":1,struct:1,"for":1,static_cast:2,union:1,namespace:1,unsigned:1,"long":1,"throw":1,"volatile":2,"static":1,"protected":1,bool:1,template:1,mutable:1,"if":1,"public":1,friend:2,"do":1,"return":1,"goto":1,auto:1,"void":2,"enum":1,"else":1,"break":1,"new":1,extern:1,using:1,"true":1,"class":1,asm:1,"case":1,typeid:1,"short":1,reinterpret_cast:2,"default":1,"double":1,register:1,explicit:1,signed:1,typename:1,"try":1,"this":1,"switch":1,"continue":1,wchar_t:1,inline:1,"delete":1,alignof:1,char16_t:1,char32_t:1,constexpr:1,decltype:1,noexcept:1,nullptr:1,static_assert:1,thread_local:1,restrict:1,_Bool:1,complex:1},built_in:{std:1,string:1,cin:1,cout:1,cerr:1,clog:1,stringstream:1,istringstream:1,ostringstream:1,auto_ptr:1,deque:1,list:1,queue:1,stack:1,vector:1,map:1,set:1,bitset:1,multiset:1,multimap:1,unordered_set:1,unordered_map:1,unordered_multiset:1,unordered_multimap:1,array:1,shared_ptr:1}};return{dM:{k:a,i:"</",c:[hljs.CLCM,hljs.CBLCLM,hljs.QSM,{cN:"string",b:"'\\\\?.",e:"'",i:"."},{cN:"number",b:"\\b(\\d+(\\.\\d*)?|\\.\\d+)(u|U|l|L|ul|UL|f|F)"},hljs.CNM,{cN:"preprocessor",b:"#",e:"$"},{cN:"stl_container",b:"\\b(deque|list|queue|stack|vector|map|set|bitset|multiset|multimap|unordered_map|unordered_set|unordered_multiset|unordered_multimap|array)\\s*<",e:">",k:a,r:10,c:["self"]}]}}}();hljs.LANGUAGES.r={dM:{c:[hljs.HCM,{cN:"number",b:"\\b0[xX][0-9a-fA-F]+[Li]?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+(?:[eE][+\\-]?\\d*)?L\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+\\.(?!\\d)(?:i\\b)?",e:hljs.IMMEDIATE_RE,r:1},{cN:"number",b:"\\b\\d+(?:\\.\\d*)?(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\.\\d+(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"keyword",b:"(?:tryCatch|library|setGeneric|setGroupGeneric)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\.",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\d+(?![\\w.])",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\b(?:function)",e:hljs.IMMEDIATE_RE,r:2},{cN:"keyword",b:"(?:if|in|break|next|repeat|else|for|return|switch|while|try|stop|warning|require|attach|detach|source|setMethod|setClass)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"literal",b:"(?:NA|NA_integer_|NA_real_|NA_character_|NA_complex_)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"literal",b:"(?:NULL|TRUE|FALSE|T|F|Inf|NaN)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"identifier",b:"[a-zA-Z.][a-zA-Z0-9._]*\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"<\\-(?!\\s*\\d)",e:hljs.IMMEDIATE_RE,r:2},{cN:"operator",b:"\\->|<\\-",e:hljs.IMMEDIATE_RE,r:1},{cN:"operator",b:"%%|~",e:hljs.IMMEDIATE_RE},{cN:"operator",b:">=|<=|==|!=|\\|\\||&&|=|\\+|\\-|\\*|/|\\^|>|<|!|&|\\||\\$|:",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"%",e:"%",i:"\\n",r:1},{cN:"identifier",b:"`",e:"`",r:0},{cN:"string",b:'"',e:'"',c:[hljs.BE],r:0},{cN:"string",b:"'",e:"'",c:[hljs.BE],r:0},{cN:"paren",b:"[[({\\])}]",e:hljs.IMMEDIATE_RE,r:0}]}};
-hljs.initHighlightingOnLoad();
-</script>
-
-
-
-<style type="text/css">
-body, td {
-   font-family: sans-serif;
-   background-color: white;
-   font-size: 13px;
-}
-
-body {
-  max-width: 800px;
-  margin: auto;
-  padding: 1em;
-  line-height: 20px;
-}
-
-tt, code, pre {
-   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
-}
-
-h1 {
-   font-size:2.2em;
-}
-
-h2 {
-   font-size:1.8em;
-}
-
-h3 {
-   font-size:1.4em;
-}
-
-h4 {
-   font-size:1.0em;
-}
-
-h5 {
-   font-size:0.9em;
-}
-
-h6 {
-   font-size:0.8em;
-}
-
-a:visited {
-   color: rgb(50%, 0%, 50%);
-}
-
-pre, img {
-  max-width: 100%;
-}
-pre {
-  overflow-x: auto;
-}
-pre code {
-   display: block; padding: 0.5em;
-}
-
-code {
-  font-size: 92%;
-  border: 1px solid #ccc;
-}
-
-code[class] {
-  background-color: #F8F8F8;
-}
-
-table, td, th {
-  border: none;
-}
-
-blockquote {
-   color:#666666;
-   margin:0;
-   padding-left: 1em;
-   border-left: 0.5em #EEE solid;
-}
-
-hr {
-   height: 0px;
-   border-bottom: none;
-   border-top-width: thin;
-   border-top-style: dotted;
-   border-top-color: #999999;
-}
-
-@media print {
-   * {
-      background: transparent !important;
-      color: black !important;
-      filter:none !important;
-      -ms-filter: none !important;
-   }
-
-   body {
-      font-size:12pt;
-      max-width:100%;
-   }
-
-   a, a:visited {
-      text-decoration: underline;
-   }
-
-   hr {
-      visibility: hidden;
-      page-break-before: always;
-   }
-
-   pre, blockquote {
-      padding-right: 1em;
-      page-break-inside: avoid;
-   }
-
-   tr, img {
-      page-break-inside: avoid;
-   }
-
-   img {
-      max-width: 100% !important;
-   }
-
-   @page :left {
-      margin: 15mm 20mm 15mm 10mm;
-   }
-
-   @page :right {
-      margin: 15mm 10mm 15mm 20mm;
-   }
-
-   p, h2, h3 {
-      orphans: 3; widows: 3;
-   }
-
-   h2, h3 {
-      page-break-after: avoid;
-   }
-}
 </style>
 
 
+<link href="data:text/css,body%20%7B%0A%20%20background%2Dcolor%3A%20%23fff%3B%0A%20%20margin%3A%201em%20auto%3B%0A%20%20max%2Dwidth%3A%20700px%3B%0A%20%20overflow%3A%20visible%3B%0A%20%20padding%2Dleft%3A%202em%3B%0A%20%20padding%2Dright%3A%202em%3B%0A%20%20font%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0A%20%20font%2Dsize%3A%2014px%3B%0A%20%20line%2Dheight%3A%201%2E35%3B%0A%7D%0A%0A%23header%20%7B%0A%20%20text%2Dalign%3A%20center%3B%0A%7D%0A%0A%23TOC%20%7B%0A%20%20clear%3A%20both%3B%0A%20%20margin%3A%200%200%2010px%2010px%3B%0A%20%20padding%3A%204px%3B%0A%20%20width%3A%20400px%3B%0A%20%20border%3A%201px%20solid%20%23CCCCCC%3B%0A%20%20border%2Dradius%3A%205px%3B%0A%0A%20%20background%2Dcolor%3A%20%23f6f6f6%3B%0A%20%20font%2Dsize%3A%2013px%3B%0A%20%20line%2Dheight%3A%201%2E3%3B%0A%7D%0A%20%20%23TOC%20%2Etoctitle%20%7B%0A%20%20%20%20font%2Dweight%3A%20bold%3B%0A%20%20%20%20font%2Dsize%3A%2015px%3B%0A%20%20%20%20margin%2Dleft%3A%205px%3B%0A%20%20%7D%0A%0A%20%20%23TOC%20ul%20%7B%0A%20%20%20%20padding%2Dleft%3A%2040px%3B%0A%20%20%20%20margin%2Dleft%3A%20%2D1%2E5em%3B%0A%20%20%20%20margin%2Dtop%3A%205px%3B%0A%20%20%20%20margin%2Dbottom%3A%205px%3B%0A%20%20%7D%0A%20%20%23TOC%20ul%20ul%20%7B%0A%20%20%20%20margin%2Dleft%3A%20%2D2em%3B%0A%20%20%7D%0A%20%20%23TOC%20li%20%7B%0A%20%20%20%20line%2Dheight%3A%2016px%3B%0A%20%20%7D%0A%0Atable%20%7B%0A%20%20margin%3A%201em%20auto%3B%0A%20%20border%2Dwidth%3A%201px%3B%0A%20%20border%2Dcolor%3A%20%23DDDDDD%3B%0A%20%20border%2Dstyle%3A%20outset%3B%0A%20%20border%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0A%20%20border%2Dwidth%3A%202px%3B%0A%20%20padding%3A%205px%3B%0A%20%20border%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0A%20%20border%2Dwidth%3A%201px%3B%0A%20%20border%2Dstyle%3A%20inset%3B%0A%20%20line%2Dheight%3A%2018px%3B%0A%20%20padding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0A%20%20border%2Dleft%2Dstyle%3A%20none%3B%0A%20%20border%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0A%20%20background%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0A%0Ap%20%7B%0A%20%20margin%3A%200%2E5em%200%3B%0A%7D%0A%0Ablockquote%20%7B%0A%20%20background%2Dcolor%3A%20%23f6f6f6%3B%0A%20%20padding%3A%200%2E25em%200%2E75em%3B%0A%7D%0A%0Ahr%20%7B%0A%20%20border%2Dstyle%3A%20solid%3B%0A%20%20border%3A%20none%3B%0A%20%20border%2Dtop%3A%201px%20solid%20%23777%3B%0A%20%20margin%3A%2028px%200%3B%0A%7D%0A%0Adl%20%7B%0A%20%20margin%2Dleft%3A%200%3B%0A%7D%0A%20%20dl%20dd%20%7B%0A%20%20%20%20margin%2Dbottom%3A%2013px%3B%0A%20%20%20%20margin%2Dleft%3A%2013px%3B%0A%20%20%7D%0A%20%20dl%20dt%20%7B%0A%20%20%20%20font%2Dweight%3A%20bold%3B%0A%20%20%7D%0A%0Aul%20%7B%0A%20%20margin%2Dtop%3A%200%3B%0A%7D%0A%20%20ul%20li%20%7B%0A%20%20%20%20list%2Dstyle%3A%20circle%20outside%3B%0A%20%20%7D%0A%20%20ul%20ul%20%7B%0A%20%20%20%20margin%2Dbottom%3A%200%3B%0A%20%20%7D%0A%0Apre%2C%20code%20%7B%0A%20%20background%2Dcolor%3A%20%23f7f7f7%3B%0A%20%20border%2Dradius%3A%203px%3B%0A%20%20color%3A%20%23333%3B%0A%7D%0Apre%20%7B%0A%20%20white%2Dspace%3A%20pre%2Dwrap%3B%20%20%20%20%2F%2A%20Wrap%20long%20lines%20%2A%2F%0A%20%20border%2Dradius%3A%203px%3B%0A%20%20margin%3A%205px%200px%2010px%200px%3B%0A%20%20padding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0A%20%20background%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0A%0Acode%20%7B%0A%20%20font%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0A%20%20font%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0A%20%20padding%3A%202px%200px%3B%0A%7D%0A%0Adiv%2Efigure%20%7B%0A%20%20text%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0A%20%20background%2Dcolor%3A%20%23FFFFFF%3B%0A%20%20padding%3A%202px%3B%0A%20%20border%3A%201px%20solid%20%23DDDDDD%3B%0A%20%20border%2Dradius%3A%203px%3B%0A%20%20border%3A%201px%20solid%20%23CCCCCC%3B%0A%20%20margin%3A%200%205px%3B%0A%7D%0A%0Ah1%20%7B%0A%20%20margin%2Dtop%3A%200%3B%0A%20%20font%2Dsize%3A%2035px%3B%0A%20%20line%2Dheight%3A%2040px%3B%0A%7D%0A%0Ah2%20%7B%0A%20%20border%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0A%20%20padding%2Dtop%3A%2010px%3B%0A%20%20padding%2Dbottom%3A%202px%3B%0A%20%20font%2Dsize%3A%20145%25%3B%0A%7D%0A%0Ah3%20%7B%0A%20%20border%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0A%20%20padding%2Dtop%3A%2010px%3B%0A%20%20font%2Dsize%3A%20120%25%3B%0A%7D%0A%0Ah4%20%7B%0A%20%20border%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0A%20%20margin%2Dleft%3A%208px%3B%0A%20%20font%2Dsize%3A%20105%25%3B%0A%7D%0A%0Ah5%2C%20h6%20%7B%0A%20%20border%2Dbottom%3A%201px%20solid%20%23ccc%3B%0A%20%20font%2Dsize%3A%20105%25%3B%0A%7D%0A%0Aa%20%7B%0A%20%20color%3A%20%230033dd%3B%0A%20%20text%2Ddecoration%3A%20none%3B%0A%7D%0A%20%20a%3Ahover%20%7B%0A%20%20%20%20color%3A%20%236666ff%3B%20%7D%0A%20%20a%3Avisited%20%7B%0A%20%20%20%20color%3A%20%23800080%3B%20%7D%0A%20%20a%3Avisited%3Ahover%20%7B%0A%20%20%20%20color%3A%20%23BB00BB%3B%20%7D%0A%20%20a%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0A%20%20%20%20text%2Ddecoration%3A%20underline%3B%20%7D%0A%20%20a%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0A%20%20%20%20text%2Ddecoration%3A%20underline%3B%20%7D%0A%0A%2F%2A%20Class%20described%20in%20https%3A%2F%2Fbenjeffrey%2Ecom%2Fposts%2Fpandoc%2Dsyntax%2Dhighlighting%2Dcss%0A%20%20%20Colours%20from%20https%3A%2F%2Fgist%2Egithub%2Ecom%2Frobsimmons%2F1172277%20%2A%2F%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%2F%2A%20Keyword%20%2A%2F%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%2F%2A%20DataType%20%2A%2F%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%2F%2A%20DecVal%20%28decimal%20values%29%20%2A%2F%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%2F%2A%20BaseN%20%2A%2F%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%2F%2A%20Float%20%2A%2F%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%2F%2A%20Char%20%2A%2F%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%2F%2A%20String%20%2A%2F%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%2F%2A%20Comment%20%2A%2F%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%2F%2A%20OtherToken%20%2A%2F%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%2F%2A%20AlertToken%20%2A%2F%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%2F%2A%20Function%20calls%20%2A%2F%20%0Acode%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%2F%2A%20ErrorTok%20%2A%2F%0A%0A" rel="stylesheet" type="text/css" />
 
 </head>
 
 <body>
+
+
+
+<div id="header">
+<h1 class="title">Using preprocessData</h1>
+<h4 class="author"><em>Greg Finak <a href="mailto:gfinak@fredhutch.org">gfinak@fredhutch.org</a></em></h4>
+<h4 class="date"><em>2016-01-13</em></h4>
+</div>
+
+
+<div id="overview" class="section level2">
 <h2>Overview</h2>
-
 <p>This package enables the command <code>R CMD preprocessData &lt;packagename&gt;</code>. The <code>preprocessData</code> command is meant to run user-defined code in an <code>R</code> package to process, transform, tidy, or otherwise standardize raw data into data sets or objects to be stored in the <code>pacakgename/data</code> directory.</p>
-
 <p>Additionally, it supports data versioning via a <code>DataVersion: x.y.z</code> string in the package <code>DESCRIPTION</code> file, and automatically checks if data has changed between invocations. Furthermore, if <code>roxygen</code> documenation is available for the data sets as part of the user-defined data processing code, it will be extracted and copied to <code>packagename/R</code> where it can be parsed by the <code>roxygen</code> package.</p>
-
-<h3>Credit where it&#39;s due</h3>
-
+<div id="credit-where-its-due" class="section level3">
+<h3>Credit where it’s due</h3>
 <p>The concepts here are borrowed from a variety of ideas floating around the R user community, from people like Yihui Xie, Hadley Wickham, and Robert Gentleman. This package just puts some of that together into a single framework.</p>
-
+</div>
+</div>
+<div id="why-not-use-the-existing-data-directory-mechanism" class="section level2">
 <h2>Why not use the existing <code>data</code> directory mechanism?</h2>
-
-<p>R packages run <code>.R</code> code in <code>/data</code> as part of the build process. However, this code is invoked each time a data set is attached using <code>data()</code>. In many instances, the processing that needs to be done to a raw data set may be complex and too time consuming to be part of the regular build process. Since the build time is a consideration for packages getting accepted into various repositories, there&#39;s a need for a separate data processing step that precedes the usual <code>build</code>.</p>
-
-<p>Additionally, data versioning and consistency checks are nice to have, as is the ability to keep code that generates data together with the data. </p>
-
+<p>R packages run <code>.R</code> code in <code>/data</code> as part of the build process. However, this code is invoked each time a data set is attached using <code>data()</code>. In many instances, the processing that needs to be done to a raw data set may be complex and too time consuming to be part of the regular build process. Since the build time is a consideration for packages getting accepted into various repositories, there’s a need for a separate data processing step that precedes the usual <code>build</code>.</p>
+<p>Additionally, data versioning and consistency checks are nice to have, as is the ability to keep code that generates data together with the data.</p>
+</div>
+<div id="how-to-build-a-data-package-that-uses-preprocessdata" class="section level2">
 <h2>How to build a data package that uses preprocessData</h2>
-
 <p>We assume we want to build a data package called <code>myDataPackage</code>. We load the <code>preprocessData</code> library and use its convenience functions to get started.</p>
-
-<pre><code class="r">test&lt;-&quot;&quot;
-library(preprocessData)
-</code></pre>
-
-<pre><code>## Creating directories ...
-## Creating DESCRIPTION ...
-## Creating NAMESPACE ...
-## Creating Read-and-delete-me ...
-## Saving functions and data ...
-## Making help files ...
-## Done.
-## Further steps are described in &#39;/tmp/MyDataPackage/Read-and-delete-me&#39;.
-## Adding DataVersion string to DESCRIPTION
-## Creating data and data-raw directories
-</code></pre>
-
-<p>The command above sets up the package skeleton in the <code>/tmp</code> directory for our new package. </p>
-
-<p>Let&#39;s generate some &ldquo;raw data&rdquo; that we want to process.</p>
-
-<pre><code class="r">library(tidyr)
-mat&lt;-spread(data.frame(sample=1:100,
-          measurement=matrix(sapply(c(1,2,5,10),
-           function(x)rnorm(100,mean=x)),ncol=1),
-          subject_id=gl(4,100,labels=c(&quot;Subject_1&quot;,
-                        &quot;Subject_2&quot;,&quot;Subject_3&quot;,&quot;Subject_4&quot;))),
-          key=subject_id,value=measurement)
-head(mat)
-</code></pre>
-
+<pre class="sourceCode r"><code class="sourceCode r">test&lt;-<span class="st">&quot;&quot;</span>
+<span class="kw">library</span>(preprocessData)
+<span class="kw">datapackage.skeleton</span>(<span class="st">&quot;MyDataPackage&quot;</span>, <span class="dt">path=</span><span class="st">&quot;/tmp&quot;</span>,<span class="dt">list=</span><span class="st">&quot;test&quot;</span>)</code></pre>
+<p>The command above sets up the package skeleton in the <code>/tmp</code> directory for our new package.</p>
+<p>Let’s generate some “raw data” that we want to process.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyr)
+mat&lt;-<span class="kw">spread</span>(<span class="kw">data.frame</span>(<span class="dt">sample=</span><span class="dv">1</span>:<span class="dv">100</span>,
+          <span class="dt">measurement=</span><span class="kw">matrix</span>(<span class="kw">sapply</span>(<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">5</span>,<span class="dv">10</span>),
+           function(x)<span class="kw">rnorm</span>(<span class="dv">100</span>,<span class="dt">mean=</span>x)),<span class="dt">ncol=</span><span class="dv">1</span>),
+          <span class="dt">subject_id=</span><span class="kw">gl</span>(<span class="dv">4</span>,<span class="dv">100</span>,<span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;Subject_1&quot;</span>,
+                        <span class="st">&quot;Subject_2&quot;</span>,<span class="st">&quot;Subject_3&quot;</span>,<span class="st">&quot;Subject_4&quot;</span>))),
+          <span class="dt">key=</span>subject_id,<span class="dt">value=</span>measurement)
+<span class="kw">head</span>(mat)</code></pre>
 <pre><code>##   sample  Subject_1 Subject_2 Subject_3 Subject_4
-## 1      1  1.1724532 0.9249492  5.270603 10.200967
-## 2      2 -0.1164714 1.0198459  3.591824 10.127754
-## 3      3  2.5734555 1.5018172  7.759404 11.488892
-## 4      4  2.1554849 1.1458828  5.957965 10.827647
-## 5      5  1.8758135 1.9816319  3.864418  9.637641
-## 6      6  1.2326520 1.6483127  3.045962 11.073653
-</code></pre>
-
-<p>We pretend that our raw data arrives as above: something is measured for four subjects, 100 times per subject, but each subject&#39;s data is in a separate column. This is &ldquo;wide&rdquo; data, and generally doesn&#39;t follow the tidy data paradigm of one variable per column. This data file will live in the <code>inst/extdata</code> directory beneath the package source tree.</p>
-
-<p>We create <code>inst/extdata</code> beneath the package source tree and move our &ldquo;raw data&rdquo; into place.</p>
-
-<pre><code class="r">dir.create(path=&quot;/tmp/MyDataPackage/inst/extdata&quot;,recursive = TRUE)
-write.csv(mat,file=&quot;/tmp/MyDataPackage/inst/extdata/raw_data.csv&quot;,row.names=FALSE)
-</code></pre>
-
-<p>Next we write our R code to do the data processing. </p>
-
-<ul>
-<li>The R code reads the raw data and reshapes it such that each column is a separate variable. Our processed data object is entitled <code>study_processed</code>. </li>
-</ul>
-
-<pre><code class="r">data&lt;-read.csv(&quot;../inst/extdata/raw_data.csv&quot;,stringsAsFactors=FALSE)
-study_processed&lt;-gather(data,key=subject_id,value=measurement,-sample)
-</code></pre>
-
-<p>Let&#39;s see what this looks like:</p>
-
-<pre><code class="r">head(study_processed)
-</code></pre>
-
+## 1      1  0.2014190 1.6034494  5.030565 11.587267
+## 2      2 -0.4214865 2.3863621  4.434507  9.635612
+## 3      3  0.1201536 2.1468639  3.893427  8.713983
+## 4      4  0.4622025 2.9133793  5.974290  9.296999
+## 5      5  1.0363478 0.8027444  5.590968  9.228326
+## 6      6  1.1750411 2.3513062  3.584224  9.170320</code></pre>
+<p>We pretend that our raw data arrives as above: something is measured for four subjects, 100 times per subject, but each subject’s data is in a separate column. This is “wide” data, and generally doesn’t follow the tidy data paradigm of one variable per column. This data file will live in the <code>inst/extdata</code> directory beneath the package source tree.</p>
+<p>We move our “raw data” into the <code>inst/extdata</code> directory in the package source tree.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">write.csv</span>(mat,<span class="dt">file=</span><span class="st">&quot;/tmp/MyDataPackage/inst/extdata/raw_data.csv&quot;</span>,<span class="dt">row.names=</span><span class="ot">FALSE</span>)</code></pre>
+<p>Next we write our R code to do the data processing. The R code reads the raw data and reshapes it such that each column is a separate variable. Our processed data object is entitled <code>study_processed</code>.</p>
+<pre class="sourceCode r"><code class="sourceCode r">data&lt;-<span class="kw">read.csv</span>(<span class="st">&quot;../inst/extdata/raw_data.csv&quot;</span>,<span class="dt">stringsAsFactors=</span><span class="ot">FALSE</span>)
+study_processed&lt;-<span class="kw">gather</span>(data,<span class="dt">key=</span>subject_id,<span class="dt">value=</span>measurement,-sample)</code></pre>
+<p>Let’s see what this looks like:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(study_processed)</code></pre>
 <pre><code>##   sample subject_id measurement
-## 1      1  Subject_1   1.1724532
-## 2      2  Subject_1  -0.1164714
-## 3      3  Subject_1   2.5734555
-## 4      4  Subject_1   2.1554849
-## 5      5  Subject_1   1.8758135
-## 6      6  Subject_1   1.2326520
-</code></pre>
-
+## 1      1  Subject_1   0.2014190
+## 2      2  Subject_1  -0.4214865
+## 3      3  Subject_1   0.1201536
+## 4      4  Subject_1   0.4622025
+## 5      5  Subject_1   1.0363478
+## 6      6  Subject_1   1.1750411</code></pre>
 <p>Our data are now in long format.</p>
-
 <ul>
 <li>This R code is placed in an <code>.R</code> file entitled <code>process_assay.R</code> within the <code>data-raw</code> directory.</li>
 <li>The <code>datasets.R</code> file in <code>data-raw</code> is edited to contain:</li>
 </ul>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sys.source</span>(<span class="st">&quot;process_assay.R&quot;</span>,<span class="dt">env=</span><span class="kw">topenv</span>()) <span class="co"># Ensures that process_assay.R is sourced properly</span>
+objectsToKeep &lt;-<span class="st"> &quot;study_processed&quot;</span> <span class="co"># objectsToKeep is also used to generate roxygen boilerplate</span>
+<span class="kw">keepDataObjects</span>(objectsToKeep)  <span class="co"># Specifies which data objects we want to keep in the package.</span></code></pre>
+<p>The first line ensures the processing code is called when the package is built, and the second and third lines specify the data objects to be kept in the package and for which roxygen comments are to be generated. The <code>datapackage.skeleton()</code> function creates a default datasets.R file that should serve as a good starting point.</p>
+<p>Next we need some documentation for our data object(s). The default datasets.R file calls a function, <code>.autoDoc()</code> when it is built the first time. This function generates boilerplate roxygen comments and tags for the package and each object named in <code>objectsToKeep</code> and writes them to a file called <code>edit_and_rename_to_'documentation.R'.R</code>. The user should edit the file as desired and rename it to <code>documentation.R</code>. Any subsequent builds of the package will source the edited file for roxygen comments and tags. The initial file will look like this:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#' A data package for MyDataPackage.</span>
+<span class="co">#' @docType package</span>
+<span class="co">#' @aliases MyDataPackage-package</span>
+<span class="co">#' @title Package Title</span>
+<span class="co">#' @name MyDataPackage</span>
+<span class="co">#' @description A description of the data package</span>
+<span class="co">#' @details Use \\code{data(package='&quot;, pname, &quot;')$results[, 3]} to see a list of available data sets in this data package</span>
+<span class="co">#'     or preprocessData::load_all_datasets() to load them.</span>
+<span class="co">#' @seealso</span>
+<span class="co">#' study_processed</span>
+<span class="ot">NULL</span>
 
-<pre><code class="r">sys.source(&quot;process_assay.R&quot;,env=topenv()) #Ensures that process_assay.R is sourced properly
-keepDataObjects(&quot;study_processed&quot;)  #Specifies which data objects we want to keep in the package.
-</code></pre>
-
-<p>The first line ensures the processing code is called when the package is built and the second line specifies which data objects are kept in the package. Next we need some doucmentation for our data object.
-We use <code>roxygen</code> code to document our data objects as follows: this code is placed at the end of the <code>process_assay.R</code> file to document the data set.</p>
-
-<pre><code class="r">#&#39;Processed assay data for our fake data pacakge from our fake study.
-#&#39;
-#&#39;This data set contains the processed data for our fake 
-#&#39;assay, with 100 replicated measurements for each of four subjects.
-#&#39;@docType data
-#&#39;@format This is a data.frame in long format with 400 rows and 3 columns
-#&#39;\describe{
-#&#39;\item{sample}{The sample id}
-#&#39;\item{subject_id}{The subject id}
-#&#39;\item{measurement}{A measurement of some type of value  from our fake assay.}
-#&#39;}
-#&#39;@source The data were generated by the Fake lab for the CAVD.
-#&#39;@note Some additional important notes to consider.
-#&#39;@author The name of the person who wrote the code to process the data.
-#&#39;@name study_processed
-#&#39;@title Some fake assay data for four our fake package.
-NULL
-</code></pre>
-
-<p>The roxygen code must have a <code>@name</code> tag that matches the object name you are documenting. A <code>@title</code> is also required. It is good practice to document the data format, the provenance of the data,  what the data represent, and so forth, and describe any transformations applied to the data (i.e. positivity calls). Also note the <code>@docType</code> tag, is <code>data</code>.</p>
-
-<p>You want to ensure you document the package as well. The following code could be placed in the <code>datasets.R</code> file. Note the <code>@docType</code> tag is <code>package</code>.</p>
-
-<pre><code class="r">#&#39;Fake data package for a fake study
-#&#39;
-#&#39;This package contains standardized fake data sets for our fake study.
-#&#39;@docType package
-#&#39;@author The name of the person who wrote the package.
-#&#39;@name MyDataPackage
-#&#39;@title Fake data pacakge for a fake study.
-NULL
-</code></pre>
-
-<p>Next we edit our package DESCRIPTION file. This file is autogenerated by <code>datapacakge.skeleton()</code>, it contains metatdata about our package, and should be edited to describe the package appropriately:</p>
-
-<pre><code class="r">Package: MyDataPackage
-Type: Package
-Title: Fake Study Data Package
-Version: 1.0.0
-Date: 2015-01-14
-Author: Greg Finak
-Maintainer: Greg Finak &lt;gfinak@fredhutch.org&gt;
-Description: This is a data package for a fake study with 
+<span class="co">#' Detailed description of the data</span>
+<span class="co">#' @name study_processed</span>
+<span class="co">#' @docType data</span>
+<span class="co">#' @title Descriptive data title</span>
+<span class="co">#' @format a \code{data.frame} containing the following fields:</span>
+<span class="co">#' \describe{</span>
+<span class="co">#' \item{sample}{}</span>
+<span class="co">#' \item{subject_id}{}</span>
+<span class="co">#' \item{measurement}{}</span>
+<span class="co">#' }</span>
+<span class="co">#' @source The data comes from ________________________.</span>
+<span class="co">#' @seealso</span>
+<span class="co">#' MyDataPackage</span>
+<span class="ot">NULL</span></code></pre>
+<p>The <code>@name</code> tag must match the object name you are documenting. A <code>@title</code> is also required. It is good practice to document the data format, the provenance of the data, what the data represent, and so forth, and describe any transformations applied to the data (i.e. positivity calls). Also note the <code>@docType</code> tag, is <code>data</code> for data set chunk and <code>package</code> for the package chunk.</p>
+<p>Next we edit our package DESCRIPTION file. This file is autogenerated by <code>datapackage.skeleton()</code>, and contains metatdata about our package. It should be edited to describe the package appropriately:</p>
+<pre class="sourceCode r"><code class="sourceCode r">Package:<span class="st"> </span>MyDataPackage
+Type:<span class="st"> </span>Package
+Title:<span class="st"> </span>Fake Study Data Package
+Version:<span class="st"> </span><span class="fl">1.0.0</span>
+Date:<span class="st"> </span><span class="dv">2015-01-14</span>
+Author:<span class="st"> </span>Greg Finak
+Maintainer:<span class="st"> </span>Greg Finak &lt;gfinak@fredhutch.org&gt;
+Description:<span class="st"> </span>This is a data package for a fake study with 
 standardized assay data for our fake assay.
-License: &quot;file LICENSE&quot;
-DataVersion: 1.0.0
-</code></pre>
-
+License:<span class="st"> &quot;file LICENSE&quot;</span>
+DataVersion:<span class="st"> </span><span class="fl">1.0.0</span></code></pre>
 <p>Note <code>Package:</code> is the package name, <code>DataVersion:</code> is a version string for the data set, <code>Version:</code> is a version string for the package. The version might be bumped if the processing code or documentation changes. The <code>DataVersion</code> would be bumped whenever the underlying data objects created by the processing code change. The build process will warn you when this happens.</p>
-
-<p>The <code>License:</code> string specifies a non-standard license present in a file entitled <code>LICENSE</code>. Ensure this file is present. For the time-being we put something like the following in the LICENSE file: </p>
-
-<pre><code class="r">This data package is governed by the CAVD DATA &amp; MATERIALS SHARING AGREEMENT.
-https://www.cavd.org/about/Pages/LegalAgreements.aspx
-</code></pre>
-
+<p>The <code>License:</code> string specifies a non-standard license present in a file entitled <code>LICENSE</code>. Ensure this file is present. For the time-being we put something like the following in the LICENSE file:</p>
+<pre class="sourceCode r"><code class="sourceCode r">This data package is governed by the CAVD DATA &amp;<span class="st"> </span>MATERIALS SHARING AGREEMENT.
+https:<span class="er">//</span>www.cavd.org/about/Pages/LegalAgreements.aspx</code></pre>
+</div>
+<div id="run-the-process-document-build-pipeline." class="section level2">
 <h2>Run the process, document, build pipeline.</h2>
-
-<p>The data package is essentially done. Next we want to run the processing code, build the documentation, and then build the package. There are two ways to do this.. </p>
-
-<ol>
-<li>From the command line<br/></li>
+<p>The data package is essentially done. Next we want to run the processing code, build the documentation, and then build the package. There are two ways to do this.</p>
+<ol style="list-style-type: decimal">
+<li>From the command line</li>
 </ol>
-
 <ul>
-<li>Run <code>R CMD preprocessData MyDataPackage</code> from the <code>/tmp</code> directory. This will run the processing code and generate data sets.<br/></li>
-<li>Next run <code>roxygenize(&quot;MyDataPackage&quot;)</code> from within R to generate the <code>Rd</code> documentation files.<br/></li>
+<li>Run <code>R CMD preprocessData MyDataPackage</code> from the <code>/tmp</code> directory. This will run the processing code and generate data sets and the roxygen documentation template.</li>
+<li>Edit <code>R/MyDataPackage.R</code>.</li>
+<li>Next run <code>roxygenize(&quot;MyDataPackage&quot;)</code> from within R to generate the <code>Rd</code> documentation files.<br /></li>
 <li>Finally build your package using <code>R CMD build MyDataPackage</code>.</li>
 </ul>
-
-<p>It&#39;s simpler to do all this at once from within R using the <code>buildDataSetPackage</code> command.</p>
-
-<ol>
-<li>Within R run <code>buildDataSet(&quot;MyDataPackage&quot;)</code>, which will run the processing, build the documentation and build the package.</li>
+<p>It’s simpler to do all this at once from within R using the <code>buildDataSetPackage</code> command.</p>
+<ol start="2" style="list-style-type: decimal">
+<li>Within R, run <code>buildDataSetPackage(&quot;MyDataPackage&quot;)</code>, which will run the data preprocessing, build the default documentation, and build the package.</li>
+<li>Edit and rename the file <code>data-raw/edit_and_rename_to_'documentation.R'.R</code>, then run <code>buildDataSetPackage(&quot;MyDataPackage&quot;)</code> again.</li>
 </ol>
-
 <ul>
-<li>Address any errors. 
-
-<ul>
-<li>If you get errors, fix them. Most importantly, if your data has changed, but the <code>DataVersion</code> string has not been incremented in the <code>DESCRIPTION</code> file, the pacakge will not build. </li>
-</ul></li>
+<li>If you get errors, fix them. Most importantly, if your data has changed, but the <code>DataVersion</code> string has not been incremented in the <code>DESCRIPTION</code> file, the pacakge will not build.</li>
 </ul>
-
-<pre><code class="r">library(preprocessData)
-buildDataSetPackage(&quot;/tmp/MyDataPackage&quot;)
-install.packages(&quot;/tmp/MyDataPackage_1.0.0.tar.gz&quot;,repos = NULL)
-</code></pre>
-
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(preprocessData)
+<span class="kw">buildDataSetPackage</span>(<span class="st">&quot;/tmp/MyDataPackage&quot;</span>)
+<span class="kw">install.packages</span>(<span class="st">&quot;/tmp/MyDataPackage_1.0.0.tar.gz&quot;</span>,<span class="dt">repos =</span> <span class="ot">NULL</span>)</code></pre>
+</div>
+<div id="next-steps" class="section level2">
 <h2>Next steps</h2>
-
-<p>Check the built package.  </p>
-
+<p>Check the built package.</p>
 <ul>
 <li>Run <code>R CMD check MyDataPackage_1.0.0.tar.gz</code> to check that the package is error-free and can be installed.</li>
 </ul>
-
 <p>Install the package</p>
-
 <ul>
 <li>In the usual way, <code>R CMD INSTALL MyDataPackage_1.0.0.tar.gz</code>.</li>
 </ul>
-
 <p>The data are now availalbe within R by running</p>
-
-<pre><code class="r">library(MyDataPackage) #Load the data package
-data(MyDataPackage) #Attach the data sets
-?MyDataPackage #Get help
-</code></pre>
-
-<p>You can have analysis reports depend on your versioned data by using <code>dataVersion(&quot;mypackage&quot;)</code> to retreive the DataVersion string. </p>
-
-<pre><code class="r">dataVersion(&quot;MyDataPackage&quot;)
-</code></pre>
-
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(MyDataPackage) <span class="co">#Load the data package</span>
+<span class="kw">data</span>(<span class="dt">package=</span><span class="st">'MyDataPackage'</span>)$results[, <span class="dv">3</span>] <span class="co"># View all available data sets</span>
+<span class="kw">load_all_datasets</span>(MyDataPackage) <span class="co"># Attach the data sets</span>
+?MyDataPackage <span class="co">#Get help</span></code></pre>
+<p>You can have analysis reports depend on your versioned data by using <code>dataVersion(&quot;mypackage&quot;)</code> to retreive the DataVersion string.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dataVersion</span>(<span class="st">&quot;MyDataPackage&quot;</span>)</code></pre>
 <pre>
 ## [1] '1.0.0'
 </pre>
+</div>
+
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 
 </body>
-
 </html>

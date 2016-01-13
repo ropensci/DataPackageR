@@ -29,13 +29,13 @@ Additionally, data versioning and consistency checks are nice to have, as is the
 ## How to build a data package that uses preprocessData
 We assume we want to build a data package called `myDataPackage`. We load the `preprocessData` library and use its convenience functions to get started.
 
-```{r startingout,echo=2:3}
-system("rm -rf /tmp/MyDataPackage")
+```{r startingout, echo=2:4, message=FALSE}
+#system("rm -rf /tmp/MyDataPackage")
 test<-""
 library(preprocessData)
 datapackage.skeleton("MyDataPackage", path="/tmp",list="test")
-system("rm /tmp/MyDataPackage/man/test.Rd")
-system("rm /tmp/MyDataPackage/man/*.Rd")
+#system("rm /tmp/MyDataPackage/man/test.Rd")
+#system("rm /tmp/MyDataPackage/man/*.Rd")
 ```
 
 The command above sets up the package skeleton in the `/tmp` directory for our new package. 
@@ -60,9 +60,7 @@ We move our "raw data" into the `inst/extdata` directory in the package source t
 write.csv(mat,file="/tmp/MyDataPackage/inst/extdata/raw_data.csv",row.names=FALSE)
 ```
 
-Next we write our R code to do the data processing. 
-
-- The R code reads the raw data and reshapes it such that each column is a separate variable. Our processed data object is entitled `study_processed`. 
+Next we write our R code to do the data processing. The R code reads the raw data and reshapes it such that each column is a separate variable. Our processed data object is entitled `study_processed`. 
 
 
 ```{r r_code,eval=FALSE}
@@ -89,8 +87,8 @@ Our data are now in long format.
 - The `datasets.R` file in `data-raw` is edited to contain:
 
 ```{r datasets_r,eval=FALSE}
-sys.source("process_assay.R",env=topenv()) # Ensures that process_assay.R is sourced properly (data-raw is the working directory when the package is built)
-objectsToKeep <- "study_processed" # objectsToKeep is also used to generate roxygen boilerplate, hence the apparently superfluous definition here
+sys.source("process_assay.R",env=topenv()) # Ensures that process_assay.R is sourced properly
+objectsToKeep <- "study_processed" # objectsToKeep is also used to generate roxygen boilerplate
 keepDataObjects(objectsToKeep)  # Specifies which data objects we want to keep in the package.
 ```
 
@@ -107,7 +105,7 @@ Next we need some documentation for our data object(s). The default datasets.R f
 #' @name MyDataPackage
 #' @description A description of the data package
 #' @details Use \\code{data(package='", pname, "')$results[, 3]} to see a list of available data sets in this data package
-       or preprocessData::load_all_datasets() to load them.
+#'     or preprocessData::load_all_datasets() to load them.
 #' @seealso
 #' study_processed
 NULL
@@ -230,8 +228,7 @@ It's simpler to do all this at once from within R using the `buildDataSetPackage
 2. Within R, run `buildDataSetPackage("MyDataPackage")`, which will run the data preprocessing, build the default documentation, and build the package.
 3. Edit and rename the file `data-raw/edit_and_rename_to_'documentation.R'.R`, then run `buildDataSetPackage("MyDataPackage")` again.
 
-- Address any errors. 
-    - If you get errors, fix them. Most importantly, if your data has changed, but the `DataVersion` string has not been incremented in the `DESCRIPTION` file, the pacakge will not build. 
+- If you get errors, fix them. Most importantly, if your data has changed, but the `DataVersion` string has not been incremented in the `DESCRIPTION` file, the pacakge will not build. 
 
 ```{r install,echo=TRUE,eval=FALSE,message=FALSE,warning=FALSE,error=FALSE}
 library(preprocessData)
