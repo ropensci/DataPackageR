@@ -139,6 +139,67 @@
   return(valid)
 }
 
+
+# function .rc() prepends "#'" to a string or character vector
+.rc <- function(strVec){paste("#'", strVec)}
+
+# function .autoDoc() automates the creation of a basic roxygen template for the package and each object in objectsToKeep
+# arguments are pname and ds2kp, normally defined in datasets.R
+# pname is name of package, ds2kp is list of objects to save in data package
+.autoDoc <- function(pname, ds2kp, env){
+  links <- c(pname, ds2kp)
+  linksRox <- paste0("\\link{", links, "}")
+
+  # create default file to be edited and renamed manually by user, who then rebuilds package
+  tempfileName <- "./edit_and_rename_to_'documentation.R'.R"
+  if(file.exists(tempfileName)){file.remove(tempfileName)}
+
+  # create Roxygen documentation for data package
+  con <- file(tempfileName, open = "w")
+  writeLines(
+    c(.rc(
+      c(pname,
+        paste0("A data package for ", pname, "."),
+               "@docType package",
+        paste0("@aliases ", pname, "-package"),
+               "@title Package Title",
+        paste0("@name ", pname), 
+               "@description A description of the data package",
+        paste0("@details Use \\code{data(package='", pname, "')$results[, 3]} to see a list of available data sets in this data package."),
+               "@seealso",
+        linksRox[2:length(links)])),
+        "NULL\n\n\n"), con)
+
+  # Cycle through the rest of the files listed in 'links' and create Roxygen documentation for each one
+  for(ds in links[2:length(links)]){
+    type <- class(get(ds, envir=env))[1]
+    writeLines(
+      .rc(
+        c(       "Detailed description of the data",
+           paste("@name", ds),
+                 "@docType data",
+                 "@title Descriptive data title",
+          paste0("@format a \\code{", type, "} containing the following fields:"),
+                 "\\describe{")), con)
+
+    # set up documentation template for each field, using \item{varname}{} with a blank description to fill in
+    for(var in names(get(ds, envir=env))){
+      writeLines(.rc(paste0("\\item{", var, "}{}")), con)
+    }
+
+    writeLines(
+      c(.rc(
+          c("}",
+            "@source The data comes from ________________________.",
+            "@seealso",
+            linksRox[which(links != ds)])), # dataset being documented should not list itself in its seealsos
+            "NULL\n\n\n"), con)
+  }
+
+  close(con)
+}
+
+
 #' @name load_all_datasets
 #' @title Load all datasets in a package
 #' @description loads all datasets in a package
@@ -226,21 +287,27 @@ datapackage.skeleton <-
     writeLines(
       c(
         "Edit the DESCRIPTION file to reflect the contents of your package.",
-        "Optionally put your raw data under 'inst/extdata'.",
+        "Optionally put your raw data under 'inst/extdata/'.",
         "If the datasets are large, they may reside elsewhere outside the package.",
         "Copy .R files that do preprocessing of your data to 'data-raw'",
         "Edit 'data-raw/datasets.R' to source your R files.",
-        "Document your data sets using roxygen markup (see examples in datasets.R)",
+        "Document your data sets using roxygen markup (see comments in datasets.R)",
+        "",
         "NOTES",
         "If your code relies on other packages, add those to the @import tag of the roxygen markup.",
-        "The R object names you create must match the roxygen @name tags and \nmust be called out by keepDataObjects() in datasets.R"
+        "The R object names you wish to make available (and document) in the package must match",
+        "the roxygen @name tags and must be called out by keepDataObjects() in datasets.R",
+        "(listing them in objectsToKeep in datasets.R is sufficient)."
       ),con
     )
     close(con)
 
-    file.copy(file.path(Sys.getenv("R_LIBS_USER"), "preprocessData/extdata/datasets.R"), file.path(package_path, "data-raw"), overwrite=TRUE)
-    file.copy(file.path(Sys.getenv("R_LIBS_USER"), "preprocessData/extdata/autoDoc.R"), file.path(package_path, "data-raw"), overwrite=TRUE)
-    message("Creating datasets.R and autoDoc.R from template")
+    if(system.file("extdata", "datasets.R", package="preprocessData") != ""){
+      message("Copying datasets.R template.")
+      file.copy(system.file("extdata", "datasets.R", package="preprocessData"), file.path(package_path, "data-raw"), overwrite=TRUE)
+    } else {
+      message("Couldn't find datasets.R template. Look in .libPaths() directories for preprocessData/extdata/datasets.R and copy to data-raw/ directory.")
+    }
 
     con = file(file.path(package_path,"R","utils.R"))
     writeLines(c("openFileinOS taken from pander package.https://github.com/cran/pander/blob/master/man/openFileInOS.Rd by Gergely Daroczi",
