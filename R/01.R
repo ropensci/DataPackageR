@@ -165,7 +165,8 @@
                "@title Package Title",
         paste0("@name ", pname), 
                "@description A description of the data package",
-        paste0("@details Use \\code{data(package='", pname, "')$results[, 3]} to see a list of available data sets in this data package."),
+        paste0("@details Use \\code{data(package='", pname, "')$results[, 3]} to see a list of available data sets in this data package"),
+               "    and/or preprocessData::load_all_datasets() to load them.",
                "@seealso",
         linksRox[2:length(links)])),
         "NULL\n\n\n"), con)
