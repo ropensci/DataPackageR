@@ -3,7 +3,7 @@ Type: Package
 Title: Scripts to pre-process data sets from "data-raw" to "data".
 Version: 0.10.2
 Date: 2015-01-14
-Author: Greg Finak
+Author: Greg Finak, Paul Obrecht
 Maintainer: Greg Finak <gfinak@fredhutch.org>
 Description: Installs a script enabling the user to run R CMD processData. This will source R files under "data-raw". These R files should process raw data into standardized form and save them in "data". On build, the package contains standardized data sets.
 License: Artistic-2.0
