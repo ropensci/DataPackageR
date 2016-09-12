@@ -81,21 +81,82 @@ Here are the contents on `datasets.R`:
 
 We look at this piece by piece.
 
-First, we load the rmarkdown package and then render a file called `myPreprocessingCode.Rmd`. This file does not exist, you will create it. When run, it should do the data cleaning and standardization for your data sets(s). You may change the name, you may add additional files. The product of this particular script will be an html document that serves as a log of how the data were processed. The build process will store it under `inst/Log`.
+### Data processing scripts
 
-The other product of this script is one or more R objects. The call to `keepDataObjects` tells the build process which objects should be stored as part of the package data. In this case, our cleaned data are stored in an object called `mydataset`, and the call `keepDataObjects('mydataset')` tells the package to store the data under `/data`. If your data cleaning script three tables named `assay3` `assay2` and `assay3`, then the call would be \`keepDataObjects(c('assay1','assay2','assay3')). You do not need to save these tables or objects to disk. They just need to exist in memory when the processing script is finished running. The package will take care of matching these to the provided documentation (see below), and storing them if they are properly documented.
+First, we load the rmarkdown package and then render a file called `myPreprocessingCode.Rmd`.
 
-Next are two `roxygen` blocks. The first documents the package, and the second documents the data objects produced by the package. These should be filled in appropriately. If you have multiple data objects, you can copy the second roxygen block to document the other objects. It is good practice to document all the columns of tables in your data set, and include the source of the data (i.e. what laboratory or person provided the data).
+-   This file does not exist, you will create it (You may change the name, you may add additional files).
+-   This should be an Rmarkdown file, that combines text and R code.
+-   When run, it should perform the processing of your data sets(s).
+
+The product of this particular script will be an html document that serves as a log of how the data were processed.
+
+-   The build process (decribed later) will store the html output under `inst/Log`.
+
+The most important product of processing script is one or more R objects.
+
+-   The script should generate one or more R objects storing your data in the your desired format.
+
+-   The call to `keepDataObjects()` tells the build process which objects should be retained and stored as part of the data package.
+-   In this case, our script should produce an object called `mydataset`.
+-   `keepDataObjects('mydataset')` tells the build process the name of the object to store in the package
+
+If your data cleaning script produces three tables named `assay3` `assay2` and `assay3`, then the call would be \`keepDataObjects(c('assay1','assay2','assay3')).
+
+-   You do not need to save these tables or objects to disk.
+-   They just need to exist in memory when the processing script is finished running.
+-   The build process will match these names to objects in memory and to existing documentation (see below).
+-   If everything is in order, they will be included in the built package.
+
+### Object Documentation
+
+Next are two `roxygen` blocks.
+
+The first documents the package, and the second documents the data objects produced by the package.
+
+These should be filled in appropriately.
+
+-   If you have multiple data objects, you can copy the second roxygen block to document the other objects.
+-   It is good practice to
+    -   Document all the columns of tables in your data set.
+    -   Include the source of the data (i.e. what laboratory or person provided the data).
 
 ### Build your package.
 
 Once your scripts are in place and the data objects are documented, you build the package.
 
-``` r
+-   Run the build process.
+
+``` r{}
 # Within the package directory
 preprocessData:::buildDataSetPackage(".") #note for a first build this may need to be run twice.
 ```
 
-You will see a lot of output. If there are errors, the script will provide output notifying you of any problems. You may need to correct those and then re-run the above. If everything goes smoothly, you will have a new package built in the parent directory. This can be distributed, installed using `R CMD INSTALL`, and data sets loaded using `data()` .
+You will see a lot of output. If there are errors, the script will notify you of any problems.
 
-Your data analysis can then depend on a specific version of the data package (for example using `packageVersion`); The preprocessData packge also provides `datasetVersion` to extract the data set version information.
+-   Correct any errors and rerun the build process.
+
+If everything goes smoothly, you will have a new package built in the parent directory.
+
+This can be distributed, installed using `R CMD INSTALL`, and data sets loaded using R's standard `data()` call.
+
+### Data versioning
+
+The preprocessData package calculates an md5 checksum of each data object it stores, and keeps track of them in a file called `DATADIGEST`.
+
+-   Each time the package is rebuilt, the md5 sums of the new data objects are compared against the DATADIGEST.
+-   If they don't match, the build process checks that the `DataVersion` string has been incremented in the `DESCRIPTION` file.
+-   If it has not the build process will exit and produce an error message.
+
+### Benefits
+
+Your downstream data analysis can depend on a specific version of your data package (for example by tesing the `packageVersion()` string);
+
+``` r{}
+if(packageVersion("MyNewStudy") != "1.0.0")
+  stop("The expected version of MyNewStudy is 1.0.0, but ",packageVersion("MyNewStudy")," is installed! Analysis results may differ!")
+```
+
+The preprocessData packge also provides `datasetVersion()` to extract the data set version information.
+
+You should also place the data package source directory under `git` version control. This allows you to version control your data processing code.
