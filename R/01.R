@@ -116,25 +116,45 @@
                            greater[2]) | (equal[1] & equal[2] & greater[3])),isequal = all(equal))
   }
 
-.compare_digests <- function(old_digest,new_digest) {
-  valid <- ifelse(length(old_digest) != length(new_digest),FALSE,TRUE)
-  n_old <- names(old_digest[-1L])
-  n_new <- names(new_digest[-1L])
-  valid <-
-    ifelse(length(n_old) == length(n_new) &
-             length(union(n_old,n_new)) == length(n_new),TRUE,FALSE)
-  changed <- NULL
-  flag <- FALSE
-  if (valid) {
-    for (i in names(new_digest)[-1L]) {
-      if (new_digest[[i]] != old_digest[[i]]) {
-        changed <- c(changed,i)
-        valid <- FALSE
+.compare_digests <- function(old_digest,new_digest,delta=NULL) {
+  if (is.null(delta)) {
+    valid <- ifelse(length(old_digest) != length(new_digest), FALSE, TRUE)
+    n_old <- names(old_digest[-1L])
+    n_new <- names(new_digest[-1L])
+    valid <-
+      ifelse(length(n_old) == length(n_new) &
+               length(union(n_old, n_new)) == length(n_new),
+             TRUE,
+             FALSE)
+    changed <- NULL
+    flag <- FALSE
+    if (valid) {
+      for (i in names(new_digest)[-1L]) {
+        if (new_digest[[i]] != old_digest[[i]]) {
+          changed <- c(changed, i)
+          valid <- FALSE
+        }
       }
     }
-  }
-  if (!valid) {
-    warning("The following data sets have changed: ",changed)
+    if (!valid) {
+      warning("The following data sets have changed: ", changed)
+    }
+  }else{
+    difference = setdiff(names(new_digest),names(old_digest))
+    intersection = intersect(names(new_digest),names(old_digest))
+    #No existing or new objects are changed
+    if (length(difference) == 0) {
+      valid = TRUE
+    } else{
+      #some new elements exist
+      valid = FALSE
+    }
+    for(i in intersection){
+      if(new_digest[[i]] != old_digest[[i]]){
+        # some new elements are not the same
+        valid = FALSE
+      }
+    }
   }
   return(valid)
 }
@@ -210,8 +230,20 @@ load_all_datasets = function(packageName){
   invisible(lapply(sapply(data(package=packageName)$results[,"Item"],function(x)substitute(try(data(x),silent=TRUE),list(x=x))),eval))
 }
 
+.combine_digests = function(new,old){
+  intersection = intersect(names(new),names(old))
+  difference = setdiff(names(new),names(old))
+  rdifference = setdiff(names(old),names(new))
+  combined = c(new[intersection],old[rdifference],new[difference])
+  combined[["DataVersion"]] = new[["DataVersion"]]
+  return(combined)
+}
+
 .save_data <-
-  function (new_data_digest, pkg_description, object_names, dataEnv) {
+  function (new_data_digest, pkg_description, object_names, dataEnv, old_data_digest, masterfile = NULL) {
+    if(!is.null(masterfile)){
+      new_data_digest = .combine_digests(new_data_digest,old_data_digest)
+    }
     .save_digest(new_data_digest)
     message("Saving to data")
     #TODO get the names of each data object and save them separately. Provide a function to load all.
@@ -381,7 +413,7 @@ paste0("                 viewProcessingLog = function(pkg = ",name,"){"),
 #' @param vignettes \code{logical} specify whether to build vignettes. Default FALSE.
 #' @param outpath \code{character} path to output the built package. Defaults to the parent of the current directory when NULL.
 #' @export
-buildDataSetPackage <- function(packageName = NULL,vignettes=FALSE,outpath = NULL) {
+buildDataSetPackage <- function(packageName = NULL,vignettes=FALSE,outpath = NULL,masterfile=NULL) {
   if (is.null(packageName)) {
     packageName = "."
     # does the current directory hold a description file?
@@ -390,7 +422,7 @@ buildDataSetPackage <- function(packageName = NULL,vignettes=FALSE,outpath = NUL
       stop("Can't find package DESCRIPTION in ",packageName)
     }
   }
-  success <- preprocessData:::preprocessData(arg = packageName)
+  success <- preprocessData:::preprocessData(arg = packageName, masterfile = masterfile)
   if (!success) {
     stop("Preprocessing failed. Address the issues above and try again.")
   }

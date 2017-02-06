@@ -28,7 +28,7 @@ NULL
 #' @name preprocessData
 #' @return logical TRUE if succesful, FALSE, if not.
 #' @import optparse roxygen2 rmarkdown
-preprocessData <- function(arg = NULL) {
+preprocessData <- function(arg = NULL,masterfile=NULL) {
   if (is.null(arg)) {
     parser <-
       OptionParser(usage = "R CMD preprocessData [options] package")
@@ -64,7 +64,7 @@ preprocessData <- function(arg = NULL) {
         dir(path = raw_data_dir,pattern = "^datasets.R$",full = TRUE)
       old_data_digest <- .parse_data_digest()
       pkg_description <-
-        try(roxygen2:::read.description("DESCRIPTION"),silent = TRUE)
+        try(roxygen2:::read.description(file="DESCRIPTION"),silent = TRUE)
       if (inherits(pkg_description,"try-error")) {
         stop(
           "You need a valid package DESCRIPTION file. Please see Writing R Extensions (http://cran.r-project.org/doc/manuals/r-release/R-exts.html#The-DESCRIPTION-file).\n",pkg_description
@@ -76,6 +76,14 @@ preprocessData <- function(arg = NULL) {
         stop(
           "data-raw must contain a an .R named datasets.R. This file can source other .R files in the directory."
         )
+      }
+      if(!is.null(masterfile)){
+        #process masterfile instead of datasets.R
+        masterfile = list.files(path=".",pattern = masterfile,recursive = TRUE,full=TRUE)
+        if(length(masterfile)==0){
+          stop("Can't find ",masterfile)
+        }
+        r_files = masterfile
       }
       do_documentation <- FALSE
       can_write <- FALSE
@@ -103,28 +111,32 @@ preprocessData <- function(arg = NULL) {
           .digest_data_env(object_names,dataEnv,pkg_description)
         if (!is.null(old_data_digest)) {
           #Compare digest of each object against existing digest if available
+          #unless we are processing something from the masterfile.
+          #Then we need to:
+          # check what the new objects are and only compare the versions of those new objects
+          
           string_check <-
             .check_dataversion_string(old_data_digest,new_data_digest)
           can_write <- FALSE
-          if (.compare_digests(old_data_digest,new_data_digest) &
+          if (.compare_digests(old_data_digest,new_data_digest,delta=masterfile) &
               string_check$isequal) {
                 can_write <- TRUE
                 message(
                   "Processed data sets match existing data sets at version ",new_data_digest$DataVersion
                 )
-              }else if ((!.compare_digests(old_data_digest,new_data_digest)) &
+              }else if ((!.compare_digests(old_data_digest,new_data_digest,delta=masterfile)) &
                         string_check$isgreater) {
                           can_write <- TRUE
                           message(
                             "Data has been updated and DataVersion string incremented to ",new_data_digest$DataVersion
                           )
-                        }else if (.compare_digests(old_data_digest,new_data_digest) &
+                        }else if (.compare_digests(old_data_digest,new_data_digest,delta=masterfile) &
                                   string_check$isgreater) {
                                     can_write <- TRUE
                                     message("Data hasn't changed but the DataVersion has been bumped.")
                                   }
           if (can_write) {
-            .save_data(new_data_digest,pkg_description,object_names,dataEnv)
+            .save_data(new_data_digest,pkg_description,object_names,dataEnv,old_data_digest = old_data_digest, masterfile=masterfile)
             do_documentation <- TRUE
           }else{
             message(
