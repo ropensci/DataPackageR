@@ -27,7 +27,7 @@ NULL
 #' Meant to be called before R CMD build.
 #' @name preprocessData
 #' @return logical TRUE if succesful, FALSE, if not.
-#' @import optparse roxygen2 rmarkdown
+#' @import optparse roxygen2 rmarkdown desc
 preprocessData <- function(arg = NULL,masterfile=NULL) {
   if (is.null(arg)) {
     parser <-
