@@ -12,4 +12,3 @@ keepDataObjects(obj)
 \description{
 Specify the names of the data objects to keep. To be called after all preprocessing code.
 }
-

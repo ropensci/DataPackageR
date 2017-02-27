@@ -29,4 +29,3 @@ to reflect the additional necessary steps.
 \examples{
 data.package.skeleton(name="MyDataPackage",path="/tmp")
 }
-

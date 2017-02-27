@@ -17,4 +17,3 @@ buildDataSetPackage(packageName = NULL, vignettes = FALSE, outpath = NULL,
 \description{
 Combines the preprocessing, documentation, and build steps into one.
 }
-

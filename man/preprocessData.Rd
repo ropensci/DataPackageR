@@ -15,4 +15,3 @@ Sources datasets.R which can source other R files.
 R files sourced by datasets.R must invoke \code{sys.source("myRfile.R",env=topenv())}.
 Meant to be called before R CMD build.
 }
-

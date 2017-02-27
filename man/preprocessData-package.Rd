@@ -21,4 +21,3 @@ If the DataVersion string has been incremented and the digest matches DATADIGEST
 is unchanged, the code will write the data objects to "/data". The user can then build the package with
 R CMD build packagename.
 }
-

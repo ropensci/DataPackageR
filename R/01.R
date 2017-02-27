@@ -317,7 +317,7 @@ datapackage.skeleton <-
     dir.create(file.path(package_path,"data"),showWarnings = FALSE,recursive = TRUE)
     dir.create(file.path(package_path,"R"),showWarnings = FALSE, recursive = TRUE)
     dir.create(
-      file.path(package_path,"inst/extdata"),recursive = TRUE,showWarnings =data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABl0lEQVR42rWTy0sCURTGZ9VfYIStKtpUUATtilrYzqhtKwP3rYSCNu0qAqN2UhQSbtKCFmVCGCZaJjgR2IOCSTEd52G+RkvBOd25M+qYizDqwI/v3DvzfedymSGI/6ywa7r3xtbpClg1oCAG9jT3lxbt+I/mF9/iQNDWBWUhAeoSKxUU1AGkd6W9wUAe6/rRBGd12q19CL0tAsfzKlJYpXJbtBA41A3WAkIHfWKlLFTU0xiOB5blgOU4YLDyWBlOxrnVFsXmUzMBrZBkWIzTTIjY3GpJHppmsOKAkrBP5elNdGFHUMzYEY5v2thLnngiWQ/4ZDeoXGQZSqldKDDbMsmdRqr7CMnzFqfrAcXXJSrzNA8fsXUQIqsKazJR1EdVPXrWFFAIG6k0OQvF5wXIP5og/2CStdqr14imACGop979k1C4M0KOnGsgGzLIShpqe/gO1JeY84xQqfNhEK5nIOObUtBDxq/0fmWt9PgEtOoE2bMeij/phrxnAtIXo3XcEmOK1pE8sXgC3N4r+NWHJOGwEvAnf+wXOclghqBQSoUAAAAASUVORK5CYII= FALSE
+      file.path(package_path,"inst/extdata"),recursive = TRUE,showWarnings = FALSE
     )
     con <- file(file.path(package_path,"Read-and-delete-me"),open = "w")
     writeLines(

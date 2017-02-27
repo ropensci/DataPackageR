@@ -17,4 +17,3 @@ Retreives the DataVersion of a package if available
 \seealso{
 \link{utils:packageVersion}
 }
-

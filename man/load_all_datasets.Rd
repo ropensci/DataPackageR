@@ -12,4 +12,3 @@ load_all_datasets(packageName)
 \description{
 loads all datasets in a package
 }
-
