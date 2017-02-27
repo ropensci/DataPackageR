@@ -303,7 +303,7 @@ datapackage.skeleton <-
     package_path <- file.path(path,name)
     description <-
     #  roxygen2:::read.description(file = file.path(package_path,"DESCRIPTION"))
-      desc(file=file.path(package_path,"DESCRIPTIION"))
+      desc(file=file.path(package_path,"DESCRIPTION"))
     description$set("DataVersion" = "0.1.0")
     description$set("Package" = name)
     message("Adding DataVersion string to DESCRIPTION")
