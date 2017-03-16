@@ -26,8 +26,12 @@ NULL
 #' R files sourced by datasets.R must invoke \code{sys.source("myRfile.R",env=topenv())}.
 #' Meant to be called before R CMD build.
 #' @name preprocessData
+#' @param arg \code{character} name of the package to build.
+#' @param masterfile \code{characer} path to file in data-raw that sources processing scripts. Will do 
+#' a partial build of the package.
 #' @return logical TRUE if succesful, FALSE, if not.
 #' @import optparse roxygen2 rmarkdown desc
+#' @importFrom utils getSrcref
 preprocessData <- function(arg = NULL,masterfile=NULL) {
   if (is.null(arg)) {
     parser <-
@@ -61,7 +65,7 @@ preprocessData <- function(arg = NULL,masterfile=NULL) {
       }
       message("Processing data")
       r_files <-
-        dir(path = raw_data_dir,pattern = "^datasets.R$",full = TRUE)
+        dir(path = raw_data_dir,pattern = "^datasets.R$",full.names = TRUE)
       old_data_digest <- .parse_data_digest()
       pkg_description <-
         try(roxygen2:::read.description(file="DESCRIPTION"),silent = TRUE)
@@ -79,7 +83,7 @@ preprocessData <- function(arg = NULL,masterfile=NULL) {
       }
       if(!is.null(masterfile)){
         #process masterfile instead of datasets.R
-        masterfile = list.files(path=".",pattern = masterfile,recursive = TRUE,full=TRUE)
+        masterfile = list.files(path=".",pattern = masterfile,recursive = TRUE,full.names=TRUE)
         if(length(masterfile)==0){
           stop("Can't find ",masterfile)
         }
@@ -95,8 +99,6 @@ preprocessData <- function(arg = NULL,masterfile=NULL) {
       LOGFILE <-
         file(file.path("inst/extdata/Logfiles","processing.log"))
       sink(LOGFILE,append = TRUE,split = TRUE)
-      #TeachingDemos::txtStart(file = LOGFILE,append=TRUE,commands = TRUE, results = TRUE)
-      #sink(LOGFILE,append=TRUE,type = "message",split = TRUE)
       for (i in seq_along(r_files)) {
         cat(i," of ",length(r_files),": ",r_files[i],"\n")
         #Source an R file
@@ -125,10 +127,13 @@ preprocessData <- function(arg = NULL,masterfile=NULL) {
                   "Processed data sets match existing data sets at version ",new_data_digest$DataVersion
                 )
               }else if ((!.compare_digests(old_data_digest,new_data_digest,delta=masterfile)) &
-                        string_check$isgreater) {
+                        string_check$isequal) {
+                        updated_version = .increment_data_version(pkg_description,new_data_digest);
+                        pkg_description = updated_version$pkg_description
+                        new_data_digest = updated_version$new_data_digest
                           can_write <- TRUE
                           message(
-                            "Data has been updated and DataVersion string incremented to ",new_data_digest$DataVersion
+                            "Data has been updated and DataVersion string incremented automatically to ",new_data_digest$DataVersion
                           )
                         }else if (.compare_digests(old_data_digest,new_data_digest,delta=masterfile) &
                                   string_check$isgreater) {
@@ -150,13 +155,13 @@ preprocessData <- function(arg = NULL,masterfile=NULL) {
         if (do_documentation) {
           #extract documentation and write to /R
           #FIXME this code is terrible and can be improved.. need to see how this is done in roxygen2
-          all_r_files <- dir(raw_data_dir,pattern = "\\.R$",full = TRUE)
+          all_r_files <- dir(raw_data_dir,pattern = "\\.R$",full.names = TRUE)
           sources <-
             lapply(all_r_files,function(x)
               parse(x,keep.source = TRUE))
           docs <-
             lapply(sources,function(x)
-              roxygen2:::comments(utils:::getSrcref(x)))
+              roxygen2:::comments(getSrcref(x)))
           docs <- lapply(docs,function(x)
             lapply(x,as.character))
           indx <-
@@ -195,7 +200,6 @@ preprocessData <- function(arg = NULL,masterfile=NULL) {
       }
     },finally = {
       setwd(old);sink();sink(type = "message")
-      #TeachingDemos::txtStop()
     })
   }
   message("Done")

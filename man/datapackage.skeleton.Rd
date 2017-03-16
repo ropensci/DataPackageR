@@ -9,17 +9,17 @@ datapackage.skeleton(name = "anRpackage", list = character(),
   code_files = character())
 }
 \arguments{
-\item{name}{\code{character} see \code{\link{utils:package.skeleton}}}
+\item{name}{see \code{\link[utils]{package.skeleton}}}
 
-\item{list}{see \code{\link{utils:package.skeleton}}}
+\item{list}{see \code{\link[utils]{package.skeleton}}}
 
-\item{environment}{see \code{\link{utils:package.skeleton}}}
+\item{environment}{see \code{\link[utils]{package.skeleton}}}
 
-\item{path}{see \code{\link{utils:package.skeleton}}}
+\item{path}{see \code{\link[utils]{package.skeleton}}}
 
-\item{force}{see \code{\link{utils:package.skeleton}}}
+\item{force}{see \code{\link[utils]{package.skeleton}}}
 
-\item{code_files}{see \code{\link{utils:package.skeleton}}}
+\item{code_files}{see \code{\link[utils]{package.skeleton}}}
 }
 \description{
 Creates a package skeleton for use with preprpocessData. Creates the additional information needed for versioning
@@ -27,5 +27,7 @@ datasets, namely the DataVersion string in DESCRIPTION, DATADIGEST, and the data
 to reflect the additional necessary steps.
 }
 \examples{
-data.package.skeleton(name="MyDataPackage",path="/tmp")
+\dontrun{
+datapackage.skeleton(name="MyDataPackage",path="/tmp")
+}
 }

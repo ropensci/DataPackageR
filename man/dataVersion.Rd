@@ -15,5 +15,5 @@ dataVersion(pkg, lib.loc = NULL)
 Retreives the DataVersion of a package if available
 }
 \seealso{
-\link{utils:packageVersion}
+\code{\link[utils]{packageVersion}}
 }

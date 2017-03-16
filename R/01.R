@@ -227,7 +227,8 @@
 #' @param packageName \code{character} the package name
 #' @export
 load_all_datasets = function(packageName){
-  invisible(lapply(sapply(data(package=packageName)$results[,"Item"],function(x)substitute(try(data(x),silent=TRUE),list(x=x))),eval))
+  datalist = try(data(package = packageName) )$results[,"Item"]
+  data(list=datalist)
 }
 
 .combine_digests = function(new,old){
@@ -251,6 +252,11 @@ load_all_datasets = function(packageName){
       data_save_rda_path = file.path("data",paste0(obj,".rda"))
       save(list = obj,file = data_save_rda_path,envir = dataEnv)
     })
+    #Update description file
+    to_update = desc(file="DESCRIPTION")
+    to_update$set("DataVersion",pkg_description$DataVersion)
+    to_update$set("Date",date())
+    to_update$write()
   }
 
 #' Get the DataVersion for a package
@@ -258,7 +264,7 @@ load_all_datasets = function(packageName){
 #' Retreives the DataVersion of a package if available
 #' @param pkg \code{character} the package name
 #' @param lib.loc \code{character} path to library location.
-#' @seealso \link{utils:packageVersion}
+#' @seealso \code{\link[utils]{packageVersion}}
 #' @import utils
 #' @export
 dataVersion <- function (pkg, lib.loc = NULL)
@@ -278,26 +284,28 @@ dataVersion <- function (pkg, lib.loc = NULL)
 #' datasets, namely the DataVersion string in DESCRIPTION, DATADIGEST, and the data-raw directory. Updates Read-and-delete-me
 #' to reflect the additional necessary steps.
 #' @name datapackage.skeleton
-#' @param name \code{character} see \code{\link{utils:package.skeleton}}
-#' @param list see \code{\link{utils:package.skeleton}}
-#' @param environment see \code{\link{utils:package.skeleton}}
-#' @param path see \code{\link{utils:package.skeleton}}
-#' @param force see \code{\link{utils:package.skeleton}}
-#' @param code_files see \code{\link{utils:package.skeleton}}
+#' @param name  see \code{\link[utils]{package.skeleton}}
+#' @param list see \code{\link[utils]{package.skeleton}}
+#' @param environment see \code{\link[utils]{package.skeleton}}
+#' @param path see \code{\link[utils]{package.skeleton}}
+#' @param force see \code{\link[utils]{package.skeleton}}
+#' @param code_files see \code{\link[utils]{package.skeleton}}
 #' @export
 #' @examples
-#' data.package.skeleton(name="MyDataPackage",path="/tmp")
+#' \dontrun{
+#' datapackage.skeleton(name="MyDataPackage",path="/tmp")
+#' }
 datapackage.skeleton <-
   function(name = "anRpackage", list = character(), environment = .GlobalEnv, path = ".", force = FALSE, code_files = character()) {
     if (length(list) == 0)
       package.skeleton(
-        name = name, environment = environment, path = path,force = force,code_file =
+        name = name, environment = environment, path = path,force = force,code_files =
           code_files
       )
     else
       package.skeleton(
         name = name, list = list,environment = environment, path = path,force =
-          force,code_file = code_files
+          force,code_files = code_files
       )
     #create the rest of the necessary elements in the package
     package_path <- file.path(path,name)
@@ -389,18 +397,18 @@ paste0("                 viewProcessingLog = function(pkg = ",name,"){"),
     close(con);
     oldrdfiles <-
       list.files(
-        path = file.path(package_path,"man"),pattern = "Rd",full = TRUE
+        path = file.path(package_path,"man"),pattern = "Rd",full.names = TRUE
       )
     nmspc <-
-      list.files(path = file.path(package_path),pattern = "NAMESPACE",full = TRUE)
+      list.files(path = file.path(package_path),pattern = "NAMESPACE",full.names = TRUE)
     file.create(nmspc,showWarnings = FALSE) #create a blank NAMESPACE file
     oldrdafiles <-
       list.files(
-        path = file.path(package_path,"data"),pattern = "rda",full = TRUE
+        path = file.path(package_path,"data"),pattern = "rda",full.names = TRUE
       )
     oldrfiles <-
       list.files(
-        path = file.path(package_path,"R"),pattern = "R",full = TRUE
+        path = file.path(package_path,"R"),pattern = "R",full.names = TRUE
       )
     file.remove(oldrdafiles)
     file.remove(oldrfiles)
@@ -415,6 +423,10 @@ paste0("                 viewProcessingLog = function(pkg = ",name,"){"),
 #' @param packageName \code{character} path to package source directory. Defaults to the current path when NULL.
 #' @param vignettes \code{logical} specify whether to build vignettes. Default FALSE.
 #' @param outpath \code{character} path to output the built package. Defaults to the parent of the current directory when NULL.
+#' @param masterfile \code{characer} path to file in data-raw that sources processing scripts. Will do 
+#' a partial build of the package.
+#' @importFrom roxygen2 roxygenise roxygenize
+#' @importFrom devtools build_vignettes build
 #' @export
 buildDataSetPackage <- function(packageName = NULL,vignettes=FALSE,outpath = NULL,masterfile=NULL) {
   if (is.null(packageName)) {
@@ -430,15 +442,27 @@ buildDataSetPackage <- function(packageName = NULL,vignettes=FALSE,outpath = NUL
     stop("Preprocessing failed. Address the issues above and try again.")
   }
   message("Removing old documentation.")
-  manfiles = list.files(path=packageName,pattern = "\\.Rd$",ignore.case = FALSE,full=TRUE,recursive=TRUE)
+  manfiles = list.files(path=packageName,pattern = "\\.Rd$",ignore.case = FALSE,full.names=TRUE,recursive=TRUE)
   sapply(manfiles,file.remove)
   message("Building documentation")
-  roxygen2:::roxygenise(packageName)
+  roxygenise(packageName)
   if(vignettes){
-    devtools::build_vignettes(packageName)#build vignettes explicitly, ensures they are installed properly
+    build_vignettes(packageName)#build vignettes explicitly, ensures they are installed properly
   }
   message("Building package")
-  devtools::build(packageName,vignettes = vignettes,path = outpath)
+  build(packageName,vignettes = vignettes,dest_path = outpath)
+}
+.increment_data_version = function(pkg_description, new_data_digest,which="minor"){
+  if(!which%in%c("major","minor","patch")){
+    stop("version component to increment is misspecified in .increment_data_version, package preprocessData")
+  }
+  verstring = strsplit(pkg_description$DataVersion,"\\.")[[1]]
+  names(verstring) = c("major","minor","patch")
+  verstring[which] = as.character(as.numeric(verstring[which])+1)
+  verstring = paste(verstring,collapse=".")
+  pkg_description$DataVersion = verstring
+  new_data_digest$DataVersion = verstring
+  list(pkg_description = pkg_description,new_data_digest = new_data_digest)
 }
 
 #'Specify which data objects to keep

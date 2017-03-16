@@ -9,7 +9,6 @@ vignette: >
   \usepackage[utf8]{inputenc}
   \usepackage{graphicx}
 ---
-
 ## Overview
 
 This package enables the command `R CMD preprocessData <packagename>`. The `preprocessData` command is meant to run user-defined code in an `R` package to process, transform, tidy, or otherwise standardize raw data into data sets or objects to be stored in the `pacakgename/data` directory.
@@ -33,6 +32,10 @@ We assume we want to build a data package called `myDataPackage`. We load the `p
 #system("rm -rf /tmp/MyDataPackage")
 test<-""
 library(preprocessData)
+if(dir.exists("/tmp/MyDataPackage")){
+  sapply(list.files(path="/tmp/MyDataPackage",full.names = TRUE),unlink)
+  unlink("/tmp/MyDataPackage",recursive=TRUE)
+}
 datapackage.skeleton("MyDataPackage", path="/tmp",list="test")
 #system("rm /tmp/MyDataPackage/man/test.Rd")
 #system("rm /tmp/MyDataPackage/man/*.Rd")
