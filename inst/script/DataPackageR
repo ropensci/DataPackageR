@@ -1,0 +1,4 @@
+#!/bin/bash
+
+R_SCRIPT="library(DataPackageR);DataPackageR:::DataPackageR();"
+echo "$R_SCRIPT" | $R_HOME/bin/R --vanilla --slave --args $*
