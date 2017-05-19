@@ -94,13 +94,13 @@ mat&lt;-<span class="kw">spread</span>(<span class="kw">data.frame</span>(<span 
                         <span class="st">"Subject_2"</span>,<span class="st">"Subject_3"</span>,<span class="st">"Subject_4"</span>))),
           <span class="dt">key=</span>subject_id,<span class="dt">value=</span>measurement)
 <span class="kw">head</span>(mat)</code></pre></div>
-<pre><code>##   sample   Subject_1  Subject_2 Subject_3 Subject_4
-## 1      1  1.25609624 -0.5520746  3.547372  8.245385
-## 2      2  0.08919568  1.5757835  4.071823 10.305001
-## 3      3 -0.40751962  2.7766768  4.984617 10.502514
-## 4      4  2.48529168  1.7164116  5.498116  9.735547
-## 5      5  0.04535123  1.1979051  4.935925 11.063782
-## 6      6  1.05206887  2.8736357  4.256025 12.262807</code></pre>
+<pre><code>##   sample  Subject_1 Subject_2 Subject_3 Subject_4
+## 1      1  1.7660852  2.325946  6.870376 10.847268
+## 2      2 -1.0867485  2.384208  5.851993 10.589827
+## 3      3  0.5081814  1.859023  6.483770  9.361299
+## 4      4  2.8114581  2.345733  7.515487  9.612154
+## 5      5  0.3166397  2.994414  4.956277 11.992614
+## 6      6  1.7334307  2.417907  5.454574  9.739463</code></pre>
 <p>We pretend that our raw data arrives as above: something is measured for four subjects, 100 times per subject, but each subject’s data is in a separate column. This is “wide” data, and generally doesn’t follow the tidy data paradigm of one variable per column. This data file will live in the <code>inst/extdata</code> directory beneath the package source tree.</p>
 <p>We move our “raw data” into the <code>inst/extdata</code> directory in the package source tree.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">write.csv</span>(mat,<span class="dt">file=</span><span class="st">"/tmp/MyDataPackage/inst/extdata/raw_data.csv"</span>,<span class="dt">row.names=</span><span class="ot">FALSE</span>)</code></pre></div>
@@ -110,12 +110,12 @@ study_processed&lt;-<span class="kw">gather</span>(data,<span class="dt">key=</s
 <p>Let’s see what this looks like:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(study_processed)</code></pre></div>
 <pre><code>##   sample subject_id measurement
-## 1      1  Subject_1  1.25609624
-## 2      2  Subject_1  0.08919568
-## 3      3  Subject_1 -0.40751962
-## 4      4  Subject_1  2.48529168
-## 5      5  Subject_1  0.04535123
-## 6      6  Subject_1  1.05206887</code></pre>
+## 1      1  Subject_1   1.7660852
+## 2      2  Subject_1  -1.0867485
+## 3      3  Subject_1   0.5081814
+## 4      4  Subject_1   2.8114581
+## 5      5  Subject_1   0.3166397
+## 6      6  Subject_1   1.7334307</code></pre>
 <p>Our data are now in long format.</p>
 <ul>
 <li>This R code is placed in an <code>.R</code> file entitled <code>process_assay.R</code> within the <code>data-raw</code> directory.</li>
