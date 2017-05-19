@@ -1,17 +1,17 @@
 ---
-title: "Using preprocessData"
+title: "Using DataPackageR"
 author: "Greg Finak <gfinak@fredhutch.org>"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{A quick guide to using preprocessData}
+  %\VignetteIndexEntry{A quick guide to using DataPackageR}
   %\VignetteEngine{knitr::rmarkdown}
   \usepackage[utf8]{inputenc}
   \usepackage{graphicx}
 ---
 ## Overview
 
-This package enables the command `R CMD preprocessData <packagename>`. The `preprocessData` command is meant to run user-defined code in an `R` package to process, transform, tidy, or otherwise standardize raw data into data sets or objects to be stored in the `pacakgename/data` directory.
+This package enables the command `R CMD DataPackageR <packagename>`. The `DataPackageR` command is meant to run user-defined code in an `R` package to process, transform, tidy, or otherwise standardize raw data into data sets or objects to be stored in the `pacakgename/data` directory.
 
 Additionally, it supports data versioning via a `DataVersion: x.y.z` string in the package `DESCRIPTION` file, and automatically checks if data has changed between invocations. Furthermore, if `roxygen` documenation is available for the data sets as part of the user-defined data processing code, it will be extracted and copied to `packagename/R` where it can be parsed by the `roxygen` package.
 
@@ -25,13 +25,13 @@ R packages run `.R` code in `/data` as part of the build process. However, this 
 
 Additionally, data versioning and consistency checks are nice to have, as is the ability to keep code that generates data together with the data. 
 
-## How to build a data package that uses preprocessData
-We assume we want to build a data package called `myDataPackage`. We load the `preprocessData` library and use its convenience functions to get started.
+## How to build a data package that uses DataPackageR
+We assume we want to build a data package called `myDataPackage`. We load the `DataPackageR` library and use its convenience functions to get started.
 
 ```{r startingout, echo=2:4, message=FALSE}
 #system("rm -rf /tmp/MyDataPackage")
 test<-""
-library(preprocessData)
+library(DataPackageR)
 if(dir.exists("/tmp/MyDataPackage")){
   sapply(list.files(path="/tmp/MyDataPackage",full.names = TRUE),unlink)
   unlink("/tmp/MyDataPackage",recursive=TRUE)
@@ -108,7 +108,7 @@ Next we need some documentation for our data object(s). The default datasets.R f
 #' @name MyDataPackage
 #' @description A description of the data package
 #' @details Use \\code{data(package='", pname, "')$results[, 3]} to see a list of available data sets in this data package
-#'     or preprocessData::load_all_datasets() to load them.
+#'     or DataPackageR::load_all_datasets() to load them.
 #' @seealso
 #' study_processed
 NULL
@@ -221,7 +221,7 @@ The data package is essentially done. Next we want to run the processing code, b
 
 1. From the command line   
 
-- Run `R CMD preprocessData MyDataPackage` from the `/tmp` directory. This will run the processing code and generate data sets and the roxygen documentation template.
+- Run `R CMD DataPackageR MyDataPackage` from the `/tmp` directory. This will run the processing code and generate data sets and the roxygen documentation template.
 - Edit `R/MyDataPackage.R`.
 - Next run `roxygenize("MyDataPackage")` from within R to generate the `Rd` documentation files.  
 - Finally build your package using `R CMD build MyDataPackage`.
@@ -234,7 +234,7 @@ It's simpler to do all this at once from within R using the `buildDataSetPackage
 - If you get errors, fix them. Most importantly, if your data has changed, but the `DataVersion` string has not been incremented in the `DESCRIPTION` file, the pacakge will not build. 
 
 ```{r install,echo=TRUE,eval=FALSE,message=FALSE,warning=FALSE,error=FALSE}
-library(preprocessData)
+library(DataPackageR)
 buildDataSetPackage("/tmp/MyDataPackage")
 install.packages("/tmp/MyDataPackage_1.0.0.tar.gz",repos = NULL)
 ```

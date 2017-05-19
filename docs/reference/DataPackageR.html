@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Get the DataVersion for a package — dataVersion • DataPackageR</title>
+<title>Process data generation code in "data-raw" — DataPackageR • DataPackageR</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -71,26 +71,30 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Get the DataVersion for a package</h1>
+    <h1>Process data generation code in "data-raw"</h1>
     </div>
 
     
-    <p>Retreives the DataVersion of a package if available</p>
+    <p>Assumes .R files in "data-raw" generate rda files to be stored in "data".
+Sources datasets.R which can source other R files.
+R files sourced by datasets.R must invoke <code>sys.source("myRfile.R",env=topenv())</code>.
+Meant to be called before R CMD build.</p>
     
 
-    <pre><span class='fu'>dataVersion</span>(<span class='no'>pkg</span>, <span class='kw'>lib.loc</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre><span class='fu'>DataPackageR</span>(<span class='kw'>arg</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>masterfile</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
-      <dt>pkg</dt>
-      <dd><p><code>character</code> the package name</p></dd>
-      <dt>lib.loc</dt>
-      <dd><p><code>character</code> path to library location.</p></dd>
+      <dt>arg</dt>
+      <dd><p><code>character</code> name of the package to build.</p></dd>
+      <dt>masterfile</dt>
+      <dd><p><code>characer</code> path to file in data-raw that sources processing scripts. Will do 
+a partial build of the package.</p></dd>
     </dl>
     
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code><a href='http://www.rdocumentation.org/packages/utils/topics/packageDescription'>packageVersion</a></code></p>
+    <p>logical TRUE if succesful, FALSE, if not.</p>
     
 
   </div>
@@ -99,7 +103,7 @@
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
-      <li><a href="#see-also">See also</a></li>
+      <li><a href="#value">Value</a></li>
           </ul>
 
   </div>

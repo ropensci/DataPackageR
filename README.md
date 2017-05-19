@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-Preprocess Data
-===============
+DataPackageR
+============
 
 What and why?
 -------------
@@ -20,9 +20,9 @@ Usage
 Set up a new data package.
 
 ``` r
-library(preprocessData)
+library(DataPackageR)
 setwd("/tmp")
-preprocessData::datapackage.skeleton("MyNewStudy")
+DataPackageR::datapackage.skeleton("MyNewStudy")
 ```
 
     Creating directories ...
@@ -129,7 +129,7 @@ Once your scripts are in place and the data objects are documented, you build th
 
 ``` r{}
 # Within the package directory
-preprocessData:::buildDataSetPackage(".") #note for a first build this may need to be run twice.
+DataPackageR:::buildDataSetPackage(".") #note for a first build this may need to be run twice.
 ```
 
 You will see a lot of output. If there are errors, the script will notify you of any problems.
@@ -142,7 +142,7 @@ This can be distributed, installed using `R CMD INSTALL`, and data sets loaded u
 
 ### Data versioning
 
-The preprocessData package calculates an md5 checksum of each data object it stores, and keeps track of them in a file called `DATADIGEST`.
+The DataPackageR package calculates an md5 checksum of each data object it stores, and keeps track of them in a file called `DATADIGEST`.
 
 -   Each time the package is rebuilt, the md5 sums of the new data objects are compared against the DATADIGEST.
 -   If they don't match, the build process checks that the `DataVersion` string has been incremented in the `DESCRIPTION` file.
@@ -157,6 +157,6 @@ if(packageVersion("MyNewStudy") != "1.0.0")
   stop("The expected version of MyNewStudy is 1.0.0, but ",packageVersion("MyNewStudy")," is installed! Analysis results may differ!")
 ```
 
-The preprocessData packge also provides `datasetVersion()` to extract the data set version information.
+The DataPackageR packge also provides `datasetVersion()` to extract the data set version information.
 
 You should also place the data package source directory under `git` version control. This allows you to version control your data processing code.

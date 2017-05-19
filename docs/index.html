@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Scripts to pre-process data sets from "data-raw" to "data" • preprocessData</title>
+<title>Scripts to pre-process data sets from "data-raw" to "data" • DataPackageR</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
@@ -24,7 +24,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">preprocessData</a>
+      <a class="navbar-brand" href="index.html">DataPackageR</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -52,9 +52,9 @@
     
 <div class="contents">
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-<div id="preprocess-data" class="section level1">
+<div id="datapackager" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
-<a href="#preprocess-data" class="anchor"> </a>Preprocess Data</h1></div>
+<a href="#datapackager" class="anchor"> </a>DataPackageR</h1></div>
 <div id="what-and-why" class="section level2">
 <h2 class="hasAnchor">
 <a href="#what-and-why" class="anchor"> </a>What and why?</h2>
@@ -67,9 +67,9 @@
 <h2 class="hasAnchor">
 <a href="#usage" class="anchor"> </a>Usage</h2>
 <p>Set up a new data package.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(preprocessData)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(DataPackageR)
 <span class="kw">setwd</span>(<span class="st">"/tmp"</span>)
-preprocessData::<span class="kw"><a href="reference/datapackage.skeleton.html">datapackage.skeleton</a></span>(<span class="st">"MyNewStudy"</span>)</code></pre></div>
+DataPackageR::<span class="kw"><a href="reference/datapackage.skeleton.html">datapackage.skeleton</a></span>(<span class="st">"MyNewStudy"</span>)</code></pre></div>
 <pre><code>Creating directories ...
 Creating DESCRIPTION ...
 Creating NAMESPACE ...
@@ -168,7 +168,7 @@ NULL
 <li>Run the build process.</li>
 </ul>
 <pre class="r{}"><code># Within the package directory
-preprocessData:::buildDataSetPackage(".") #note for a first build this may need to be run twice.</code></pre>
+DataPackageR:::buildDataSetPackage(".") #note for a first build this may need to be run twice.</code></pre>
 <p>You will see a lot of output. If there are errors, the script will notify you of any problems.</p>
 <ul>
 <li>Correct any errors and rerun the build process.</li>
@@ -179,7 +179,7 @@ preprocessData:::buildDataSetPackage(".") #note for a first build this may need 
 <div id="data-versioning" class="section level3">
 <h3 class="hasAnchor">
 <a href="#data-versioning" class="anchor"> </a>Data versioning</h3>
-<p>The preprocessData package calculates an md5 checksum of each data object it stores, and keeps track of them in a file called <code>DATADIGEST</code>.</p>
+<p>The DataPackageR package calculates an md5 checksum of each data object it stores, and keeps track of them in a file called <code>DATADIGEST</code>.</p>
 <ul>
 <li>Each time the package is rebuilt, the md5 sums of the new data objects are compared against the DATADIGEST.</li>
 <li>If they don’t match, the build process checks that the <code>DataVersion</code> string has been incremented in the <code>DESCRIPTION</code> file.</li>
@@ -192,7 +192,7 @@ preprocessData:::buildDataSetPackage(".") #note for a first build this may need 
 <p>Your downstream data analysis can depend on a specific version of your data package (for example by tesing the <code>packageVersion()</code> string);</p>
 <pre class="r{}"><code>if(packageVersion("MyNewStudy") != "1.0.0")
   stop("The expected version of MyNewStudy is 1.0.0, but ",packageVersion("MyNewStudy")," is installed! Analysis results may differ!")</code></pre>
-<p>The preprocessData packge also provides <code>datasetVersion()</code> to extract the data set version information.</p>
+<p>The DataPackageR packge also provides <code>datasetVersion()</code> to extract the data set version information.</p>
 <p>You should also place the data package source directory under <code>git</code> version control. This allows you to version control your data processing code.</p>
 </div>
 </div>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Get the DataVersion for a package — dataVersion • DataPackageR</title>
+<title>DataPackageR — DataPackageR-package • DataPackageR</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -71,36 +71,34 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Get the DataVersion for a package</h1>
+    <h1>DataPackageR</h1>
     </div>
 
     
-    <p>Retreives the DataVersion of a package if available</p>
+    <p>Package to install the DataPackageR script that can be called via the R CMD mechanism.
+R CMD DataPackageR packagename looks for .R files in "data-raw" within the "packagename" package source tree.
+It sources a an .R file in "data-raw" named "datasets.R". The "datasets.R" file can source other files in "/data-raw".
+This must be done via a call like: <code>sys.source("myRfile.R",env=topenv())</code>.
+The "datasets.R" file and files it sources are expected to read raw data from
+"inst/extdata", or other sources, process them in some way, such that they are tidy and standardized.  The
+objects remaining in the environment after the code is run are presumed to be the data sets that will be written to
+"/data". The user should also document these data sets
+using "roxygen2" in the .R files under the "data-raw" directory. The package will extract documentation for the data objects it finds, as well as for
+a data set with the name of the package, if present, and place it in the "/R" directory under the name "packagename.R". The "DataPackageR" code will compare the digest of these data set objects against the contents of a "DATADIGEST" file
+in the package source tree (if present), and will also look for a "DataVersion: x.y.z" string in the DESCRIPTION file of the
+package. If the data have changed, the user will be warned that the DataVersion needs to be incemented. If no DATADIGEST file exists, one will be created.
+If the DataVersion string has been incremented and the digest matches DATADIGEST (if it exists), or if the data hasn't changed and the DataVersion string
+is unchanged, the code will write the data objects to "/data". The user can then build the package with
+R CMD build packagename.</p>
     
 
-    <pre><span class='fu'>dataVersion</span>(<span class='no'>pkg</span>, <span class='kw'>lib.loc</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
-    
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
-    <dl class="dl-horizontal">
-      <dt>pkg</dt>
-      <dd><p><code>character</code> the package name</p></dd>
-      <dt>lib.loc</dt>
-      <dd><p><code>character</code> path to library location.</p></dd>
-    </dl>
-    
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <p><code><a href='http://www.rdocumentation.org/packages/utils/topics/packageDescription'>packageVersion</a></code></p>
-    
+        
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#see-also">See also</a></li>
-          </ul>
+                </ul>
 
   </div>
 </div>

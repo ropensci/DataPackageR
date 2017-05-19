@@ -2,7 +2,7 @@
 % Please edit documentation in R/01.R
 \name{datapackage.skeleton}
 \alias{datapackage.skeleton}
-\title{Create a Data Package skeleton for use with preprocessData.}
+\title{Create a Data Package skeleton for use with DataPackageR.}
 \usage{
 datapackage.skeleton(name = "anRpackage", list = character(),
   environment = .GlobalEnv, path = ".", force = FALSE,

@@ -1,12 +1,12 @@
-Package: preprocessData
+Package: DataPackageR
 Type: Package
 Title: Scripts to pre-process data sets from "data-raw" to "data"
 Author: Greg Finak, Paul Obrecht
-Version: 0.11.0
+Version: 0.11.1
 Date: 2016-01-13
 Maintainer: Greg Finak <gfinak@fredhutch.org>
 Depends: roxygen2 (>= 6.0.1), devtools (>= 1.12.0)
-Description: Utilities to preprocess data using scripts under 
+Description: Utilities to process data using scripts under 
      "data-raw". Meant to construct reproducible analytic data sets as R packages. 
 License: Artistic-2.0
 Imports:

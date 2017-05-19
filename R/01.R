@@ -1,10 +1,10 @@
 .installScript <- function ()
 {
   onWindows <- (.Platform$OS.type == "windows")
-  files <- "preprocessData"
+  files <- "DataPackageR"
   if (onWindows)
-    files <- "preprocessData.bat"
-  srcDir <- system.file("script", package = "preprocessData")
+    files <- "DataPackageR.bat"
+  srcDir <- system.file("script", package = "DataPackageR")
   srcFile <- file.path(srcDir, files)
   destDir <- file.path(Sys.getenv("R_HOME"), "bin")
   destFile <- file.path(destDir, files)
@@ -22,14 +22,14 @@
     else
       func <- message
     if (is.null(res) || !res || res == -1) {
-      script <- "preprocessData"
+      script <- "DataPackageR"
       if (onWindows)
-        script <- "preprocessData"
+        script <- "DataPackageR"
       msg <- strwrap(
         paste(
           "Failed to copy the", paste0("script/",
                                        script), "script to", paste0(file.path(Sys.getenv("R_HOME"),
-                                                                              "bin"), "."), "If you want to be able to run 'R CMD preprocessData' you'll",
+                                                                              "bin"), "."), "If you want to be able to run 'R CMD DataPackageR' you'll",
           "need to copy it yourself to a directory on your PATH,",
           "making sure it is executable."
         )
@@ -38,20 +38,20 @@
         func(msg[i])
     }
     else {
-      func("preprocessData script installed.")
+      func("DataPackageR script installed.")
     }
   }
 }
 
 .isScriptInstalled <- function ()
 {
-  if (nchar(Sys.which("preprocessData")))
+  if (nchar(Sys.which("DataPackageR")))
     return(TRUE)
   onWindows <- (.Platform$OS.type == "windows")
   if (onWindows)
-    file <- "preprocessData.bat"
+    file <- "DataPackageR.bat"
   else
-    file <- "preprocessData"
+    file <- "DataPackageR"
   path <- file.path(Sys.getenv("R_HOME"), "bin")
   all(file.exists(file.path(path, file)))
 }
@@ -186,7 +186,7 @@
         paste0("@name ", pname), 
                "@description A description of the data package",
         paste0("@details Use \\code{data(package='", pname, "')$results[, 3]} to see a list of available data sets in this data package"),
-               "    and/or preprocessData::load_all_datasets() to load them.",
+               "    and/or DataPackageR::load_all_datasets() to load them.",
                "@seealso",
         linksRox[2:length(links)])),
         "NULL\n\n\n"), con)
@@ -278,7 +278,7 @@ dataVersion <- function (pkg, lib.loc = NULL)
          domain = NA)
 }
 
-#' Create a Data Package skeleton for use with preprocessData.
+#' Create a Data Package skeleton for use with DataPackageR.
 #'
 #' Creates a package skeleton for use with preprpocessData. Creates the additional information needed for versioning
 #' datasets, namely the DataVersion string in DESCRIPTION, DATADIGEST, and the data-raw directory. Updates Read-and-delete-me
@@ -346,11 +346,11 @@ datapackage.skeleton <-
     )
     close(con)
 
-    if(system.file("extdata", "datasets.R", package="preprocessData") != ""){
+    if(system.file("extdata", "datasets.R", package="DataPackageR") != ""){
       message("Copying datasets.R template.")
-      file.copy(system.file("extdata", "datasets.R", package="preprocessData"), file.path(package_path, "data-raw"), overwrite=TRUE)
+      file.copy(system.file("extdata", "datasets.R", package="DataPackageR"), file.path(package_path, "data-raw"), overwrite=TRUE)
     } else {
-      message("Couldn't find datasets.R template. Look in .libPaths() directories for preprocessData/extdata/datasets.R and copy to data-raw/ directory.")
+      message("Couldn't find datasets.R template. Look in .libPaths() directories for DataPackageR/extdata/datasets.R and copy to data-raw/ directory.")
     }
 
     con = file(file.path(package_path,"R","utils.R"))
@@ -437,7 +437,7 @@ buildDataSetPackage <- function(packageName = NULL,vignettes=FALSE,outpath = NUL
       stop("Can't find package DESCRIPTION in ",packageName)
     }
   }
-  success <- preprocessData:::preprocessData(arg = packageName, masterfile = masterfile)
+  success <- DataPackageR:::DataPackageR(arg = packageName, masterfile = masterfile)
   if (!success) {
     stop("Preprocessing failed. Address the issues above and try again.")
   }
@@ -454,7 +454,7 @@ buildDataSetPackage <- function(packageName = NULL,vignettes=FALSE,outpath = NUL
 }
 .increment_data_version = function(pkg_description, new_data_digest,which="minor"){
   if(!which%in%c("major","minor","patch")){
-    stop("version component to increment is misspecified in .increment_data_version, package preprocessData")
+    stop("version component to increment is misspecified in .increment_data_version, package DataPackageR")
   }
   verstring = strsplit(pkg_description$DataVersion,"\\.")[[1]]
   names(verstring) = c("major","minor","patch")

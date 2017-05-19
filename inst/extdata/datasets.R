@@ -20,13 +20,13 @@ objectsToKeep <- c('myFile1', 'myFile2', 'etc.') # if it's a collection of unsys
 
 # ------------------------------------------------------------
 # Auto build roxygen documentation
-# On first build, we generate boilerplate roxygen documentation using preprocessData:::.autoDoc()
+# On first build, we generate boilerplate roxygen documentation using DataPackageR:::.autoDoc()
 # User then manually edits the output file edit_and_rename_to_'documentation.R'.R and renames it to documentation.R.
 # The documentation.R file is then used for all subsequent builds.
 if(file.exists("documentation.R")){
   sys.source('documentation.R', envir=topenv())
 } else {
-  preprocessData:::.autoDoc(pkgName, objectsToKeep, topenv())
+  DataPackageR:::.autoDoc(pkgName, objectsToKeep, topenv())
 }
 
 # keep only objects labeled for retention
