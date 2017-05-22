@@ -51,7 +51,7 @@
                         <h4 class="author">Greg Finak <a href="mailto:gfinak@fredhutch.org">gfinak@fredhutch.org</a>
 </h4>
             
-            <h4 class="date">2017-05-19</h4>
+            <h4 class="date">2017-05-22</h4>
           </div>
 
     
@@ -86,8 +86,10 @@ if(<span class="kw">dir.exists</span>(<span class="st">"/tmp/MyDataPackage"</spa
 }</code></pre></div>
 <p>The command above sets up the package skeleton in the <code>/tmp</code> directory for our new package.</p>
 <p>Let’s generate some “raw data” that we want to process.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyr)
-mat&lt;-<span class="kw">spread</span>(<span class="kw">data.frame</span>(<span class="dt">sample=</span><span class="dv">1</span>:<span class="dv">100</span>,
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyr)</code></pre></div>
+<pre><code>## Warning: closing unused connection 6 (/Library/Frameworks/R.framework/
+## Versions/3.3/Resources/library/DataPackageR/extdata/datasets.R)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mat&lt;-<span class="kw">spread</span>(<span class="kw">data.frame</span>(<span class="dt">sample=</span><span class="dv">1</span>:<span class="dv">100</span>,
           <span class="dt">measurement=</span><span class="kw">matrix</span>(<span class="kw">sapply</span>(<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">5</span>,<span class="dv">10</span>),
            function(x)<span class="kw">rnorm</span>(<span class="dv">100</span>,<span class="dt">mean=</span>x)),<span class="dt">ncol=</span><span class="dv">1</span>),
           <span class="dt">subject_id=</span><span class="kw">gl</span>(<span class="dv">4</span>,<span class="dv">100</span>,<span class="dt">labels=</span><span class="kw">c</span>(<span class="st">"Subject_1"</span>,
@@ -95,12 +97,12 @@ mat&lt;-<span class="kw">spread</span>(<span class="kw">data.frame</span>(<span 
           <span class="dt">key=</span>subject_id,<span class="dt">value=</span>measurement)
 <span class="kw">head</span>(mat)</code></pre></div>
 <pre><code>##   sample  Subject_1 Subject_2 Subject_3 Subject_4
-## 1      1  0.4188106  2.629201  5.711289 10.739158
-## 2      2  2.5143052  1.432127  6.238951  8.909735
-## 3      3  1.3009815  2.276806  5.669918  9.585280
-## 4      4 -0.6820117  3.237408  4.364036 10.578600
-## 5      5  0.9078594  2.250976  4.630688  9.771288
-## 6      6  0.5854412  1.635929  5.982592  8.999379</code></pre>
+## 1      1 -0.8602152 4.4923780  5.144373  9.005447
+## 2      2  0.5163354 1.7943939  5.709641 10.158434
+## 3      3  2.3795834 1.7404216  4.812236 10.652236
+## 4      4  2.0842269 2.3277250  5.093171 10.867097
+## 5      5  0.4291946 1.9780356  4.452489  8.808077
+## 6      6  0.9810486 0.8792634  5.527808 10.436724</code></pre>
 <p>We pretend that our raw data arrives as above: something is measured for four subjects, 100 times per subject, but each subject’s data is in a separate column. This is “wide” data, and generally doesn’t follow the tidy data paradigm of one variable per column. This data file will live in the <code>inst/extdata</code> directory beneath the package source tree.</p>
 <p>We move our “raw data” into the <code>inst/extdata</code> directory in the package source tree.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">write.csv</span>(mat,<span class="dt">file=</span><span class="st">"/tmp/MyDataPackage/inst/extdata/raw_data.csv"</span>,<span class="dt">row.names=</span><span class="ot">FALSE</span>)</code></pre></div>
@@ -110,12 +112,12 @@ study_processed&lt;-<span class="kw">gather</span>(data,<span class="dt">key=</s
 <p>Let’s see what this looks like:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(study_processed)</code></pre></div>
 <pre><code>##   sample subject_id measurement
-## 1      1  Subject_1   0.4188106
-## 2      2  Subject_1   2.5143052
-## 3      3  Subject_1   1.3009815
-## 4      4  Subject_1  -0.6820117
-## 5      5  Subject_1   0.9078594
-## 6      6  Subject_1   0.5854412</code></pre>
+## 1      1  Subject_1  -0.8602152
+## 2      2  Subject_1   0.5163354
+## 3      3  Subject_1   2.3795834
+## 4      4  Subject_1   2.0842269
+## 5      5  Subject_1   0.4291946
+## 6      6  Subject_1   0.9810486</code></pre>
 <p>Our data are now in long format.</p>
 <ul>
 <li>This R code is placed in an <code>.R</code> file entitled <code>process_assay.R</code> within the <code>data-raw</code> directory.</li>

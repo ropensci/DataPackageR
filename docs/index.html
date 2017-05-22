@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Scripts to pre-process data sets from "data-raw" to "data" • DataPackageR</title>
+<title>Construct reproducible analytic data sets as R packages.  • DataPackageR</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
@@ -55,21 +55,22 @@
 <div id="datapackager" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#datapackager" class="anchor"> </a>DataPackageR</h1></div>
+<p>Process raw data into packaged, analysis-ready data sets, reproducibly.</p>
 <div id="what-and-why" class="section level2">
 <h2 class="hasAnchor">
 <a href="#what-and-why" class="anchor"> </a>What and why?</h2>
-<p>Different assays require different forms of preprocessing and data tidying. Data may need to be cleaned, standardized, QCd, and any number of other manipulations applied before it is ready for analysis.</p>
-<p>Even if a data management center handles quality control and standardization, the analyst may have personal preferences how the data is formatted for analysis.</p>
-<p>This package is designed to simplify centralize tasks associated with tidying a variety of data sets arising from a single project or study.</p>
-<p>It provides a mechanism to collect, organize and version the data munging scripts used to process incoming data into analytical data sets. The package runs these scripts to perform the data munging writes out analytical data sets, which are combined with documentation, and built into a new R package. The package and the included data are versioned. If updated data arrive, the package can be rebuilt, and the data version incremented to reflect the changes. Withitn the data cleaning code, analysts are free to use whatever tools they are comfortable with.</p>
+<p>A data set may consist of multiple sources of raw data. These need to be cleaned, standardized, QCd, and any number of other manipulations applied before they are ready for analysis.</p>
+<p>This package is designed to simplify and centralize tasks associated with tidying a variety of data sets associated with a single project.</p>
+<p>It provides a mechanism to collect, organize and version the data munging scripts used to process incoming data into analytical data sets. The package runs these scripts to perform the data munging writes out analytical data sets, which are combined with documentation, and built into a new R package. The package and the included data are versioned. If updated data arrive, the package can be rebuilt, and the data version incremented to reflect the changes. If the data munging code is in the form of Rmarkdown documents, these are processed automatically into package vignettes that are included in the final pacakge.</p>
+<p>No other restrictions are placed on the data munging code.</p>
 </div>
 <div id="usage" class="section level2">
 <h2 class="hasAnchor">
 <a href="#usage" class="anchor"> </a>Usage</h2>
-<p>Set up a new data package.</p>
+<p>Set up a new data package. Assume we have data munging code in <code>MungeDataset1.Rmd</code>, and <code>MungeDatast2.Rmd</code>, and each of these produce R objects <code>dataset1</code> and <code>dataset2</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(DataPackageR)
 <span class="kw">setwd</span>(<span class="st">"/tmp"</span>)
-DataPackageR::<span class="kw"><a href="reference/datapackage.skeleton.html">datapackage.skeleton</a></span>(<span class="st">"MyNewStudy"</span>)</code></pre></div>
+DataPackageR::<span class="kw"><a href="reference/datapackage.skeleton.html">datapackage.skeleton</a></span>(<span class="st">"MyNewStudy"</span>,<span class="dt">force=</span><span class="ot">TRUE</span>,<span class="dt">code_files =</span> <span class="kw">c</span>(<span class="st">"/tmp/MungeDataset1.Rmd"</span>,<span class="st">"/tmp/MungeDataset2.Rmd"</span>),<span class="dt">r_object_names =</span> <span class="kw">c</span>(<span class="st">"dataset1"</span>,<span class="st">"dataset2"</span>))</code></pre></div>
 <pre><code>Creating directories ...
 Creating DESCRIPTION ...
 Creating NAMESPACE ...
@@ -81,81 +82,89 @@ Further steps are described in './MyNewStudy/Read-and-delete-me'.
 Adding DataVersion string to DESCRIPTION
 Creating data and data-raw directories</code></pre>
 <p>The above code creates a directory “MyNewStudy” with the skeleton of a data package.</p>
-<p>The <code>DESCRIPTION</code> file should be filled out to describe your package. A new <code>DataVersion</code> string now appears in that file. It needs to be incremented if the package data changes.</p>
+<p>The <code>DESCRIPTION</code> file should be filled out to describe your package. A new <code>DataVersion</code> string now appears in that file. The revision is automatically incremented if the package data changes.</p>
 <p><code>Read-and-delete-me</code> has some helpful instructions on how to proceed.</p>
-<p>The data-raw directory is where you will place your data cleaning code. The contents of this directory are:</p>
+<p>The <code>data-raw</code> directory is where the data cleaning code (<code>Rmd</code>) files reside. The contents of this directory are:</p>
 <pre><code>MyNewStudy/data-raw
-└── datasets.R</code></pre>
-<p>You will edit <code>datasets.R</code>. This files effectively sources your data munging scripts. You will add them there. Data munging scripts can read data from anywhere, but it is good practice to have your “raw” data live under <code>/inst/extdata</code>.</p>
+└── datasets.R
+└── MungeDataset1.Rmd
+└── MungeDataset2.Rmd</code></pre>
+<p><code>datasets.R</code> can be edited as necessary (see below). This “master” file sources your data munging scripts. Data munging scripts can read data from anywhere, but it is good practice to have your “raw” data live under <code>/inst/extdata</code>. It should be copied into that path and the data munging scripts edited appropriately.</p>
 <p>Here are the contents on <code>datasets.R</code>:</p>
-<pre><code>library(rmarkdown)
-render('myPreprocessingCode.Rmd',envir=topenv(),output_dir='../inst/extdata/Logfiles',intermediates_dir='../inst/extdata/Logfiles',clean=FALSE)
-keepDataObjects('mydataset')
+<pre><code>pkgName &lt;- roxygen2:::read.description("../DESCRIPTION")$Package
 
-#' MyNewStudy
-#' A data package for study MyNewStudy
-#' @docType package
-#' @aliases MyNewStudy-package
-#' @title MyNewStudy
-#' @name MyNewStudy
-#' @description a description of the package.
-#' @details Additional details.
-#' @import data.table
-#' @seealso \link{mydataset}
-NULL
+# ------------------------------------------------------------
+# Source additional R scripts to preprocess assay data
 
-#' Data from an assay, entitled mydataset
-#'@name mydataset
-#'@docType data
-#'@title Data from an assay.
-#'@format a \code{data.table} containing the following fields
-#'\describe{
-#'\item{column_name}{description}
-#'\item{column_name_2}{description}
-#'}
-#'@source Describe the source of the data (i.e. lab, etc)
-#'@seealso \link{MyNewStudy}</code></pre>
+library(rmarkdown)
+render('MungeDataset1.Rmd', envir=topenv(), output_dir='../inst/extdata/Logfiles', intermediates_dir='../inst/extdata/Logfiles', clean=FALSE)
+render('MungeDataset2.Rmd', envir=topenv(), output_dir='../inst/extdata/Logfiles', intermediates_dir='../inst/extdata/Logfiles', clean=FALSE)
+
+# for a systematically-named sequence of scripts, one could do something like this:
+# for(fn in list.files(path="./", pattern="^preprocess_.*\\.Rmd$")){
+#   render(fn, envir=topenv(),output_dir="../inst/extdata/Logfiles",intermediates_dir = "../inst/extdata/Logfiles",clean=FALSE)
+# }
+# Or a full path to each Rmd file can be passed to datapacakge.skeleton via code_files.
+
+
+# ------------------------------------------------------------
+# Define data objects to keep in the package
+# (defining here because the list is useful when building roxygen documentation)
+objectsToKeep &lt;- c('dataset1', 'dataset2', 'etc.') # if it's a collection of unsystematically-named objects
+# objectsToKeep &lt;- ls(pattern=pkgName) # if you can define a rule that describes the naming of objects to be available in the package
+# Or these can be passed into datapackage.skeleton via the r_object_names parameter
+
+# ------------------------------------------------------------
+# Auto build roxygen documentation
+# On first build, we generate boilerplate roxygen documentation using DataPackageR:::.autoDoc()
+# User then manually edits the output file edit_and_rename_to_'documentation.R'.R and renames it to documentation.R.
+# The documentation.R file is then used for all subsequent builds.
+if(file.exists("documentation.R")){
+  sys.source('documentation.R', envir=topenv())
+} else {
+  DataPackageR:::.autoDoc(pkgName, objectsToKeep, topenv())
+}
+
+# keep only objects labeled for retention
+keepDataObjects(objectsToKeep)  </code></pre>
 <p>We look at this piece by piece.</p>
 <div id="data-processing-scripts" class="section level3">
 <h3 class="hasAnchor">
 <a href="#data-processing-scripts" class="anchor"> </a>Data processing scripts</h3>
-<p>First, we load the rmarkdown package and then render a file called <code>myPreprocessingCode.Rmd</code>.</p>
+<p>First, we load the rmarkdown package and then render the user-provided data processing code <code>MungeDataset1.Rmd</code>, and <code>MungeDataset2.Rmd</code>.</p>
 <ul>
-<li>This file does not exist, you will create it (You may change the name, you may add additional files).</li>
-<li>This should be an Rmarkdown file, that combines text and R code.</li>
-<li>When run, it should perform the processing of your data sets(s).</li>
+<li>This should (obviously) be an Rmarkdown file, that combines text and R code.</li>
+<li>It should contain a YAML preamble with the minimum information needed to process it into an html report.</li>
+<li>When run, it should perform the processing of your data sets(s) into an R object named in <code>r_object_names</code> of <code>datapackage.skeleton</code>.</li>
 </ul>
 <p>The product of this particular script will be an html document that serves as a log of how the data were processed.</p>
 <ul>
-<li>The build process (decribed later) will store the html output under <code>inst/Log</code>.</li>
+<li>The html report will be included as a <code>vignette</code> in the final package.</li>
 </ul>
 <p>The most important product of processing script is one or more R objects.</p>
 <ul>
-<li><p>The script should generate one or more R objects storing your data in the your desired format.</p></li>
 <li>The call to <code><a href="reference/keepDataObjects.html">keepDataObjects()</a></code> tells the build process which objects should be retained and stored as part of the data package.</li>
-<li>In this case, our script should produce an object called <code>mydataset</code>.</li>
-<li><p><code><a href="reference/keepDataObjects.html">keepDataObjects('mydataset')</a></code> tells the build process the name of the object to store in the package</p></li>
-</ul>
-<p>If your data cleaning script produces three tables named <code>assay3</code> <code>assay2</code> and <code>assay3</code>, then the call would be `keepDataObjects(c(‘assay1’,‘assay2’,‘assay3’)).</p>
-<ul>
-<li>You do not need to save these tables or objects to disk.</li>
-<li>They just need to exist in memory when the processing script is finished running.</li>
+<li>In this case, our scripts should produce two objects <code>dataset1</code> and <code>dataset2</code>.</li>
+<li>
+<code><a href="reference/keepDataObjects.html">keepDataObjects('dataset1','dataset2')</a></code> tells the build process the name of the object to store in the package.</li>
+<li><p>All this is taken care of via arguments to <code>datapackage.skeleton</code>.</p></li>
+<li>You do not need to save these objects to <code>data</code>. The build process will handle this for you.</li>
+<li>The objects need to exist in memory when the processing script is finished running.</li>
 <li>The build process will match these names to objects in memory and to existing documentation (see below).</li>
-<li>If everything is in order, they will be included in the built package.</li>
+<li><p>If everything is in order, they will be included in the built package.</p></li>
 </ul>
 </div>
 <div id="object-documentation" class="section level3">
 <h3 class="hasAnchor">
 <a href="#object-documentation" class="anchor"> </a>Object Documentation</h3>
-<p>Next are two <code>roxygen</code> blocks.</p>
-<p>The first documents the package, and the second documents the data objects produced by the package.</p>
-<p>These should be filled in appropriately.</p>
+<p>There is a call to <code>.autoDoc</code>, which generates documentation for the package and the objects on the first run of the build.</p>
+<p>It produces a file that the user needs to rename and edit by hand.</p>
+<p>The contents of this file are roxygen blocks that are parsed into object and package documentation.</p>
 <ul>
-<li>If you have multiple data objects, you can copy the second roxygen block to document the other objects.</li>
 <li>It is good practice to
 <ul>
 <li>Document all the columns of tables in your data set.</li>
-<li>Include the source of the data (i.e. what laboratory or person provided the data).</li>
+<li>Include the source of the data (i.e. where the data came from).</li>
 </ul>
 </li>
 </ul>
@@ -164,17 +173,16 @@ NULL
 <h3 class="hasAnchor">
 <a href="#build-your-package-" class="anchor"> </a>Build your package.</h3>
 <p>Once your scripts are in place and the data objects are documented, you build the package.</p>
-<ul>
-<li>Run the build process.</li>
-</ul>
+<p>To run the build process:</p>
 <pre class="r{}"><code># Within the package directory
-DataPackageR:::buildDataSetPackage(".") #note for a first build this may need to be run twice.</code></pre>
-<p>You will see a lot of output. If there are errors, the script will notify you of any problems.</p>
+DataPackageR:::buildDataSetPackage(".") #note for a first build this needs to be run twice and the 
+#documentation edited.</code></pre>
+<p>If there are errors, the script will notify you of any problems.</p>
 <ul>
 <li>Correct any errors and rerun the build process.</li>
 </ul>
 <p>If everything goes smoothly, you will have a new package built in the parent directory.</p>
-<p>This can be distributed, installed using <code>R CMD INSTALL</code>, and data sets loaded using R’s standard <code>data()</code> call.</p>
+<p>This can be distributed, installed using <code>R CMD INSTALL</code>, and data sets loaded using R’s standard <code>data()</code> call. Vignettes can be interrogated via <code><a href="articles/mypackage.html">vignette(package="mypackage")</a></code></p>
 </div>
 <div id="data-versioning" class="section level3">
 <h3 class="hasAnchor">

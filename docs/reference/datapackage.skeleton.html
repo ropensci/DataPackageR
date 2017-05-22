@@ -82,7 +82,7 @@ to reflect the additional necessary steps.</p>
 
     <pre><span class='fu'>datapackage.skeleton</span>(<span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"anRpackage"</span>, <span class='kw'>list</span> <span class='kw'>=</span> <span class='fu'>character</span>(),
   <span class='kw'>environment</span> <span class='kw'>=</span> <span class='no'>.GlobalEnv</span>, <span class='kw'>path</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>force</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>code_files</span> <span class='kw'>=</span> <span class='fu'>character</span>())</pre>
+  <span class='kw'>code_files</span> <span class='kw'>=</span> <span class='fu'>character</span>(), <span class='kw'>r_object_names</span> <span class='kw'>=</span> <span class='fu'>character</span>())</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <dl class="dl-horizontal">
@@ -97,7 +97,9 @@ to reflect the additional necessary steps.</p>
       <dt>force</dt>
       <dd><p>see <code><a href='http://www.rdocumentation.org/packages/utils/topics/package.skeleton'>package.skeleton</a></code></p></dd>
       <dt>code_files</dt>
-      <dd><p>see <code><a href='http://www.rdocumentation.org/packages/utils/topics/package.skeleton'>package.skeleton</a></code></p></dd>
+      <dd><p>Optional character vector of paths to Rmd files that process raw data
+into R objects. Treated differently that <code>code_files</code> in <code><a href='http://www.rdocumentation.org/packages/utils/topics/package.skeleton'>package.skeleton</a></code>. 
+Will always pass an empty <code>character()</code> vector to that function.</p></dd>
     </dl>
     
 
