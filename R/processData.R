@@ -198,6 +198,9 @@ DataPackageR <- function(arg = NULL,masterfile=NULL) {
         }
         eval(expr = expression(rm(list = ls())),envir = dataEnv)
       }
+      # copy html files to vignettes
+      .vignettesFromPPFiles()
+      
     },finally = {
       setwd(old);sink();sink(type = "message")
     })
@@ -207,5 +210,41 @@ DataPackageR <- function(arg = NULL,masterfile=NULL) {
     return(TRUE)
   }else{
     return(FALSE)
+  }
+}
+
+
+.vignettesFromPPFiles <- function() {
+  try(devtools:::use_vignette("."),silent=TRUE)
+  try(dir.create("inst/doc"),silent=TRUE)
+  #TODO maybe copy only the files that have both html and Rmd.
+  rmdfiles_for_vignettes = list.files(path="data-raw",pattern="Rmd$",full=TRUE,recursive = FALSE)
+  htmlfiles_for_vignettes = list.files(path="inst/extdata/Logfiles",pattern="html$",full=TRUE,recursive = FALSE)
+  purrr::map(htmlfiles_for_vignettes,function(x)file.copy(x,file.path("inst/doc",basename(x))))
+  capture.output(purrr::map(rmdfiles_for_vignettes,function(x)file.copy(x,file.path("vignettes",basename(x)))))
+  vignettes_to_process = list.files(path="vignettes",pattern="Rmd$",full=TRUE,recursive=FALSE)
+  write_me_out = purrr::map(vignettes_to_process,function(x){
+    title = "Default Vignette Title. Add yaml title: to your document"
+    thisfile = rmarkdown:::read_file(x)
+    stripped_yaml = gsub("---.*---","",thisfile)
+    frontmatter = gsub("(---.*---).*","\\1",thisfile)
+    con = textConnection(frontmatter)
+    fm  = rmarkdown:::yaml_front_matter(con)
+    if(is.null(fm[["vignette"]])){
+      #add boilerplate vignette yaml
+      if(!is.null(fm$title))title = fm$title
+      fm$vignette = paste0("%\\VignetteIndexEntry{",title,"}
+                           %\\VignetteEngine{knitr::rmarkdown}
+                           \\usepackage[utf8]{inputenc}")
+    }else{
+      #otherwise leave it as is.
+    }
+    write_me_out = paste0("---\n",yaml::as.yaml(fm),"---\n",stripped_yaml)
+    write_me_out
+  })
+  names(write_me_out)=vignettes_to_process
+  for(i in vignettes_to_process){
+    writeLines(write_me_out[[i]],con = i)
+    writeLines(write_me_out[[i]],con = file.path("inst/doc",basename(i)))
   }
 }
