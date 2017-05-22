@@ -1,6 +1,6 @@
 Package: DataPackageR
 Type: Package
-Title: Scripts to pre-process data sets from "data-raw" to "data"
+Title: Construct reproducible analytic data sets as R packages. 
 Author: Greg Finak, Paul Obrecht
 Version: 0.11.2
 Date: 2016-01-13
