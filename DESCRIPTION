@@ -6,8 +6,7 @@ Version: 0.11.2
 Date: 2016-01-13
 Maintainer: Greg Finak <gfinak@fredhutch.org>
 Depends: roxygen2 (>= 6.0.1), devtools (>= 1.12.0)
-Description: Utilities to process data using scripts under 
-     "data-raw". Meant to construct reproducible analytic data sets as R packages. 
+Description: Construct reproducible analytic data sets as R packages. 
 License: Artistic-2.0
 Imports:
     optparse,
