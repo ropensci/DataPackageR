@@ -6,7 +6,7 @@
 \usage{
 datapackage.skeleton(name = "anRpackage", list = character(),
   environment = .GlobalEnv, path = ".", force = FALSE,
-  code_files = character())
+  code_files = character(), r_object_names = character())
 }
 \arguments{
 \item{name}{see \code{\link[utils]{package.skeleton}}}
@@ -19,7 +19,9 @@ datapackage.skeleton(name = "anRpackage", list = character(),
 
 \item{force}{see \code{\link[utils]{package.skeleton}}}
 
-\item{code_files}{see \code{\link[utils]{package.skeleton}}}
+\item{code_files}{Optional character vector of paths to Rmd files that process raw data
+into R objects. Treated differently that \code{code_files} in \code{\link[utils]{package.skeleton}}. 
+Will always pass an empty \code{character()} vector to that function.}
 }
 \description{
 Creates a package skeleton for use with preprpocessData. Creates the additional information needed for versioning

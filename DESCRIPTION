@@ -2,7 +2,7 @@ Package: DataPackageR
 Type: Package
 Title: Construct reproducible analytic data sets as R packages. 
 Author: Greg Finak, Paul Obrecht
-Version: 0.11.2
+Version: 0.11.3
 Date: 2016-01-13
 Maintainer: Greg Finak <gfinak@fredhutch.org>
 Depends: roxygen2 (>= 6.0.1), devtools (>= 1.12.0)
@@ -18,7 +18,8 @@ Imports:
     yaml,
     purrr,
     roxygen2,
-    devtools
+    devtools,
+    assertthat
 VignetteBuilder: knitr
 RoxygenNote: 6.0.1
 Authors@R:

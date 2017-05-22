@@ -289,18 +289,21 @@ dataVersion <- function (pkg, lib.loc = NULL)
 #' @param environment see \code{\link[utils]{package.skeleton}}
 #' @param path see \code{\link[utils]{package.skeleton}}
 #' @param force see \code{\link[utils]{package.skeleton}}
-#' @param code_files see \code{\link[utils]{package.skeleton}}
+#' @param code_files Optional character vector of paths to Rmd files that process raw data
+#' into R objects. Treated differently that \code{code_files} in \code{\link[utils]{package.skeleton}}. 
+#' Will always pass an empty \code{character()} vector to that function.
 #' @export
 #' @examples
 #' \dontrun{
 #' datapackage.skeleton(name="MyDataPackage",path="/tmp")
 #' }
 datapackage.skeleton <-
-  function(name = "anRpackage", list = character(), environment = .GlobalEnv, path = ".", force = FALSE, code_files = character()) {
+  function(name = "anRpackage", list = character(), environment = .GlobalEnv, path = ".", force = FALSE, code_files = character(), r_object_names = character()) {
     if (length(list) == 0)
+      # don't pass on the code_files here, but use that argument to 
       package.skeleton(
         name = name, environment = environment, path = path,force = force,code_files =
-          code_files
+          character()
       )
     else
       package.skeleton(
@@ -348,7 +351,30 @@ datapackage.skeleton <-
 
     if(system.file("extdata", "datasets.R", package="DataPackageR") != ""){
       message("Copying datasets.R template.")
-      file.copy(system.file("extdata", "datasets.R", package="DataPackageR"), file.path(package_path, "data-raw"), overwrite=TRUE)
+      # Rather than copy, read in, modify (as needed), and write.
+      indatafile = system.file("extdata", "datasets.R", package="DataPackageR")
+      datasets_string = readChar(con = file(indatafile,open = "r"),nchars = 100000)
+      #process the string
+      if(length(r_object_names)!=0){
+        datasets_string = gsub("objectsToKeep <- c\\('myFile1', 'myFile2', 'etc.'\\)",paste0("objectsToKeep <- c(",paste(paste0("'",r_object_names,"'"),collapse=","),")"),datasets_string)
+      }
+      
+      if(length(code_files)!=0){
+        .validateCodeFiles(code_files)
+        #If these are valid, we put them in datasets.R
+        render_to_insert = paste(paste0("render\\('",basename(code_files),"', envir=topenv\\(\\), output_dir='../inst/extdata/Logfiles', intermediates_dir='../inst/extdata/Logfiles', clean=FALSE\\)"),collapse="\n")
+        datasets_string = gsub("render\\('myPreprocessingCode.Rmd', envir=topenv\\(\\), output_dir='../inst/extdata/Logfiles', intermediates_dir='../inst/extdata/Logfiles', clean=FALSE\\)",render_to_insert,datasets_string)
+        #copy them over
+        purrr::map(code_files,function(x)file.copy(x,file.path(package_path,"data-raw")))
+        
+      }
+       
+      
+      
+      outcon = file(description = file.path(package_path, "data-raw","datasets.R"),open = "w")
+      writeLines(datasets_string,con = outcon)
+      close(outcon)
+      # file.copy(system.file("extdata", "datasets.R", package="DataPackageR"), file.path(package_path, "data-raw"), overwrite=TRUE)
     } else {
       message("Couldn't find datasets.R template. Look in .libPaths() directories for DataPackageR/extdata/datasets.R and copy to data-raw/ directory.")
     }
@@ -473,4 +499,11 @@ buildDataSetPackage <- function(packageName = NULL,vignettes=FALSE,outpath = NUL
 keepDataObjects <- function(obj) {
   #remove everything except the objects specified in obj
   rm(list = setdiff(objects(envir = parent.frame()),obj),envir = parent.frame())
+}
+
+.validateCodeFiles <- function(code_files){
+  # do they exist?
+    assertthat:::assert_that(all(unlist(purrr::map(code_files,file.exists))),msg = "code_files do not all exist!")
+    # are the .Rmd files? 
+    assertthat:::assert_that(all(grepl(".*\\.Rmd$",code_files)),msg = "code files are not Rmd files!")
 }

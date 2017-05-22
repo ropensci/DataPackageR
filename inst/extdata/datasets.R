@@ -7,9 +7,10 @@ library(rmarkdown)
 render('myPreprocessingCode.Rmd', envir=topenv(), output_dir='../inst/extdata/Logfiles', intermediates_dir='../inst/extdata/Logfiles', clean=FALSE)
 
 # for a systematically-named sequence of scripts, one could do something like this:
-# for(fn in list.files(path="./", pattern="^preprocess_.*\\.R$")){
-#   sys.source(fn, envir=topenv())
+# for(fn in list.files(path="./", pattern="^preprocess_.*\\.Rmd$")){
+#   render(fn, envir=topenv(),output_dir="../inst/extdata/Logfiles",intermediates_dir = "../inst/extdata/Logfiles",clean=FALSE)
 # }
+# Or a full path to each Rmd file can be passed to datapacakge.skeleton via code_files.
 
 
 # ------------------------------------------------------------
@@ -17,6 +18,7 @@ render('myPreprocessingCode.Rmd', envir=topenv(), output_dir='../inst/extdata/Lo
 # (defining here because the list is useful when building roxygen documentation)
 objectsToKeep <- c('myFile1', 'myFile2', 'etc.') # if it's a collection of unsystematically-named objects
 # objectsToKeep <- ls(pattern=pkgName) # if you can define a rule that describes the naming of objects to be available in the package
+# Or these can be passed into datapackage.skeleton via the r_object_names parameter
 
 # ------------------------------------------------------------
 # Auto build roxygen documentation
