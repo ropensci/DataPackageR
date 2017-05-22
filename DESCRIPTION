@@ -2,7 +2,7 @@ Package: DataPackageR
 Type: Package
 Title: Scripts to pre-process data sets from "data-raw" to "data"
 Author: Greg Finak, Paul Obrecht
-Version: 0.11.1
+Version: 0.11.2
 Date: 2016-01-13
 Maintainer: Greg Finak <gfinak@fredhutch.org>
 Depends: roxygen2 (>= 6.0.1), devtools (>= 1.12.0)
@@ -15,8 +15,12 @@ Imports:
     knitr,
     utils,
     rmarkdown,
-    desc
+    desc,
+    yaml,
+    purrr,
+    roxygen2,
+    devtools
 VignetteBuilder: knitr
 RoxygenNote: 6.0.1
-Authors@R: 
+Authors@R:
     person(given = "Greg Finak and Paul Obrecht")
