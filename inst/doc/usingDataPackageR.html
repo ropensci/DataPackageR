@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta name="author" content="Greg Finak gfinak@fredhutch.org" />
+
+<meta name="date" content="2017-05-23" />
+
+<title>Using DataPackageR</title>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+
+
+<link href="data:text/css;charset=utf-8,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23header%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%20code%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" rel="stylesheet" type="text/css" />
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Using DataPackageR</h1>
+<h4 class="author"><em>Greg Finak <a href="mailto:gfinak@fredhutch.org">gfinak@fredhutch.org</a></em></h4>
+<h4 class="date"><em>2017-05-23</em></h4>
+
+
+
+<div id="datapackager" class="section level1">
+<h1>DataPackageR</h1>
+<p>Reproducibly process raw data into packaged, analysis-ready data sets</p>
+<div id="goals" class="section level2">
+<h2>Goals</h2>
+<p>You have raw data that needs to be tidied and otherwise processed into an analytic data set (a data set that is ready for analysis). You want to do the processing using best practices for reproducible research.</p>
+<div id="the-current-state-of-affairs" class="section level3">
+<h3>The current state of affairs</h3>
+<p>Normally, you’ll write some code that does the tidying and outputs a tidy data set. If you want to distribute your data set, you can put it in an R package. The preferred mechanism is to place your data tidying code in <code>data-raw</code> in the package source tree and use the <code>devtools</code> package (specifically <code>use_data</code>) to save the data into the <code>data</code> directory. The build process will include your data set in the final package. You’ll also have to remember to document the data set in <code>roxygen</code>, and write a vignette showing how to use the data. For version control and easy distribution you might post the package on github.</p>
+</div>
+<div id="scaling-up" class="section level3">
+<h3>Scaling up</h3>
+<p>The process outlined works well for smaller data sets. It can be a hassle if you have complex data that change frequently (as is often the case in biology, where data trickle in through follow-up experiments), or if you have large data sets that don’t fit into <code>data-raw</code> (e.g. FASTQ files for sequencing, FCS files for flow cytometry, or other “omics” data), and are too large to be distributed in the final package.</p>
+</div>
+<div id="datapackager-1" class="section level3">
+<h3>DataPackageR</h3>
+<p>The <code>DataPackageR</code> package simplifies bundling of code, data and documentation into a single R package that can be versioned and distributed. The <code>datapackage.skeleton()</code> API lets you point <code>DataPackageR</code> at your munging code (in the form of an Rmd file), specify the names of the R objects / datasets that should be stored in the R package.</p>
+<p>The <code>buildDataSetPackage()</code> API runs the user-code, stores the output html reports as <strong>package vignettes</strong>, builds boilerplate <code>roxygen</code> documentation of stored R objects, computes checksums of stored R objects and applies a version tag to the entire data set. If raw data changes, the user can reubuild the R package with subsequent calls to <code>buildDataSetPackage()</code> which will re-run the processing, compare the cheksums of new R objects against those currently stored in the package. Any changes force an increment of the <code>Dataversion</code> string in the package DESCRIPTION file. When the package is installed, data sets can be accessed via the standard <code>data()</code> API, package vignettes describing the data processing can be accessed via <code>vignette()</code>, documentation via <code>?</code>, and the data version via <code>dataVersion(packageName)</code>.</p>
+</div>
+</div>
+<div id="usage" class="section level2">
+<h2>Usage</h2>
+<p>Set up a new data package. Assume we have data munging code in <code>MungeDataset1.Rmd</code>, and <code>MungeDatast2.Rmd</code>, and each of these produce R objects <code>dataset1</code> and <code>dataset2</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(DataPackageR)
+<span class="kw">setwd</span>(<span class="st">&quot;/tmp&quot;</span>)
+DataPackageR::<span class="kw">datapackage.skeleton</span>(<span class="st">&quot;MyNewStudy&quot;</span>,<span class="dt">force=</span><span class="ot">TRUE</span>,<span class="dt">code_files =</span> <span class="kw">c</span>(<span class="st">&quot;/tmp/MungeDataset1.Rmd&quot;</span>,<span class="st">&quot;/tmp/MungeDataset2.Rmd&quot;</span>),<span class="dt">r_object_names =</span> <span class="kw">c</span>(<span class="st">&quot;dataset1&quot;</span>,<span class="st">&quot;dataset2&quot;</span>))</code></pre></div>
+<pre><code>Creating directories ...
+Creating DESCRIPTION ...
+Creating NAMESPACE ...
+Creating Read-and-delete-me ...
+Saving functions and data ...
+Making help files ...
+Done.
+Further steps are described in './MyNewStudy/Read-and-delete-me'.
+Adding DataVersion string to DESCRIPTION
+Creating data and data-raw directories</code></pre>
+<p>The above code creates a directory “MyNewStudy” with the skeleton of a data package.</p>
+<p>The <code>DESCRIPTION</code> file should be filled out to describe your package. A new <code>DataVersion</code> string now appears in that file. The revision is automatically incremented if the package data changes.</p>
+<p><code>Read-and-delete-me</code> has some helpful instructions on how to proceed.</p>
+<p>The <code>data-raw</code> directory is where the data cleaning code (<code>Rmd</code>) files reside. The contents of this directory are:</p>
+<pre><code>MyNewStudy/data-raw
+└── datasets.R
+└── MungeDataset1.Rmd
+└── MungeDataset2.Rmd</code></pre>
+<p><code>datasets.R</code> can be edited as necessary (see below). This “master” file sources your data munging scripts. Data munging scripts can read data from anywhere, but it is good practice to have your “raw” data live under <code>/inst/extdata</code>. It should be copied into that path and the data munging scripts edited appropriately.</p>
+<p>Here are the contents on <code>datasets.R</code>:</p>
+<pre><code>pkgName &lt;- roxygen2:::read.description(&quot;../DESCRIPTION&quot;)$Package
+
+# ------------------------------------------------------------
+# Source additional R scripts to preprocess assay data
+
+library(rmarkdown)
+render('MungeDataset1.Rmd', envir=topenv(), output_dir='../inst/extdata/Logfiles', intermediates_dir='../inst/extdata/Logfiles', clean=FALSE)
+render('MungeDataset2.Rmd', envir=topenv(), output_dir='../inst/extdata/Logfiles', intermediates_dir='../inst/extdata/Logfiles', clean=FALSE)
+
+# for a systematically-named sequence of scripts, one could do something like this:
+# for(fn in list.files(path=&quot;./&quot;, pattern=&quot;^preprocess_.*\\.Rmd$&quot;)){
+#   render(fn, envir=topenv(),output_dir=&quot;../inst/extdata/Logfiles&quot;,intermediates_dir = &quot;../inst/extdata/Logfiles&quot;,clean=FALSE)
+# }
+# Or a full path to each Rmd file can be passed to datapacakge.skeleton via code_files.
+
+
+# ------------------------------------------------------------
+# Define data objects to keep in the package
+# (defining here because the list is useful when building roxygen documentation)
+objectsToKeep &lt;- c('dataset1', 'dataset2', 'etc.') # if it's a collection of unsystematically-named objects
+# objectsToKeep &lt;- ls(pattern=pkgName) # if you can define a rule that describes the naming of objects to be available in the package
+# Or these can be passed into datapackage.skeleton via the r_object_names parameter
+
+# ------------------------------------------------------------
+# Auto build roxygen documentation
+# On first build, we generate boilerplate roxygen documentation using DataPackageR:::.autoDoc()
+# User then manually edits the output file edit_and_rename_to_'documentation.R'.R and renames it to documentation.R.
+# The documentation.R file is then used for all subsequent builds.
+if(file.exists(&quot;documentation.R&quot;)){
+  sys.source('documentation.R', envir=topenv())
+} else {
+  DataPackageR:::.autoDoc(pkgName, objectsToKeep, topenv())
+}
+
+# keep only objects labeled for retention
+keepDataObjects(objectsToKeep)  </code></pre>
+<p>We look at this piece by piece.</p>
+<div id="data-processing-scripts" class="section level3">
+<h3>Data processing scripts</h3>
+<p>First, we load the rmarkdown package and then render the user-provided data processing code <code>MungeDataset1.Rmd</code>, and <code>MungeDataset2.Rmd</code>.</p>
+<ul>
+<li>This should (obviously) be an Rmarkdown file, that combines text and R code.</li>
+<li>It should contain a YAML preamble with the minimum information needed to process it into an html report.</li>
+<li>When run, it should perform the processing of your data sets(s) into an R object named in <code>r_object_names</code> of <code>datapackage.skeleton</code>.</li>
+</ul>
+<p>The product of this particular script will be an html document that serves as a log of how the data were processed.</p>
+<ul>
+<li>The html report will be included as a <code>vignette</code> in the final package.</li>
+</ul>
+<p>The most important product of processing script is one or more R objects.</p>
+<ul>
+<li>The call to <code>keepDataObjects()</code> tells the build process which objects should be retained and stored as part of the data package.</li>
+<li>In this case, our scripts should produce two objects <code>dataset1</code> and <code>dataset2</code>.</li>
+<li><code>keepDataObjects('dataset1','dataset2')</code> tells the build process the name of the object to store in the package.</li>
+<li><p>All this is taken care of via arguments to <code>datapackage.skeleton</code>.</p></li>
+<li>You do not need to save these objects to <code>data</code>. The build process will handle this for you.</li>
+<li>The objects need to exist in memory when the processing script is finished running.</li>
+<li>The build process will match these names to objects in memory and to existing documentation (see below).</li>
+<li><p>If everything is in order, they will be included in the built package.</p></li>
+</ul>
+</div>
+<div id="object-documentation" class="section level3">
+<h3>Object Documentation</h3>
+<p>There is a call to <code>.autoDoc</code>, which generates documentation for the package and the objects on the first run of the build.</p>
+<p>It produces a file that the user needs to rename and edit by hand.</p>
+<p>The contents of this file are roxygen blocks that are parsed into object and package documentation.</p>
+<ul>
+<li>It is good practice to
+<ul>
+<li>Document all the columns of tables in your data set.</li>
+<li>Include the source of the data (i.e. where the data came from).</li>
+</ul></li>
+</ul>
+</div>
+<div id="build-your-package." class="section level3">
+<h3>Build your package.</h3>
+<p>Once your scripts are in place and the data objects are documented, you build the package.</p>
+<p>To run the build process:</p>
+<pre class="r{}"><code># Within the package directory
+DataPackageR:::buildDataSetPackage(&quot;.&quot;) #note for a first build this needs to be run twice and the 
+#documentation edited.</code></pre>
+<p>If there are errors, the script will notify you of any problems.</p>
+<ul>
+<li>Correct any errors and rerun the build process.</li>
+</ul>
+<p>If everything goes smoothly, you will have a new package built in the parent directory.</p>
+<p>This can be distributed, installed using <code>R CMD INSTALL</code>, and data sets loaded using R’s standard <code>data()</code> call. Vignettes can be interrogated via <code>vignette(package=&quot;mypackage&quot;)</code></p>
+</div>
+<div id="data-versioning" class="section level3">
+<h3>Data versioning</h3>
+<p>The DataPackageR package calculates an md5 checksum of each data object it stores, and keeps track of them in a file called <code>DATADIGEST</code>.</p>
+<ul>
+<li>Each time the package is rebuilt, the md5 sums of the new data objects are compared against the DATADIGEST.</li>
+<li>If they don’t match, the build process checks that the <code>DataVersion</code> string has been incremented in the <code>DESCRIPTION</code> file.</li>
+<li>If it has not the build process will exit and produce an error message.</li>
+</ul>
+</div>
+<div id="benefits" class="section level3">
+<h3>Benefits</h3>
+<p>Your downstream data analysis can depend on a specific version of your data package (for example by tesing the <code>packageVersion()</code> string);</p>
+<pre class="r{}"><code>if(packageVersion(&quot;MyNewStudy&quot;) != &quot;1.0.0&quot;)
+  stop(&quot;The expected version of MyNewStudy is 1.0.0, but &quot;,packageVersion(&quot;MyNewStudy&quot;),&quot; is installed! Analysis results may differ!&quot;)</code></pre>
+<p>The DataPackageR packge also provides <code>datasetVersion()</code> to extract the data set version information.</p>
+<p>You should also place the data package source directory under <code>git</code> version control. This allows you to version control your data processing code.</p>
+</div>
+</div>
+</div>
+
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
