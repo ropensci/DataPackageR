@@ -220,8 +220,8 @@ DataPackageR <- function(arg = NULL,masterfile=NULL) {
   #TODO maybe copy only the files that have both html and Rmd.
   rmdfiles_for_vignettes = list.files(path="data-raw",pattern="Rmd$",full.names=TRUE,recursive = FALSE)
   htmlfiles_for_vignettes = list.files(path="inst/extdata/Logfiles",pattern="html$",full.names =TRUE,recursive = FALSE)
-  purrr::map(htmlfiles_for_vignettes,function(x)file.copy(x,file.path("inst/doc",basename(x))))
-  capture.output(purrr::map(rmdfiles_for_vignettes,function(x)file.copy(x,file.path("vignettes",basename(x)))))
+  purrr::map(htmlfiles_for_vignettes,function(x)file.copy(x,file.path("inst/doc",basename(x)),overwrite = TRUE))
+  capture.output(purrr::map(rmdfiles_for_vignettes,function(x)file.copy(x,file.path("vignettes",basename(x)),overwrite = TRUE)))
   vignettes_to_process = list.files(path="vignettes",pattern="Rmd$",full.names =TRUE,recursive=FALSE)
   write_me_out = purrr::map(vignettes_to_process,function(x){
     title = "Default Vignette Title. Add yaml title: to your document"
