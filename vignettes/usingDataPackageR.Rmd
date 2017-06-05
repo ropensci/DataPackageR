@@ -214,7 +214,7 @@ called `DATADIGEST`.
 Your downstream data analysis can depend on a specific version of your data package (for example by tesing the `packageVersion()` string);
 
 ```r{}
-if(packageVersion("MyNewStudy") != "1.0.0")
+if(DataPackageR::packageVersion("MyNewStudy") != "1.0.0")
   stop("The expected version of MyNewStudy is 1.0.0, but ",packageVersion("MyNewStudy")," is installed! Analysis results may differ!")
 ```
 
