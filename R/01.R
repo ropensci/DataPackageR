@@ -425,9 +425,10 @@ paste0("                 viewProcessingLog = function(pkg = ",name,"){"),
       list.files(
         path = file.path(package_path,"man"),pattern = "Rd",full.names = TRUE
       )
-    nmspc <-
-      list.files(path = file.path(package_path),pattern = "NAMESPACE",full.names = TRUE)
-    file.create(nmspc,showWarnings = FALSE) #create a blank NAMESPACE file
+    # nmspc <-
+    #   list.files(path = file.path(package_path),pattern = "NAMESPACE",full.names = TRUE)
+    # file.create(nmspc,showWarnings = FALSE) #create a blank NAMESPACE file
+    file.remove(file.path(package_path,"NAMESPACE"))
     oldrdafiles <-
       list.files(
         path = file.path(package_path,"data"),pattern = "rda",full.names = TRUE
@@ -448,7 +449,6 @@ paste0("                 viewProcessingLog = function(pkg = ",name,"){"),
 #'
 #' @param packageName \code{character} path to package source directory. Defaults to the current path when NULL.
 #' @param vignettes \code{logical} specify whether to build vignettes. Default FALSE.
-#' @param outpath \code{character} path to output the built package. Defaults to the parent of the current directory when NULL.
 #' @param masterfile \code{characer} path to file in data-raw that sources processing scripts. Will do 
 #' a partial build of the package.
 #' @importFrom roxygen2 roxygenise roxygenize
@@ -476,9 +476,9 @@ buildDataSetPackage <- function(packageName = NULL,vignettes=FALSE,outpath = NUL
     build_vignettes(packageName)#build vignettes explicitly, ensures they are installed properly
   }
   message("Building package")
-  build(packageName,vignettes = vignettes,dest_path = outpath)
+  build(packageName,vignettes = vignettes)
 }
-.increment_data_version = function(pkg_description, new_data_digest,which="minor"){
+.increment_data_version = function(pkg_description, new_data_digest,which="patch"){
   if(!which%in%c("major","minor","patch")){
     stop("version component to increment is misspecified in .increment_data_version, package DataPackageR")
   }

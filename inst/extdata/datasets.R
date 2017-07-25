@@ -32,4 +32,4 @@ if(file.exists("documentation.R")){
 }
 
 # keep only objects labeled for retention
-keepDataObjects(objectsToKeep)  
+DataPackageR:::keepDataObjects(objectsToKeep)  

@@ -12,8 +12,6 @@ buildDataSetPackage(packageName = NULL, vignettes = FALSE, outpath = NULL,
 
 \item{vignettes}{\code{logical} specify whether to build vignettes. Default FALSE.}
 
-\item{outpath}{\code{character} path to output the built package. Defaults to the parent of the current directory when NULL.}
-
 \item{masterfile}{\code{characer} path to file in data-raw that sources processing scripts. Will do 
 a partial build of the package.}
 }

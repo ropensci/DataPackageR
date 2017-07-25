@@ -139,7 +139,12 @@ DataPackageR <- function(arg = NULL,masterfile=NULL) {
                                   string_check$isgreater) {
                                     can_write <- TRUE
                                     message("Data hasn't changed but the DataVersion has been bumped.")
-                                  }
+                        }else if ((!.compare_digests(old_data_digest,new_data_digest,delta=masterfile)) &
+                                         string_check$isgreater) {
+                          can_write <- TRUE
+                          message("Data has changed and the DataVersion has been bumped.")
+                        }
+          
           if (can_write) {
             .save_data(new_data_digest,pkg_description,object_names,dataEnv,old_data_digest = old_data_digest, masterfile=masterfile)
             do_documentation <- TRUE
@@ -215,7 +220,12 @@ DataPackageR <- function(arg = NULL,masterfile=NULL) {
 
 
 .vignettesFromPPFiles <- function() {
-  try(devtools::use_vignette("."),silent=TRUE)
+  try(devtools::use_vignette(".",),silent=TRUE)
+  message("Removing inst/doc from .gitignore")
+  lines = readLines(".gitignore")
+  lines = gsub("inst/doc","",lines)
+  writeLines(lines,".gitignore")
+  # browser()
   try(dir.create("inst/doc"),silent=TRUE)
   #TODO maybe copy only the files that have both html and Rmd.
   rmdfiles_for_vignettes = list.files(path="data-raw",pattern="Rmd$",full.names=TRUE,recursive = FALSE)
