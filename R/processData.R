@@ -220,7 +220,13 @@ DataPackageR <- function(arg = NULL,masterfile=NULL) {
 
 
 .vignettesFromPPFiles <- function() {
-  try(devtools::use_vignette(".",),silent=TRUE)
+  pkg <- as.package(".")
+  devtools:::check_suggested("rmarkdown")
+  devtools:::add_desc_package(pkg, "Suggests", "knitr")
+  devtools:::add_desc_package(pkg, "Suggests", "rmarkdown")
+  devtools:::add_desc_package(pkg, "VignetteBuilder", "knitr")
+  devtools:::use_directory("vignettes", pkg = pkg)
+  devtools:::use_git_ignore("inst/doc", pkg = pkg)
   message("Removing inst/doc from .gitignore")
   lines = readLines(".gitignore")
   lines = gsub("inst/doc","",lines)
