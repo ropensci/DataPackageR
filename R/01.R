@@ -467,11 +467,13 @@ buildDataSetPackage <- function(packageName = NULL,vignettes=FALSE,outpath = NUL
   if (!success) {
     stop("Preprocessing failed. Address the issues above and try again.")
   }
-  message("Removing old documentation.")
-  manfiles = list.files(path=packageName,pattern = "\\.Rd$",ignore.case = FALSE,full.names=TRUE,recursive=TRUE)
-  sapply(manfiles,file.remove)
-  message("Building documentation")
-  roxygenise(packageName)
+  # if(is.null(masterfile)){
+    # message("Removing old documentation.")
+    # manfiles = list.files(path=packageName,pattern = "\\.Rd$",ignore.case = FALSE,full.names=TRUE,recursive=TRUE)
+    # sapply(manfiles,file.remove)
+    message("Building documentation")
+    roxygenise(packageName,clean=ifelse(is.null(masterfile),TRUE,FALSE))
+  # }
   if(vignettes){
     build_vignettes(packageName)#build vignettes explicitly, ensures they are installed properly
   }
