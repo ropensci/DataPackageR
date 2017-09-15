@@ -32,6 +32,8 @@ NULL
 #' @return logical TRUE if succesful, FALSE, if not.
 #' @import optparse roxygen2 rmarkdown desc
 #' @importFrom utils getSrcref
+#' @importFrom devtools as.package
+#' @import devtools
 DataPackageR <- function(arg = NULL,masterfile=NULL) {
   if (is.null(arg)) {
     parser <-
@@ -68,7 +70,7 @@ DataPackageR <- function(arg = NULL,masterfile=NULL) {
         dir(path = raw_data_dir,pattern = "^datasets.R$",full.names = TRUE)
       old_data_digest <- .parse_data_digest()
       pkg_description <-
-        try(roxygen2:::read.description(file="DESCRIPTION"),silent = TRUE)
+        try(read.description(file="DESCRIPTION"),silent = TRUE)
       if (inherits(pkg_description,"try-error")) {
         stop(
           "You need a valid package DESCRIPTION file. Please see Writing R Extensions (http://cran.r-project.org/doc/manuals/r-release/R-exts.html#The-DESCRIPTION-file).\n",pkg_description
@@ -166,7 +168,7 @@ DataPackageR <- function(arg = NULL,masterfile=NULL) {
               parse(x,keep.source = TRUE))
           docs <-
             lapply(sources,function(x)
-              roxygen2:::comments(getSrcref(x)))
+              comments(getSrcref(x)))
           docs <- lapply(docs,function(x)
             lapply(x,as.character))
           indx <-
@@ -221,12 +223,12 @@ DataPackageR <- function(arg = NULL,masterfile=NULL) {
 
 .vignettesFromPPFiles <- function() {
   pkg <- as.package(".")
-  devtools:::check_suggested("rmarkdown")
-  devtools:::add_desc_package(pkg, "Suggests", "knitr")
-  devtools:::add_desc_package(pkg, "Suggests", "rmarkdown")
-  devtools:::add_desc_package(pkg, "VignetteBuilder", "knitr")
-  devtools:::use_directory("vignettes", pkg = pkg)
-  devtools:::use_git_ignore("inst/doc", pkg = pkg)
+  check_suggested("rmarkdown")
+  add_desc_package(pkg, "Suggests", "knitr")
+  add_desc_package(pkg, "Suggests", "rmarkdown")
+  add_desc_package(pkg, "VignetteBuilder", "knitr")
+  use_directory("vignettes", pkg = pkg)
+  use_git_ignore("inst/doc", pkg = pkg)
   message("Removing inst/doc from .gitignore")
   lines = readLines(".gitignore")
   lines = gsub("inst/doc","",lines)
@@ -241,7 +243,7 @@ DataPackageR <- function(arg = NULL,masterfile=NULL) {
   vignettes_to_process = list.files(path="vignettes",pattern="Rmd$",full.names =TRUE,recursive=FALSE)
   write_me_out = purrr::map(vignettes_to_process,function(x){
     title = "Default Vignette Title. Add yaml title: to your document"
-    thisfile = rmarkdown:::read_file(x)
+    thisfile = read_file(x)
     stripped_yaml = gsub("---.*---","",thisfile)
     frontmatter = gsub("(---.*---).*","\\1",thisfile)
     con = textConnection(frontmatter)
