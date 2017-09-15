@@ -507,5 +507,5 @@ keepDataObjects <- function(obj) {
   # do they exist?
     assertthat:::assert_that(all(unlist(purrr::map(code_files,file.exists))),msg = "code_files do not all exist!")
     # are the .Rmd files? 
-    assertthat:::assert_that(all(grepl(".*\\.Rmd$",code_files)),msg = "code files are not Rmd files!")
+    assertthat:::assert_that(all(grepl(".*\\.rmd$",tolower(code_files))),msg = "code files are not Rmd files!")
 }
