@@ -100,7 +100,7 @@ DataPackageR <- function(arg = NULL,masterfile=NULL) {
       message("Logging to ",file.path("inst/extdata/Logfiles","processing.log"))
       LOGFILE <-
         file(file.path("inst/extdata/Logfiles","processing.log"))
-      sink(LOGFILE,append = TRUE,split = TRUE)
+      # sink(LOGFILE,append = TRUE,split = TRUE)
       for (i in seq_along(r_files)) {
         cat(i," of ",length(r_files),": ",r_files[i],"\n")
         #Source an R file
@@ -163,42 +163,26 @@ DataPackageR <- function(arg = NULL,masterfile=NULL) {
           #extract documentation and write to /R
           #FIXME this code is terrible and can be improved.. need to see how this is done in roxygen2
           all_r_files <- dir(raw_data_dir,pattern = "\\.R$",full.names = TRUE)
-          sources <-
-            lapply(all_r_files,function(x)
-              parse(x,keep.source = TRUE))
-          docs <-
-            lapply(sources,function(x)
-              comments(getSrcref(x)))
-          docs <- lapply(docs,function(x)
-            lapply(x,as.character))
-          indx <-
-            lapply(lapply(docs,function(x)
-              lapply(x,function(y)
-                sum(
-                  grepl("#'",y)
-                ))),function(x)
-                  unlist(x,use.names = FALSE) > 0)
-          docs <-
-            lapply(1:length(docs),function(j)
-              docs[[j]][indx[[j]]])
-          #Extract @name
-          doc_names <-
-            lapply(docs,function(x)
-              unlist(lapply(x,function(y)
-                gsub(".+@name (\\D+)","\\1",{
-                  y[grepl("@name",y)]
-                })),use.names = FALSE))
-          save_docs <- NULL
-          for (j in seq_along(doc_names)) {
-            #allow doc with @name of package to document the complete dataset
-            save_docs <-
-              c(save_docs,docs[[j]][doc_names[[j]] %in% c(object_names,pkg_description$Package)])
+          doc_parsed = .parseDocumentation(all_r_files)
+          doc_parsed = Filter(f = function(x)!is.null(x),doc_parsed[c(pkg_description$Package,object_names)])
+          #here need to append if we are doing a partial build.
+          if(!is.null(masterfile)){
+            old_doc_file = list.files(here("R"),full.names = TRUE,paste0(pkg_description$Package,".R"))
+            if(file.exists(old_doc_file)){
+             old_docs = .parseDocumentation(old_doc_file)
+              merged_docs = .mergeDocumentation(old = old_docs, new = doc_parsed)
+              save_docs = do.call(c,merged_docs)
+            }
+            else {
+              save_docs = do.call(c,doc_parsed)
+            }
+          }else{
+            save_docs = do.call(c,doc_parsed)
           }
           docfile <-
-            file(file.path("R",paste0(pkg_description$Package,".R")),open = "w")
+            file(file.path("R",pattern = paste0(pkg_description$Package,".R")),open = "w")
           sapply(save_docs,function(x) {
             writeLines(text = x,con = docfile)
-            writeLines("NULL",con = docfile)
           })
           close(docfile)
           message("Copied documentation to ",file.path("R",paste0(pkg_description$Package,".R")))
@@ -209,7 +193,7 @@ DataPackageR <- function(arg = NULL,masterfile=NULL) {
       .vignettesFromPPFiles()
       
     },finally = {
-      setwd(old);sink();sink(type = "message")
+      setwd(old);
     })
   }
   message("Done")
