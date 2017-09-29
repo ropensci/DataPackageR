@@ -176,3 +176,74 @@ union_write = function (path, new_lines)
   all <- union(lines, new_lines)
   writeLines(all, path)
 }
+
+as.package = function (x = NULL, create = NA) 
+{
+  if (is.package(x)) 
+    return(x)
+  x <- package_file(path = x)
+  load_pkg_description(x, create = create)
+}
+
+is.package = function (x) {
+  inherits(x, "package")
+}
+
+package_file = function (..., path = ".") 
+{
+  if (!is.character(path) || length(path) != 1) {
+    stop("`path` must be a string.", call. = FALSE)
+  }
+  path <- strip_slashes(normalizePath(path, mustWork = FALSE))
+  if (!file.exists(path)) {
+    stop("Can't find '", path, "'.", call. = FALSE)
+  }
+  if (!file.info(path)$isdir) {
+    stop("'", path, "' is not a directory.", call. = FALSE)
+  }
+  while (!has_description(path)) {
+    path <- dirname(path)
+    if (is_root(path)) {
+      stop("Could not find package root.", call. = FALSE)
+    }
+  }
+  file.path(path, ...)
+}
+
+has_description = function (path) 
+{
+  file.exists(file.path(path, "DESCRIPTION"))
+}
+
+strip_slashes = function (x) 
+{
+  x <- sub("/*$", "", x)
+  x
+}
+
+load_pkg_description = function (path, create) 
+{
+  path_desc <- file.path(path, "DESCRIPTION")
+  if (!file.exists(path_desc)) {
+    if (is.na(create)) {
+      if (interactive()) {
+        message("No package infrastructure found in ", 
+                path, ". Create it?")
+        create <- (menu(c("Yes", "No")) == 1)
+      }
+      else {
+        create <- FALSE
+      }
+    }
+    if (create) {
+      setup(path = path)
+    }
+    else {
+      stop("No description at ", path_desc, call. = FALSE)
+    }
+  }
+  desc <- as.list(read.dcf(path_desc)[1, ])
+  names(desc) <- tolower(names(desc))
+  desc$path <- path
+  structure(desc, class = "package")
+}
