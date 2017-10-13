@@ -2,8 +2,8 @@ Package: DataPackageR
 Type: Package
 Title: Construct reproducible analytic data sets as R packages
 Authors@R: 
-    c(person(given = "Greg Finak"),
-      person(given = "Paul Obrecht"))
+    c(person(given = "Greg Finak", role=c("aut","cre"), email="gfinak@fredhutch.org"),
+      person(given = "Paul Obrecht", role=c("aut")))
 Version: 0.11.5
 Date: 2016-01-13
 Maintainer: Greg Finak <gfinak@fredhutch.org> 
