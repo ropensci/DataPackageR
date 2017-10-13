@@ -4,11 +4,11 @@ pkgName <- roxygen2:::read.description("../DESCRIPTION")$Package
 # Source additional R scripts to preprocess assay data
 
 library(rmarkdown)
-render('myPreprocessingCode.Rmd', envir=topenv(), output_dir='../inst/extdata/Logfiles', intermediates_dir='../inst/extdata/Logfiles', clean=FALSE)
+render('myPreprocessingCode.Rmd', envir=topenv(), output_dir='../inst/extdata/Logfiles', clean=FALSE)
 
 # for a systematically-named sequence of scripts, one could do something like this:
 # for(fn in list.files(path="./", pattern="^preprocess_.*\\.Rmd$")){
-#   render(fn, envir=topenv(),output_dir="../inst/extdata/Logfiles",intermediates_dir = "../inst/extdata/Logfiles",clean=FALSE)
+#   render(fn, envir=topenv(),output_dir="../inst/extdata/Logfiles",,clean=FALSE)
 # }
 # Or a full path to each Rmd file can be passed to datapacakge.skeleton via code_files.
 

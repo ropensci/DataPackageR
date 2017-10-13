@@ -9,8 +9,6 @@ import(desc)
 import(devtools)
 import(optparse)
 import(rmarkdown)
-import(here)
-
 import(roxygen2)
 import(utils)
 importFrom(assertthat,assert_that)

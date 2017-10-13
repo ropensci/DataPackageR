@@ -12,7 +12,7 @@
 
 <meta name="author" content="Greg Finak gfinak@fredhutch.org" />
 
-<meta name="date" content="2017-05-23" />
+<meta name="date" content="2017-10-13" />
 
 <title>Using DataPackageR</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Using DataPackageR</h1>
 <h4 class="author"><em>Greg Finak <a href="mailto:gfinak@fredhutch.org">gfinak@fredhutch.org</a></em></h4>
-<h4 class="date"><em>2017-05-23</em></h4>
+<h4 class="date"><em>2017-10-13</em></h4>
 
 
 
@@ -126,12 +126,12 @@ Creating data and data-raw directories</code></pre>
 # Source additional R scripts to preprocess assay data
 
 library(rmarkdown)
-render('MungeDataset1.Rmd', envir=topenv(), output_dir='../inst/extdata/Logfiles', intermediates_dir='../inst/extdata/Logfiles', clean=FALSE)
-render('MungeDataset2.Rmd', envir=topenv(), output_dir='../inst/extdata/Logfiles', intermediates_dir='../inst/extdata/Logfiles', clean=FALSE)
+render('MungeDataset1.Rmd', envir=topenv(), output_dir='../inst/extdata/Logfiles', clean=FALSE)
+render('MungeDataset2.Rmd', envir=topenv(), output_dir='../inst/extdata/Logfiles', clean=FALSE)
 
 # for a systematically-named sequence of scripts, one could do something like this:
 # for(fn in list.files(path=&quot;./&quot;, pattern=&quot;^preprocess_.*\\.Rmd$&quot;)){
-#   render(fn, envir=topenv(),output_dir=&quot;../inst/extdata/Logfiles&quot;,intermediates_dir = &quot;../inst/extdata/Logfiles&quot;,clean=FALSE)
+#   render(fn, envir=topenv(),output_dir=&quot;../inst/extdata/Logfiles&quot;,clean=FALSE)
 # }
 # Or a full path to each Rmd file can be passed to datapacakge.skeleton via code_files.
 
@@ -220,7 +220,7 @@ DataPackageR:::buildDataSetPackage(&quot;.&quot;) #note for a first build this n
 <div id="benefits" class="section level3">
 <h3>Benefits</h3>
 <p>Your downstream data analysis can depend on a specific version of your data package (for example by tesing the <code>packageVersion()</code> string);</p>
-<pre class="r{}"><code>if(packageVersion(&quot;MyNewStudy&quot;) != &quot;1.0.0&quot;)
+<pre class="r{}"><code>if(DataPackageR::packageVersion(&quot;MyNewStudy&quot;) != &quot;1.0.0&quot;)
   stop(&quot;The expected version of MyNewStudy is 1.0.0, but &quot;,packageVersion(&quot;MyNewStudy&quot;),&quot; is installed! Analysis results may differ!&quot;)</code></pre>
 <p>The DataPackageR packge also provides <code>datasetVersion()</code> to extract the data set version information.</p>
 <p>You should also place the data package source directory under <code>git</code> version control. This allows you to version control your data processing code.</p>

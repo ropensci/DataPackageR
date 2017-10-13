@@ -5,11 +5,11 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Construct reproducible analytic data sets as R packages.  • DataPackageR</title>
+<title>Construct reproducible analytic data sets as R packages • DataPackageR</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
-<script src="jquery.sticky-kit.min.js"></script><script src="pkgdown.js"></script><!-- mathjax --><script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
+<script src="jquery.sticky-kit.min.js"></script><script src="pkgdown.js"></script><!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
@@ -29,10 +29,13 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="reference/index.html">Reference</a>
+  <a href="/index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
 </li>
 <li>
-  <a href="articles/index.html">Articles</a>
+  <a href="reference/index.html">Reference</a>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right"></ul>
@@ -54,11 +57,11 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 <div id="datapackager" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
-<a href="#datapackager" class="anchor"> </a>DataPackageR</h1></div>
+<a href="#datapackager" class="anchor"></a>DataPackageR</h1></div>
 <p>Process raw data into packaged, analysis-ready data sets, reproducibly.</p>
-<div id="what-and-why" class="section level2">
+<div id="overview" class="section level2">
 <h2 class="hasAnchor">
-<a href="#what-and-why" class="anchor"> </a>What and why?</h2>
+<a href="#overview" class="anchor"></a>Overview</h2>
 <p>A data set may consist of multiple sources of raw data. These need to be cleaned, standardized, QCd, and any number of other manipulations applied before they are ready for analysis.</p>
 <p>This package is designed to simplify and centralize tasks associated with tidying a variety of data sets associated with a single project.</p>
 <p>It provides a mechanism to collect, organize and version the data munging scripts used to process incoming data into analytical data sets. The package runs these scripts to perform the data munging writes out analytical data sets, which are combined with documentation, and built into a new R package. The package and the included data are versioned. If updated data arrive, the package can be rebuilt, and the data version incremented to reflect the changes. If the data munging code is in the form of Rmarkdown documents, these are processed automatically into package vignettes that are included in the final pacakge.</p>
@@ -66,7 +69,7 @@
 </div>
 <div id="usage" class="section level2">
 <h2 class="hasAnchor">
-<a href="#usage" class="anchor"> </a>Usage</h2>
+<a href="#usage" class="anchor"></a>Usage</h2>
 <p>Set up a new data package. Assume we have data munging code in <code>MungeDataset1.Rmd</code>, and <code>MungeDatast2.Rmd</code>, and each of these produce R objects <code>dataset1</code> and <code>dataset2</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(DataPackageR)
 <span class="kw">setwd</span>(<span class="st">"/tmp"</span>)
@@ -97,12 +100,12 @@ Creating data and data-raw directories</code></pre>
 # Source additional R scripts to preprocess assay data
 
 library(rmarkdown)
-render('MungeDataset1.Rmd', envir=topenv(), output_dir='../inst/extdata/Logfiles', intermediates_dir='../inst/extdata/Logfiles', clean=FALSE)
-render('MungeDataset2.Rmd', envir=topenv(), output_dir='../inst/extdata/Logfiles', intermediates_dir='../inst/extdata/Logfiles', clean=FALSE)
+render('MungeDataset1.Rmd', envir=topenv(), output_dir='../inst/extdata/Logfiles', clean=FALSE)
+render('MungeDataset2.Rmd', envir=topenv(), output_dir='../inst/extdata/Logfiles', clean=FALSE)
 
 # for a systematically-named sequence of scripts, one could do something like this:
 # for(fn in list.files(path="./", pattern="^preprocess_.*\\.Rmd$")){
-#   render(fn, envir=topenv(),output_dir="../inst/extdata/Logfiles",intermediates_dir = "../inst/extdata/Logfiles",clean=FALSE)
+#   render(fn, envir=topenv(),output_dir="../inst/extdata/Logfiles",clean=FALSE)
 # }
 # Or a full path to each Rmd file can be passed to datapacakge.skeleton via code_files.
 
@@ -130,7 +133,7 @@ keepDataObjects(objectsToKeep)  </code></pre>
 <p>We look at this piece by piece.</p>
 <div id="data-processing-scripts" class="section level3">
 <h3 class="hasAnchor">
-<a href="#data-processing-scripts" class="anchor"> </a>Data processing scripts</h3>
+<a href="#data-processing-scripts" class="anchor"></a>Data processing scripts</h3>
 <p>First, we load the rmarkdown package and then render the user-provided data processing code <code>MungeDataset1.Rmd</code>, and <code>MungeDataset2.Rmd</code>.</p>
 <ul>
 <li>This should (obviously) be an Rmarkdown file, that combines text and R code.</li>
@@ -156,7 +159,7 @@ keepDataObjects(objectsToKeep)  </code></pre>
 </div>
 <div id="object-documentation" class="section level3">
 <h3 class="hasAnchor">
-<a href="#object-documentation" class="anchor"> </a>Object Documentation</h3>
+<a href="#object-documentation" class="anchor"></a>Object Documentation</h3>
 <p>There is a call to <code>.autoDoc</code>, which generates documentation for the package and the objects on the first run of the build.</p>
 <p>It produces a file that the user needs to rename and edit by hand.</p>
 <p>The contents of this file are roxygen blocks that are parsed into object and package documentation.</p>
@@ -171,7 +174,7 @@ keepDataObjects(objectsToKeep)  </code></pre>
 </div>
 <div id="build-your-package-" class="section level3">
 <h3 class="hasAnchor">
-<a href="#build-your-package-" class="anchor"> </a>Build your package.</h3>
+<a href="#build-your-package-" class="anchor"></a>Build your package.</h3>
 <p>Once your scripts are in place and the data objects are documented, you build the package.</p>
 <p>To run the build process:</p>
 <pre class="r{}"><code># Within the package directory
@@ -182,11 +185,11 @@ DataPackageR:::buildDataSetPackage(".") #note for a first build this needs to be
 <li>Correct any errors and rerun the build process.</li>
 </ul>
 <p>If everything goes smoothly, you will have a new package built in the parent directory.</p>
-<p>This can be distributed, installed using <code>R CMD INSTALL</code>, and data sets loaded using R’s standard <code>data()</code> call. Vignettes can be interrogated via <code><a href="articles/mypackage.html">vignette(package="mypackage")</a></code></p>
+<p>This can be distributed, installed using <code>R CMD INSTALL</code>, and data sets loaded using R’s standard <code>data()</code> call. Vignettes can be interrogated via <code>vignette(package="mypackage")</code></p>
 </div>
 <div id="data-versioning" class="section level3">
 <h3 class="hasAnchor">
-<a href="#data-versioning" class="anchor"> </a>Data versioning</h3>
+<a href="#data-versioning" class="anchor"></a>Data versioning</h3>
 <p>The DataPackageR package calculates an md5 checksum of each data object it stores, and keeps track of them in a file called <code>DATADIGEST</code>.</p>
 <ul>
 <li>Each time the package is rebuilt, the md5 sums of the new data objects are compared against the DATADIGEST.</li>
@@ -196,7 +199,7 @@ DataPackageR:::buildDataSetPackage(".") #note for a first build this needs to be
 </div>
 <div id="benefits" class="section level3">
 <h3 class="hasAnchor">
-<a href="#benefits" class="anchor"> </a>Benefits</h3>
+<a href="#benefits" class="anchor"></a>Benefits</h3>
 <p>Your downstream data analysis can depend on a specific version of your data package (for example by tesing the <code>packageVersion()</code> string);</p>
 <pre class="r{}"><code>if(packageVersion("MyNewStudy") != "1.0.0")
   stop("The expected version of MyNewStudy is 1.0.0, but ",packageVersion("MyNewStudy")," is installed! Analysis results may differ!")</code></pre>
@@ -209,8 +212,9 @@ DataPackageR:::buildDataSetPackage(".") #note for a first build this needs to be
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>License</h2>
-<p><a href="https://www.r-project.org/Licenses/Artistic-2.0">Artistic-2.0</a></p>
+    <h2 class="hasAnchor">
+<a href="#sidebar" class="anchor"></a>License</h2>
+<p><a href="https://www.r-project.org/Licenses/GPL-3">GPL-3</a></p>
 <h2>Developers</h2>
 <ul class="list-unstyled">
 <li><a href="authors.html">All authors...</a></li>

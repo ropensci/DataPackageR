@@ -84,8 +84,8 @@ datapackage.skeleton <-
       if(length(code_files)!=0){
         .validateCodeFiles(code_files)
         #If these are valid, we put them in datasets.R
-        render_to_insert = paste(paste0("render\\('",basename(code_files),"', envir=topenv\\(\\), output_dir='../inst/extdata/Logfiles', intermediates_dir='../inst/extdata/Logfiles', clean=FALSE\\)"),collapse="\n")
-        datasets_string = gsub("render\\('myPreprocessingCode.Rmd', envir=topenv\\(\\), output_dir='../inst/extdata/Logfiles', intermediates_dir='../inst/extdata/Logfiles', clean=FALSE\\)",render_to_insert,datasets_string)
+        render_to_insert = paste(paste0("render\\('",basename(code_files),"', envir=topenv\\(\\), output_dir='../inst/extdata/Logfiles', clean=FALSE\\)"),collapse="\n")
+        datasets_string = gsub("render\\('myPreprocessingCode.Rmd', envir=topenv\\(\\), output_dir='../inst/extdata/Logfiles', clean=FALSE\\)",render_to_insert,datasets_string)
         #copy them over
         purrr::map(code_files,function(x)file.copy(x,file.path(package_path,"data-raw")))
         

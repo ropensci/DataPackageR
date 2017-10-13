@@ -1,166 +1,122 @@
----
-title: "Using DataPackageR"
-author: "Greg Finak <gfinak@fredhutch.org>"
-date: "2017-06-09"
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{A quick guide to using DataPackageR}
-  %\VignetteEngine{knitr::rmarkdown}
-  \usepackage[utf8]{inputenc}
-  \usepackage{graphicx}
----
 
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+DataPackageR
+============
 
+Process raw data into packaged, analysis-ready data sets, reproducibly.
 
-# DataPackageR
+Overview
+--------
 
-Reproducibly process raw data into packaged, analysis-ready data sets
+A data set may consist of multiple sources of raw data. These need to be cleaned, standardized, QCd, and any number of other manipulations applied before they are ready for analysis.
 
-## Goals
+This package is designed to simplify and centralize tasks associated with tidying a variety of data sets associated with a single project.
 
-You have raw data that needs to be tidied and otherwise processed into an analytic data set (a data set that is ready for analysis). 
-You want to do the processing using best practices for reproducible research. 
+It provides a mechanism to collect, organize and version the data munging scripts used to process incoming data into analytical data sets. The package runs these scripts to perform the data munging writes out analytical data sets, which are combined with documentation, and built into a new R package. The package and the included data are versioned. If updated data arrive, the package can be rebuilt, and the data version incremented to reflect the changes. If the data munging code is in the form of Rmarkdown documents, these are processed automatically into package vignettes that are included in the final pacakge.
 
-### The current state of affairs
+No other restrictions are placed on the data munging code.
 
-Normally, you'll write some code that does the tidying and outputs a tidy data set. 
-If you want to distribute your data set, you can put it in an R package. 
-The preferred mechanism is to place your data tidying code in `data-raw` in the package source tree and use the `devtools` package (specifically `use_data`) to save the data into the `data` directory. The build process will include your data set in the final package.
-You'll also have to remember to document the data set in `roxygen`, and write a vignette showing how to use the data. 
-For version control and easy distribution you might post the package on github. 
+Usage
+-----
 
-### Scaling up
+Set up a new data package. Assume we have data munging code in `MungeDataset1.Rmd`, and `MungeDatast2.Rmd`, and each of these produce R objects `dataset1` and `dataset2`.
 
-The process outlined works well for smaller data sets. 
-It can be a hassle if you have complex data that change frequently (as is often the case in biology, where data trickle in through follow-up experiments), or if you have large data sets that don't fit into `data-raw` (e.g. FASTQ files for sequencing, FCS files for flow cytometry, or other "omics" data), and are too large to be distributed in the final package.
-
-### DataPackageR
-
-The `DataPackageR` package simplifies bundling of code, data and documentation into a single R package that can be versioned and distributed.
-The `datapackage.skeleton()` API lets you point `DataPackageR` at your munging code (in the form of an Rmd file), specify the names of the R objects / datasets that should be stored in the R package.
-
-The `buildDataSetPackage()` API runs the user-code, stores the output html reports as **package vignettes**, builds boilerplate `roxygen` documentation of stored R objects, computes checksums of stored R objects and applies a version tag to the entire data set. 
-If raw data changes, the user can reubuild the R package with subsequent calls to `buildDataSetPackage()` which will re-run the processing, compare the cheksums of new R objects against those currently stored in the package. 
-Any changes force an increment of the `Dataversion` string in the package DESCRIPTION file. 
-When the package is installed, data sets can be accessed via the standard `data()` API, package vignettes describing the data processing can be accessed via `vignette()`, documentation via `?`, and the data version via `dataVersion(packageName)`. 
-
-## Usage
-
-Set up a new data package.
-Assume we have data munging code in `MungeDataset1.Rmd`, and `MungeDatast2.Rmd`, and each of these produce R objects `dataset1` and `dataset2`.
-
-
-```r
+``` r
 library(DataPackageR)
 setwd("/tmp")
 DataPackageR::datapackage.skeleton("MyNewStudy",force=TRUE,code_files = c("/tmp/MungeDataset1.Rmd","/tmp/MungeDataset2.Rmd"),r_object_names = c("dataset1","dataset2"))
 ```
 
-```
-Creating directories ...
-Creating DESCRIPTION ...
-Creating NAMESPACE ...
-Creating Read-and-delete-me ...
-Saving functions and data ...
-Making help files ...
-Done.
-Further steps are described in './MyNewStudy/Read-and-delete-me'.
-Adding DataVersion string to DESCRIPTION
-Creating data and data-raw directories
-```
+    Creating directories ...
+    Creating DESCRIPTION ...
+    Creating NAMESPACE ...
+    Creating Read-and-delete-me ...
+    Saving functions and data ...
+    Making help files ...
+    Done.
+    Further steps are described in './MyNewStudy/Read-and-delete-me'.
+    Adding DataVersion string to DESCRIPTION
+    Creating data and data-raw directories
 
 The above code creates a directory "MyNewStudy" with the skeleton of a data package.
 
-The `DESCRIPTION` file should be filled out to describe your package.
-A new `DataVersion` string now appears in that file. 
-The revision is automatically incremented if the package data changes.
+The `DESCRIPTION` file should be filled out to describe your package. A new `DataVersion` string now appears in that file. The revision is automatically incremented if the package data changes.
 
-`Read-and-delete-me` has some helpful instructions on how to proceed. 
+`Read-and-delete-me` has some helpful instructions on how to proceed.
 
-The `data-raw` directory is where the data cleaning code (`Rmd`) files reside.
-The contents of this directory are:
+The `data-raw` directory is where the data cleaning code (`Rmd`) files reside. The contents of this directory are:
 
-```
-MyNewStudy/data-raw
-└── datasets.R
-└── MungeDataset1.Rmd
-└── MungeDataset2.Rmd
-```
+    MyNewStudy/data-raw
+    └── datasets.R
+    └── MungeDataset1.Rmd
+    └── MungeDataset2.Rmd
 
-`datasets.R` can be edited as necessary (see below). This "master" file sources your data munging scripts. 
-Data munging scripts can read data from anywhere, but it is good practice
-to have your "raw" data live under `/inst/extdata`. It should be copied into that path and the data munging scripts edited appropriately.
+`datasets.R` can be edited as necessary (see below). This "master" file sources your data munging scripts. Data munging scripts can read data from anywhere, but it is good practice to have your "raw" data live under `/inst/extdata`. It should be copied into that path and the data munging scripts edited appropriately.
 
 Here are the contents on `datasets.R`:
 
-```
-pkgName <- roxygen2:::read.description("../DESCRIPTION")$Package
+    pkgName <- roxygen2:::read.description("../DESCRIPTION")$Package
 
-# ------------------------------------------------------------
-# Source additional R scripts to preprocess assay data
+    # ------------------------------------------------------------
+    # Source additional R scripts to preprocess assay data
 
-library(rmarkdown)
-render('MungeDataset1.Rmd', envir=topenv(), output_dir='../inst/extdata/Logfiles', intermediates_dir='../inst/extdata/Logfiles', clean=FALSE)
-render('MungeDataset2.Rmd', envir=topenv(), output_dir='../inst/extdata/Logfiles', intermediates_dir='../inst/extdata/Logfiles', clean=FALSE)
+    library(rmarkdown)
+    render('MungeDataset1.Rmd', envir=topenv(), output_dir='../inst/extdata/Logfiles', clean=FALSE)
+    render('MungeDataset2.Rmd', envir=topenv(), output_dir='../inst/extdata/Logfiles', clean=FALSE)
 
-# for a systematically-named sequence of scripts, one could do something like this:
-# for(fn in list.files(path="./", pattern="^preprocess_.*\\.Rmd$")){
-#   render(fn, envir=topenv(),output_dir="../inst/extdata/Logfiles",intermediates_dir = "../inst/extdata/Logfiles",clean=FALSE)
-# }
-# Or a full path to each Rmd file can be passed to datapacakge.skeleton via code_files.
+    # for a systematically-named sequence of scripts, one could do something like this:
+    # for(fn in list.files(path="./", pattern="^preprocess_.*\\.Rmd$")){
+    #   render(fn, envir=topenv(),output_dir="../inst/extdata/Logfiles",clean=FALSE)
+    # }
+    # Or a full path to each Rmd file can be passed to datapacakge.skeleton via code_files.
 
 
-# ------------------------------------------------------------
-# Define data objects to keep in the package
-# (defining here because the list is useful when building roxygen documentation)
-objectsToKeep <- c('dataset1', 'dataset2', 'etc.') # if it's a collection of unsystematically-named objects
-# objectsToKeep <- ls(pattern=pkgName) # if you can define a rule that describes the naming of objects to be available in the package
-# Or these can be passed into datapackage.skeleton via the r_object_names parameter
+    # ------------------------------------------------------------
+    # Define data objects to keep in the package
+    # (defining here because the list is useful when building roxygen documentation)
+    objectsToKeep <- c('dataset1', 'dataset2', 'etc.') # if it's a collection of unsystematically-named objects
+    # objectsToKeep <- ls(pattern=pkgName) # if you can define a rule that describes the naming of objects to be available in the package
+    # Or these can be passed into datapackage.skeleton via the r_object_names parameter
 
-# ------------------------------------------------------------
-# Auto build roxygen documentation
-# On first build, we generate boilerplate roxygen documentation using DataPackageR:::.autoDoc()
-# User then manually edits the output file edit_and_rename_to_'documentation.R'.R and renames it to documentation.R.
-# The documentation.R file is then used for all subsequent builds.
-if(file.exists("documentation.R")){
-  sys.source('documentation.R', envir=topenv())
-} else {
-  DataPackageR:::.autoDoc(pkgName, objectsToKeep, topenv())
-}
+    # ------------------------------------------------------------
+    # Auto build roxygen documentation
+    # On first build, we generate boilerplate roxygen documentation using DataPackageR:::.autoDoc()
+    # User then manually edits the output file edit_and_rename_to_'documentation.R'.R and renames it to documentation.R.
+    # The documentation.R file is then used for all subsequent builds.
+    if(file.exists("documentation.R")){
+      sys.source('documentation.R', envir=topenv())
+    } else {
+      DataPackageR:::.autoDoc(pkgName, objectsToKeep, topenv())
+    }
 
-# keep only objects labeled for retention
-keepDataObjects(objectsToKeep)  
-```
+    # keep only objects labeled for retention
+    keepDataObjects(objectsToKeep)  
 
 We look at this piece by piece.
-
 
 ### Data processing scripts
 
 First, we load the rmarkdown package and then render the user-provided data processing code `MungeDataset1.Rmd`, and `MungeDataset2.Rmd`.
 
-- This should (obviously) be an Rmarkdown file, that combines text and R code.
-- It should contain a YAML preamble with the minimum information needed to process it into an html report.
-- When run, it should perform the processing of your data sets(s) into an R object named in `r_object_names` of `datapackage.skeleton`. 
+-   This should (obviously) be an Rmarkdown file, that combines text and R code.
+-   It should contain a YAML preamble with the minimum information needed to process it into an html report.
+-   When run, it should perform the processing of your data sets(s) into an R object named in `r_object_names` of `datapackage.skeleton`.
 
-The product of this particular script will be an html document that serves as a log of how the data
-were processed. 
+The product of this particular script will be an html document that serves as a log of how the data were processed.
 
-- The html report will be included as a `vignette` in the final package.
-
+-   The html report will be included as a `vignette` in the final package.
 
 The most important product of processing script is one or more R objects.
 
-- The call to `keepDataObjects()` tells the build process which objects should be retained and stored as part of the data package. 
-- In this case, our scripts should produce two objects `dataset1` and `dataset2`.
-- `keepDataObjects('dataset1','dataset2')` tells the build process the name of the object to store in the package.
-- All this is taken care of via arguments to `datapackage.skeleton`.
+-   The call to `keepDataObjects()` tells the build process which objects should be retained and stored as part of the data package.
+-   In this case, our scripts should produce two objects `dataset1` and `dataset2`.
+-   `keepDataObjects('dataset1','dataset2')` tells the build process the name of the object to store in the package.
+-   All this is taken care of via arguments to `datapackage.skeleton`.
 
-
- - You do not need to save these objects to `data`. The build process will handle this for you.
- - The objects need to exist in memory when the processing script is finished running.
- - The build process will match these names to objects in memory and to existing documentation (see below).
- - If everything is in order, they will be included in the built package.
+-   You do not need to save these objects to `data`. The build process will handle this for you.
+-   The objects need to exist in memory when the processing script is finished running.
+-   The build process will match these names to objects in memory and to existing documentation (see below).
+-   If everything is in order, they will be included in the built package.
 
 ### Object Documentation
 
@@ -168,56 +124,49 @@ There is a call to `.autoDoc`, which generates documentation for the package and
 
 It produces a file that the user needs to rename and edit by hand.
 
-The contents of this file are roxygen blocks that are parsed into object and package documentation. 
+The contents of this file are roxygen blocks that are parsed into object and package documentation.
 
-- It is good practice to 
-    - Document all the columns of tables in your data set.
-    - Include the source of the data (i.e. where the data came from).
+-   It is good practice to
+    -   Document all the columns of tables in your data set.
+    -   Include the source of the data (i.e. where the data came from).
 
 ### Build your package.
 
 Once your scripts are in place and the data objects are documented, you build the package.
-  
+
 To run the build process:
 
-```r{}
+``` r{}
 # Within the package directory
 DataPackageR:::buildDataSetPackage(".") #note for a first build this needs to be run twice and the 
 #documentation edited.
 ```
-If there are errors, the script will notify you of any problems. 
 
-- Correct any errors and rerun the build process.
+If there are errors, the script will notify you of any problems.
 
-If everything goes smoothly, you will have a new package built in the parent directory. 
+-   Correct any errors and rerun the build process.
 
-This can be distributed, installed using `R CMD INSTALL`, and data sets loaded using R's standard `data()` call.
-Vignettes can be interrogated via `vignette(package="mypackage")`
+If everything goes smoothly, you will have a new package built in the parent directory.
 
+This can be distributed, installed using `R CMD INSTALL`, and data sets loaded using R's standard `data()` call. Vignettes can be interrogated via `vignette(package="mypackage")`
 
 ### Data versioning
 
-The DataPackageR package calculates an md5 checksum of each data object it stores, and keeps track of them in a file
-called `DATADIGEST`.
+The DataPackageR package calculates an md5 checksum of each data object it stores, and keeps track of them in a file called `DATADIGEST`.
 
-- Each time the package is rebuilt, the md5 sums of the new data objects are compared against the DATADIGEST.
-- If they don't match, the build process checks that the `DataVersion` string has been incremented in the `DESCRIPTION` file.
-- If it has not the build process will exit and produce an error message.
+-   Each time the package is rebuilt, the md5 sums of the new data objects are compared against the DATADIGEST.
+-   If they don't match, the build process checks that the `DataVersion` string has been incremented in the `DESCRIPTION` file.
+-   If it has not the build process will exit and produce an error message.
 
 ### Benefits
 
 Your downstream data analysis can depend on a specific version of your data package (for example by tesing the `packageVersion()` string);
 
-```r{}
-if(DataPackageR::packageVersion("MyNewStudy") != "1.0.0")
+``` r{}
+if(packageVersion("MyNewStudy") != "1.0.0")
   stop("The expected version of MyNewStudy is 1.0.0, but ",packageVersion("MyNewStudy")," is installed! Analysis results may differ!")
 ```
 
-The DataPackageR packge also provides `datasetVersion()` to extract the data set version information. 
+The DataPackageR packge also provides `datasetVersion()` to extract the data set version information.
 
-You should also place the data package source directory under `git` version control.
-This allows you to version control your data processing code. 
-
-
-
-
+You should also place the data package source directory under `git` version control. This allows you to version control your data processing code.
