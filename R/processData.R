@@ -228,8 +228,8 @@ DataPackageR <- function(arg = NULL,masterfile=NULL) {
   write_me_out = purrr::map(vignettes_to_process,function(x){
     title = "Default Vignette Title. Add yaml title: to your document"
     thisfile = read_file(x)
-    stripped_yaml = gsub("---.*---","",thisfile)
-    frontmatter = gsub("(---.*---).*","\\1",thisfile)
+    stripped_yaml = gsub("---\\s*\n.*\n---\\s*\n","", thisfile)
+    frontmatter = gsub("(---\\s*\n.*\n---\\s*\n).*","\\1", thisfile)
     con = textConnection(frontmatter)
     fm  = rmarkdown::yaml_front_matter(con)
     if(is.null(fm[["vignette"]])){
@@ -241,7 +241,11 @@ DataPackageR <- function(arg = NULL,masterfile=NULL) {
     }else{
       #otherwise leave it as is.
     }
-    write_me_out = paste0("---\n",yaml::as.yaml(fm),"---\n",stripped_yaml)
+
+    tmp = fm$vignette
+    tmp = gsub("  $", "", paste0("vignette: >\n  ", gsub("\\}\\s*", "\\}\n  ", tmp)))
+    fm$vignette = NULL
+    write_me_out = paste0("---\n", paste0(yaml::as.yaml(fm), tmp), "---\n\n", stripped_yaml)
     write_me_out
   })
   names(write_me_out)=vignettes_to_process
