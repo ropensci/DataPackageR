@@ -33,6 +33,7 @@ NULL
 #' @import optparse roxygen2 rmarkdown desc
 #' @importFrom utils getSrcref
 #' @importFrom devtools as.package
+#' @importFrom here here
 #' @import devtools
 DataPackageR <- function(arg = NULL,masterfile=NULL) {
   if (is.null(arg)) {
@@ -62,6 +63,7 @@ DataPackageR <- function(arg = NULL,masterfile=NULL) {
     tryCatch({
       # cd into the package directory
       setwd(pkg_dir)
+      set_here()
       if (!file_test("R",op = "-d")) {
         stop("You need a valid package data strucutre. Missing /R directory.")
       }
