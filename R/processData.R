@@ -34,6 +34,7 @@ NULL
 #' @importFrom utils getSrcref
 #' @importFrom devtools as.package
 #' @importFrom here here
+#' @importFrom here set_here
 #' @import devtools
 DataPackageR <- function(arg = NULL,masterfile=NULL) {
   if (is.null(arg)) {
