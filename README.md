@@ -20,6 +20,11 @@ Lots of changes in the yaml branch.
     - Leverage rprojroot and proper logging via `futile.logger` package, do proper path normalization.
     - Added some basic unit tests - more to come
 
+# TODO
+-------
+     - update the vignettes to demonstrate new features
+     - Fix the mechanism for partial building as it's broken via the latest yaml config changes.
+
 Overview
 --------
 
