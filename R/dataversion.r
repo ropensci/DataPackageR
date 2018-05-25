@@ -6,6 +6,7 @@
 #' @param lib.loc \code{character} path to library location.
 #' @seealso \code{\link[utils]{packageVersion}}
 #' @import utils
+#' @import futile.logger
 #' @export
 dataVersion <- function (pkg, lib.loc = NULL)
 {

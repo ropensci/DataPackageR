@@ -2,12 +2,12 @@
 # function .autoDoc() automates the creation of a basic roxygen template for the package and each object in objectsToKeep
 # arguments are pname and ds2kp, normally defined in datasets.R
 # pname is name of package, ds2kp is list of objects to save in data package
-.autoDoc <- function(pname, ds2kp, env){
+.autoDoc <- function(pname, ds2kp, env, path){
   links <- c(pname, ds2kp)
   linksRox <- paste0("\\link{", links, "}")
   
   # create default file to be edited and renamed manually by user, who then rebuilds package
-  tempfileName <- "./edit_and_rename_to_'documentation.R'.R"
+  tempfileName <- file.path(path,"documentation.R")
   if(file.exists(tempfileName)){file.remove(tempfileName)}
   
   # create Roxygen documentation for data package

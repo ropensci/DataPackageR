@@ -1,7 +1,7 @@
 Package: DataPackageR
 Type: Package
 Title: Construct reproducible analytic data sets as R packages
-Authors@R: 
+Authors@R:
     c(person(given = "Greg Finak", role=c("aut","cre","cph"), email="gfinak@fredhutch.org"),
       person(given = "Paul Obrecht", role=c("ctb")))
 Version: 0.11.5
@@ -21,7 +21,9 @@ Imports:
     roxygen2 (>= 6.0.1),
     devtools (>= 1.12.0),
     assertthat,
-    stringr
+    stringr,
+    futile.logger,
+    rprojroot
 VignetteBuilder: knitr
 RoxygenNote: 6.0.1
 Collate: 01.R
@@ -37,3 +39,4 @@ Collate: 01.R
     roxygen2_functions.R
     mergeDocumentation.R
     parseDocumentation.R
+Suggests: testthat
