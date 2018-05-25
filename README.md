@@ -5,6 +5,21 @@ DataPackageR
 
 Process raw data into packaged, analysis-ready data sets, reproducibly.
 
+NEWS
+-------
+Lots of changes in the yaml branch.
+    
+    - package uses config.yml rather than datasets.R
+    - primary mechanism for setup is to pass scripts and named R objects in via `datapackage.skeleton()`. These populate the yaml config.
+    - documenation.R is created automatically on first build via autodoc.
+    - Package can be built successfully on first run of buildDataSetPackage thanks to the above.
+    - Rmarkdown based scripts are the primary mechanism for processing. R files will still work.
+    - Goal is to eliminate the need to write more R code for configuration.
+    - yaml configuration is in `packageroot/data-raw` but might be moved to the package root
+    - No longer using the `here()` function as it's not suitable for non-interactive use
+    - Leverage rprojroot and proper logging via `futile.logger` package, do proper path normalization.
+    - Added some basic unit tests - more to come
+
 Overview
 --------
 
