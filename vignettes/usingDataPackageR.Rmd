@@ -60,9 +60,10 @@ We'll set up a new data package that processes the `cars` data by subsetting it 
 ```{r }
 library(data.tree)
 library(DataPackageR)
+tmp = normalizePath(tempdir())
 processing_code = system.file("extdata","tests","subsetCars.Rmd",package="DataPackageR")
 print(processing_code)
-setwd("/tmp")
+setwd(tmp)
 DataPackageR::datapackage.skeleton("Test", 
                                    force=TRUE, 
                                    code_files = processing_code, 
@@ -95,7 +96,7 @@ Here are the contents of `datapackager.yml`:
 
 ```{r, echo=FALSE}
 library(yaml)
-setwd("/tmp")
+setwd(tmp)
 print(as.Node(yaml.load_file("Test/datapackager.yml")),"files","objects")
 ```
 
@@ -109,7 +110,7 @@ To run the build process:
 
 ```{r}
 # Within the package directory
-setwd("/tmp")
+setwd(tmp)
 DataPackageR:::buildDataSetPackage("Test") 
 ```
 
@@ -124,7 +125,7 @@ If everything goes smoothly, you will have a new package built in the parent dir
 
 ```{r, results='asis',echo=FALSE}
 library(yaml)
-setwd("/tmp")
+setwd(tmp)
 df = data.frame(pathString=file.path("Test",(list.files("Test",recursive=TRUE))))
 as.Node(df)
 ```
@@ -150,7 +151,7 @@ called `DATADIGEST`.
 The `DATADIGEST` file contains the following:
 
 ```{r, echo=FALSE}
-setwd("/tmp")
+setwd(tmp)
 cat(readLines("Test/DATADIGEST"),sep="\n")
 ```
 
@@ -160,7 +161,7 @@ cat(readLines("Test/DATADIGEST"),sep="\n")
 The description file has the new `DataVersion` string.
 
 ```{r echo=FALSE}
-setwd("/tmp")
+setwd(tmp)
 cat(readLines("Test/DESCRIPTION"),sep="\n")
 ```
 

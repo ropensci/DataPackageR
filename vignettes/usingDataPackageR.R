@@ -8,9 +8,10 @@ knitr::opts_chunk$set(
 ## ------------------------------------------------------------------------
 library(data.tree)
 library(DataPackageR)
+tmp = normalizePath(tempdir())
 processing_code = system.file("extdata","tests","subsetCars.Rmd",package="DataPackageR")
 print(processing_code)
-setwd("/tmp")
+setwd(tmp)
 DataPackageR::datapackage.skeleton("Test", 
                                    force=TRUE, 
                                    code_files = processing_code, 
@@ -23,25 +24,25 @@ as.Node(df)
 
 ## ---- echo=FALSE---------------------------------------------------------
 library(yaml)
-setwd("/tmp")
+setwd(tmp)
 print(as.Node(yaml.load_file("Test/datapackager.yml")),"files","objects")
 
 ## ------------------------------------------------------------------------
 # Within the package directory
-setwd("/tmp")
+setwd(tmp)
 DataPackageR:::buildDataSetPackage("Test") 
 
 ## ---- results='asis',echo=FALSE------------------------------------------
 library(yaml)
-setwd("/tmp")
+setwd(tmp)
 df = data.frame(pathString=file.path("Test",(list.files("Test",recursive=TRUE))))
 as.Node(df)
 
 ## ---- echo=FALSE---------------------------------------------------------
-setwd("/tmp")
+setwd(tmp)
 cat(readLines("Test/DATADIGEST"),sep="\n")
 
 ## ----echo=FALSE----------------------------------------------------------
-setwd("/tmp")
+setwd(tmp)
 cat(readLines("Test/DESCRIPTION"),sep="\n")
 
