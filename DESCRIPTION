@@ -40,4 +40,5 @@ Collate: 01.R
     roxygen2_functions.R
     mergeDocumentation.R
     parseDocumentation.R
+    yamlR.R
 Suggests: testthat
