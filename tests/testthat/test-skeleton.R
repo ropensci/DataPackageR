@@ -55,7 +55,13 @@ test_that("yaml reading, adding, removing, listing, and writing", {
     structure(list(configuration = list(files = "subsetCars.Rmd", objects = "cars_over_20")),path = "/Users/gfinak/Documents/Projects/DataPackageR/tests/testthat/subsetCars/datapackager.yml")
   expect_identical(config,test_config)
   
+  #still the same after writing?
   yml_write(config)
+  test_config <-
+    structure(list(configuration = list(files = "subsetCars.Rmd", objects = "cars_over_20")),path = "/Users/gfinak/Documents/Projects/DataPackageR/tests/testthat/subsetCars/datapackager.yml")
+  config = yml_find("subsetCars")
+  expect_identical(config,test_config)
+  
 })
 
 unlink("subsetCars",recursive=TRUE)
