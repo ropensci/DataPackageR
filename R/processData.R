@@ -35,6 +35,7 @@ NULL
 #' @importFrom devtools as.package
 #' @importFrom here here
 #' @importFrom here set_here
+#' @import data.tree
 #' @import devtools
 DataPackageR <- function(arg = NULL,masterfile=NULL) {
   requireNamespace("futile.logger")
@@ -92,9 +93,9 @@ DataPackageR <- function(arg = NULL,masterfile=NULL) {
       }
       flog.info("Processing data")
       #read YAML
-      ymlfile = dir(path = raw_data_dir,pattern = "^config.yml$",full.names = TRUE)
+      ymlfile = dir(path = pkg_dir,pattern = "^datapackager.yml$",full.names = TRUE)
       if(length(ymlfile)==0){
-        flog.fatal(paste0("Yaml configuration file not found at ",raw_data_dir))
+        flog.fatal(paste0("Yaml configuration file not found at ",pkg_dir))
         setwd(old)
         stop("exiting",call.=FALSE)
       }

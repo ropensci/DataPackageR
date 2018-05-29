@@ -4,7 +4,7 @@
 \alias{datapackage.skeleton}
 \title{Create a Data Package skeleton for use with DataPackageR.}
 \usage{
-datapackage.skeleton(name = "anRpackage", list = character(),
+datapackage.skeleton(name = NULL, list = character(),
   environment = .GlobalEnv, path = ".", force = FALSE,
   code_files = character(), r_object_names = character())
 }

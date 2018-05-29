@@ -20,7 +20,11 @@
 #' datapackage.skeleton(name="MyDataPackage",path="/tmp")
 #' }
 datapackage.skeleton <-
-  function(name = "anRpackage", list = character(), environment = .GlobalEnv, path = ".", force = FALSE, code_files = character(), r_object_names = character()) {
+  function(name = NULL, list = character(), environment = .GlobalEnv, path = ".", force = FALSE, code_files = character(), r_object_names = character()) {
+    if(is.null(name)){
+      stop("Must supply a package name",call.=FALSE)
+    }
+
     if (length(list) == 0)
       # don't pass on the code_files here, but use that argument to 
       package.skeleton(
@@ -57,16 +61,16 @@ datapackage.skeleton <-
       c(
         "Edit the DESCRIPTION file to reflect the contents of your package.",
         "Optionally put your raw data under 'inst/extdata/'.",
-        "If the datasets are large, they may reside elsewhere outside the package.",
-        "Copy .R files that do preprocessing of your data to 'data-raw'",
-        "Edit 'data-raw/datasets.R' to source your R files.",
-        "Document your data sets using roxygen markup (see comments in datasets.R)",
+        "If the datasets are large, they may reside elsewhere outside the package source tree.",
+        "If you passed R and Rmd files to datapackage.skeleton, they should now appear in 'data-raw'.",
+        "When you call buildDataSetPackage(), your datasets will be automatically documented.",
+        "Edit datapackager.yml to add additional files / data objects to the package.",
+        "After building, you should edit dat-raw/documentation.R to fill in dataset documentation details and rebuild.",
         "",
         "NOTES",
         "If your code relies on other packages, add those to the @import tag of the roxygen markup.",
         "The R object names you wish to make available (and document) in the package must match",
-        "the roxygen @name tags and must be called out by keepDataObjects() in datasets.R",
-        "(listing them in objectsToKeep in datasets.R is sufficient)."
+        "the roxygen @name tags and must be listed in the yml file."
       ),con
     )
     close(con)
@@ -91,9 +95,9 @@ datapackage.skeleton <-
       }
       
       
-      #TODO construct a config.yml file rather than using datasets.R
+      #TODO construct a datapackager.yml file rather than using datasets.R
       yml = list(configuration = list(files = basename(code_files), objects = r_object_names))
-      yaml::write_yaml(yml, file = file.path(package_path,"data-raw","config.yml"))
+      yaml::write_yaml(yml, file = file.path(package_path,"datapackager.yml"))
       # outcon = file(description = file.path(package_path, "data-raw","datasets.R"),open = "w")
       # writeLines(datasets_string,con = outcon)
       # close(outcon)
