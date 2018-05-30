@@ -3,8 +3,8 @@
 \name{yml_find}
 \alias{yml_find}
 \alias{yml_add_files}
-\alias{yml_turn_off}
-\alias{yml_turn_on}
+\alias{yml_disable_compile}
+\alias{yml_enable_compile}
 \alias{yml_add_objects}
 \alias{yml_list_objects}
 \alias{yml_list_files}
@@ -17,9 +17,9 @@ yml_find(path)
 
 yml_add_files(config, filenames)
 
-yml_turn_off(config, filenames)
+yml_disable_compile(config, filenames)
 
-yml_turn_on(config, filenames)
+yml_enable_compile(config, filenames)
 
 yml_add_objects(config, objects)
 

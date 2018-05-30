@@ -36,7 +36,7 @@ yml_add_files = function(config, filenames){
 #'@rdname yaml
 #'@param filenames A vector of filenames.
 #'@export
-yml_turn_off = function(config, filenames){
+yml_disable_compile = function(config, filenames){
   if(is.character(config)){ #assume config is a package root path
     config = yml_find(config)
   }
@@ -46,7 +46,7 @@ yml_turn_off = function(config, filenames){
 
 #'@rdname yaml
 #'@export
-yml_turn_on = function(config, filenames){
+yml_enable_compile = function(config, filenames){
   if(is.character(config)){ #assume config is a package root path
     config = yml_find(config)
   }
