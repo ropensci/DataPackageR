@@ -113,7 +113,7 @@ DataPackageR <- function(arg = NULL,masterfile=NULL) {
       }
       flog.info("Read yaml configuration")
       
-      r_files = map(ymlconf,"files")[["configuration"]]
+      r_files = unlist(map(ymlconf[["configuration"]][["files"]],"name"))
       objectsToKeep = map(ymlconf,"objects")[["configuration"]]
       
       r_files = file.path(raw_data_dir,r_files)

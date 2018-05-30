@@ -28,7 +28,13 @@ yml_add_files = function(config, filenames){
   if(is.character(config)){ #assume config is a package root path
     config = yml_find(config)
   }
-  config[["configuration"]][["files"]] = unique(c(config[["configuration"]][["files"]],filenames))
+  for(i in filenames){
+    if(is.null(config[["configuration"]][["files"]][[i]])){
+      config[["configuration"]][["files"]][[i]] = list()
+      config[["configuration"]][["files"]][[i]]$name = i
+      config[["configuration"]][["files"]][[i]]$enabled = TRUE
+    }
+  }
   cat(as.yaml(config))
   return(config)
 }
@@ -40,6 +46,11 @@ yml_disable_compile = function(config, filenames){
   if(is.character(config)){ #assume config is a package root path
     config = yml_find(config)
   }
+  for(i in filenames){
+    if(!is.null(config[["configuration"]][["files"]][[i]])){
+      config[["configuration"]][["files"]][[i]]$enabled = FALSE
+    }
+  }
   return(config)
   
 }
@@ -49,6 +60,11 @@ yml_disable_compile = function(config, filenames){
 yml_enable_compile = function(config, filenames){
   if(is.character(config)){ #assume config is a package root path
     config = yml_find(config)
+  }
+  for(i in filenames){
+    if(!is.null(config[["configuration"]][["files"]][[i]])){
+      config[["configuration"]][["files"]][[i]]$enabled = TRUE
+    }
   }
   return(config)
 }
@@ -83,7 +99,7 @@ yml_list_files = function(config){
   if(is.character(config)){ #assume config is a package root path
     config = yml_find(config)
   }
-  cat(config[["configuration"]][["files"]])
+  cat(unlist(map(config[["configuration"]][["files"]],"name")))
   invisible(config)
 }
 
@@ -104,7 +120,11 @@ yml_remove_files = function(config, filenames){
   if(is.character(config)){ #assume config is a package root path
     config = yml_find(config)
   }
-  config[["configuration"]][["files"]] = setdiff(config[["configuration"]][["files"]],filenames)
+  for(i in filenames){
+    if(!is.null(config[["configuration"]][["files"]][[i]])){
+      config[["configuration"]][["files"]][[i]]=NULL
+    }
+  }
   cat(as.yaml(config))
   return(config)
 }
@@ -117,4 +137,18 @@ yml_write = function(config){
   }
   path = attr(config,"path")
   write_yaml(config, file = path)
+}
+
+.construct_yml_config = function(code=NULL,data=NULL){
+  code=basename(code)
+  files = vector(length=length(code),mode="list")
+  names(files) = code
+  for(i in code){
+    files[[i]]$name = i
+    files[[i]]$enabled = TRUE
+  }
+  files
+  
+  yml = list(configuration = list(files = files, objects = data))
+  return(yml)
 }
