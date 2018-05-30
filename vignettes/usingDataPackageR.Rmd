@@ -184,4 +184,38 @@ This allows you to version control your data processing code.
 If the processing script is time consuming or the data set is particularly large, then `R CMD build` would run the code each time the package is installed. In such cases, raw data may not be available, or the environment to do the data processing may not be set up for each user of the data. In such cases, DataPackageR provides a mechanism to decouple data processing from package building/installation for downstream users of the data.
 
 
+## Partial builds and migrating old data packages.
+
+Version 1.12.0 has moved away from controlling the build process using `datasets.R` and an additional `masterfile` argument. The build process is now controlled via a `datapackager.yml` configuration file located in the package root directory. 
+
+You can migrate an old package by constructing such a config file using the `construct_yml_config()` API.
+
+```{r  construct_config}
+#assume I have file1.Rmd and file2.R located in /data-raw, and these create 'object1' and 'object2' respectively.
+
+config = construct_yml_config(code = c("file1.Rmd","file2.R"), data = c("object1","object2"))
+print(config)
+```
+
+`config` is a newly constructed yaml configuration object. It can be written to the package directory:
+
+```{r}
+path_to_package = tempdir() #pretend this is the root of our package
+yml_write(config,path = path_to_package)
+```
+
+Now the package at `path_to_package` will build with version 1.12.0 or greater.
+
+We can also perform partial builds of a subset of files in a package by toggling the `enabled` key in the config file. This can be done with the following API:
+
+```{r}
+config = yml_disable_compile(config,filenames = "file2.R")
+print(config)
+```
+
+Where `config` is a configuration read from a data package root directory. The `config` object needs to be written back to the package root in order for the changes to take effect. The consequence of toggling a file to `enable: no` is that it will be skipped when the package is built, but the data will be retained, and the documentation will not be altered. 
+
+
+
+
 
