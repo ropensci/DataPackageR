@@ -237,8 +237,10 @@ DataPackageR <- function(arg = NULL,masterfile=NULL) {
           # case where we add an object, ensures we combine the documentation properly
           missing_doc_for_autodoc = .identify_missing_docs(dataEnv,pkg_description,doc_parsed)
           if(length(missing_doc_for_autodoc)!=0){
-            .autoDoc(basename(pkg_dir),ds2kp = missing_doc_for_autodoc,env = dataEnv, path = target, name = "missing_doc.R")
-            missing_doc = .parseDocumentation(file.path(target,"missing_doc.R"))
+            tmptarget = tempdir()
+            .autoDoc(basename(pkg_dir),ds2kp = missing_doc_for_autodoc,env = dataEnv, path = tmptarget, name = "missing_doc.R")
+            missing_doc = .parseDocumentation(file.path(tmptarget,"missing_doc.R"))
+            
             doc_parsed = .mergeDocumentation(old = doc_parsed, new = missing_doc)
             docfile <-
               file(file.path(target,paste0("documentation",".R")),open = "w")
@@ -253,7 +255,10 @@ DataPackageR <- function(arg = NULL,masterfile=NULL) {
             old_doc_file = list.files(file.path(pkg_dir,"R"),full.names = TRUE,paste0(pkg_description$Package,".R"))
             if(file.exists(old_doc_file)){
              old_docs = .parseDocumentation(old_doc_file)
-              merged_docs = .mergeDocumentation(old = old_docs, new = doc_parsed)
+             not_built = setdiff(setdiff(names(old_docs),ls(dataEnv)),pkg_description$Package)
+             #remove all but not_built from old_docs
+              merged_docs = .mergeDocumentation(old = old_docs[not_built], new = doc_parsed)
+              merged_docs = merged_docs[names(old_docs)]
               save_docs = do.call(c,merged_docs)
             }
             else {
