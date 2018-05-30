@@ -157,11 +157,11 @@ setwd(tmp)
 DataPackageR:::buildDataSetPackage("Test") 
 Warning in normalizePath(raw_data_dir): path[1]="data-raw": No such file or
 directory
-INFO [2018-05-30 14:32:46] Logging to /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmp6au3FK/Test/inst/extdata/Logfiles/processing.log
-INFO [2018-05-30 14:32:46] Processing data
-INFO [2018-05-30 14:32:46] Read yaml configuration
-INFO [2018-05-30 14:32:46] Found data-raw/subsetCars.Rmd
-INFO [2018-05-30 14:32:46] Processing 1 of 1: data-raw/subsetCars.Rmd
+INFO [2018-05-30 14:45:54] Logging to /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpYhDqK9/Test/inst/extdata/Logfiles/processing.log
+INFO [2018-05-30 14:45:54] Processing data
+INFO [2018-05-30 14:45:54] Read yaml configuration
+INFO [2018-05-30 14:45:54] Found data-raw/subsetCars.Rmd
+INFO [2018-05-30 14:45:54] Processing 1 of 1: data-raw/subsetCars.Rmd
 
 
 processing file: subsetCars.Rmd
@@ -186,31 +186,31 @@ label: unnamed-chunk-10
   |                                                                         |.................................................................| 100%
   ordinary text without R code
 output file: subsetCars.knit.md
-/usr/local/bin/pandoc +RTS -K512m -RTS subsetCars.utf8.md --to html4 --from markdown+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash+smart --output /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmp6au3FK/Test/inst/extdata/Logfiles/subsetCars.html --email-obfuscation none --self-contained --standalone --section-divs --template /Library/Frameworks/R.framework/Versions/3.5/Resources/library/rmarkdown/rmd/h/default.html --no-highlight --variable highlightjs=1 --variable 'theme:bootstrap' --include-in-header /var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//Rtmp6au3FK/rmarkdown-stra03557dd7f4e.html --mathjax --variable 'mathjax-url:https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' 
+/usr/local/bin/pandoc +RTS -K512m -RTS subsetCars.utf8.md --to html4 --from markdown+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash+smart --output /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpYhDqK9/Test/inst/extdata/Logfiles/subsetCars.html --email-obfuscation none --self-contained --standalone --section-divs --template /Library/Frameworks/R.framework/Versions/3.5/Resources/library/rmarkdown/rmd/h/default.html --no-highlight --variable highlightjs=1 --variable 'theme:bootstrap' --include-in-header /var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//RtmpYhDqK9/rmarkdown-stra3ff6282f1a0.html --mathjax --variable 'mathjax-url:https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' 
 
 Output created: inst/extdata/Logfiles/subsetCars.html
-INFO [2018-05-30 14:32:46] 1 required data objects created by subsetCars.Rmd
-INFO [2018-05-30 14:32:46] Saving to data
+INFO [2018-05-30 14:45:55] 1 required data objects created by subsetCars.Rmd
+INFO [2018-05-30 14:45:55] Saving to data
 Warning: 'Date' must be an ISO date: yyyy-mm-dd, but it is actually better
 to leave this field out completely. It is not required.
-INFO [2018-05-30 14:32:46] Copied documentation to R/Test.R
+INFO [2018-05-30 14:45:55] Copied documentation to R/Test.R
 * Creating `vignettes`.
 * Adding `inst/doc` to ./.gitignore
-INFO [2018-05-30 14:32:46] Removing inst/doc from .gitignore
-INFO [2018-05-30 14:32:46] Done
-INFO [2018-05-30 14:32:46] Building documentation
+INFO [2018-05-30 14:45:55] Removing inst/doc from .gitignore
+INFO [2018-05-30 14:45:55] Done
+INFO [2018-05-30 14:45:55] Building documentation
 First time using roxygen2. Upgrading automatically...
-Updating roxygen version in /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmp6au3FK/Test/DESCRIPTION
+Updating roxygen version in /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpYhDqK9/Test/DESCRIPTION
 Writing NAMESPACE
 Writing Test.Rd
 Writing cars_over_20.Rd
-INFO [2018-05-30 14:32:46] Building package
+INFO [2018-05-30 14:45:55] Building package
 '/Library/Frameworks/R.framework/Resources/bin/R' --no-site-file  \
   --no-environ --no-save --no-restore --quiet CMD build  \
-  '/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmp6au3FK/Test'  \
+  '/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpYhDqK9/Test'  \
   --no-resave-data --no-manual --no-build-vignettes 
 
-[1] "/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmp6au3FK/Test_1.0.tar.gz"
+[1] "/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpYhDqK9/Test_1.0.tar.gz"
 ```
 
 ### Logging the build process
@@ -222,6 +222,8 @@ If everything goes smoothly, you will have a new package built in the parent dir
 
 ### The package source directory after building
 
+
+```
                          levelName
 1  Test                           
 2   ¦--data-raw                   
@@ -251,6 +253,7 @@ If everything goes smoothly, you will have a new package built in the parent dir
 26  ¦--Read-and-delete-me         
 27  °--vignettes                  
 28      °--subsetCars.Rmd         
+```
 
 #### Details
 
@@ -289,7 +292,7 @@ Package: Test
 Type: Package
 Title: What the package does (short line)
 Version: 1.0
-Date: Wed May 30 14:32:46 2018
+Date: Wed May 30 14:45:55 2018
 Author: Who wrote it
 Maintainer: Who to complain to <yourfault@somewhere.net>
 Description: More about what it does (maybe more than one line)
