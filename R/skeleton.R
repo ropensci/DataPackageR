@@ -96,7 +96,7 @@ datapackage.skeleton <-
       
       
       #TODO construct a datapackager.yml file rather than using datasets.R
-      yml = .construct_yml_config(code = code_files, data = r_object_names)
+      yml = construct_yml_config(code = code_files, data = r_object_names)
       yaml::write_yaml(yml, file = file.path(package_path,"datapackager.yml"))
       # outcon = file(description = file.path(package_path, "data-raw","datasets.R"),open = "w")
       # writeLines(datasets_string,con = outcon)

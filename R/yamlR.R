@@ -132,16 +132,32 @@ yml_remove_files = function(config, filenames){
 }
 
 #'@rdname yaml
+#'@param path The path where we should write the documentation.yml file.
 #'@export
-yml_write = function(config){
+yml_write = function(config, path = NULL){
   if(is.character(config)){
     stop("config must be a datapackager.yml configuration in r object representation, as ready by yml_find()", call.=FALSE)
   }
-  path = attr(config,"path")
+  if(is.null(path))
+    path = attr(config,"path")
+  else
+    path = file.path(path,"datapackager.yml")
   write_yaml(config, file = path)
 }
 
-.construct_yml_config = function(code=NULL,data=NULL){
+#' Construct a datapackager.yml configuration
+#' 
+#' @param code A vector of filenames
+#' @param data A vector of quoted object names
+#' @return a datapackager.yml configuration represented as an R object
+#' @description Constructs a datapackager.yml configuration object from a vector of file names and a vector of object names (all quoted).
+#' Can be written to disk via \code{yml_write}
+#' @examples
+#' conf = construct_yml_config(code=c("file1.rmd","file2.rmd"), data=c("object1","object2"))
+#' tmp = normalizePath(tempdir())
+#' yml_write(conf,path=tmp)
+#' @export
+construct_yml_config = function(code=NULL,data=NULL){
   code=basename(code)
   files = vector(length=length(code),mode="list")
   names(files) = code
