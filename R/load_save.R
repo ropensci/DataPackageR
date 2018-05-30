@@ -14,7 +14,7 @@ load_all_datasets = function(packageName){
       new_data_digest = .combine_digests(new_data_digest,old_data_digest)
     }
     .save_digest(new_data_digest)
-    message("Saving to data")
+    flog.info("Saving to data")
     #TODO get the names of each data object and save them separately. Provide a function to load all.
     sapply(object_names,function(obj){
       data_save_rda_path = file.path("data",paste0(obj,".rda"))

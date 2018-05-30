@@ -1,172 +1,402 @@
+---
+title: "Using DataPackageR"
+author: "Greg Finak <gfinak@fredhutch.org>"
+date: "2018-05-30"
+output: 
+  rmarkdown::html_vignette:
+    keep_md: TRUE
 
-<!-- README.md is generated from README.Rmd. Please edit that file -->
-DataPackageR
-============
+vignette: >
+  %\VignetteIndexEntry{A quick guide to using DataPackageR}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+  \usepackage{graphicx}
+---
 
-Process raw data into packaged, analysis-ready data sets, reproducibly.
 
-Overview
---------
 
-A data set may consist of multiple sources of raw data. These need to be cleaned, standardized, QCd, and any number of other manipulations applied before they are ready for analysis.
+# DataPackageR
 
-This package is designed to simplify and centralize tasks associated with tidying a variety of data sets associated with a single project.
+Reproducibly process raw data into packaged, analysis-ready data sets
 
-It provides a mechanism to collect, organize and version the data munging scripts used to process incoming data into analytical data sets. The package runs these scripts to perform the data munging writes out analytical data sets, which are combined with documentation, and built into a new R package. The package and the included data are versioned. If updated data arrive, the package can be rebuilt, and the data version incremented to reflect the changes. If the data munging code is in the form of Rmarkdown documents, these are processed automatically into package vignettes that are included in the final pacakge.
+## Goals
 
-No other restrictions are placed on the data munging code.
+You have raw data that needs to be tidied and otherwise processed into a standardized analytic data set (a data set that is ready for analysis). 
+You want to do the processing using best practices for reproducible research. 
 
-Usage
------
+### The current state of affairs
 
-Set up a new data package. Assume we have data munging code in `MungeDataset1.Rmd`, and `MungeDatast2.Rmd`, and each of these produce R objects `dataset1` and `dataset2`.
+Normally, you'll write some code that does the tidying and outputs a tidy data set. 
+If you want to distribute your data set, you can put it in an R package. 
+The preferred mechanism is to place your data tidying code in `data-raw` in the package source tree and use the `devtools` package (specifically `devtools::use_data`) to save the data into the `data` directory. The build process will include your data set in the final package.
+You'll also have to remember to document the data set in `roxygen`, and write a vignette showing how to use the data. 
+For version control and easy distribution you might post the package on github. 
 
-``` r
+### Scaling up
+
+The process outlined works well for smaller data sets. 
+It can be a hassle if you have complex data that change frequently (as is often the case in biology, where data trickle in from collaborators and follow-up experiments), or more generally if you have large data sets where raw data can't be distributed as part of the package source due to size restrictions (e.g. FASTQ files for sequencing, FCS files for flow cytometry, or other "omics" data).
+
+### DataPackageR
+
+The `DataPackageR` package simplifies bundling of code, data and documentation into a single R package that can be versioned and distributed.
+The `datapackage.skeleton()` API lets you point `DataPackageR` at your data processing code (in the form of Rmd and / or R files). These are expected to produce `data objects` to be stored in the final package. The names of these are also passed to `datapackage.skeleton()`. This produces the necessary package structure, and populations a `datapackager.yml` configuration file used by the build process.
+
+The `buildDataSetPackage()` API runs the processing code specified in the `.yml` files and produces html reports of the processing as **package vignettes**. It also builds boilerplate `roxygen` documentation of the R objects specified in the `.yml`, computes checksums of stored R objects and version tags the entire data set collection.
+
+If raw data changes, the user can rebuild the R package with subsequent calls to `buildDataSetPackage()` which will re-run the processing, compare the cheksums of new R objects against those currently stored in the package. 
+Any changes force an increment of the `Dataversion` string in the package DESCRIPTION file. 
+When the package is installed, data sets can be accessed via the standard `data()` API, package vignettes describing the data processing can be accessed via `vignette()`, documentation via `?`, and the data version via `dataVersion(packageName)`. 
+
+## Usage
+
+Set up a new data package.
+
+We'll set up a new data package that processes the `cars` data by subsetting it to include only cars with speed greater than or equal to 20 mph. It is processed using an Rmd file located in `inst/extdata/tests/subsetCars.Rmd` that produces a new object called `cars_over_20`. The package will be called `Test`. The work will be done in the system `/tmp` directory.
+
+
+```r
+library(data.tree)
 library(DataPackageR)
-setwd("/tmp")
-DataPackageR::datapackage.skeleton("MyNewStudy",force=TRUE,code_files = c("/tmp/MungeDataset1.Rmd","/tmp/MungeDataset2.Rmd"),r_object_names = c("dataset1","dataset2"))
+tmp = normalizePath(tempdir())
+processing_code = system.file("extdata","tests","subsetCars.Rmd",package="DataPackageR")
+print(processing_code)
+[1] "/Library/Frameworks/R.framework/Versions/3.5/Resources/library/DataPackageR/extdata/tests/subsetCars.Rmd"
+setwd(tmp)
+DataPackageR::datapackage.skeleton("Test", 
+                                   force=TRUE, 
+                                   code_files = processing_code, 
+                                   r_object_names = "cars_over_20") # cars_over_20 is an R object 
+Creating directories ...
+Creating DESCRIPTION ...
+Creating NAMESPACE ...
+Creating Read-and-delete-me ...
+Saving functions and data ...
+Making help files ...
+Done.
+Further steps are described in './Test/Read-and-delete-me'.
+Adding DataVersion string to DESCRIPTION
+Creating data and data-raw directories
+configuring yaml file
+                                                                    # created in the Rmd file.
 ```
 
-    Creating directories ...
-    Creating DESCRIPTION ...
-    Creating NAMESPACE ...
-    Creating Read-and-delete-me ...
-    Saving functions and data ...
-    Making help files ...
-    Done.
-    Further steps are described in './MyNewStudy/Read-and-delete-me'.
-    Adding DataVersion string to DESCRIPTION
-    Creating data and data-raw directories
+### Package skeleton structure 
 
-The above code creates a directory "MyNewStudy" with the skeleton of a data package.
+This has created a directory, "Test" with the skeleton of a data package.
 
-The `DESCRIPTION` file should be filled out to describe your package. A new `DataVersion` string now appears in that file. The revision is automatically incremented if the package data changes.
+The `DESCRIPTION` file should be filled out to describe your package. It contains a new `DataVersion` string, and the
+revision is automatically incremented if the packaged data changes.
 
-`Read-and-delete-me` has some helpful instructions on how to proceed.
+`Read-and-delete-me` has some helpful instructions on how to proceed. 
 
-The `data-raw` directory is where the data cleaning code (`Rmd`) files reside. The contents of this directory are:
-
-    MyNewStudy/data-raw
-    └── datasets.R
-    └── MungeDataset1.Rmd
-    └── MungeDataset2.Rmd
-
-`datasets.R` can be edited as necessary (see below). This "master" file sources your data munging scripts. Data munging scripts can read data from anywhere, but it is good practice to have your "raw" data live under `/inst/extdata`. It should be copied into that path and the data munging scripts edited appropriately.
-
-Here are the contents on `datasets.R`:
-
-    pkgName <- roxygen2:::read.description("../DESCRIPTION")$Package
-
-    # ------------------------------------------------------------
-    # Source additional R scripts to preprocess assay data
-
-    library(rmarkdown)
-    render('MungeDataset1.Rmd', envir=topenv(), output_dir='../inst/extdata/Logfiles', clean=FALSE)
-    render('MungeDataset2.Rmd', envir=topenv(), output_dir='../inst/extdata/Logfiles', clean=FALSE)
-
-    # for a systematically-named sequence of scripts, one could do something like this:
-    # for(fn in list.files(path="./", pattern="^preprocess_.*\\.Rmd$")){
-    #   render(fn, envir=topenv(),output_dir="../inst/extdata/Logfiles",clean=FALSE)
-    # }
-    # Or a full path to each Rmd file can be passed to datapacakge.skeleton via code_files.
+The `data-raw` directory is where the data cleaning code (`Rmd`) files reside.
+The contents of this directory are:
 
 
-    # ------------------------------------------------------------
-    # Define data objects to keep in the package
-    # (defining here because the list is useful when building roxygen documentation)
-    objectsToKeep <- c('dataset1', 'dataset2', 'etc.') # if it's a collection of unsystematically-named objects
-    # objectsToKeep <- ls(pattern=pkgName) # if you can define a rule that describes the naming of objects to be available in the package
-    # Or these can be passed into datapackage.skeleton via the r_object_names parameter
+```
+                         levelName
+1  Test                           
+2   ¦--data-raw                   
+3   ¦   ¦--documentation.R        
+4   ¦   ¦--subsetCars.knit.md     
+5   ¦   ¦--subsetCars.R           
+6   ¦   ¦--subsetCars.Rmd         
+7   ¦   °--subsetCars.utf8.md     
+8   ¦--data                       
+9   ¦   °--cars_over_20.rda       
+10  ¦--DATADIGEST                 
+11  ¦--datapackager.yml           
+12  ¦--DESCRIPTION                
+13  ¦--inst                       
+14  ¦   ¦--doc                    
+15  ¦   ¦   ¦--subsetCars.html    
+16  ¦   ¦   °--subsetCars.Rmd     
+17  ¦   °--extdata                
+18  ¦       °--Logfiles           
+19  ¦           ¦--processing.log 
+20  ¦           °--subsetCars.html
+21  ¦--man                        
+22  ¦   ¦--cars_over_20.Rd        
+23  ¦   °--Test.Rd                
+24  ¦--NAMESPACE                  
+25  ¦--R                          
+26  ¦   °--Test.R                 
+27  ¦--Read-and-delete-me         
+28  °--vignettes                  
+29      °--subsetCars.Rmd         
+```
 
-    # ------------------------------------------------------------
-    # Auto build roxygen documentation
-    # On first build, we generate boilerplate roxygen documentation using DataPackageR:::.autoDoc()
-    # User then manually edits the output file edit_and_rename_to_'documentation.R'.R and renames it to documentation.R.
-    # The documentation.R file is then used for all subsequent builds.
-    if(file.exists("documentation.R")){
-      sys.source('documentation.R', envir=topenv())
-    } else {
-      DataPackageR:::.autoDoc(pkgName, objectsToKeep, topenv())
-    }
+`datapackager.yml` can be edited as necessary to include additional processing scripts (which should be placed in `data-raw`), and raw data should be located under under `/inst/extdata`. It should be copied into that path and the data munging scripts edited to read from there.
 
-    # keep only objects labeled for retention
-    keepDataObjects(objectsToKeep)  
+### Yaml configuration 
 
-We look at this piece by piece.
+Here are the contents of `datapackager.yml`:
 
-### Data processing scripts
 
-First, we load the rmarkdown package and then render the user-provided data processing code `MungeDataset1.Rmd`, and `MungeDataset2.Rmd`.
+```
+                   levelName files      objects
+1 Root                                         
+2  °--configuration                cars_over_20
+3      °--files                                
+4          °--subsetCars.Rmd                   
+```
 
--   This should (obviously) be an Rmarkdown file, that combines text and R code.
--   It should contain a YAML preamble with the minimum information needed to process it into an html report.
--   When run, it should perform the processing of your data sets(s) into an R object named in `r_object_names` of `datapackage.skeleton`.
-
-The product of this particular script will be an html document that serves as a log of how the data were processed.
-
--   The html report will be included as a `vignette` in the final package.
-
-The most important product of processing script is one or more R objects.
-
--   The call to `keepDataObjects()` tells the build process which objects should be retained and stored as part of the data package.
--   In this case, our scripts should produce two objects `dataset1` and `dataset2`.
--   `keepDataObjects('dataset1','dataset2')` tells the build process the name of the object to store in the package.
--   All this is taken care of via arguments to `datapackage.skeleton`.
-
--   You do not need to save these objects to `data`. The build process will handle this for you.
--   The objects need to exist in memory when the processing script is finished running.
--   The build process will match these names to objects in memory and to existing documentation (see below).
--   If everything is in order, they will be included in the built package.
-
-### Object Documentation
-
-There is a call to `.autoDoc`, which generates documentation for the package and the objects on the first run of the build.
-
-It produces a file that the user needs to rename and edit by hand.
-
-The contents of this file are roxygen blocks that are parsed into object and package documentation.
-
--   It is good practice to
-    -   Document all the columns of tables in your data set.
-    -   Include the source of the data (i.e. where the data came from).
+It includes a `files` property that contains the filenames of the Rmd scripts, and an `objects` property that lists the data objects produced by the script.
 
 ### Build your package.
 
 Once your scripts are in place and the data objects are documented, you build the package.
-
+  
 To run the build process:
 
-``` r{}
+
+```r
 # Within the package directory
-DataPackageR:::buildDataSetPackage(".") #note for a first build this needs to be run twice and the 
-#documentation edited.
+setwd(tmp)
+DataPackageR:::buildDataSetPackage("Test") 
+Warning in normalizePath(raw_data_dir): path[1]="data-raw": No such file or
+directory
+INFO [2018-05-30 14:32:46] Logging to /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmp6au3FK/Test/inst/extdata/Logfiles/processing.log
+INFO [2018-05-30 14:32:46] Processing data
+INFO [2018-05-30 14:32:46] Read yaml configuration
+INFO [2018-05-30 14:32:46] Found data-raw/subsetCars.Rmd
+INFO [2018-05-30 14:32:46] Processing 1 of 1: data-raw/subsetCars.Rmd
+
+
+processing file: subsetCars.Rmd
+  |                                                                         |                                                                 |   0%  |                                                                         |.........                                                        |  14%
+  ordinary text without R code
+
+  |                                                                         |...................                                              |  29%
+label: setup (with options) 
+List of 1
+ $ include: logi FALSE
+
+  |                                                                         |............................                                     |  43%
+  ordinary text without R code
+
+  |                                                                         |.....................................                            |  57%
+label: cars
+  |                                                                         |..............................................                   |  71%
+  ordinary text without R code
+
+  |                                                                         |........................................................         |  86%
+label: unnamed-chunk-10
+  |                                                                         |.................................................................| 100%
+  ordinary text without R code
+output file: subsetCars.knit.md
+/usr/local/bin/pandoc +RTS -K512m -RTS subsetCars.utf8.md --to html4 --from markdown+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash+smart --output /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmp6au3FK/Test/inst/extdata/Logfiles/subsetCars.html --email-obfuscation none --self-contained --standalone --section-divs --template /Library/Frameworks/R.framework/Versions/3.5/Resources/library/rmarkdown/rmd/h/default.html --no-highlight --variable highlightjs=1 --variable 'theme:bootstrap' --include-in-header /var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//Rtmp6au3FK/rmarkdown-stra03557dd7f4e.html --mathjax --variable 'mathjax-url:https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' 
+
+Output created: inst/extdata/Logfiles/subsetCars.html
+INFO [2018-05-30 14:32:46] 1 required data objects created by subsetCars.Rmd
+INFO [2018-05-30 14:32:46] Saving to data
+Warning: 'Date' must be an ISO date: yyyy-mm-dd, but it is actually better
+to leave this field out completely. It is not required.
+INFO [2018-05-30 14:32:46] Copied documentation to R/Test.R
+* Creating `vignettes`.
+* Adding `inst/doc` to ./.gitignore
+INFO [2018-05-30 14:32:46] Removing inst/doc from .gitignore
+INFO [2018-05-30 14:32:46] Done
+INFO [2018-05-30 14:32:46] Building documentation
+First time using roxygen2. Upgrading automatically...
+Updating roxygen version in /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmp6au3FK/Test/DESCRIPTION
+Writing NAMESPACE
+Writing Test.Rd
+Writing cars_over_20.Rd
+INFO [2018-05-30 14:32:46] Building package
+'/Library/Frameworks/R.framework/Resources/bin/R' --no-site-file  \
+  --no-environ --no-save --no-restore --quiet CMD build  \
+  '/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmp6au3FK/Test'  \
+  --no-resave-data --no-manual --no-build-vignettes 
+
+[1] "/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmp6au3FK/Test_1.0.tar.gz"
 ```
 
-If there are errors, the script will notify you of any problems.
+### Logging the build process
 
--   Correct any errors and rerun the build process.
+DataPackageR uses the `futile.logger` pagckage to log progress. If there are errors in the processing, the script will notify you via logging to console and to  `/private/tmp/Test/inst/extdata/Logfiles/processing.log`. Errors should be corrected and the build repeated.
 
-If everything goes smoothly, you will have a new package built in the parent directory.
+If everything goes smoothly, you will have a new package built in the parent directory. In this case we have a new package 
+`Test_1.0.tar.gz`. When the package is installed, it will contain a vignette `subsetCars` that can be loaded using the `vignette()` API. The vignette will detail the processing performed by the `subsetCars.Rmd` processing script. 
 
-This can be distributed, installed using `R CMD INSTALL`, and data sets loaded using R's standard `data()` call. Vignettes can be interrogated via `vignette(package="mypackage")`
+### The package source directory after building
 
-### Data versioning
+                         levelName
+1  Test                           
+2   ¦--data-raw                   
+3   ¦   ¦--documentation.R        
+4   ¦   ¦--subsetCars.knit.md     
+5   ¦   ¦--subsetCars.Rmd         
+6   ¦   °--subsetCars.utf8.md     
+7   ¦--data                       
+8   ¦   °--cars_over_20.rda       
+9   ¦--DATADIGEST                 
+10  ¦--datapackager.yml           
+11  ¦--DESCRIPTION                
+12  ¦--inst                       
+13  ¦   ¦--doc                    
+14  ¦   ¦   ¦--subsetCars.html    
+15  ¦   ¦   °--subsetCars.Rmd     
+16  ¦   °--extdata                
+17  ¦       °--Logfiles           
+18  ¦           ¦--processing.log 
+19  ¦           °--subsetCars.html
+20  ¦--man                        
+21  ¦   ¦--cars_over_20.Rd        
+22  ¦   °--Test.Rd                
+23  ¦--NAMESPACE                  
+24  ¦--R                          
+25  ¦   °--Test.R                 
+26  ¦--Read-and-delete-me         
+27  °--vignettes                  
+28      °--subsetCars.Rmd         
 
-The DataPackageR package calculates an md5 checksum of each data object it stores, and keeps track of them in a file called `DATADIGEST`.
+#### Details
 
--   Each time the package is rebuilt, the md5 sums of the new data objects are compared against the DATADIGEST.
--   If they don't match, the build process checks that the `DataVersion` string has been incremented in the `DESCRIPTION` file.
--   If it has not the build process will exit and produce an error message.
+A number of things have changed. The subsetCars processing script now appears under `/vignettes` and `inst/doc` as a processed html report so that it will be available to view via `vignette()` once the package is installed. 
+`inst/extdata/Logfiles` contains a log file of the entire build process as well as intermediate files created while parsing the R / Rmd code. Documentation Rd files appear in `/man`, these should be edite to provide further details on the data objects in the package. The data objects are stored under `/data` where we see `cars_over_20.rda`, the object we initially specified in `datapackager.yml`.
 
-### Benefits
+
+## Versioning data objects
+
+The DataPackageR package calculates an md5 checksum of each data object it stores, and keeps track of them in a file
+called `DATADIGEST`.
+
+- Each time the package is rebuilt, the md5 sums of the new data objects are compared against the DATADIGEST.
+- If they don't match, the build process checks that the `DataVersion` string has been incremented in the `DESCRIPTION` file.
+- If it has not the build process will exit and produce an error message.
+
+### DATADIGEST
+
+
+The `DATADIGEST` file contains the following:
+
+
+```
+DataVersion: 0.1.0
+cars_over_20: 3c49acb4246bb42ec9259ae8eb176835
+```
+
+
+### DESCRIPTION
+
+The description file has the new `DataVersion` string.
+
+
+```
+Package: Test
+Type: Package
+Title: What the package does (short line)
+Version: 1.0
+Date: Wed May 30 14:32:46 2018
+Author: Who wrote it
+Maintainer: Who to complain to <yourfault@somewhere.net>
+Description: More about what it does (maybe more than one line)
+License: What license is it under?
+DataVersion: 0.1.0
+Suggests: knitr,
+    rmarkdown
+VignetteBuilder: knitr
+RoxygenNote: 6.0.1
+```
+
+### Next steps
 
 Your downstream data analysis can depend on a specific version of your data package (for example by tesing the `packageVersion()` string);
 
-``` r{}
-if(packageVersion("MyNewStudy") != "1.0.0")
+```r{}
+if(DataPackageR::packageVersion("MyNewStudy") != "1.0.0")
   stop("The expected version of MyNewStudy is 1.0.0, but ",packageVersion("MyNewStudy")," is installed! Analysis results may differ!")
 ```
 
-The DataPackageR packge also provides `datasetVersion()` to extract the data set version information.
+The DataPackageR packge also provides `datasetVersion()` to extract the data set version information. 
 
-You should also place the data package source directory under `git` version control. This allows you to version control your data processing code.
+You should also place the data package source directory under `git` version control.
+This allows you to version control your data processing code. 
+
+### Why not use R CMD build?
+
+If the processing script is time consuming or the data set is particularly large, then `R CMD build` would run the code each time the package is installed. In such cases, raw data may not be available, or the environment to do the data processing may not be set up for each user of the data. In such cases, DataPackageR provides a mechanism to decouple data processing from package building/installation for downstream users of the data.
+
+
+## Partial builds and migrating old data packages.
+
+Version 1.12.0 has moved away from controlling the build process using `datasets.R` and an additional `masterfile` argument. The build process is now controlled via a `datapackager.yml` configuration file located in the package root directory. 
+
+You can migrate an old package by constructing such a config file using the `construct_yml_config()` API.
+
+
+```r
+#assume I have file1.Rmd and file2.R located in /data-raw, and these create 'object1' and 'object2' respectively.
+
+config = construct_yml_config(code = c("file1.Rmd","file2.R"), data = c("object1","object2"))
+print(config)
+$configuration
+$configuration$files
+$configuration$files$file1.Rmd
+$configuration$files$file1.Rmd$name
+[1] "file1.Rmd"
+
+$configuration$files$file1.Rmd$enabled
+[1] TRUE
+
+
+$configuration$files$file2.R
+$configuration$files$file2.R$name
+[1] "file2.R"
+
+$configuration$files$file2.R$enabled
+[1] TRUE
+
+
+
+$configuration$objects
+[1] "object1" "object2"
+```
+
+`config` is a newly constructed yaml configuration object. It can be written to the package directory:
+
+
+```r
+path_to_package = tempdir() #pretend this is the root of our package
+yml_write(config,path = path_to_package)
+```
+
+Now the package at `path_to_package` will build with version 1.12.0 or greater.
+
+We can also perform partial builds of a subset of files in a package by toggling the `enabled` key in the config file. This can be done with the following API:
+
+
+```r
+config = yml_disable_compile(config,filenames = "file2.R")
+print(config)
+$configuration
+$configuration$files
+$configuration$files$file1.Rmd
+$configuration$files$file1.Rmd$name
+[1] "file1.Rmd"
+
+$configuration$files$file1.Rmd$enabled
+[1] TRUE
+
+
+$configuration$files$file2.R
+$configuration$files$file2.R$name
+[1] "file2.R"
+
+$configuration$files$file2.R$enabled
+[1] FALSE
+
+
+
+$configuration$objects
+[1] "object1" "object2"
+```
+
+Where `config` is a configuration read from a data package root directory. The `config` object needs to be written back to the package root in order for the changes to take effect. The consequence of toggling a file to `enable: no` is that it will be skipped when the package is built, but the data will be retained, and the documentation will not be altered. 
+
+
+
+
+

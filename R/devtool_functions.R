@@ -191,6 +191,11 @@ is.package = function (x) {
 
 package_file = function (..., path = ".") 
 {
+  is_root = function (path) 
+  {
+    identical(normalizePath(path, winslash = "/"), normalizePath(dirname(path), 
+                                                                 winslash = "/"))
+  }
   if (!is.character(path) || length(path) != 1) {
     stop("`path` must be a string.", call. = FALSE)
   }

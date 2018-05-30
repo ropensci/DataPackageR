@@ -35,145 +35,230 @@ NULL
 #' @importFrom devtools as.package
 #' @importFrom here here
 #' @importFrom here set_here
+#' @import data.tree
 #' @import devtools
 DataPackageR <- function(arg = NULL,masterfile=NULL) {
-  if (is.null(arg)) {
-    parser <-
-      OptionParser(usage = "R CMD DataPackageR [options] package")
-    arguments = parse_args(parser,positional_arguments = 1)
-    opt = arguments$options
-    pkg_dir <- arguments$args
-  }else{
-    if (arg == "./") {
-      stop(
-        "You can't call DataPackageR with arg=\"./\" : Move out of the package directory and provide a proper package name."
-      )
-    }
-    pkg_dir <- arg
-  }
+  requireNamespace("futile.logger")
+  requireNamespace("yaml")
+  # This is cruft.
+  # if (is.null(arg)) {
+  #   parser <-
+  #     OptionParser(usage = "R CMD DataPackageR [options] package")
+  #   arguments = parse_args(parser,positional_arguments = 1)
+  #   opt = arguments$options
+  #   pkg_dir <- arguments$args
+  # }else{
+  #   if (arg == "./") {
+  #     flog.fatal("Don't can't call buildDataSetPackage() inside a package directory.")
+  #     stop("Quitting",call. = FALSE)
+  #   }
+  #   pkg_dir <- arg
+  # }
+  pkg_dir=arg
+  pkg_dir = normalizePath(pkg_dir)
   raw_data_dir <- "data-raw"
-  target <- file.path(pkg_dir,raw_data_dir)
-  data_dir <- file.path(pkg_dir,"data")
+  target <- normalizePath(file.path(pkg_dir,raw_data_dir))
+  data_dir <- normalizePath(file.path(pkg_dir,"data"))
+  raw_data_dir = normalizePath(raw_data_dir)
   if (!file.exists(target)) {
-    stop("Directory ",target," doesn't exist.")
+    flog.fatal(paste0("Directory ",target," doesn't exist."))
+    setwd(old)
+    stop("exiting",call. = FALSE)
   }else{
     if (!file.exists(data_dir)) {
       dir.create(data_dir)
     }
+    #get the current directory
     old <- getwd()
-    tryCatch({
+    #TODO see if we can get rid of the tryCatch
+    # tryCatch({
       # cd into the package directory
       setwd(pkg_dir)
-      set_here()
-      if (!file_test("R",op = "-d")) {
-        stop("You need a valid package data strucutre. Missing /R directory.")
+      
+      #log to the log file
+      #Create a log directory in inst/extdata
+      logpath = file.path(normalizePath("inst/extdata"),"Logfiles")
+      dir.create(logpath,recursive = TRUE,showWarnings = FALSE)
+      #open a log file
+      LOGFILE <-
+        file.path(logpath,"processing.log")
+      flog.appender(appender.tee(LOGFILE))
+      flog.info(paste0("Logging to ", LOGFILE))
+      
+      #we know it's a proper package root, but we want to test if we have the necessary subdirectories
+      if (!all(file_test(c("R","inst","data","data-raw"),op = "-d"))) {
+        flog.fatal("You need a valid package data strucutre. Missing ./R ./inst ./data or ./data-raw subdirectories.")
+        setwd(old)
+        stop("exiting",call.=FALSE)
       }
-      message("Processing data")
-      r_files <-
-        dir(path = raw_data_dir,pattern = "^datasets.R$",full.names = TRUE)
+      flog.info("Processing data")
+      #read YAML
+      ymlfile = dir(path = pkg_dir,pattern = "^datapackager.yml$",full.names = TRUE)
+      if(length(ymlfile)==0){
+        flog.fatal(paste0("Yaml configuration file not found at ",pkg_dir))
+        setwd(old)
+        stop("exiting",call.=FALSE)
+      }
+      ymlconf = read_yaml(ymlfile)
+      #test that the structure of the yaml file is correct!
+      if(!"configuration"%in%names(ymlconf)){
+        flog.fatal("YAML is missing 'configuration:' entry")
+        setwd(old)
+        stop("exiting",call.=FALSE)
+      }
+      if(!all(c("files","objects")%in%map(ymlconf,names)[["configuration"]])){
+        flog.fatal("YAML is missing files: and objects: entries")
+        setwd(old)
+        stop("exiting",call.=FALSE)
+      }
+      flog.info("Read yaml configuration")
+      
+      # r_files = unlist(map(ymlconf[["configuration"]][["files"]],"name"))
+      # subset to files that have enable: TRUE
+      r_files = unique(names(Filter(x = ymlconf[["configuration"]][["files"]],f=function(x)x$enabled)))
+      if(length(r_files)==0){
+        flog.fatal("No files enabled for processing!")
+        stop("error",call.=FALSE)
+      }
+      objectsToKeep = map(ymlconf,"objects")[["configuration"]]
+      
+      r_files = file.path(raw_data_dir,r_files)
+      
+      if(all(!file.exists(r_files))){
+        flog.fatal(paste0("Can't find any R or Rmd files."))
+        flog.fatal(paste0("     Cant' find: ",r_files[!file.exists(r_files)]))
+      }
+      if(any(!file.exists(r_files))){
+        flog.error(paste0("Can't find ",r_files[!file.exists(r_files)]))
+      }
+      flog.info(paste0("Found ",r_files))
+      #TODO fix hidden warnings in test cases
       old_data_digest <- .parse_data_digest()
       pkg_description <-
         try(read.description(file="DESCRIPTION"),silent = TRUE)
       if (inherits(pkg_description,"try-error")) {
+        setwd(old)
+        flog.fatal("No valid DESCRIPTION file")
         stop(
           "You need a valid package DESCRIPTION file. Please see Writing R Extensions (http://cran.r-project.org/doc/manuals/r-release/R-exts.html#The-DESCRIPTION-file).\n",pkg_description
         )
       }
-      #environment for the data
-      dataEnv <- new.env(hash = TRUE,parent = .GlobalEnv)
-      if (length(r_files) != 1) {
-        stop(
-          "data-raw must contain a an .R named datasets.R. This file can source other .R files in the directory."
-        )
+      #check that we have at least one file
+      if (length(r_files) == 0) {
+        flog.fatal("You must specify at least one file to process.")
+        setwd(old)
+        stop("exiting",call.=FALSE)
       }
-      if(!is.null(masterfile)){
-        #process masterfile instead of datasets.R
-        masterfile = list.files(path=".",pattern = masterfile,recursive = TRUE,full.names=TRUE)
-        if(length(masterfile)==0){
-          stop("Can't find ",masterfile)
-        }
-        r_files = masterfile
+      if (length(objectsToKeep) == 0){
+        flog.fatal("You must specify at least one data object.")
+        setwd(old)
+        stop("exiting",call.=FALSE)
       }
+ 
+      #TODO Can we configure documentation in yaml?
       do_documentation <- FALSE
+      #This flag indicates success
       can_write <- FALSE
-      #log to the log file
-      #Create a log directory in inst/extdata
-      dir.create("inst/extdata/Logfiles/",recursive = TRUE,showWarnings = FALSE)
-      #open a log files
-      message("Logging to ",file.path("inst/extdata/Logfiles","processing.log"))
-      LOGFILE <-
-        file(file.path("inst/extdata/Logfiles","processing.log"))
-      # sink(LOGFILE,append = TRUE,split = TRUE)
+      #environment for the data
+      ENVS = new.env(hash = TRUE,parent = .GlobalEnv)
       for (i in seq_along(r_files)) {
-        cat(i," of ",length(r_files),": ",r_files[i],"\n")
-        #Source an R file
-        sys.source(
-          file = r_files[i],envir = dataEnv,keep.source = FALSE,chdir = TRUE
-        )
+        dataEnv <- new.env(hash = TRUE,parent = .GlobalEnv)
+        flog.info(paste0("Processing ",i," of ",length(r_files),": ",r_files[i],"\n"))
+
+        #config file goes in the root
+        #render the r and rmd files
+        render(input = r_files[i], envir= dataEnv, output_dir=logpath, clean=FALSE)
         #The created objects
         object_names <- ls(dataEnv)
-        message("Found ",length(object_names), " data objects in file ",basename(r_files[i]))
+        flog.info(paste0(sum(objectsToKeep%in%object_names), " required data objects created by ",basename(r_files[i])))
+        
+        if(sum(objectsToKeep%in%object_names)>0){
+          for(o in objectsToKeep[objectsToKeep%in%object_names])
+            assign(o,get(o, dataEnv),ENVS)
+        }
+      }
+      dataEnv=ENVS
         #Digest each object
         new_data_digest <-
-          .digest_data_env(object_names,dataEnv,pkg_description)
+          .digest_data_env(ls(ENVS),dataEnv,pkg_description)
         if (!is.null(old_data_digest)) {
-          #Compare digest of each object against existing digest if available
-          #unless we are processing something from the masterfile.
-          #Then we need to:
-          # check what the new objects are and only compare the versions of those new objects
-          
+ 
           string_check <-
             .check_dataversion_string(old_data_digest,new_data_digest)
           can_write <- FALSE
           if (.compare_digests(old_data_digest,new_data_digest,delta=masterfile) &
               string_check$isequal) {
                 can_write <- TRUE
-                message(
+                flog.info(paste0(
                   "Processed data sets match existing data sets at version ",new_data_digest$DataVersion
-                )
+                ))
               }else if ((!.compare_digests(old_data_digest,new_data_digest,delta=masterfile)) &
                         string_check$isequal) {
                         updated_version = .increment_data_version(pkg_description,new_data_digest);
                         pkg_description = updated_version$pkg_description
                         new_data_digest = updated_version$new_data_digest
                           can_write <- TRUE
-                          message(
+                          flog.info(paste0(
                             "Data has been updated and DataVersion string incremented automatically to ",new_data_digest$DataVersion
-                          )
+                          ))
                         }else if (.compare_digests(old_data_digest,new_data_digest,delta=masterfile) &
                                   string_check$isgreater) {
                                     can_write <- TRUE
-                                    message("Data hasn't changed but the DataVersion has been bumped.")
+                                    flog.info("Data hasn't changed but the DataVersion has been bumped.")
                         }else if ((!.compare_digests(old_data_digest,new_data_digest,delta=masterfile)) &
                                          string_check$isgreater) {
                           can_write <- TRUE
-                          message("Data has changed and the DataVersion has been bumped.")
+                          flog.info("Data has changed and the DataVersion has been bumped.")
                         }
           
           if (can_write) {
-            .save_data(new_data_digest,pkg_description,object_names,dataEnv,old_data_digest = old_data_digest, masterfile=masterfile)
+            .save_data(new_data_digest,pkg_description,ls(dataEnv),dataEnv,old_data_digest = old_data_digest, masterfile=masterfile)
             do_documentation <- TRUE
           }else{
-            message(
+            flog.info(
               "Some data has changed, but the DataVersion string has not been incremented or\nis less than the version in DATADIGEST \nUpdate the DataVersion string to be greater than ",old_data_digest$DataVersion," in the DESCRIPTION file\nand re-run R CMD DataPackageR."
             )
           }
         }else{
-          .save_data(new_data_digest,pkg_description,object_names,dataEnv)
-          do_documenatation <- TRUE
+          .save_data(new_data_digest,pkg_description,ls(dataEnv),dataEnv)
+          do_documentation <- TRUE
         }
         if (do_documentation) {
-          #extract documentation and write to /R
-          #FIXME this code is terrible and can be improved.. need to see how this is done in roxygen2
-          all_r_files <- dir(raw_data_dir,pattern = "\\.R$",full.names = TRUE)
-          doc_parsed = .parseDocumentation(all_r_files)
-          doc_parsed = Filter(f = function(x)!is.null(x),doc_parsed[c(pkg_description$Package,object_names)])
-          #here need to append if we are doing a partial build.
-          if(!is.null(masterfile)){
-            old_doc_file = list.files(here("R"),full.names = TRUE,paste0(pkg_description$Package,".R"))
+          #Run autodoc #needs to be run when we have a partial build..
+          if(!file.exists(file.path(target,"documentation.R")))
+            .autoDoc(basename(pkg_dir),ds2kp = ls(dataEnv),env = dataEnv, path = target)
+          
+          #parse  documentation
+          doc_parsed = .parseDocumentation(file.path(target,"documentation.R"))
+          .identify_missing_docs = function(environment=NULL,description = NULL, docs = NULL){
+            setdiff(ls(environment),setdiff(names(docs),description$Package))
+          }
+          
+          # case where we add an object, ensures we combine the documentation properly
+          missing_doc_for_autodoc = .identify_missing_docs(dataEnv,pkg_description,doc_parsed)
+          if(length(missing_doc_for_autodoc)!=0){
+            tmptarget = tempdir()
+            .autoDoc(basename(pkg_dir),ds2kp = missing_doc_for_autodoc,env = dataEnv, path = tmptarget, name = "missing_doc.R")
+            missing_doc = .parseDocumentation(file.path(tmptarget,"missing_doc.R"))
+            
+            doc_parsed = .mergeDocumentation(old = doc_parsed, new = missing_doc)
+            docfile <-
+              file(file.path(target,paste0("documentation",".R")),open = "w")
+            sapply(doc_parsed,function(x) {
+              writeLines(text = x,con = docfile)
+            })
+          }
+          
+          #Partial build if enabled=FALSE for any file
+          #We've disabled an object but don't want to overwrite its documentation or remove it
+          if(!all(unlist(map(ymlconf[["configuration"]][["files"]],"enabled")))){
+            old_doc_file = list.files(file.path(pkg_dir,"R"),full.names = TRUE,paste0(pkg_description$Package,".R"))
             if(file.exists(old_doc_file)){
              old_docs = .parseDocumentation(old_doc_file)
-              merged_docs = .mergeDocumentation(old = old_docs, new = doc_parsed)
+             not_built = setdiff(setdiff(names(old_docs),ls(dataEnv)),pkg_description$Package)
+             #remove all but not_built from old_docs
+              merged_docs = .mergeDocumentation(old = old_docs[not_built], new = doc_parsed)
+              merged_docs = merged_docs[names(old_docs)]
               save_docs = do.call(c,merged_docs)
             }
             else {
@@ -188,18 +273,20 @@ DataPackageR <- function(arg = NULL,masterfile=NULL) {
             writeLines(text = x,con = docfile)
           })
           close(docfile)
-          message("Copied documentation to ",file.path("R",paste0(pkg_description$Package,".R")))
+          flog.info(paste0("Copied documentation to ",file.path("R",paste0(pkg_description$Package,".R"))))
+          #TODO test that we have documented everything successfully and that all files have been parsed successfully
+          can_write = TRUE
         }
         eval(expr = expression(rm(list = ls())),envir = dataEnv)
-      }
+      # } # we'll render one file after another then deal with the documentaton etc.
       # copy html files to vignettes
       .vignettesFromPPFiles()
       
-    },finally = {
+    # },finally = {
       setwd(old);
-    })
+    # })
   }
-  message("Done")
+  flog.info("Done")
   if (can_write) {
     return(TRUE)
   }else{
@@ -216,7 +303,7 @@ DataPackageR <- function(arg = NULL,masterfile=NULL) {
   add_desc_package(pkg, "VignetteBuilder", "knitr")
   use_directory("vignettes", pkg = pkg)
   use_git_ignore("inst/doc", pkg = pkg)
-  message("Removing inst/doc from .gitignore")
+  flog.info("Removing inst/doc from .gitignore")
   lines = readLines(".gitignore")
   lines = gsub("inst/doc","",lines)
   writeLines(lines,".gitignore")

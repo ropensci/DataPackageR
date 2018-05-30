@@ -20,7 +20,11 @@
 #' datapackage.skeleton(name="MyDataPackage",path="/tmp")
 #' }
 datapackage.skeleton <-
-  function(name = "anRpackage", list = character(), environment = .GlobalEnv, path = ".", force = FALSE, code_files = character(), r_object_names = character()) {
+  function(name = NULL, list = character(), environment = .GlobalEnv, path = ".", force = FALSE, code_files = character(), r_object_names = character()) {
+    if(is.null(name)){
+      stop("Must supply a package name",call.=FALSE)
+    }
+
     if (length(list) == 0)
       # don't pass on the code_files here, but use that argument to 
       package.skeleton(
@@ -57,48 +61,49 @@ datapackage.skeleton <-
       c(
         "Edit the DESCRIPTION file to reflect the contents of your package.",
         "Optionally put your raw data under 'inst/extdata/'.",
-        "If the datasets are large, they may reside elsewhere outside the package.",
-        "Copy .R files that do preprocessing of your data to 'data-raw'",
-        "Edit 'data-raw/datasets.R' to source your R files.",
-        "Document your data sets using roxygen markup (see comments in datasets.R)",
+        "If the datasets are large, they may reside elsewhere outside the package source tree.",
+        "If you passed R and Rmd files to datapackage.skeleton, they should now appear in 'data-raw'.",
+        "When you call buildDataSetPackage(), your datasets will be automatically documented.",
+        "Edit datapackager.yml to add additional files / data objects to the package.",
+        "After building, you should edit dat-raw/documentation.R to fill in dataset documentation details and rebuild.",
         "",
         "NOTES",
         "If your code relies on other packages, add those to the @import tag of the roxygen markup.",
         "The R object names you wish to make available (and document) in the package must match",
-        "the roxygen @name tags and must be called out by keepDataObjects() in datasets.R",
-        "(listing them in objectsToKeep in datasets.R is sufficient)."
+        "the roxygen @name tags and must be listed in the yml file."
       ),con
     )
     close(con)
     
-    if(system.file("extdata", "datasets.R", package="DataPackageR") != ""){
-      message("Copying datasets.R template.")
+    if(length(r_object_names)!=0){
+      message("configuring yaml file")
       # Rather than copy, read in, modify (as needed), and write.
-      indatafile = system.file("extdata", "datasets.R", package="DataPackageR")
-      datasets_string = readChar(con = file(indatafile,open = "r"),nchars = 100000)
+      # indatafile = system.file("extdata", "datasets.R", package="DataPackageR")
+      # datasets_string = readChar(con = file(indatafile,open = "r"),nchars = 100000)
       #process the string
-      if(length(r_object_names)!=0){
-        datasets_string = gsub("objectsToKeep <- c\\('myFile1', 'myFile2', 'etc.'\\)",paste0("objectsToKeep <- c(",paste(paste0("'",r_object_names,"'"),collapse=","),")"),datasets_string)
-      }
+      # if(length(r_object_names)!=0){
+        # datasets_string = gsub("objectsToKeep <- c\\('myFile1', 'myFile2', 'etc.'\\)",paste0("objectsToKeep <- c(",paste(paste0("'",r_object_names,"'"),collapse=","),")"),datasets_string)
+      # }
       
       if(length(code_files)!=0){
         .validateCodeFiles(code_files)
         #If these are valid, we put them in datasets.R
-        render_to_insert = paste(paste0("render\\('",basename(code_files),"', envir=topenv\\(\\), output_dir='../inst/extdata/Logfiles', clean=FALSE\\)"),collapse="\n")
-        datasets_string = gsub("render\\('myPreprocessingCode.Rmd', envir=topenv\\(\\), output_dir='../inst/extdata/Logfiles', clean=FALSE\\)",render_to_insert,datasets_string)
+        # render_to_insert = paste(paste0("render\\('",basename(code_files),"', envir=topenv\\(\\), output_dir='../inst/extdata/Logfiles', clean=FALSE\\)"),collapse="\n")
+        # datasets_string = gsub("render\\('myPreprocessingCode.Rmd', envir=topenv\\(\\), output_dir='../inst/extdata/Logfiles', clean=FALSE\\)",render_to_insert,datasets_string)
         #copy them over
         purrr::map(code_files,function(x)file.copy(x,file.path(package_path,"data-raw")))
-        
       }
       
       
-      
-      outcon = file(description = file.path(package_path, "data-raw","datasets.R"),open = "w")
-      writeLines(datasets_string,con = outcon)
-      close(outcon)
+      #TODO construct a datapackager.yml file rather than using datasets.R
+      yml = construct_yml_config(code = code_files, data = r_object_names)
+      yaml::write_yaml(yml, file = file.path(package_path,"datapackager.yml"))
+      # outcon = file(description = file.path(package_path, "data-raw","datasets.R"),open = "w")
+      # writeLines(datasets_string,con = outcon)
+      # close(outcon)
       # file.copy(system.file("extdata", "datasets.R", package="DataPackageR"), file.path(package_path, "data-raw"), overwrite=TRUE)
     } else {
-      message("Couldn't find datasets.R template. Look in .libPaths() directories for DataPackageR/extdata/datasets.R and copy to data-raw/ directory.")
+      stop("No r_object_names specified to move into the datapackage.")
     }
     
     con = file(file.path(package_path,"R","utils.R"))
