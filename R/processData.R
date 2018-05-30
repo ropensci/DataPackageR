@@ -113,7 +113,13 @@ DataPackageR <- function(arg = NULL,masterfile=NULL) {
       }
       flog.info("Read yaml configuration")
       
-      r_files = unlist(map(ymlconf[["configuration"]][["files"]],"name"))
+      # r_files = unlist(map(ymlconf[["configuration"]][["files"]],"name"))
+      # subset to files that have enable: TRUE
+      r_files = unique(names(Filter(x = ymlconf[["configuration"]][["files"]],f=function(x)x$enabled)))
+      if(length(r_files)==0){
+        flog.fatal("No files enabled for processing!")
+        stop("error",call.=FALSE)
+      }
       objectsToKeep = map(ymlconf,"objects")[["configuration"]]
       
       r_files = file.path(raw_data_dir,r_files)
@@ -127,7 +133,6 @@ DataPackageR <- function(arg = NULL,masterfile=NULL) {
       }
       flog.info(paste0("Found ",r_files))
       #TODO fix hidden warnings in test cases
-      #TODO replace this eventually to only parse the files we want
       old_data_digest <- .parse_data_digest()
       pkg_description <-
         try(read.description(file="DESCRIPTION"),silent = TRUE)
@@ -138,8 +143,6 @@ DataPackageR <- function(arg = NULL,masterfile=NULL) {
           "You need a valid package DESCRIPTION file. Please see Writing R Extensions (http://cran.r-project.org/doc/manuals/r-release/R-exts.html#The-DESCRIPTION-file).\n",pkg_description
         )
       }
-      #environment for the data
-      dataEnv <- new.env(hash = TRUE,parent = .GlobalEnv)
       #check that we have at least one file
       if (length(r_files) == 0) {
         flog.fatal("You must specify at least one file to process.")
@@ -151,48 +154,35 @@ DataPackageR <- function(arg = NULL,masterfile=NULL) {
         setwd(old)
         stop("exiting",call.=FALSE)
       }
-      #TODO this needs to be updated to find another way to process alternative R files. Preferably via yaml config.
-      # defer change to later
-      if(!is.null(masterfile)){
-        #process masterfile instead of datasets.R
-        #NOTE updated to search in raw_data_dir
-        masterfile = list.files(path=raw_data_dir,pattern = masterfile,recursive = TRUE,full.names=TRUE)
-        if(length(masterfile)==0){
-          setwd(old)
-          stop("Can't find ",masterfile)
-        }
-        #TODO again this needs to be fixed since we'll be deprecating the masterfile and datasets process.
-        r_files = masterfile
-      }
-      #TODO improve the documentation process. Can we configure it in yaml?
+ 
+      #TODO Can we configure documentation in yaml?
       do_documentation <- FALSE
       #This flag indicates success
       can_write <- FALSE
-     #TODO for each file to process we do stuff. 
-      #I'd prefer to use an iterator over the files than a for loop. 
+      #environment for the data
+      ENVS = new.env(hash = TRUE,parent = .GlobalEnv)
       for (i in seq_along(r_files)) {
+        dataEnv <- new.env(hash = TRUE,parent = .GlobalEnv)
         flog.info(paste0("Processing ",i," of ",length(r_files),": ",r_files[i],"\n"))
-        
-        #Source an R file
-        #This should use render and we want to keep the output.. 
-        #One case: the listed files in the config.
-        #TODO move the config file into the root?
+
+        #config file goes in the root
+        #render the r and rmd files
         render(input = r_files[i], envir= dataEnv, output_dir=logpath, clean=FALSE)
-        # sys.source(
-        #   file = r_files[i],envir = dataEnv,keep.source = FALSE,chdir = TRUE
-        # )
         #The created objects
         object_names <- ls(dataEnv)
-        flog.info(paste0("Found ",length(object_names), " data objects in file ",basename(r_files[i])))
+        flog.info(paste0(sum(objectsToKeep%in%object_names), " required data objects created by ",basename(r_files[i])))
+        
+        if(sum(objectsToKeep%in%object_names)>0){
+          for(o in objectsToKeep[objectsToKeep%in%object_names])
+            assign(o,get(o, dataEnv),ENVS)
+        }
+      }
+      dataEnv=ENVS
         #Digest each object
         new_data_digest <-
-          .digest_data_env(object_names,dataEnv,pkg_description)
+          .digest_data_env(ls(ENVS),dataEnv,pkg_description)
         if (!is.null(old_data_digest)) {
-          #Compare digest of each object against existing digest if available
-          #unless we are processing something from the masterfile.
-          #Then we need to:
-          # check what the new objects are and only compare the versions of those new objects
-          
+ 
           string_check <-
             .check_dataversion_string(old_data_digest,new_data_digest)
           can_write <- FALSE
@@ -222,7 +212,7 @@ DataPackageR <- function(arg = NULL,masterfile=NULL) {
                         }
           
           if (can_write) {
-            .save_data(new_data_digest,pkg_description,object_names,dataEnv,old_data_digest = old_data_digest, masterfile=masterfile)
+            .save_data(new_data_digest,pkg_description,ls(dataEnv),dataEnv,old_data_digest = old_data_digest, masterfile=masterfile)
             do_documentation <- TRUE
           }else{
             flog.info(
@@ -230,21 +220,36 @@ DataPackageR <- function(arg = NULL,masterfile=NULL) {
             )
           }
         }else{
-          .save_data(new_data_digest,pkg_description,object_names,dataEnv)
+          .save_data(new_data_digest,pkg_description,ls(dataEnv),dataEnv)
           do_documentation <- TRUE
         }
         if (do_documentation) {
-          #extract documentation and write to /R
-          #FIXME this code is terrible and can be improved.. need to see how this is done in roxygen2
-          # this is what we do in the event of no documentation
+          #Run autodoc #needs to be run when we have a partial build..
           if(!file.exists(file.path(target,"documentation.R")))
-            .autoDoc(basename(pkg_dir),ds2kp = object_names,env = dataEnv, path = target)
-          # all_r_files <- dir(raw_data_dir,pattern = "\\.R$",full.names = TRUE)
+            .autoDoc(basename(pkg_dir),ds2kp = ls(dataEnv),env = dataEnv, path = target)
+          
+          #parse  documentation
           doc_parsed = .parseDocumentation(file.path(target,"documentation.R"))
-          # doc_parsed = Filter(f = function(x)!is.null(x),doc_parsed[c(pkg_description$Package,object_names)])
-          #here need to append if we are doing a partial build.
-          #TODO what do we do if we have a partial build? how will we handle this?
-          if(!is.null(masterfile)){
+          .identify_missing_docs = function(environment=NULL,description = NULL, docs = NULL){
+            setdiff(ls(environment),setdiff(names(docs),description$Package))
+          }
+          
+          # case where we add an object, ensures we combine the documentation properly
+          missing_doc_for_autodoc = .identify_missing_docs(dataEnv,pkg_description,doc_parsed)
+          if(length(missing_doc_for_autodoc)!=0){
+            .autoDoc(basename(pkg_dir),ds2kp = missing_doc_for_autodoc,env = dataEnv, path = target, name = "missing_doc.R")
+            missing_doc = .parseDocumentation(file.path(target,"missing_doc.R"))
+            doc_parsed = .mergeDocumentation(old = doc_parsed, new = missing_doc)
+            docfile <-
+              file(file.path(target,paste0("documentation",".R")),open = "w")
+            sapply(doc_parsed,function(x) {
+              writeLines(text = x,con = docfile)
+            })
+          }
+          
+          #Partial build if enabled=FALSE for any file
+          #We've disabled an object but don't want to overwrite its documentation or remove it
+          if(!all(unlist(map(ymlconf[["configuration"]][["files"]],"enabled")))){
             old_doc_file = list.files(file.path(pkg_dir,"R"),full.names = TRUE,paste0(pkg_description$Package,".R"))
             if(file.exists(old_doc_file)){
              old_docs = .parseDocumentation(old_doc_file)
@@ -268,7 +273,7 @@ DataPackageR <- function(arg = NULL,masterfile=NULL) {
           can_write = TRUE
         }
         eval(expr = expression(rm(list = ls())),envir = dataEnv)
-      }
+      # } # we'll render one file after another then deal with the documentaton etc.
       # copy html files to vignettes
       .vignettesFromPPFiles()
       
