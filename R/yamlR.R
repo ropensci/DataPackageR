@@ -9,7 +9,9 @@
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' yml_find("/tmp")
+#' }
 yml_find = function(path){
   path = normalizePath(path)
   config_yml = is_r_package$find_file("datapackager.yml",path=path)

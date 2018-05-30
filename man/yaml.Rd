@@ -52,5 +52,7 @@ Edit a yaml configuration file via an API.
 Add, remove files and objects, enable or disable parsing of specific files,  list objects or files in a yaml config, or write a config back to a package.
 }
 \examples{
+\dontrun{
 yml_find("/tmp")
+}
 }
