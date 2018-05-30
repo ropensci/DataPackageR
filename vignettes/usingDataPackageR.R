@@ -25,14 +25,14 @@ as.Node(df)
 ## ---- echo=FALSE---------------------------------------------------------
 library(yaml)
 setwd(tmp)
-print(as.Node(yaml.load_file("Test/datapackager.yml")),"files","objects")
+cat(as.yaml(yaml.load_file("Test/datapackager.yml")))
 
 ## ------------------------------------------------------------------------
 # Within the package directory
 setwd(tmp)
 DataPackageR:::buildDataSetPackage("Test") 
 
-## ---- results='asis',echo=FALSE------------------------------------------
+## ---- echo=FALSE---------------------------------------------------------
 library(yaml)
 setwd(tmp)
 df = data.frame(pathString=file.path("Test",(list.files("Test",recursive=TRUE))))
@@ -45,4 +45,18 @@ cat(readLines("Test/DATADIGEST"),sep="\n")
 ## ----echo=FALSE----------------------------------------------------------
 setwd(tmp)
 cat(readLines("Test/DESCRIPTION"),sep="\n")
+
+## ----construct_config----------------------------------------------------
+#assume I have file1.Rmd and file2.R located in /data-raw, and these create 'object1' and 'object2' respectively.
+
+config = construct_yml_config(code = c("file1.Rmd","file2.R"), data = c("object1","object2"))
+print(config)
+
+## ------------------------------------------------------------------------
+path_to_package = tempdir() #pretend this is the root of our package
+yml_write(config,path = path_to_package)
+
+## ------------------------------------------------------------------------
+config = yml_disable_compile(config,filenames = "file2.R")
+print(config)
 
