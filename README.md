@@ -1,10 +1,11 @@
 ---
 title: "Using DataPackageR"
 author: "Greg Finak <gfinak@fredhutch.org>"
-date: "2018-05-29"
+date: "2018-05-30"
 output: 
   rmarkdown::html_vignette:
-    keep_md: true
+    keep_md: TRUE
+
 vignette: >
   %\VignetteIndexEntry{A quick guide to using DataPackageR}
   %\VignetteEngine{knitr::rmarkdown}
@@ -16,7 +17,7 @@ vignette: >
 
 # DataPackageR
 
-Reproducibly process raw data into packaged, analysis-ready data sets.
+Reproducibly process raw data into packaged, analysis-ready data sets
 
 ## Goals
 
@@ -57,11 +58,10 @@ We'll set up a new data package that processes the `cars` data by subsetting it 
 ```r
 library(data.tree)
 library(DataPackageR)
+tmp = normalizePath(tempdir())
 processing_code = system.file("extdata","tests","subsetCars.Rmd",package="DataPackageR")
 print(processing_code)
 [1] "/Library/Frameworks/R.framework/Versions/3.5/Resources/library/DataPackageR/extdata/tests/subsetCars.Rmd"
-
-tmp = normalizePath(tempdir())
 setwd(tmp)
 DataPackageR::datapackage.skeleton("Test", 
                                    force=TRUE, 
@@ -135,9 +135,11 @@ Here are the contents of `datapackager.yml`:
 
 
 ```
-          levelName          files      objects
+                   levelName files      objects
 1 Root                                         
-2  °--configuration subsetCars.Rmd cars_over_20
+2  °--configuration                cars_over_20
+3      °--files                                
+4          °--subsetCars.Rmd                   
 ```
 
 It includes a `files` property that contains the filenames of the Rmd scripts, and an `objects` property that lists the data objects produced by the script.
@@ -155,11 +157,11 @@ setwd(tmp)
 DataPackageR:::buildDataSetPackage("Test") 
 Warning in normalizePath(raw_data_dir): path[1]="data-raw": No such file or
 directory
-INFO [2018-05-29 11:17:19] Logging to /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmp26lVAt/Test/inst/extdata/Logfiles/processing.log
-INFO [2018-05-29 11:17:19] Processing data
-INFO [2018-05-29 11:17:19] Read yaml configuration
-INFO [2018-05-29 11:17:19] Found data-raw/subsetCars.Rmd
-INFO [2018-05-29 11:17:19] Processing 1 of 1: data-raw/subsetCars.Rmd
+INFO [2018-05-30 14:32:46] Logging to /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmp6au3FK/Test/inst/extdata/Logfiles/processing.log
+INFO [2018-05-30 14:32:46] Processing data
+INFO [2018-05-30 14:32:46] Read yaml configuration
+INFO [2018-05-30 14:32:46] Found data-raw/subsetCars.Rmd
+INFO [2018-05-30 14:32:46] Processing 1 of 1: data-raw/subsetCars.Rmd
 
 
 processing file: subsetCars.Rmd
@@ -180,35 +182,35 @@ label: cars
   ordinary text without R code
 
   |                                                                         |........................................................         |  86%
-label: unnamed-chunk-8
+label: unnamed-chunk-10
   |                                                                         |.................................................................| 100%
   ordinary text without R code
 output file: subsetCars.knit.md
-/usr/local/bin/pandoc +RTS -K512m -RTS subsetCars.utf8.md --to html4 --from markdown+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash+smart --output /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmp26lVAt/Test/inst/extdata/Logfiles/subsetCars.html --email-obfuscation none --self-contained --standalone --section-divs --template /Library/Frameworks/R.framework/Versions/3.5/Resources/library/rmarkdown/rmd/h/default.html --no-highlight --variable highlightjs=1 --variable 'theme:bootstrap' --include-in-header /var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//Rtmp26lVAt/rmarkdown-str774e1ffe812b.html --mathjax --variable 'mathjax-url:https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' 
+/usr/local/bin/pandoc +RTS -K512m -RTS subsetCars.utf8.md --to html4 --from markdown+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash+smart --output /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmp6au3FK/Test/inst/extdata/Logfiles/subsetCars.html --email-obfuscation none --self-contained --standalone --section-divs --template /Library/Frameworks/R.framework/Versions/3.5/Resources/library/rmarkdown/rmd/h/default.html --no-highlight --variable highlightjs=1 --variable 'theme:bootstrap' --include-in-header /var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//Rtmp6au3FK/rmarkdown-stra03557dd7f4e.html --mathjax --variable 'mathjax-url:https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' 
 
 Output created: inst/extdata/Logfiles/subsetCars.html
-INFO [2018-05-29 11:17:19] Found 1 data objects in file subsetCars.Rmd
-INFO [2018-05-29 11:17:19] Saving to data
+INFO [2018-05-30 14:32:46] 1 required data objects created by subsetCars.Rmd
+INFO [2018-05-30 14:32:46] Saving to data
 Warning: 'Date' must be an ISO date: yyyy-mm-dd, but it is actually better
 to leave this field out completely. It is not required.
-INFO [2018-05-29 11:17:19] Copied documentation to R/Test.R
+INFO [2018-05-30 14:32:46] Copied documentation to R/Test.R
 * Creating `vignettes`.
 * Adding `inst/doc` to ./.gitignore
-INFO [2018-05-29 11:17:19] Removing inst/doc from .gitignore
-INFO [2018-05-29 11:17:19] Done
-INFO [2018-05-29 11:17:19] Building documentation
+INFO [2018-05-30 14:32:46] Removing inst/doc from .gitignore
+INFO [2018-05-30 14:32:46] Done
+INFO [2018-05-30 14:32:46] Building documentation
 First time using roxygen2. Upgrading automatically...
-Updating roxygen version in /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmp26lVAt/Test/DESCRIPTION
+Updating roxygen version in /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmp6au3FK/Test/DESCRIPTION
 Writing NAMESPACE
 Writing Test.Rd
 Writing cars_over_20.Rd
-INFO [2018-05-29 11:17:19] Building package
+INFO [2018-05-30 14:32:46] Building package
 '/Library/Frameworks/R.framework/Resources/bin/R' --no-site-file  \
   --no-environ --no-save --no-restore --quiet CMD build  \
-  '/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmp26lVAt/Test'  \
+  '/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmp6au3FK/Test'  \
   --no-resave-data --no-manual --no-build-vignettes 
 
-[1] "/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmp26lVAt/Test_1.0.tar.gz"
+[1] "/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmp6au3FK/Test_1.0.tar.gz"
 ```
 
 ### Logging the build process
@@ -287,7 +289,7 @@ Package: Test
 Type: Package
 Title: What the package does (short line)
 Version: 1.0
-Date: Tue May 29 11:17:19 2018
+Date: Wed May 30 14:32:46 2018
 Author: Who wrote it
 Maintainer: Who to complain to <yourfault@somewhere.net>
 Description: More about what it does (maybe more than one line)
@@ -316,6 +318,85 @@ This allows you to version control your data processing code.
 ### Why not use R CMD build?
 
 If the processing script is time consuming or the data set is particularly large, then `R CMD build` would run the code each time the package is installed. In such cases, raw data may not be available, or the environment to do the data processing may not be set up for each user of the data. In such cases, DataPackageR provides a mechanism to decouple data processing from package building/installation for downstream users of the data.
+
+
+## Partial builds and migrating old data packages.
+
+Version 1.12.0 has moved away from controlling the build process using `datasets.R` and an additional `masterfile` argument. The build process is now controlled via a `datapackager.yml` configuration file located in the package root directory. 
+
+You can migrate an old package by constructing such a config file using the `construct_yml_config()` API.
+
+
+```r
+#assume I have file1.Rmd and file2.R located in /data-raw, and these create 'object1' and 'object2' respectively.
+
+config = construct_yml_config(code = c("file1.Rmd","file2.R"), data = c("object1","object2"))
+print(config)
+$configuration
+$configuration$files
+$configuration$files$file1.Rmd
+$configuration$files$file1.Rmd$name
+[1] "file1.Rmd"
+
+$configuration$files$file1.Rmd$enabled
+[1] TRUE
+
+
+$configuration$files$file2.R
+$configuration$files$file2.R$name
+[1] "file2.R"
+
+$configuration$files$file2.R$enabled
+[1] TRUE
+
+
+
+$configuration$objects
+[1] "object1" "object2"
+```
+
+`config` is a newly constructed yaml configuration object. It can be written to the package directory:
+
+
+```r
+path_to_package = tempdir() #pretend this is the root of our package
+yml_write(config,path = path_to_package)
+```
+
+Now the package at `path_to_package` will build with version 1.12.0 or greater.
+
+We can also perform partial builds of a subset of files in a package by toggling the `enabled` key in the config file. This can be done with the following API:
+
+
+```r
+config = yml_disable_compile(config,filenames = "file2.R")
+print(config)
+$configuration
+$configuration$files
+$configuration$files$file1.Rmd
+$configuration$files$file1.Rmd$name
+[1] "file1.Rmd"
+
+$configuration$files$file1.Rmd$enabled
+[1] TRUE
+
+
+$configuration$files$file2.R
+$configuration$files$file2.R$name
+[1] "file2.R"
+
+$configuration$files$file2.R$enabled
+[1] FALSE
+
+
+
+$configuration$objects
+[1] "object1" "object2"
+```
+
+Where `config` is a configuration read from a data package root directory. The `config` object needs to be written back to the package root in order for the changes to take effect. The consequence of toggling a file to `enable: no` is that it will be skipped when the package is built, but the data will be retained, and the documentation will not be altered. 
+
+
 
 
 
