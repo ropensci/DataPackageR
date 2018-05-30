@@ -58,5 +58,5 @@ yml_write(config,path = path_to_package)
 
 ## ------------------------------------------------------------------------
 config = yml_disable_compile(config,filenames = "file2.R")
-print(config)
+print(as.yaml(config))
 

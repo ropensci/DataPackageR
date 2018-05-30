@@ -213,7 +213,7 @@ We can also perform partial builds of a subset of files in a package by toggling
 
 ```{r}
 config = yml_disable_compile(config,filenames = "file2.R")
-print(config)
+print(as.yaml(config))
 ```
 
 Where `config` is a configuration read from a data package root directory. The `config` object needs to be written back to the package root in order for the changes to take effect. The consequence of toggling a file to `enable: no` is that it will be skipped when the package is built, but the data will be retained, and the documentation will not be altered. 
