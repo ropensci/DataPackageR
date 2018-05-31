@@ -282,7 +282,7 @@ DataPackageR <- function(arg = NULL,masterfile=NULL) {
         eval(expr = expression(rm(list = ls())),envir = dataEnv)
       # } # we'll render one file after another then deal with the documentaton etc.
       # copy html files to vignettes
-      .vignettesFromPPFiles()
+      .vignettesFromPPFiles(dir=pkg_dir)
       
     # },finally = {
       setwd(old);
@@ -297,26 +297,25 @@ DataPackageR <- function(arg = NULL,masterfile=NULL) {
 }
 
 
-.vignettesFromPPFiles <- function() {
-  pkg <- as.package(".")
+.vignettesFromPPFiles <- function(dir=NULL) {
+  pkg <- as.package(dir)
   check_suggested("rmarkdown")
   add_desc_package(pkg, "Suggests", "knitr")
   add_desc_package(pkg, "Suggests", "rmarkdown")
   add_desc_package(pkg, "VignetteBuilder", "knitr")
   use_directory("vignettes", pkg = pkg)
   use_git_ignore("inst/doc", pkg = pkg)
-  flog.info("Removing inst/doc from .gitignore")
   lines = readLines(".gitignore")
   lines = gsub("inst/doc","",lines)
   writeLines(lines,".gitignore")
   # browser()
   try(dir.create("inst/doc"),silent=TRUE)
   #TODO maybe copy only the files that have both html and Rmd.
-  rmdfiles_for_vignettes = list.files(path="data-raw",pattern="Rmd$",full.names=TRUE,recursive = FALSE)
-  htmlfiles_for_vignettes = list.files(path="inst/extdata/Logfiles",pattern="html$",full.names =TRUE,recursive = FALSE)
-  purrr::map(htmlfiles_for_vignettes,function(x)file.copy(x,file.path("inst/doc",basename(x)),overwrite = TRUE))
-  capture.output(purrr::map(rmdfiles_for_vignettes,function(x)file.copy(x,file.path("vignettes",basename(x)),overwrite = TRUE)))
-  vignettes_to_process = list.files(path="vignettes",pattern="Rmd$",full.names =TRUE,recursive=FALSE)
+  rmdfiles_for_vignettes = list.files(path=file.path(pkg,"data-raw"),pattern="Rmd$",full.names=TRUE,recursive = FALSE)
+  htmlfiles_for_vignettes = list.files(path=file.path(pkg,"inst/extdata/Logfiles"),pattern="html$",full.names =TRUE,recursive = FALSE)
+  purrr::map(htmlfiles_for_vignettes,function(x)file.copy(x,file.path(pkg,"inst/doc",basename(x)),overwrite = TRUE))
+  capture.output(purrr::map(rmdfiles_for_vignettes,function(x)file.copy(x,file.path(pkg,"vignettes",basename(x)),overwrite = TRUE)))
+  vignettes_to_process = list.files(path=file.path(pkg,"vignettes"),pattern="Rmd$",full.names =TRUE,recursive=FALSE)
   write_me_out = purrr::map(vignettes_to_process,function(x){
     title = "Default Vignette Title. Add yaml title: to your document"
     thisfile = read_file(x)
