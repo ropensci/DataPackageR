@@ -92,7 +92,7 @@ yml_list_objects = function(config){
     config = yml_find(config)
   }
   cat(config[["configuration"]][["objects"]])
-  invisible(config)
+  invisible(config[["configuration"]][["objects"]])
 }
 
 #'@rdname yaml
@@ -102,7 +102,7 @@ yml_list_files = function(config){
     config = yml_find(config)
   }
   cat(unlist(map(config[["configuration"]][["files"]],"name")))
-  invisible(config)
+  invisible(unlist(map(config[["configuration"]][["files"]],"name")))
 }
 
 #'@rdname yaml

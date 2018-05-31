@@ -59,7 +59,7 @@ DataPackageR <- function(arg = NULL,masterfile=NULL) {
   raw_data_dir <- "data-raw"
   target <- normalizePath(file.path(pkg_dir,raw_data_dir))
   data_dir <- normalizePath(file.path(pkg_dir,"data"))
-  raw_data_dir = normalizePath(raw_data_dir)
+  raw_data_dir = target
   if (!file.exists(target)) {
     flog.fatal(paste0("Directory ",target," doesn't exist."))
     setwd(old)
@@ -251,24 +251,24 @@ DataPackageR <- function(arg = NULL,masterfile=NULL) {
           
           #Partial build if enabled=FALSE for any file
           #We've disabled an object but don't want to overwrite its documentation or remove it
-          if(!all(unlist(map(ymlconf[["configuration"]][["files"]],"enabled")))){
-            old_doc_file = list.files(file.path(pkg_dir,"R"),full.names = TRUE,paste0(pkg_description$Package,".R"))
-            if (length(old_doc_file) != 0) {
-              if (file.exists(old_doc_file)) {
-                old_docs = .parseDocumentation(old_doc_file)
-                not_built = setdiff(setdiff(names(old_docs), ls(dataEnv)), pkg_description$Package)
-                #remove all but not_built from old_docs
-                merged_docs = .mergeDocumentation(old = old_docs[not_built], new = doc_parsed)
-                merged_docs = merged_docs[names(old_docs)]
-                save_docs = do.call(c, merged_docs)
-              }
-            }
-            else {
-              save_docs = do.call(c,doc_parsed)
-            }
-          }else{
+          # The new approach just builds all the docs independent of what's enabled.
+          # if(!all(unlist(map(ymlconf[["configuration"]][["files"]],"enabled")))){
+          #   old_doc_file = list.files(file.path(pkg_dir,"R"),full.names = TRUE,paste0(pkg_description$Package,".R"))
+          #   if (length(old_doc_file) != 0) {
+          #     if (file.exists(old_doc_file)) {
+          #       old_docs = .parseDocumentation(old_doc_file)
+          #       not_built = setdiff(setdiff(names(old_docs), ls(dataEnv)), pkg_description$Package)
+          #       #remove all but not_built from old_docs
+          #       merged_docs = .mergeDocumentation(old = old_docs[not_built], new = doc_parsed)
+          #       save_docs = do.call(c, merged_docs)
+          #     }
+            # }
+            # else {
+              # save_docs = do.call(c,doc_parsed)
+            # }
+          # }else{
             save_docs = do.call(c,doc_parsed)
-          }
+          # }
           docfile <-
             file(file.path("R",pattern = paste0(pkg_description$Package,".R")),open = "w")
           sapply(save_docs,function(x) {
