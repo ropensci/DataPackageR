@@ -253,13 +253,15 @@ DataPackageR <- function(arg = NULL,masterfile=NULL) {
           #We've disabled an object but don't want to overwrite its documentation or remove it
           if(!all(unlist(map(ymlconf[["configuration"]][["files"]],"enabled")))){
             old_doc_file = list.files(file.path(pkg_dir,"R"),full.names = TRUE,paste0(pkg_description$Package,".R"))
-            if(file.exists(old_doc_file)){
-             old_docs = .parseDocumentation(old_doc_file)
-             not_built = setdiff(setdiff(names(old_docs),ls(dataEnv)),pkg_description$Package)
-             #remove all but not_built from old_docs
-              merged_docs = .mergeDocumentation(old = old_docs[not_built], new = doc_parsed)
-              merged_docs = merged_docs[names(old_docs)]
-              save_docs = do.call(c,merged_docs)
+            if (length(old_doc_file) != 0) {
+              if (file.exists(old_doc_file)) {
+                old_docs = .parseDocumentation(old_doc_file)
+                not_built = setdiff(setdiff(names(old_docs), ls(dataEnv)), pkg_description$Package)
+                #remove all but not_built from old_docs
+                merged_docs = .mergeDocumentation(old = old_docs[not_built], new = doc_parsed)
+                merged_docs = merged_docs[names(old_docs)]
+                save_docs = do.call(c, merged_docs)
+              }
             }
             else {
               save_docs = do.call(c,doc_parsed)

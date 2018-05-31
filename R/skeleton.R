@@ -176,5 +176,5 @@ datapackage.skeleton <-
   # do they exist?
   assert_that(all(unlist(map(code_files,file.exists))),msg = "code_files do not all exist!")
   # are the .Rmd files? 
-  assert_that(all(grepl(".*\\.rmd$",tolower(code_files))),msg = "code files are not Rmd files!")
+  assert_that(all(grepl(".*\\.r$",tolower(code_files))|grepl(".*\\.rmd$",tolower(code_files))),msg = "code files are not Rmd files!")
 }
