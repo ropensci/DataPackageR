@@ -19,7 +19,7 @@ Constructs a datapackager.yml configuration object from a vector of file names a
 Can be written to disk via \code{yml_write}
 }
 \examples{
-conf = construct_yml_config(code=c("file1.rmd","file2.rmd"), data=c("object1","object2"))
+conf = construct_yml_config(code=c('file1.rmd','file2.rmd'), data=c('object1','object2'))
 tmp = normalizePath(tempdir())
 yml_write(conf,path=tmp)
 }

@@ -55,6 +55,6 @@ Add, remove files and objects, enable or disable parsing of specific files,  lis
 }
 \examples{
 \dontrun{
-yml_find("/tmp")
+yml_find('/tmp')
 }
 }

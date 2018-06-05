@@ -6,18 +6,18 @@
 \title{DataPackageR}
 \description{
 Package to install the DataPackageR script that can be called via the R CMD mechanism.
-R CMD DataPackageR packagename looks for .R files in "data-raw" within the "packagename" package source tree.
-It sources a an .R file in "data-raw" named "datasets.R". The "datasets.R" file can source other files in "/data-raw".
-This must be done via a call like: \code{sys.source("myRfile.R",env=topenv())}.
-The "datasets.R" file and files it sources are expected to read raw data from
-"inst/extdata", or other sources, process them in some way, such that they are tidy and standardized.  The
+R CMD DataPackageR packagename looks for .R files in 'data-raw' within the 'packagename' package source tree.
+It sources a an .R file in 'data-raw' named 'datasets.R'. The 'datasets.R' file can source other files in '/data-raw'.
+This must be done via a call like: \code{sys.source('myRfile.R',env=topenv())}.
+The 'datasets.R' file and files it sources are expected to read raw data from
+'inst/extdata', or other sources, process them in some way, such that they are tidy and standardized.  The
 objects remaining in the environment after the code is run are presumed to be the data sets that will be written to
-"/data". The user should also document these data sets
-using "roxygen2" in the .R files under the "data-raw" directory. The package will extract documentation for the data objects it finds, as well as for
-a data set with the name of the package, if present, and place it in the "/R" directory under the name "packagename.R". The "DataPackageR" code will compare the digest of these data set objects against the contents of a "DATADIGEST" file
-in the package source tree (if present), and will also look for a "DataVersion: x.y.z" string in the DESCRIPTION file of the
+'/data'. The user should also document these data sets
+using 'roxygen2' in the .R files under the 'data-raw' directory. The package will extract documentation for the data objects it finds, as well as for
+a data set with the name of the package, if present, and place it in the '/R' directory under the name 'packagename.R'. The 'DataPackageR' code will compare the digest of these data set objects against the contents of a 'DATADIGEST' file
+in the package source tree (if present), and will also look for a 'DataVersion: x.y.z' string in the DESCRIPTION file of the
 package. If the data have changed, the user will be warned that the DataVersion needs to be incemented. If no DATADIGEST file exists, one will be created.
 If the DataVersion string has been incremented and the digest matches DATADIGEST (if it exists), or if the data hasn't changed and the DataVersion string
-is unchanged, the code will write the data objects to "/data". The user can then build the package with
+is unchanged, the code will write the data objects to '/data'. The user can then build the package with
 R CMD build packagename.
 }

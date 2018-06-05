@@ -2,7 +2,7 @@
 % Please edit documentation in R/processData.R
 \name{DataPackageR}
 \alias{DataPackageR}
-\title{Process data generation code in "data-raw"}
+\title{Process data generation code in 'data-raw'}
 \usage{
 DataPackageR(arg = NULL, masterfile = NULL)
 }
@@ -16,8 +16,8 @@ a partial build of the package.}
 logical TRUE if succesful, FALSE, if not.
 }
 \description{
-Assumes .R files in "data-raw" generate rda files to be stored in "data".
+Assumes .R files in 'data-raw' generate rda files to be stored in 'data'.
 Sources datasets.R which can source other R files.
-R files sourced by datasets.R must invoke \code{sys.source("myRfile.R",env=topenv())}.
+R files sourced by datasets.R must invoke \code{sys.source('myRfile.R',env=topenv())}.
 Meant to be called before R CMD build.
 }

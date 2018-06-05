@@ -1,17 +1,21 @@
 
-# function .autoDoc() automates the creation of a basic roxygen template for the package and each object in objectsToKeep
+# function .dog_generate() automates the creation of a basic roxygen template for the package and each object in objectsToKeep
 # arguments are pname and ds2kp, normally defined in datasets.R
 # pname is name of package, ds2kp is list of objects to save in data package
-.autoDoc <- function(pname, ds2kp, env, path, name="documentation.R"){
+.doc_autogen <- function(pname, ds2kp, env, path, name="documentation.R"){
   links <- c(pname, ds2kp)
-  linksRox <- paste0("\\link{", links, "}")
+  linksrox <- paste0("\\link{", links, "}")
   
-  # create default file to be edited and renamed manually by user, who then rebuilds package
-  tempfileName <- file.path(path,name)
-  if(file.exists(tempfileName)){file.remove(tempfileName)}
+  # create default file to be edited and 
+  # renamed manually by user, who then rebuilds package
+  tempfilename <- file.path(path, name)
+  if (file.exists(tempfilename))
+  {
+    file.remove(tempfilename)
+  }
   
   # create Roxygen documentation for data package
-  con <- file(tempfileName, open = "w")
+  con <- file(tempfilename, open = "w")
   writeLines(
     c(.rc(
       c(pname,
@@ -21,10 +25,11 @@
         "@title Package Title",
         paste0("@name ", pname), 
         "@description A description of the data package",
-        paste0("@details Use \\code{data(package='", pname, "')$results[, 3]} to see a list of available data sets in this data package"),
+        paste0("@details Use \\code{data(package='", pname, "')$results[, 3]} to",
+               "see a list of available data sets in this data package"),
         "    and/or DataPackageR::load_all_datasets() to load them.",
         "@seealso",
-        linksRox[2:length(links)])),
+        linksrox[2:length(links)])),
       "NULL\n\n\n"), con)
   
   # Cycle through the rest of the files listed in 'links' and create Roxygen documentation for each one
@@ -49,7 +54,7 @@
         c("}",
           "@source The data comes from ________________________.",
           "@seealso",
-          linksRox[which(links != ds)])), # dataset being documented should not list itself in its seealsos
+          linksrox[which(links != ds)])), # dataset being documented should not list itself in its seealsos
         "NULL\n\n\n"), con)
   }
   

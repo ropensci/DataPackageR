@@ -27,8 +27,7 @@ Imports:
     data.tree
 VignetteBuilder: knitr
 RoxygenNote: 6.0.1
-Collate: 01.R
-    autodoc.R
+Collate: autodoc.R
     build.R
     dataversion.r
     digests.R
