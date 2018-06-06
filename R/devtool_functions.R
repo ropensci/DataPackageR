@@ -2,26 +2,31 @@
 write_dcf <- function(path, desc) {
     desc <- unlist(desc)
     # Add back in continuation characters
-    desc <- gsub("\n[ \t]*\n", "\n .\n ", desc, perl = TRUE, useBytes = TRUE)
-    desc <- gsub("\n \\.([^\n])", "\n  .\\1", desc, perl = TRUE, useBytes = TRUE)
-    
+    desc <- gsub("\n[ \t]*\n", "\n .\n ",
+                 desc,
+                 perl = TRUE,
+                 useBytes = TRUE)
+    desc <- gsub("\n \\.([^\n])", "\n  .\\1",
+                 desc,
+                 perl = TRUE,
+                 useBytes = TRUE)
+
     starts_with_whitespace <- grepl("^\\s", desc, perl = TRUE, useBytes = TRUE)
     delimiters <- ifelse(starts_with_whitespace, ":", ": ")
     text <- paste0(names(desc), delimiters, desc, collapse = "\n")
-    
+
     # If the description file has a declared encoding, set it so nchar() works
     # properly.
     if ("Encoding" %in% names(desc)) {
         Encoding(text) <- desc[["Encoding"]]
     }
-    
+
     if (substr(text, nchar(text), 1) != "\n") {
         text <- paste0(text, "\n")
     }
-    
     cat(text, file = path)
 }
-add_desc_package = function(pkg = ".", field, name) {
+add_desc_package <- function(pkg = ".", field, name) {
     pkg <- as.package(pkg)
     desc_path <- file.path(pkg$path, "DESCRIPTION")
     desc <- read_dcf(desc_path)
@@ -43,24 +48,29 @@ add_desc_package = function(pkg = ".", field, name) {
     }
     invisible(changed)
 }
-is_installed = function(pkg, version = 0) {
-    installed_version <- tryCatch(utils::packageVersion(pkg), error = function(e) NA)
+is_installed <- function(pkg, version = 0) {
+    installed_version <-
+      tryCatch(utils::packageVersion(pkg),
+                                  error = function(e) NA)
     !is.na(installed_version) && installed_version >= version
 }
-read_dcf = function(path) {
+read_dcf <- function(path) {
     fields <- colnames(base::read.dcf(path))
     as.list(read.dcf(path, keep.white = fields)[1, ])
 }
-suggests_dep = function(pkg) {
-    suggests <- read_dcf(system.file("DESCRIPTION", package = "devtools"))$Suggests
+suggests_dep <- function(pkg) {
+    suggests <- read_dcf(system.file("DESCRIPTION",
+                                     package = "devtools"))[["Suggests"]]
     deps <- parse_deps(suggests)
     found <- which(deps$name == pkg)[1L]
     if (!length(found)) {
-        stop(sQuote(pkg), " is not in Suggests: for devtools!", call. = FALSE)
+        stop(sQuote(pkg),
+             " is not in Suggests: for devtools!",
+             call. = FALSE)
     }
     deps[found, ]
 }
-check_dep_version = function(dep_name, dep_ver = NA, dep_compare = NA) {
+check_dep_version <- function(dep_name, dep_ver = NA, dep_compare = NA) {
     if (!requireNamespace(dep_name, quietly = TRUE)) {
         stop("Dependency package ", dep_name, " not available.")
     }
@@ -68,20 +78,25 @@ check_dep_version = function(dep_name, dep_ver = NA, dep_compare = NA) {
         stop("dep_ver and dep_compare must be both NA or both non-NA")
     } else if (!is.na(dep_ver) && !is.na(dep_compare)) {
         compare <- match.fun(dep_compare)
-        if (!compare(as.numeric_version(getNamespaceVersion(dep_name)), as.numeric_version(dep_ver))) {
-            warning("Need ", dep_name, " ", dep_compare, " ", dep_ver, " but loaded version is ", 
+        if (!compare(as.numeric_version(getNamespaceVersion(dep_name)),
+                     as.numeric_version(dep_ver))) {
+            warning("Need ", dep_name, " ", dep_compare, " ", dep_ver,
+                    " but loaded version is ",
                 getNamespaceVersion(dep_name))
         }
     }
     return(TRUE)
 }
-is_dir = function(x) {
+is_dir <- function(x) {
     file.info(x)$isdir
 }
-check_suggested = function(pkg, version = NULL, compare = NA) {
+check_suggested <- function(pkg, version = NULL, compare = NA) {
     if (is.null(version)) {
         if (!is.na(compare)) {
-            stop("Cannot set ", sQuote(compare), " without setting ", sQuote(version), 
+            stop("Cannot set ",
+                 sQuote(compare),
+                 " without setting ",
+                 sQuote(version),
                 call. = FALSE)
         }
         dep <- suggests_dep(pkg)
@@ -89,8 +104,9 @@ check_suggested = function(pkg, version = NULL, compare = NA) {
         compare <- dep$compare
     }
     if (!is_installed(pkg) || !check_dep_version(pkg, version, compare)) {
-        msg <- paste0(sQuote(pkg), if (is.na(version)) 
-            "" else paste0(" >= ", version), " must be installed for this functionality.")
+        msg <- paste0(sQuote(pkg), if (is.na(version))
+            "" else paste0(" >= ", version),
+            " must be installed for this functionality.")
         if (interactive()) {
             message(msg, "\\nWould you like to install it?")
             if (menu(c("Yes", "No")) == 1) {
@@ -103,7 +119,7 @@ check_suggested = function(pkg, version = NULL, compare = NA) {
         }
     }
 }
-use_directory = function(path, ignore = FALSE, pkg = ".") {
+use_directory <- function(path, ignore = FALSE, pkg = ".") {
     pkg <- as.package(pkg)
     pkg_path <- file.path(pkg$path, path)
     if (file.exists(pkg_path)) {
@@ -121,8 +137,9 @@ use_directory = function(path, ignore = FALSE, pkg = ".") {
     invisible(TRUE)
 }
 
-suggets_dep = function(pkg) {
-    suggests <- read_dcf(system.file("DESCRIPTION", package = "devtools"))$Suggests
+suggets_dep <- function(pkg) {
+    suggests <- read_dcf(system.file("DESCRIPTION",
+                                     package = "devtools"))[["Suggests"]]
     deps <- parse_deps(suggests)
     found <- which(deps$name == pkg)[1L]
     if (!length(found)) {
@@ -131,7 +148,7 @@ suggets_dep = function(pkg) {
     deps[found, ]
 }
 
-use_git_ignore = function(ignores, directory = ".", pkg = ".", quiet = FALSE) {
+use_git_ignore <- function(ignores, directory = ".", pkg = ".", quiet = FALSE) {
     pkg <- as.package(pkg)
     paths <- paste0("`", ignores, "`", collapse = ", ")
     if (!quiet) {
@@ -142,7 +159,7 @@ use_git_ignore = function(ignores, directory = ".", pkg = ".", quiet = FALSE) {
     invisible(TRUE)
 }
 
-union_write = function(path, new_lines) {
+union_write <- function(path, new_lines) {
     if (file.exists(path)) {
         lines <- readLines(path, warn = FALSE)
     } else {
@@ -152,20 +169,21 @@ union_write = function(path, new_lines) {
     writeLines(all, path)
 }
 
-as.package = function(x = NULL, create = NA) {
-    if (is.package(x)) 
+as.package <- function(x = NULL, create = NA) {
+    if (is.package(x))
         return(x)
     x <- package_file(path = x)
     load_pkg_description(x, create = create)
 }
 
-is.package = function(x) {
+is.package <- function(x) {
     inherits(x, "package")
 }
 
-package_file = function(..., path = ".") {
-    is_root = function(path) {
-        identical(normalizePath(path, winslash = "/"), normalizePath(dirname(path), 
+package_file <- function(..., path = ".") {
+    is_root <- function(path) {
+        identical(normalizePath(path, winslash = "/"),
+                  normalizePath(dirname(path),
             winslash = "/"))
     }
     if (!is.character(path) || length(path) != 1) {
@@ -187,28 +205,29 @@ package_file = function(..., path = ".") {
     file.path(path, ...)
 }
 
-has_description = function(path) {
+has_description <- function(path) {
     file.exists(file.path(path, "DESCRIPTION"))
 }
 
-strip_slashes = function(x) {
+strip_slashes <- function(x) {
     x <- sub("/*$", "", x)
     x
 }
 
-load_pkg_description = function(path, create) {
+load_pkg_description <- function(path, create) {
     path_desc <- file.path(path, "DESCRIPTION")
     if (!file.exists(path_desc)) {
         if (is.na(create)) {
             if (interactive()) {
-                message("No package infrastructure found in ", path, ". Create it?")
+                message("No package infrastructure found in ",
+                        path, ". Create it?")
                 create <- (menu(c("Yes", "No")) == 1)
             } else {
                 create <- FALSE
             }
         }
         if (create) {
-            setup(path = path)
+            .setup(path = path)
         } else {
             stop("No description at ", path_desc, call. = FALSE)
         }
@@ -217,4 +236,49 @@ load_pkg_description = function(path, create) {
     names(desc) <- tolower(names(desc))
     desc$path <- path
     structure(desc, class = "package")
+}
+
+.setup <- function(path = ".", description = getOption("devtools.desc"),
+          check = FALSE, rstudio = TRUE, quiet = FALSE) {
+  check_package_name(path)
+  parent_dir <- normalizePath(dirname(path), winslash = "/",
+                              mustWork = TRUE)
+  if (!quiet) {
+    message("Creating package '", extract_package_name(path),
+            "' in '", parent_dir, "'")
+  }
+  dir.create(file.path(path, "R"), showWarnings = FALSE)
+  create_description(path, extra = description, quiet = quiet)
+  create_namespace(path)
+  if (rstudio)
+    use_rstudio(path)
+  if (check)
+    check(path)
+  invisible(TRUE)
+}
+
+check_package_name <- function(path) {
+  name <- extract_package_name(path)
+  if (!valid_name(name)) {
+    stop(name, " is not a valid package name: it should contain only\n",
+         "ASCII letters, numbers and dot, have at least two characters\n",
+         "and start with a letter and not end in a dot.",
+         call. = FALSE)
+  }
+}
+valid_name <- function(x) {
+  grepl("^[[:alpha:]][[:alnum:].]+$", x) && !grepl("\\.$",
+                                                   x)
+}
+extract_package_name <- function(path) {
+  basename(normalizePath(path, mustWork = FALSE))
+}
+
+create_namespace <- function(path) {
+  ns_path <- file.path(path, "NAMESPACE")
+  if (file.exists(ns_path))
+    return()
+  cat(paste0("# Generated by roxygen2: fake comment",
+      "so roxygen2 overwrites silently.\n"),
+      "exportPattern(\"^[^\\\\.]\")\n", sep = "", file = ns_path)
 }

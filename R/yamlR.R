@@ -1,7 +1,7 @@
 #' Edit DataPackageR yaml configuration
 #'
 #' @rdname yaml
-#' @param path Path to the data package source.
+#' @param path Path to the data package source or path to write config file (for \code{yml_write})
 #' @return A yaml configuration structured as an R nested list.
 #' @description Edit a yaml configuration file via an API. 
 #' @details Add, remove files and objects, enable or disable parsing of specific files,  list objects or files in a yaml config, or write a config back to a package.
@@ -145,7 +145,6 @@ yml_remove_files <- function(config, filenames) {
 }
 
 #'@rdname yaml
-#'@param path The path where we should write the documentation.yml file.
 #'@export
 yml_write <- function(config, path = NULL) {
   if (is.character(config)) {

@@ -18,12 +18,12 @@ test_that("datapackage skeleton builds correct structure", {
 })
 context("building")
 test_that("package can be built from different locations", {
-  expect_equal(basename(buildDataSetPackage(
+  expect_equal(basename(package_build(
     file.path(tmp, "subsetCars"))), "subsetCars_1.0.tar.gz")
   old <- getwd()
   setwd(file.path(tmp, "subsetCars"))
-  expect_equal(basename(buildDataSetPackage(".")), "subsetCars_1.0.tar.gz")
-  expect_error(buildDataSetPackage("subsetCars"))
+  expect_equal(basename(package_build(".")), "subsetCars_1.0.tar.gz")
+  expect_error(package_build("subsetCars"))
   setwd(old)
 })
 
@@ -111,8 +111,8 @@ test_that("yaml reading, adding, removing, listing, and writing", {
   yml_write(config)
   test_config <-
     structure(list(configuration = list(
-      files = list(subsetCars.Rmd = 
-                     list(name = "subsetCars.Rmd", enabled = TRUE)), 
+      files = list(subsetCars.Rmd =
+                     list(name = "subsetCars.Rmd", enabled = TRUE)),
       objects = "cars_over_20"
     )))
   config <- yml_find(file.path(tmp, "subsetCars"))
@@ -139,39 +139,39 @@ test_that("conditional build works as expected", {
       r_object_names = c("cars_over_20")
     )
   )
-  buildDataSetPackage(file.path(tmp, "subsetCars"))
+  package_build(file.path(tmp, "subsetCars"))
   expect_equal( list.files( file.path(tmp, "subsetCars", "data")),
                 "cars_over_20.rda")
   expect_true(all(
     c("subsetCars", "cars_over_20") %in%
-      names(DataPackageR:::.parseDocumentation(list.files(
+      names(DataPackageR:::.doc_parse(list.files(
       file.path(tmp, "subsetCars", "R"), full.names = TRUE
     )))
   ))
   config <- yml_find(file.path(tmp, "subsetCars"))
   config <- yml_add_objects(config, "pressure")
   yml_write(config)
-  buildDataSetPackage(file.path(tmp, "subsetCars"))
+  package_build(file.path(tmp, "subsetCars"))
   # have we saved the new object?
   expect_equal(list.files(file.path(tmp, "subsetCars", "data")),
                c("cars_over_20.rda", "pressure.rda"))
   #has the documentation been built for the new object?
   expect_true(all(
     c("subsetCars", "cars_over_20", "pressure") %in%
-      names(DataPackageR:::.parseDocumentation(list.files(
-      file.path(tmp, "subsetCars", "R"), full = TRUE
+      names(DataPackageR:::.doc_parse(list.files(
+      file.path(tmp, "subsetCars", "R"), full.names = TRUE
     )))
   ))
 
   config <- yml_disable_compile(config, basename(file2))
   yml_write(config)
-  buildDataSetPackage(file.path(tmp, "subsetCars"))
+  package_build(file.path(tmp, "subsetCars"))
   expect_equal(list.files(file.path(tmp, "subsetCars", "data")),
                c("cars_over_20.rda", "pressure.rda"))
   expect_true(all(
     c("subsetCars", "cars_over_20", "pressure") %in%
-      names(DataPackageR:::.parseDocumentation(list.files(
-      file.path(tmp, "subsetCars", "R"), full = TRUE
+      names(DataPackageR:::.doc_parse(list.files(
+      file.path(tmp, "subsetCars", "R"), full.names = TRUE
     )))
   ))
 })

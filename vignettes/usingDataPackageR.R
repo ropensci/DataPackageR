@@ -19,7 +19,7 @@ DataPackageR::datapackage.skeleton("Test",
                                                                     # created in the Rmd file.
 
 ## ----dirstructure,echo=FALSE---------------------------------------------
-df = data.frame(pathString=file.path("Test",(list.files("/private/tmp/Test",recursive=TRUE))))
+df = data.frame(pathString=file.path("Test",(list.files(tmp,recursive=TRUE))))
 as.Node(df)
 
 ## ---- echo=FALSE---------------------------------------------------------
@@ -30,7 +30,7 @@ cat(as.yaml(yaml.load_file("Test/datapackager.yml")))
 ## ------------------------------------------------------------------------
 # Within the package directory
 setwd(tmp)
-DataPackageR:::buildDataSetPackage("Test") 
+DataPackageR:::package_build("Test") 
 
 ## ---- echo=FALSE---------------------------------------------------------
 library(yaml)

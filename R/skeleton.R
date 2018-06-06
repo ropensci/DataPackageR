@@ -42,7 +42,6 @@ datapackage.skeleton <-
     if (is.null(name)) {
       stop("Must supply a package name", call. = FALSE)
     }
-    
     if (length(list) == 0) {
       # don't pass on the code_files here, but use that argument to
       package.skeleton(
@@ -101,7 +100,7 @@ datapackage.skeleton <-
         "they may reside elsewhere outside the package",
         "source tree. If you passed R and Rmd files to",
         "datapackage.skeleton, they should now appear in 'data-raw'.",
-        "When you call buildDataSetPackage(), your datasets will",
+        "When you call package_build(), your datasets will",
         "be automatically documented. Edit datapackager.yml to",
         "add additional files / data objects to the package.",
         "After building, you should edit dat-raw/documentation.R",

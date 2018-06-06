@@ -5,20 +5,21 @@
 .check_dataversion_string <- function(old_data_digest, new_data_digest) {
     oldwarn <- options("warn")$warn
     options(warn = -1)
-    oldv <- strsplit(old_data_digest$DataVersion, "\\.")
-    newv <- strsplit(new_data_digest$DataVersion, "\\.")
+    oldv <- strsplit(old_data_digest[["DataVersion"]], "\\.")
+    newv <- strsplit(new_data_digest[["DataVersion"]], "\\.")
     oldv <- sapply(oldv, as.numeric)
     newv <- sapply(newv, as.numeric)
     if (any(is.na(oldv)) | any(is.na(newv))) {
         options(warn = oldwarn)
-        flog.fatal(paste0("Invalid DataVersion string found ", old_data_digest$DataVersion, 
-            " and ", new_data_digest$DataVersion))
+        flog.fatal(paste0("Invalid DataVersion string found ",
+                          old_data_digest[["DataVersion"]],
+            " and ", new_data_digest[["DataVersion"]]))
         stop("exiting", call. = FALSE)
     }
     greater <- apply(t(cbind(oldv, newv)), 2, function(x) x[2] > x[1])
     equal <- apply(t(cbind(oldv, newv)), 2, function(x) x[2] == x[1])
-    less <- apply(t(cbind(oldv, newv)), 2, function(x) x[2] < x[1])
-    list(isgreater = ((greater[1]) | (equal[1] & greater[2]) | (equal[1] & equal[2] & 
+    list(isgreater = ( (greater[1]) | (equal[1] & greater[2]) |
+                        (equal[1] & equal[2] &
         greater[3])), isequal = all(equal))
 }
 
@@ -27,7 +28,7 @@
       if (valid) {
             for (i in names(new_digest)[-1L]) {
                 if (new_digest[[i]] != old_digest[[i]]) {
-                  flog.warn(i," has changed.")
+                  flog.warn(i, " has changed.")
                   valid <- FALSE
                 }
             }
@@ -35,23 +36,23 @@
             warning()
         }
     } else {
-        difference = setdiff(names(new_digest), names(old_digest))
-        intersection = intersect(names(new_digest), names(old_digest))
+        difference <- setdiff(names(new_digest), names(old_digest))
+        intersection <- intersect(names(new_digest), names(old_digest))
         # No existing or new objects are changed
         if (length(difference) == 0) {
-            valid = TRUE
+            valid <- TRUE
         } else {
             # some new elements exist
-            valid = FALSE
+            valid <- FALSE
             for (i in difference) {
-              flog.info(paste0(i," added."))
+              flog.info(paste0(i, " added."))
             }
         }
         for (i in intersection) {
             if (new_digest[[i]] != old_digest[[i]]) {
-              flog.info(paste0(i," changed"))
+              flog.info(paste0(i, " changed"))
               # some new elements are not the same
-                valid = FALSE
+                valid <- FALSE
             }
         }
     }
@@ -59,12 +60,12 @@
 }
 
 
-.combine_digests = function(new, old) {
-    intersection = intersect(names(new), names(old))
-    difference = setdiff(names(new), names(old))
-    rdifference = setdiff(names(old), names(new))
-    combined = c(new[intersection], old[rdifference], new[difference])
-    combined[["DataVersion"]] = new[["DataVersion"]]
+.combine_digests <- function(new, old) {
+    intersection <- intersect(names(new), names(old))
+    difference <- setdiff(names(new), names(old))
+    rdifference <- setdiff(names(old), names(new))
+    combined <- c(new[intersection], old[rdifference], new[difference])
+    combined[["DataVersion"]] <- new[["DataVersion"]]
     return(combined)
 }
 
@@ -78,14 +79,17 @@
     return(digest)
 }
 
-.digest_data_env <- function(object_names, dataEnv, pkg_description) {
+.digest_data_env <- function(object_names, dataenv, pkg_description) {
     if (is.null(pkg_description[["DataVersion"]])) {
-        flog.fatal("DESCRIPTION file must have a DataVersion line. i.e. DataVersion: 0.2.0")
+        flog.fatal(paste0("DESCRIPTION file must have a DataVersion",
+                          " line. i.e. DataVersion: 0.2.0"))
         stop("exiting", call. = FALSE)
     }
     new_data_digest <- list()
-    new_data_digest$DataVersion <- pkg_description$DataVersion
-    data_objects <- lapply(object_names, function(obj) digest::digest(dataEnv[[obj]]))
+    new_data_digest[["DataVersion"]] <- pkg_description[["DataVersion"]]
+    data_objects <- lapply(object_names, function(obj) {
+      digest::digest(dataenv[[obj]])
+      })
     names(data_objects) <- object_names
     new_data_digest <- c(new_data_digest, data_objects)
     return(new_data_digest)
@@ -93,6 +97,6 @@
 
 
 # function .rc() prepends '#'' to a string or character vector
-.rc <- function(strVec) {
-    paste("#'", strVec)
+.rc <- function(strvec) {
+    paste("#'", strvec)
 }

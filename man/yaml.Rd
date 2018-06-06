@@ -34,15 +34,13 @@ yml_remove_files(config, filenames)
 yml_write(config, path = NULL)
 }
 \arguments{
-\item{path}{Path to the data package source.}
+\item{path}{Path to the data package source or path to write config file (for \code{yml_write})}
 
 \item{config}{an R representation of the datapackager.yml config, returned by yml_find, or a path to the package root.}
 
 \item{filenames}{A vector of filenames.}
 
 \item{objects}{A vector of R object names.}
-
-\item{path}{The path where we should write the documentation.yml file.}
 }
 \value{
 A yaml configuration structured as an R nested list.
