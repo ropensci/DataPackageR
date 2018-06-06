@@ -23,7 +23,7 @@ knitr::opts_chunk$set(
 
 # DataPackageR
 
-Reproducibly process raw data into packaged, analysis-ready data sets
+A package to reproducibly process raw data into packaged, analysis-ready data sets.
 
 ## Goals
 
@@ -54,7 +54,17 @@ If raw data changes, the user can rebuild the R package with subsequent calls to
 Any changes force an increment of the `Dataversion` string in the package DESCRIPTION file. 
 When the package is installed, data sets can be accessed via the standard `data()` API, package vignettes describing the data processing can be accessed via `vignette()`, documentation via `?`, and the data version via `dataVersion(packageName)`. 
 
-## Usage
+
+# Installation 
+
+The usual mechanism works here: 
+
+```
+library(devtools)
+devtools::install_github("RGLab/DataPackageR", auth_token=NULL)
+```
+
+# Usage
 
 Set up a new data package.
 
