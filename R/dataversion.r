@@ -16,7 +16,7 @@ dataVersion <- function(pkg, lib.loc = NULL) {
                        fields = "DataVersion"))
   if (!is.na(res))
     package_version(res)
-  else
+  else  
     stop(gettextf(paste0("package %s not found",
                   "or has no DataVersion string"),
                   sQuote(pkg)),
