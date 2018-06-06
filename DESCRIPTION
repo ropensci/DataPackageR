@@ -40,4 +40,6 @@ Collate: autodoc.R
     mergeDocumentation.R
     parseDocumentation.R
     yamlR.R
-Suggests: testthat
+Suggests: 
+    testthat,
+    covr
