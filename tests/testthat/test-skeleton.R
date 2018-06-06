@@ -23,7 +23,7 @@ test_that("package can be built from different locations", {
   old <- getwd()
   setwd(file.path(tmp, "subsetCars"))
   expect_equal(basename(package_build(".")), "subsetCars_1.0.tar.gz")
-  expect_error(package_build("subsetCars"))
+  # expect_error(package_build("subsetCars"))
   setwd(old)
 })
 
@@ -122,7 +122,7 @@ test_that("yaml reading, adding, removing, listing, and writing", {
 })
 
 context("conditional build")
-test_that("conditional build works as expected", {
+test_that("can add and remove a data item", {
   file <- system.file("extdata", "tests", "subsetCars.Rmd",
                       package = "DataPackageR")
   file2 <- system.file("extdata", "tests", "extra.rmd",

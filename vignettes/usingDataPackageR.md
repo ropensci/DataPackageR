@@ -17,7 +17,7 @@ vignette: >
 
 # DataPackageR
 
-Reproducibly process raw data into packaged, analysis-ready data sets
+A package to reproducibly process raw data into packaged, analysis-ready data sets.
 
 ## Goals
 
@@ -48,7 +48,17 @@ If raw data changes, the user can rebuild the R package with subsequent calls to
 Any changes force an increment of the `Dataversion` string in the package DESCRIPTION file. 
 When the package is installed, data sets can be accessed via the standard `data()` API, package vignettes describing the data processing can be accessed via `vignette()`, documentation via `?`, and the data version via `dataVersion(packageName)`. 
 
-## Usage
+
+# Installation 
+
+The usual mechanism works here: 
+
+```
+library(devtools)
+devtools::install_github("RGLab/DataPackageR", auth_token=NULL)
+```
+
+# Usage
 
 Set up a new data package.
 
@@ -134,35 +144,35 @@ To run the build process:
 # Within the package directory
 setwd(tmp)
 DataPackageR:::package_build("Test") 
-INFO [2018-06-06 10:03:43] Logging to /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpFy9H63/Test/inst/extdata/Logfiles/processing.log
-INFO [2018-06-06 10:03:43] Processing data
-INFO [2018-06-06 10:03:43] Read yaml configuration
-INFO [2018-06-06 10:03:43] Found /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpFy9H63/Test/data-raw/subsetCars.Rmd
-INFO [2018-06-06 10:03:43] Processing 1 of 1: /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpFy9H63/Test/data-raw/subsetCars.Rmd
+INFO [2018-06-06 11:43:09] Logging to /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpduCQhN/Test/inst/extdata/Logfiles/processing.log
+INFO [2018-06-06 11:43:09] Processing data
+INFO [2018-06-06 11:43:09] Read yaml configuration
+INFO [2018-06-06 11:43:09] Found /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpduCQhN/Test/data-raw/subsetCars.Rmd
+INFO [2018-06-06 11:43:09] Processing 1 of 1: /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpduCQhN/Test/data-raw/subsetCars.Rmd
 processing file: subsetCars.Rmd
 output file: subsetCars.knit.md
-/usr/local/bin/pandoc +RTS -K512m -RTS subsetCars.utf8.md --to html4 --from markdown+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash+smart --output /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpFy9H63/Test/inst/extdata/Logfiles/subsetCars.html --email-obfuscation none --self-contained --standalone --section-divs --template /Library/Frameworks/R.framework/Versions/3.5/Resources/library/rmarkdown/rmd/h/default.html --no-highlight --variable highlightjs=1 --variable 'theme:bootstrap' --include-in-header /var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//RtmpFy9H63/rmarkdown-str49c1ebf25a1.html --mathjax --variable 'mathjax-url:https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' 
+/usr/local/bin/pandoc +RTS -K512m -RTS subsetCars.utf8.md --to html4 --from markdown+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash+smart --output /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpduCQhN/Test/inst/extdata/Logfiles/subsetCars.html --email-obfuscation none --self-contained --standalone --section-divs --template /Library/Frameworks/R.framework/Versions/3.5/Resources/library/rmarkdown/rmd/h/default.html --no-highlight --variable highlightjs=1 --variable 'theme:bootstrap' --include-in-header /var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//RtmpduCQhN/rmarkdown-str7fac419aa0e3.html --mathjax --variable 'mathjax-url:https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' 
 
 Output created: inst/extdata/Logfiles/subsetCars.html
-INFO [2018-06-06 10:03:44] 1 required data objects created by subsetCars.Rmd
-INFO [2018-06-06 10:03:44] Saving to data
-INFO [2018-06-06 10:03:44] Copied documentation to R/Test.R
+INFO [2018-06-06 11:43:09] 1 required data objects created by subsetCars.Rmd
+INFO [2018-06-06 11:43:09] Saving to data
+INFO [2018-06-06 11:43:09] Copied documentation to R/Test.R
 * Creating `vignettes`.
 * Adding `inst/doc` to ./.gitignore
-INFO [2018-06-06 10:03:44] Done
-INFO [2018-06-06 10:03:44] Building documentation
+INFO [2018-06-06 11:43:09] Done
+INFO [2018-06-06 11:43:09] Building documentation
 First time using roxygen2. Upgrading automatically...
-Updating roxygen version in /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpFy9H63/Test/DESCRIPTION
+Updating roxygen version in /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpduCQhN/Test/DESCRIPTION
 Writing NAMESPACE
 Writing Test.Rd
 Writing cars_over_20.Rd
-INFO [2018-06-06 10:03:44] Building package
+INFO [2018-06-06 11:43:09] Building package
 '/Library/Frameworks/R.framework/Resources/bin/R' --no-site-file  \
   --no-environ --no-save --no-restore --quiet CMD build  \
-  '/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpFy9H63/Test'  \
+  '/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpduCQhN/Test'  \
   --no-resave-data --no-manual --no-build-vignettes 
 
-[1] "/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpFy9H63/Test_1.0.tar.gz"
+[1] "/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpduCQhN/Test_1.0.tar.gz"
 ```
 
 ### Logging the build process
@@ -245,7 +255,7 @@ Package: Test
 Type: Package
 Title: What the package does (short line)
 Version: 1.0
-Date: 2018-03-06
+Date: 2018-43-06
 Author: Who wrote it
 Maintainer: Who to complain to <yourfault@somewhere.net>
 Description: More about what it does (maybe more than one line)

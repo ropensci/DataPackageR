@@ -20,7 +20,10 @@
     equal <- apply(t(cbind(oldv, newv)), 2, function(x) x[2] == x[1])
     list(isgreater = ( (greater[1]) | (equal[1] & greater[2]) |
                         (equal[1] & equal[2] &
-        greater[3])), isequal = all(equal))
+        greater[3])), 
+        isequal = all(equal),
+        isless = !( (greater[1]) | (equal[1] & greater[2]) |
+                     (equal[1] & equal[2] & greater[3])) & !all(equal))
 }
 
 .compare_digests <- function(old_digest, new_digest, delta = NULL) {

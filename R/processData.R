@@ -207,6 +207,14 @@ DataPackageR <- function(arg = NULL, masterfile = NULL) {
                 can_write <- TRUE
                 flog.info(paste0("Data has changed and the",
                                  "DataVersion has been bumped."))
+            }else if (string_check$isless & .compare_digests(old_data_digest,
+                                                             new_data_digest,
+                                                             delta = masterfile)){
+              flog.info(paste0("New DataVersion is less than",
+                               "old but data are unchanged"))
+              new_data_digest = old_data_digest
+              pkg_description[["DataVersion"]] = new_data_digest[["DataVersion"]]
+              can_write <- TRUE
             }
             if (can_write) {
                 .save_data(new_data_digest,
