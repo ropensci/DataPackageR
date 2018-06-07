@@ -262,7 +262,7 @@ test_that("can add a file", {
       ))
   ))
   config = yml_find(file.path(tmp, "subsetCars"))
-  config = yml_add_files(config, "extra.Rmd")
+  config = yml_add_files(config, "extra.rmd")
   yml_write(config)
   file.copy(from = file2, file.path(tmp, "subsetCars", "data-raw"))
   expect_equal(basename(package_build(file.path(tmp,
@@ -362,7 +362,7 @@ test_that("data changes but version out of sync",{
   )
   package_build(file.path(tmp, "subsetCars"))
   config <- yml_find(file.path(tmp,"subsetCars"))
-  config <- yml_add_files(config,"extra.Rmd")
+  config <- yml_add_files(config,"extra.rmd")
   config <- yml_add_objects(config,"pressure")
   file.copy(file2,file.path(tmp,"subsetCars","data-raw"))
   yml_write(config)

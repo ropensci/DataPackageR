@@ -106,7 +106,7 @@ DataPackageR <- function(arg = NULL, masterfile = NULL) {
                          stop("exiting", call. = FALSE)
                        }
         }
-        flog.info("Read yaml configuration")
+        flog.info("Reading yaml configuration")
         # files that have enable: TRUE
         r_files <- unique(names(
           Filter(x = ymlconf[["configuration"]][["files"]],
@@ -121,15 +121,14 @@ DataPackageR <- function(arg = NULL, masterfile = NULL) {
         r_files <- file.path(raw_data_dir, r_files)
         if (all(!file.exists(r_files))) {
             flog.fatal(paste0("Can't find any R or Rmd files."))
-            flog.fatal(paste0("     Cant' find: ",
+            flog.fatal(paste0("     Cant' find file: ",
                               r_files[!file.exists(r_files)]))
-                       {
                          stop("error", call. = FALSE)
-                       }
         }
         if (any(!file.exists(r_files))) {
             flog.error(paste0("Can't find ",
                               r_files[!file.exists(r_files)]))
+          stop("error", call. = FALSE)
         }
         flog.info(paste0("Found ", r_files))
         # TODO fix hidden warnings in test cases
