@@ -11,19 +11,19 @@ datapackage.skeleton(name = NULL, list = character(),
 \arguments{
 \item{name}{see \code{\link[utils]{package.skeleton}}}
 
-\item{list}{see \code{\link[utils]{package.skeleton}}}
+\item{list}{see A list of named R objects expected to exist in the environment. Not used here. See \code{code_files} argument instead.}
 
-\item{environment}{see \code{\link[utils]{package.skeleton}}}
+\item{environment}{see \code{\link[utils]{package.skeleton}}. Not used here.}
 
-\item{path}{see \code{\link[utils]{package.skeleton}}}
+\item{path}{A \code{character} path where the pacakge is located. See \code{\link[utils]{package.skeleton}}}
 
-\item{force}{see \code{\link[utils]{package.skeleton}}}
+\item{force}{\code{logical} Force the package skeleton to be recreated even if it exists. see \code{\link[utils]{package.skeleton}}}
 
-\item{code_files}{Optional character vector of paths to Rmd files that process raw data
-into R objects. Treated differently that \code{code_files} in \code{\link[utils]{package.skeleton}}. 
+\item{code_files}{Optional \code{character} vector of paths to Rmd files that process raw data
+into R objects. Treated differently than \code{code_files} in \code{\link[utils]{package.skeleton}}. 
 Will always pass an empty \code{character()} vector to that function.}
 
-\item{r_object_names}{\code{vector} of quoted r object names , tables, etc. created by \code{code_files}.}
+\item{r_object_names}{\code{vector} of quoted r object names , tables, etc. created when the files in \code{code_files} are run.}
 }
 \description{
 Creates a package skeleton for use with preprpocessData. Creates the additional information needed for versioning

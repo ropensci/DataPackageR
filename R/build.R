@@ -8,6 +8,7 @@
 #' @param vignettes \code{logical} specify whether to build vignettes. Default FALSE.
 #' @param masterfile \code{characer} path to file in data-raw that sources processing scripts. Will do
 #' a partial build of the package.
+#' @param log log level \code{INFO,WARN,DEBUG,FATAL}
 #' @importFrom roxygen2 roxygenise roxygenize
 #' @importFrom devtools build_vignettes build
 #' @import rprojroot
@@ -16,7 +17,9 @@
 #' @export
 package_build <- function(packageName = NULL,
                                 vignettes = FALSE,
-                                masterfile = NULL) {
+                                masterfile = NULL, log=INFO) {
+  flog.threshold(log)
+  flog.appender(appender.console())
   requireNamespace("rprojroot")
   requireNamespace("futile.logger")
   if (is.null(packageName)) {
@@ -27,12 +30,13 @@ package_build <- function(packageName = NULL,
     # Is this a package root?
     if (!is_r_package$find_file() == package_path) {
       flog.fatal(paste0(package_path, " is not an R package root directory"))
+      stop("exiting", call. = FALSE)
     }
   }
   package_path <- normalizePath(packageName)
   if (!file.exists(package_path)) {
     flog.fatal(paste0("Non existent package ", packageName))
-    stop("exiting", call = FALSE)
+               stop("exiting", call. = FALSE)
   }
   # This should always be a proper name of a directory, either current or a
   # subdirectory
@@ -44,9 +48,11 @@ package_build <- function(packageName = NULL,
       " is not a valid R package directory beneath ",
       getwd()
     ))
+    stop("exiting", call. = FALSE)
   }
   if (!is_r_package$find_file(path = package_path) == package_path) {
     flog.fatal(paste0(package_path, " is not an R package root directory"))
+    stop("exiting", call. = FALSE)
   }
   # Return success if we've processed everything
   success <-
@@ -55,6 +61,7 @@ package_build <- function(packageName = NULL,
     flog.fatal(paste0("Preprocessing failed.",
                       "Something has gone wrong,",
                       " see the errors above"))
+    stop("exiting", call. = FALSE)
   }
   flog.info("Building documentation")
   roxygenise(package_path,

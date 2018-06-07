@@ -17,7 +17,7 @@ dataVersion <- function(pkg, lib.loc = NULL) {
   if (!is.na(res))
     package_version(res)
   else  
-    stop(gettextf(paste0("package %s not found",
+    stop(gettextf(paste0("package %s not found ",
                   "or has no DataVersion string"),
                   sQuote(pkg)),
          domain = NA)

@@ -14,7 +14,9 @@
         flog.fatal(paste0("Invalid DataVersion string found ",
                           old_data_digest[["DataVersion"]],
             " and ", new_data_digest[["DataVersion"]]))
-        stop("exiting", call. = FALSE)
+            {
+              stop("exiting", call. = FALSE)
+            }
     }
     greater <- apply(t(cbind(oldv, newv)), 2, function(x) x[2] > x[1])
     equal <- apply(t(cbind(oldv, newv)), 2, function(x) x[2] == x[1])
@@ -48,12 +50,12 @@
             # some new elements exist
             valid <- FALSE
             for (i in difference) {
-              flog.info(paste0(i, " added."))
+              flog.debug(paste0(i, " added."))
             }
         }
         for (i in intersection) {
             if (new_digest[[i]] != old_digest[[i]]) {
-              flog.info(paste0(i, " changed"))
+              flog.debug(paste0(i, " changed"))
               # some new elements are not the same
                 valid <- FALSE
             }
@@ -86,7 +88,9 @@
     if (is.null(pkg_description[["DataVersion"]])) {
         flog.fatal(paste0("DESCRIPTION file must have a DataVersion",
                           " line. i.e. DataVersion: 0.2.0"))
-        stop("exiting", call. = FALSE)
+                   {
+                     stop("exiting", call. = FALSE)
+                   }
     }
     new_data_digest <- list()
     new_data_digest[["DataVersion"]] <- pkg_description[["DataVersion"]]

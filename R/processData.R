@@ -48,9 +48,11 @@ DataPackageR <- function(arg = NULL, masterfile = NULL) {
     data_dir <- normalizePath(file.path(pkg_dir, "data"))
     raw_data_dir <- target
     if (!file.exists(target)) {
-        flog.fatal(paste0("Directory ", target, " doesn't exist."))
-        setwd(old)
-        stop("exiting", call. = FALSE)
+      flog.fatal(paste0("Directory ", target, " doesn't exist."))
+               {
+                   setwd(old)
+                   stop("exiting", call. = FALSE)
+                 }
     } else {
         if (!file.exists(data_dir)) {
             dir.create(data_dir)
@@ -71,8 +73,10 @@ DataPackageR <- function(arg = NULL, masterfile = NULL) {
             flog.fatal(paste0("You need a valid package data strucutre.",
                        " Missing ./R ./inst ./data or",
                        "./data-raw subdirectories."))
-            setwd(old)
-            stop("exiting", call. = FALSE)
+                       {
+                         setwd(old)
+                         stop("exiting", call. = FALSE)
+                       }
         }
         flog.info("Processing data")
         # read YAML
@@ -80,21 +84,27 @@ DataPackageR <- function(arg = NULL, masterfile = NULL) {
                       full.names = TRUE)
         if (length(ymlfile) == 0) {
             flog.fatal(paste0("Yaml configuration file not found at ", pkg_dir))
-            setwd(old)
-            stop("exiting", call. = FALSE)
+                       {
+                         setwd(old)
+                         stop("exiting", call. = FALSE)
+                       }
         }
         ymlconf <- read_yaml(ymlfile)
         # test that the structure of the yaml file is correct!
         if (!"configuration" %in% names(ymlconf)) {
             flog.fatal("YAML is missing 'configuration:' entry")
-            setwd(old)
-            stop("exiting", call. = FALSE)
+                       {
+                         setwd(old)
+                         stop("exiting", call. = FALSE)
+                       }
         }
         if (!all(c("files", "objects") %in%
                  map(ymlconf, names)[["configuration"]])) {
             flog.fatal("YAML is missing files: and objects: entries")
-            setwd(old)
-            stop("exiting", call. = FALSE)
+                       {
+                         setwd(old)
+                         stop("exiting", call. = FALSE)
+                       }
         }
         flog.info("Read yaml configuration")
         # files that have enable: TRUE
@@ -103,7 +113,9 @@ DataPackageR <- function(arg = NULL, masterfile = NULL) {
             f = function(x) x$enabled)))
         if (length(r_files) == 0) {
             flog.fatal("No files enabled for processing!")
-            stop("error", call. = FALSE)
+                       {
+                         stop("error", call. = FALSE)
+                       }
         }
         objects_to_keep <- map(ymlconf, "objects")[["configuration"]]
         r_files <- file.path(raw_data_dir, r_files)
@@ -111,6 +123,9 @@ DataPackageR <- function(arg = NULL, masterfile = NULL) {
             flog.fatal(paste0("Can't find any R or Rmd files."))
             flog.fatal(paste0("     Cant' find: ",
                               r_files[!file.exists(r_files)]))
+                       {
+                         stop("error", call. = FALSE)
+                       }
         }
         if (any(!file.exists(r_files))) {
             flog.error(paste0("Can't find ",
@@ -124,22 +139,28 @@ DataPackageR <- function(arg = NULL, masterfile = NULL) {
         if (inherits(pkg_description, "try-error")) {
             setwd(old)
             flog.fatal("No valid DESCRIPTION file")
-            stop(paste0("You need a valid package DESCRIPTION file.",
-                 "Please see Writing R Extensions",
-                 "(http://cran.r-project.org/doc/manuals/",
-                 "r-release/R-exts.html#The-DESCRIPTION-file).\n"),
-                pkg_description)
+                       {
+                         stop(paste0("You need a valid package DESCRIPTION file.",
+                                     "Please see Writing R Extensions",
+                                     "(http://cran.r-project.org/doc/manuals/",
+                                     "r-release/R-exts.html#The-DESCRIPTION-file).\n"),
+                              pkg_description)
+                       }
         }
         # check that we have at least one file
         if (length(r_files) == 0) {
             flog.fatal("You must specify at least one file to process.")
-            setwd(old)
-            stop("exiting", call. = FALSE)
+                       {
+                         setwd(old)
+                         stop("exiting", call. = FALSE)
+                       }
         }
         if (length(objects_to_keep) == 0) {
             flog.fatal("You must specify at least one data object.")
-            setwd(old)
-            stop("exiting", call. = FALSE)
+                       {
+                         setwd(old)
+                         stop("exiting", call. = FALSE)
+                       }
         }
         # TODO Can we configure documentation in yaml?
         do_documentation <- FALSE
@@ -178,7 +199,7 @@ DataPackageR <- function(arg = NULL, masterfile = NULL) {
                                  delta = masterfile) &
                 string_check$isequal) {
                 can_write <- TRUE
-                flog.info(paste0("Processed data sets match",
+                flog.info(paste0("Processed data sets match ",
                                  "existing data sets at version ",
                   new_data_digest[["DataVersion"]]))
             } else if ( (!.compare_digests(old_data_digest,
@@ -190,30 +211,44 @@ DataPackageR <- function(arg = NULL, masterfile = NULL) {
                 pkg_description <- updated_version$pkg_description
                 new_data_digest <- updated_version$new_data_digest
                 can_write <- TRUE
-                flog.info(paste0("Data has been updated and DataVersion",
+                flog.info(paste0("Data has been updated and DataVersion ",
                                  "string incremented automatically to ",
                                  new_data_digest[["DataVersion"]]))
             } else if (.compare_digests(old_data_digest,
                                         new_data_digest,
                                         delta = masterfile) &
                        string_check$isgreater) {
+              #edge case that shouldn't happen
+              # but we test for it in the test suite
                 can_write <- TRUE
-                flog.info(paste0("Data hasn't changed but the",
+                flog.info(paste0("Data hasn't changed but the ",
                           "DataVersion has been bumped."))
             } else if ( (!.compare_digests(old_data_digest,
                                           new_data_digest,
                                           delta = masterfile)) &
                        string_check$isgreater) {
+              #edge case that shouldn't happen since 
+              #we now bump the version automatically
                 can_write <- TRUE
-                flog.info(paste0("Data has changed and the",
+                flog.info(paste0("Data has changed and the ",
                                  "DataVersion has been bumped."))
             }else if (string_check$isless & .compare_digests(old_data_digest,
                                                              new_data_digest,
                                                              delta = masterfile)){
-              flog.info(paste0("New DataVersion is less than",
+              #edge case that shouldn't happen but
+              #we test for it in the test suite.
+              flog.info(paste0("New DataVersion is less than ",
                                "old but data are unchanged"))
               new_data_digest = old_data_digest
               pkg_description[["DataVersion"]] = new_data_digest[["DataVersion"]]
+              can_write <- TRUE
+            }else if (string_check$isless & !.compare_digests(old_data_digest,
+                                                             new_data_digest,
+                                                             delta = masterfile)) {
+              updated_version <- .increment_data_version(pkg_description,
+                                                         new_data_digest)
+              pkg_description <- updated_version$pkg_description
+              new_data_digest <- updated_version$new_data_digest
               can_write <- TRUE
             }
             if (can_write) {
@@ -225,7 +260,8 @@ DataPackageR <- function(arg = NULL, masterfile = NULL) {
                            masterfile = masterfile)
                 do_documentation <- TRUE
             } else {
-                flog.info(paste0("Some data has changed, but the",
+              # We really should never end up here.
+                flog.fatal(paste0("Some data has changed, but the",
                                  " DataVersion string has not been",
                                  " incremented or\nis less than the",
                                  " version in DATADIGEST \nUpdate the",
@@ -233,6 +269,9 @@ DataPackageR <- function(arg = NULL, masterfile = NULL) {
                                  old_data_digest[["DataVersion"]],
                                  " in the DESCRIPTION file\nand re-run",
                                  "R CMD DataPackageR."))
+                           {
+                             stop("error",call. = FALSE)
+                           }
             }
         } else {
             .save_data(new_data_digest, pkg_description, ls(dataenv), dataenv)
@@ -261,6 +300,7 @@ DataPackageR <- function(arg = NULL, masterfile = NULL) {
                                                               doc_parsed)
             if (length(missing_doc_for_autodoc) != 0) {
                 tmptarget <- tempdir()
+                file.info("Writing missing docs.")
                 .doc_autogen(basename(pkg_dir),
                              ds2kp = missing_doc_for_autodoc,
                              env = dataenv,
@@ -269,6 +309,7 @@ DataPackageR <- function(arg = NULL, masterfile = NULL) {
                 missing_doc <- .doc_parse(file.path(tmptarget, "missing_doc.R"))
                 doc_parsed <- .doc_merge(old = doc_parsed,
                                          new = missing_doc)
+                file.info("Writing merged docs.")
                 docfile <- file(
                   file.path(
                     target,

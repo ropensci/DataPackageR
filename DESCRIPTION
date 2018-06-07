@@ -24,7 +24,8 @@ Imports:
     stringr,
     futile.logger,
     rprojroot,
-    data.tree
+    data.tree,
+    DT
 VignetteBuilder: knitr
 RoxygenNote: 6.0.1
 Collate: autodoc.R
@@ -40,6 +41,6 @@ Collate: autodoc.R
     mergeDocumentation.R
     parseDocumentation.R
     yamlR.R
-Suggests: 
+Suggests:
     testthat,
     covr

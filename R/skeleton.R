@@ -18,14 +18,14 @@
 #' to reflect the additional necessary steps.
 #' @name datapackage.skeleton
 #' @param name  see \code{\link[utils]{package.skeleton}}
-#' @param list see \code{\link[utils]{package.skeleton}}
-#' @param environment see \code{\link[utils]{package.skeleton}}
-#' @param path see \code{\link[utils]{package.skeleton}}
-#' @param force see \code{\link[utils]{package.skeleton}}
-#' @param code_files Optional character vector of paths to Rmd files that process raw data
-#' into R objects. Treated differently that \code{code_files} in \code{\link[utils]{package.skeleton}}. 
+#' @param list see A list of named R objects expected to exist in the environment. Not used here. See \code{code_files} argument instead.
+#' @param environment see \code{\link[utils]{package.skeleton}}. Not used here.
+#' @param path A \code{character} path where the pacakge is located. See \code{\link[utils]{package.skeleton}}
+#' @param force \code{logical} Force the package skeleton to be recreated even if it exists. see \code{\link[utils]{package.skeleton}}
+#' @param code_files Optional \code{character} vector of paths to Rmd files that process raw data
+#' into R objects. Treated differently than \code{code_files} in \code{\link[utils]{package.skeleton}}. 
 #' Will always pass an empty \code{character()} vector to that function.
-#' @param r_object_names \code{vector} of quoted r object names , tables, etc. created by \code{code_files}.
+#' @param r_object_names \code{vector} of quoted r object names , tables, etc. created when the files in \code{code_files} are run. 
 #' @export
 #' @examples
 #' \dontrun{
@@ -53,15 +53,7 @@ datapackage.skeleton <-
           character()
       )
     } else{
-      package.skeleton(
-        name = name,
-        list = list,
-        environment = environment,
-        path = path,
-        force =
-          force,
-        code_files = code_files
-      )
+      flog.fatal("list argument is not used by datapackage.skeleton().")
     }
     #create the rest of the necessary elements in the package
     package_path <- file.path(path, name)
