@@ -63,25 +63,27 @@ test_that("yaml reading, adding, removing, listing, and writing", {
   attr(test_config, "path") <- attr(config, "path")
   expect_identical(config, test_config)
 
-  config <- yml_add_files(config, "foo_file")
+  config <- yml_add_files(config, "extra.rmd")
   test_config <-
     structure(list(configuration = list(
       files = list(
         subsetCars.Rmd = list(name = "subsetCars.Rmd", enabled = TRUE),
-        foo_file = list(name = "foo_file", enabled = TRUE)
+        extra.rmd = list(name = "extra.rmd", enabled = TRUE)
       ),
       objects = "cars_over_20"
-    )))
+    )), path = "/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmp7DyEjM/subsetCars/datapackager.yml")
   attr(test_config, "path") <- attr(config, "path")
   expect_identical(config, test_config)
 
   config <- yml_remove_files(config, "foo_file")
   test_config <-
     structure(list(configuration = list(
-      files = list(subsetCars.Rmd =
-                     list(name = "subsetCars.Rmd", enabled = TRUE)),
+      files = list(
+        subsetCars.Rmd = list(name = "subsetCars.Rmd", enabled = TRUE),
+        extra.rmd = list(name = "extra.rmd", enabled = TRUE)
+      ),
       objects = "cars_over_20"
-    )))
+    )), path = "/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmp7DyEjM/subsetCars/datapackager.yml")
   attr(test_config, "path") <- attr(config, "path")
   expect_identical(config, test_config)
 
@@ -89,11 +91,14 @@ test_that("yaml reading, adding, removing, listing, and writing", {
   config <- yml_add_objects(config, "foo_obj")
   test_config <-
     structure(list(configuration = list(
-      files = list(subsetCars.Rmd =
-                     list(name = "subsetCars.Rmd", enabled = TRUE)),
+      files = list(
+        subsetCars.Rmd = list(name = "subsetCars.Rmd", enabled = TRUE),
+        extra.rmd = list(name = "extra.rmd", enabled = TRUE)
+      ),
       objects = c("cars_over_20",
                   "foo_obj")
-    )))
+    )), path = "/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmp7DyEjM/subsetCars/datapackager.yml")
+  
   attr(test_config, "path") <- attr(config, "path")
   expect_identical(config, test_config)
 
@@ -101,16 +106,18 @@ test_that("yaml reading, adding, removing, listing, and writing", {
   config <- yml_remove_objects(config, "foo_obj")
   test_config <-
     structure(list(configuration = list(
-      files = list(subsetCars.Rmd =
-                     list(name = "subsetCars.Rmd", enabled = TRUE)),
+      files = list(
+        subsetCars.Rmd = list(name = "subsetCars.Rmd", enabled = TRUE),
+        extra.rmd = list(name = "extra.rmd", enabled = TRUE)
+      ),
       objects = "cars_over_20"
-    )))
+    )), path = "/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmp7DyEjM/subsetCars/datapackager.yml")
   attr(test_config, "path") <- attr(config, "path")
   expect_identical(config, test_config)
 
 
   list <- yml_list_files(config)
-  expect_identical(list, c(subsetCars.Rmd = "subsetCars.Rmd"))
+  expect_identical(list, c(subsetCars.Rmd = "subsetCars.Rmd",extra.rmd="extra.rmd"))
 
 
 
@@ -121,10 +128,13 @@ test_that("yaml reading, adding, removing, listing, and writing", {
   yml_write(config)
   test_config <-
     structure(list(configuration = list(
-      files = list(subsetCars.Rmd =
-                     list(name = "subsetCars.Rmd", enabled = TRUE)),
+      files = list(
+        subsetCars.Rmd = list(name = "subsetCars.Rmd", enabled = TRUE),
+        extra.rmd = list(name = "extra.rmd", enabled = TRUE)
+      ),
       objects = "cars_over_20"
-    )))
+    )), path = "/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmp7DyEjM/subsetCars/datapackager.yml")
+  
   config <- yml_find(file.path(tmp, "subsetCars"))
   attr(test_config, "path") <- attr(config, "path")
   expect_identical(config, test_config)
