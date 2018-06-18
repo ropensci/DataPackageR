@@ -19,6 +19,10 @@ vignette: >
 
 A package to reproducibly process raw data into packaged, analysis-ready data sets.
 
+ [![Build Status](https://travis-ci.org/RGLab/DataPackageR.svg?branch=master)](https://travis-ci.org/RGLab/DataPackageR)
+ [![Coverage status](https://codecov.io/gh/RGLab/DataPackageR/branch/master/graph/badge.svg)](https://codecov.io/github/RGLab/DataPackageR?branch=master)
++[![DOI](https://zenodo.org/badge/29267435.svg)](https://zenodo.org/badge/latestdoi/29267435)
+
 ## Goals
 
 You have raw data that needs to be tidied and otherwise processed into a standardized analytic data set (a data set that is ready for analysis). 
