@@ -7,7 +7,7 @@ Authors@R:
 Version: 0.13.1
 Date: 2017-10-13
 Description: Construct reproducible analytic data sets as R packages. 
-License: GPL-3
+License: MIT
 Maintainer: Greg Finak <gfinak@fredhutch.org>
 Depends: R (>= 3.5.0)
 Imports:
