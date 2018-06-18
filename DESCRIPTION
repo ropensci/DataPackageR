@@ -4,10 +4,10 @@ Title: Construct Reproducible Analytic Data Sets as R Packages
 Authors@R:
     c(person(given = "Greg Finak", role=c("aut","cre","cph"), email="gfinak@fredhutch.org"),
       person(given = "Paul Obrecht", role=c("ctb")))
-Version: 0.13.1
+Version: 0.13.2
 Date: 2017-10-13
 Description: Construct reproducible analytic data sets as R packages. 
-License: MIT
+License: MIT + file LICENSE
 Maintainer: Greg Finak <gfinak@fredhutch.org>
 Depends: R (>= 3.5.0)
 Imports:
@@ -27,7 +27,6 @@ Imports:
     futile.logger,
     rprojroot,
     data.tree,
-    DT
 VignetteBuilder: knitr
 RoxygenNote: 6.0.1
 Collate: autodoc.R

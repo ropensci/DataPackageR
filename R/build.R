@@ -14,6 +14,7 @@
 #' @import rprojroot
 #' @importFrom yaml read_yaml
 #' @import futile.logger
+#' @import knitr
 #' @export
 package_build <- function(packageName = NULL,
                                 vignettes = FALSE,
