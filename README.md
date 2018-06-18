@@ -21,7 +21,7 @@ A package to reproducibly process raw data into packaged, analysis-ready data se
 
  [![Build Status](https://travis-ci.org/RGLab/DataPackageR.svg?branch=master)](https://travis-ci.org/RGLab/DataPackageR)
  [![Coverage status](https://codecov.io/gh/RGLab/DataPackageR/branch/master/graph/badge.svg)](https://codecov.io/github/RGLab/DataPackageR?branch=master)
-[![DOI](https://zenodo.org/badge/29267435.svg)](https://zenodo.org/badge/latestdoi/29267435)
+[![DOI](https://zenodo.org/badge/29267435.svg)](https://doi.org/10.5281/zenodo.1292095)
 
 ## Goals
 
