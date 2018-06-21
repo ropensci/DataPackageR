@@ -70,7 +70,7 @@ devtools::install_github("RGLab/DataPackageR", auth_token=NULL)
 
 Set up a new data package.
 
-We'll set up a new data package that processes the `cars` data by subsetting it to include only cars with speed greater than or equal to 20 mph. It is processed using an Rmd file located in `inst/extdata/tests/subsetCars.Rmd` that produces a new object called `cars_over_20`. The package will be called `Test`. The work will be done in the system `/tmp` directory.
+We'll set up a new data package that processes the `cars` data by subsetting it to include only measurements of stopping distances of cars at speeds greater than 20 mph. It is processed using an Rmd file located in `inst/extdata/tests/subsetCars.Rmd` that produces a new object called `cars_over_20`. The package will be called `Test`. The work will be done in the system `/tmp` directory.
 
 
 ```r
