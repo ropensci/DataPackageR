@@ -26,7 +26,7 @@ package_build <- function(packageName = NULL,
   if (is.null(packageName)) {
     packageName <- "."
     # use normalizePath
-    package_path <- normalizePath(packageName)
+    package_path <- normalizePath(packageName, winslash = "/")
     packageName <- basename(package_path)
     # Is this a package root?
     if (!is_r_package$find_file() == package_path) {
@@ -34,7 +34,7 @@ package_build <- function(packageName = NULL,
       stop("exiting", call. = FALSE)
     }
   }
-  package_path <- normalizePath(packageName)
+  package_path <- normalizePath(packageName, winslash = "/")
   if (!file.exists(package_path)) {
     flog.fatal(paste0("Non existent package ", packageName))
                stop("exiting", call. = FALSE)
