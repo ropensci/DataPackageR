@@ -23,6 +23,10 @@ A package to reproducibly process raw data into packaged, analysis-ready data se
  [![Coverage status](https://codecov.io/gh/RGLab/DataPackageR/branch/master/graph/badge.svg)](https://codecov.io/github/RGLab/DataPackageR?branch=master)
 [![DOI](https://zenodo.org/badge/29267435.svg)](https://doi.org/10.5281/zenodo.1292095)
 
+
+## Preprint
+
+The preprint describing the package is on [biorxiv](https://doi.org/10.1101/342907) and has been accepted for publication in [Gates Open Research](https://gatesopenresearch.org/).
 ## Goals
 
 You have raw data that needs to be tidied and otherwise processed into a standardized analytic data set (a data set that is ready for analysis). 
