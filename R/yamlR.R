@@ -13,7 +13,7 @@
 #' yml_find('/tmp')
 #' }
 yml_find <- function(path) {
-  path <- normalizePath(path)
+  path <- normalizePath(path, winslash = "/")
   config_yml <- is_r_package$find_file("datapackager.yml", path = path)
   if (!file.exists(config_yml)) {
     stop("Can't find a datapackager.yml config at ",
@@ -171,7 +171,7 @@ yml_write <- function(config, path = NULL) {
 #' Can be written to disk via \code{yml_write}
 #' @examples
 #' conf = construct_yml_config(code=c('file1.rmd','file2.rmd'), data=c('object1','object2'))
-#' tmp = normalizePath(tempdir())
+#' tmp = normalizePath(tempdir(), winslash = "/")
 #' yml_write(conf,path=tmp)
 #' @export
 construct_yml_config <- function(code = NULL, data = NULL) {

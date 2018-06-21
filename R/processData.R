@@ -42,10 +42,10 @@ DataPackageR <- function(arg = NULL, masterfile = NULL) {
     requireNamespace("yaml")
     old <- getwd()
     pkg_dir <- arg
-    pkg_dir <- normalizePath(pkg_dir)
+    pkg_dir <- normalizePath(pkg_dir, winslash = "/")
     raw_data_dir <- "data-raw"
-    target <- normalizePath(file.path(pkg_dir, raw_data_dir))
-    data_dir <- normalizePath(file.path(pkg_dir, "data"))
+    target <- normalizePath(file.path(pkg_dir, raw_data_dir), winslash = "/")
+    data_dir <- normalizePath(file.path(pkg_dir, "data"), winslash = "/")
     raw_data_dir <- target
     if (!file.exists(target)) {
       flog.fatal(paste0("Directory ", target, " doesn't exist."))
@@ -61,7 +61,7 @@ DataPackageR <- function(arg = NULL, masterfile = NULL) {
         old <- getwd()
         setwd(pkg_dir)
         # log to the log file Create a log directory in inst/extdata
-        logpath <- file.path(normalizePath("inst/extdata"), "Logfiles")
+        logpath <- file.path(normalizePath("inst/extdata", winslash = "/"), "Logfiles")
         dir.create(logpath, recursive = TRUE, showWarnings = FALSE)
         # open a log file
         LOGFILE <- file.path(logpath, "processing.log")
