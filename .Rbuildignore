@@ -1,0 +1,10 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+^README\.Rmd$
+^README-.*\.png$
+^docs$
+README.html
+^codecov\.yml$
+^\.travis\.yml$
+^CODE_OF_CONDUCT\.md$
+^appveyor\.yml$
