@@ -24,9 +24,12 @@ A package to reproducibly process raw data into packaged, analysis-ready data se
 [![DOI](https://zenodo.org/badge/29267435.svg)](https://doi.org/10.5281/zenodo.1292095)
 
 
-## Preprint
+## Preprint and publication.
 
-The preprint describing the package is on [biorxiv](https://doi.org/10.1101/342907) and has been accepted for publication in [Gates Open Research](https://gatesopenresearch.org/).
+The publication describing the package is now available at [Gates Open Research](https://gatesopenresearch.org/articles/2-31/v1).
+
+The preprint is on [biorxiv](https://doi.org/10.1101/342907).
+
 ## Goals
 
 You have raw data that needs to be tidied and otherwise processed into a standardized analytic data set (a data set that is ready for analysis). 
