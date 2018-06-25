@@ -4,22 +4,26 @@
 \alias{construct_yml_config}
 \title{Construct a datapackager.yml configuration}
 \usage{
-construct_yml_config(code = NULL, data = NULL)
+construct_yml_config(code = NULL, data = NULL, render_root = NULL)
 }
 \arguments{
 \item{code}{A vector of filenames}
 
 \item{data}{A vector of quoted object names}
+
+\item{render_root}{The root directory where the package data processing code will be rendered. 
+Defaults to is set to a randomly generated named subdirectory of \code{tempdir()}.}
 }
 \value{
 a datapackager.yml configuration represented as an R object
 }
 \description{
 Constructs a datapackager.yml configuration object from a vector of file names and a vector of object names (all quoted).
-Can be written to disk via \code{yml_write}
+Can be written to disk via \code{yml_write}.
+\code{render_root} is set to a randomly generated named subdirectory of \code{tempdir()}.
 }
 \examples{
 conf = construct_yml_config(code=c('file1.rmd','file2.rmd'), data=c('object1','object2'))
-tmp = normalizePath(tempdir())
+tmp = normalizePath(tempdir(), winslash = "/")
 yml_write(conf,path=tmp)
 }

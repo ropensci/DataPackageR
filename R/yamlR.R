@@ -6,6 +6,7 @@
 #' @description Edit a yaml configuration file via an API. 
 #' @details Add, remove files and objects, enable or disable parsing of specific files,  list objects or files in a yaml config, or write a config back to a package.
 #' @importFrom yaml yaml.load_file as.yaml write_yaml
+#' @importFrom stats runif
 #' @export
 #'
 #' @examples
@@ -166,15 +167,18 @@ yml_write <- function(config, path = NULL) {
 #' 
 #' @param code A vector of filenames
 #' @param data A vector of quoted object names
+#' @param render_root The root directory where the package data processing code will be rendered. 
+#' Defaults to is set to a randomly generated named subdirectory of \code{tempdir()}.
 #' @return a datapackager.yml configuration represented as an R object
 #' @description Constructs a datapackager.yml configuration object from a vector of file names and a vector of object names (all quoted).
-#' Can be written to disk via \code{yml_write}
+#' Can be written to disk via \code{yml_write}.
+#' \code{render_root} is set to a randomly generated named subdirectory of \code{tempdir()}.
 #' @examples
 #' conf = construct_yml_config(code=c('file1.rmd','file2.rmd'), data=c('object1','object2'))
 #' tmp = normalizePath(tempdir(), winslash = "/")
 #' yml_write(conf,path=tmp)
 #' @export
-construct_yml_config <- function(code = NULL, data = NULL) {
+construct_yml_config <- function(code = NULL, data = NULL, render_root = NULL) {
   code <- basename(code)
   files <- vector(length = length(code), mode = "list")
   names(files) <- code
@@ -185,5 +189,24 @@ construct_yml_config <- function(code = NULL, data = NULL) {
   files
 
   yml <- list(configuration = list(files = files, objects = data))
+  if (is.null(render_root)) {
+    render_root = file.path(tempdir(),as.character(as.integer(runif(1)*1000000)))
+    tempdir_exists = try(normalizePath(dirname(render_root),mustWork = TRUE), silent = TRUE)
+    if (inherits(tempdir_exists,"try-error")) {
+      flog.fatal(paste0(dirname(render_root)," doesn't exist!"))
+        stop("error",call. = FALSE)
+    }
+    if (!dir.create(render_root, recursive = TRUE)) {
+      flog.error("Failed to create render_root = ",render_root)
+    }
+  } else {
+    render_root = try(normalizePath(render_root,winslash = "/",mustWork = TRUE), silent = TRUE)
+    if (inherits(render_root,"try-error")) {
+      flog.fatal(paste0(dirname(render_root)," doesn't exist!"))
+      stop("error",call. = FALSE)
+    }
+  }
+  render_root = normalizePath(render_root,winslash = "/", mustWork = TRUE)
+  yml[["configuration"]]$render_root = render_root
   return(yml)
 }

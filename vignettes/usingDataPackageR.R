@@ -50,7 +50,7 @@ cat(readLines("Test/DESCRIPTION"),sep="\n")
 #assume I have file1.Rmd and file2.R located in /data-raw, and these create 'object1' and 'object2' respectively.
 
 config = construct_yml_config(code = c("file1.Rmd","file2.R"), data = c("object1","object2"))
-print(config)
+cat(as.yaml(config))
 
 ## ------------------------------------------------------------------------
 path_to_package = tempdir() #pretend this is the root of our package
@@ -58,5 +58,5 @@ yml_write(config,path = path_to_package)
 
 ## ------------------------------------------------------------------------
 config = yml_disable_compile(config,filenames = "file2.R")
-print(as.yaml(config))
+cat(as.yaml(config))
 

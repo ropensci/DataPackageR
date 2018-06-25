@@ -47,6 +47,21 @@ DataPackageR <- function(arg = NULL, masterfile = NULL) {
     target <- normalizePath(file.path(pkg_dir, raw_data_dir), winslash = "/")
     data_dir <- normalizePath(file.path(pkg_dir, "data"), winslash = "/")
     raw_data_dir <- target
+    
+    .validate_render_root = function(x){
+      render_root = try(normalizePath(x, mustWork = TRUE, winslash = "/"), silent = TRUE)
+      if (inherits(render_root, "try-error")) {
+        flog.warn(paste0("render_root  = ", render_root, " doesn't exist."))
+        #try creating
+        if (!dir.create(render_root, recursive = TRUE)) {
+          flog.error(paste0("can't create render_root  = ", render_root))
+          return(FALSE);
+        } else {
+          return(TRUE)
+        }
+      }
+      return(TRUE)
+    }
     if (!file.exists(target)) {
       flog.fatal(paste0("Directory ", target, " doesn't exist."))
                {
@@ -118,6 +133,14 @@ DataPackageR <- function(arg = NULL, masterfile = NULL) {
                        }
         }
         objects_to_keep <- map(ymlconf, "objects")[["configuration"]]
+        render_root = ymlconf[["configuration"]][["render_root"]]
+        if (!.validate_render_root(render_root)) {
+          flog.fatal("Can't create, or render_root = ", render_root, " doesn't exist")
+          stop("error", call. = FALSE)
+        } else {
+          render_root = normalizePath(render_root, winslash = "/")
+        }
+        
         r_files <- file.path(raw_data_dir, r_files)
         if (all(!file.exists(r_files))) {
             flog.fatal(paste0("Can't find any R or Rmd files."))
@@ -174,7 +197,7 @@ DataPackageR <- function(arg = NULL, masterfile = NULL) {
                 "\n"))
             # config file goes in the root render the r and rmd files
             render(input = r_files[i], envir = dataenv,
-                   output_dir = logpath, clean = FALSE)
+                   output_dir = logpath, clean = FALSE, knit_root_dir = render_root)
             # The created objects
             object_names <- ls(dataenv)
             flog.info(paste0(sum(objects_to_keep %in% object_names),

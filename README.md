@@ -13,7 +13,9 @@ vignette: >
   \usepackage{graphicx}
 ---
 
+# NEWS
 
+- Added the `render_root` property to the YAML configuration. Specifies where `render()` processing is done, instead of the `data-raw` directory.
 
 # DataPackageR
 
