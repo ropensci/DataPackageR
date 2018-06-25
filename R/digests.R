@@ -7,8 +7,8 @@
     options(warn = -1)
     oldv <- strsplit(old_data_digest[["DataVersion"]], "\\.")
     newv <- strsplit(new_data_digest[["DataVersion"]], "\\.")
-    oldv <- sapply(oldv, as.numeric)
-    newv <- sapply(newv, as.numeric)
+    oldv <- lapply(oldv, as.numeric)[[1]]
+    newv <- lapply(newv, as.numeric)[[1]]
     if (any(is.na(oldv)) | any(is.na(newv))) {
         options(warn = oldwarn)
         flog.fatal(paste0("Invalid DataVersion string found ",

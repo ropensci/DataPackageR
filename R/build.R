@@ -10,11 +10,11 @@
 #' a partial build of the package.
 #' @param log log level \code{INFO,WARN,DEBUG,FATAL}
 #' @importFrom roxygen2 roxygenise roxygenize
-#' @importFrom devtools build_vignettes build
-#' @import rprojroot
+#' @importFrom devtools build_vignettes build parse_deps use_build_ignore use_rstudio create_description
+#' @importFrom rprojroot is_r_package
 #' @importFrom yaml read_yaml
-#' @import futile.logger
-#' @import knitr
+#' @importFrom futile.logger flog.debug flog.info flog.warn flog.error flog.fatal flog.appender flog.threshold INFO appender.console appender.tee
+#' @importFrom knitr knit
 #' @export
 package_build <- function(packageName = NULL,
                                 vignettes = FALSE,

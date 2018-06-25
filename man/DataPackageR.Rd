@@ -9,7 +9,7 @@ DataPackageR(arg = NULL, masterfile = NULL)
 \arguments{
 \item{arg}{\code{character} name of the package to build.}
 
-\item{masterfile}{\code{characer} path to file in data-raw that sources processing scripts. Will do 
+\item{masterfile}{\code{characer} path to file in data-raw that sources processing scripts. Will do
 a partial build of the package.}
 }
 \value{

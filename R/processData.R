@@ -30,13 +30,13 @@ NULL
 #' @param masterfile \code{characer} path to file in data-raw that sources processing scripts. Will do
 #' a partial build of the package.
 #' @return logical TRUE if succesful, FALSE, if not.
-#' @import optparse roxygen2 rmarkdown desc
+#' @importFrom desc desc
+#' @importFrom rmarkdown render
 #' @importFrom utils getSrcref
-#' @importFrom devtools as.package
+#' @importFrom devtools as.package document
 #' @importFrom here here
 #' @importFrom here set_here
-#' @import data.tree
-#' @import devtools
+#' @importFrom data.tree as.Node
 DataPackageR <- function(arg = NULL, masterfile = NULL) {
   requireNamespace("futile.logger")
   requireNamespace("yaml")
@@ -391,9 +391,9 @@ DataPackageR <- function(arg = NULL, masterfile = NULL) {
           ),
           open = "w"
         )
-        sapply(doc_parsed, function(x) {
-          writeLines(text = x, con = docfile)
-        })
+        for (i in seq_along(doc_parsed)) {
+          writeLines(text = doc_parsed[[i]], con = docfile)
+        }
       }
       # Partial build if enabled=FALSE for
       # any file We've disabled an object but don't
@@ -406,9 +406,9 @@ DataPackageR <- function(arg = NULL, masterfile = NULL) {
       ),
       open = "w"
       )
-      sapply(save_docs, function(x) {
-        writeLines(text = x, con = docfile)
-      })
+      for (i in seq_along(save_docs)) {
+        writeLines(text = save_docs[[i]], con = docfile)
+      }
       close(docfile)
       flog.info(
         paste0(

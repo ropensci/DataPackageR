@@ -13,7 +13,7 @@
       function(x){
                unlist(x, use.names = FALSE) > 0
       })
-    docs <- lapply(1:length(docs), function(j){
+    docs <- lapply(seq_along(docs), function(j){
       docs[[j]][indx[[j]]]
       })
     # Extract @name
