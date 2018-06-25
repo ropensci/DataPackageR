@@ -1,22 +1,3 @@
----
-title: "Using DataPackageR"
-author: "Greg Finak <gfinak@fredhutch.org>"
-date: "2018-06-25"
-output: 
-  rmarkdown::html_vignette:
-    keep_md: TRUE
-
-vignette: >
-  %\VignetteIndexEntry{A quick guide to using DataPackageR}
-  %\VignetteEngine{knitr::rmarkdown}
-  \usepackage[utf8]{inputenc}
-  \usepackage{graphicx}
----
-
-
-# NEWS
-
-- Added the `render_root` property to the YAML configuration. Specifies where `render()` processing is done, instead of the `data-raw` directory.
 
 # DataPackageR
 
@@ -33,6 +14,10 @@ A package to reproducibly process raw data into packaged, analysis-ready data se
 The publication describing the package is now available at [Gates Open Research](https://gatesopenresearch.org/articles/2-31/v1).
 
 The preprint is on [biorxiv](https://doi.org/10.1101/342907).
+
+## NEWS 
+
+- Added the `render_root` property to the YAML configuration. Specifies where `render()` processing is done, instead of the `data-raw` directory.
 
 ## Goals
 
@@ -191,25 +176,41 @@ INFO [2018-06-25 14:19:36] Processing 1 of 1: /private/var/folders/jh/x0h3v3pd4d
 
 
 processing file: subsetCars.Rmd
-  |                                                                         |                                                                 |   0%  |                                                                         |.........                                                        |  14%
+
+  |                                                                       
+  |                                                                 |   0%
+  |                                                                       
+  |.........                                                        |  14%
   ordinary text without R code
 
-  |                                                                         |...................                                              |  29%
+
+  |                                                                       
+  |...................                                              |  29%
 label: setup (with options) 
 List of 1
  $ include: logi FALSE
 
-  |                                                                         |............................                                     |  43%
+
+  |                                                                       
+  |............................                                     |  43%
   ordinary text without R code
 
-  |                                                                         |.....................................                            |  57%
+
+  |                                                                       
+  |.....................................                            |  57%
 label: cars
-  |                                                                         |..............................................                   |  71%
+
+  |                                                                       
+  |..............................................                   |  71%
   ordinary text without R code
 
-  |                                                                         |........................................................         |  86%
+
+  |                                                                       
+  |........................................................         |  86%
 label: unnamed-chunk-10
-  |                                                                         |.................................................................| 100%
+
+  |                                                                       
+  |.................................................................| 100%
   ordinary text without R code
 output file: subsetCars.knit.md
 /usr/local/bin/pandoc +RTS -K512m -RTS subsetCars.utf8.md --to html4 --from markdown+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash+smart --output /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpLMrqrN/Test/inst/extdata/Logfiles/subsetCars.html --email-obfuscation none --self-contained --standalone --section-divs --template /Library/Frameworks/R.framework/Versions/3.5/Resources/library/rmarkdown/rmd/h/default.html --no-highlight --variable highlightjs=1 --variable 'theme:bootstrap' --include-in-header /var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//RtmpLMrqrN/rmarkdown-str8fc821b62338.html --mathjax --variable 'mathjax-url:https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' 
