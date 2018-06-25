@@ -4,12 +4,12 @@ Title: Construct Reproducible Analytic Data Sets as R Packages
 Authors@R:
     c(person(given = "Greg Finak", role=c("aut","cre","cph"), email="gfinak@fredhutch.org"),
       person(given = "Paul Obrecht", role=c("ctb")))
-Version: 0.13.3
-Date: 2017-10-13
+Version: 0.13.4
 Description: Construct reproducible analytic data sets as R packages. 
 License: MIT + file LICENSE
-Maintainer: Greg Finak <gfinak@fredhutch.org>
 Depends: R (>= 3.5.0)
+BugReports: https://github.com/RGLab/DataPackageR/issues
+URL: http://github.com/RGLab/DataPackageR/
 Imports:
     optparse,
     digest,
@@ -29,19 +29,6 @@ Imports:
     data.tree,
 VignetteBuilder: knitr
 RoxygenNote: 6.0.1
-Collate: autodoc.R
-    build.R
-    dataversion.r
-    digests.R
-    load_save.R
-    processData.R
-    skeleton.R
-    devtool_functions.R
-    rmarkdown_functions.R
-    roxygen2_functions.R
-    mergeDocumentation.R
-    parseDocumentation.R
-    yamlR.R
 Suggests:
     testthat,
     covr
