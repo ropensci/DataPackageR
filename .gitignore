@@ -1,0 +1,9 @@
+.Rproj.user
+.Rhistory
+.RData
+README.Rmd
+README.html
+preprocessData.Rproj
+DataPackageR.Rproj
+codecov.yml
+.travis.yml
