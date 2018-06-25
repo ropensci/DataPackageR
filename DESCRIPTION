@@ -8,8 +8,6 @@ Version: 0.13.4
 Description: Construct reproducible analytic data sets as R packages. 
 License: MIT + file LICENSE
 Depends: R (>= 3.5.0)
-BugReports: https://github.com/RGLab/DataPackageR/issues
-URL: http://github.com/RGLab/DataPackageR/
 Imports:
     optparse,
     digest,
@@ -32,3 +30,5 @@ RoxygenNote: 6.0.1
 Suggests:
     testthat,
     covr
+URL: https://github.com/RGLab/DataPackageR
+BugReports: https://github.com/RGLab/DataPackageR/issues
