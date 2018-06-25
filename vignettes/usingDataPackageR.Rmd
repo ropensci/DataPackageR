@@ -20,10 +20,24 @@ knitr::opts_chunk$set(
   eval=TRUE
 )
 ```
+# NEWS
+
+- Added the `render_root` property to the YAML configuration. Specifies where `render()` processing is done, instead of the `data-raw` directory.
 
 # DataPackageR
 
 A package to reproducibly process raw data into packaged, analysis-ready data sets.
+
+ [![Build Status](https://travis-ci.org/RGLab/DataPackageR.svg?branch=master)](https://travis-ci.org/RGLab/DataPackageR)
+ [![Coverage status](https://codecov.io/gh/RGLab/DataPackageR/branch/master/graph/badge.svg)](https://codecov.io/github/RGLab/DataPackageR?branch=master)
+[![DOI](https://zenodo.org/badge/29267435.svg)](https://doi.org/10.5281/zenodo.1292095)
+
+
+## Preprint and publication.
+
+The publication describing the package is now available at [Gates Open Research](https://gatesopenresearch.org/articles/2-31/v1).
+
+The preprint is on [biorxiv](https://doi.org/10.1101/342907).
 
 ## Goals
 
@@ -114,6 +128,8 @@ cat(as.yaml(yaml.load_file("Test/datapackager.yml")))
 ```
 
 It includes a `files` property that has an entry for each script, with the `name:` and `enabled:` keys for each file. The `objects` property  lists the data objects produced by the scripts.
+
+The `render_root` property specifies the directory where the Rmd files are rendered. If temporary objects are produced during the processing, they will appear in this directory without polluting the package source tree. A temporary directory is used by default.
 
 ### Build your package.
 
