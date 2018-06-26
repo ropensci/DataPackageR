@@ -7,8 +7,9 @@
   ))), msg = "code_files do not all exist!")
   # are the .Rmd files?
   assert_that(all(grepl(".*\\.r$", tolower(code_files)) |
-                    grepl(".*\\.rmd$", tolower(code_files))),
-              msg = "code files are not Rmd or R files!")
+    grepl(".*\\.rmd$", tolower(code_files))),
+  msg = "code files are not Rmd or R files!"
+  )
 }
 
 #' Create a Data Package skeleton for use with DataPackageR.
@@ -23,9 +24,9 @@
 #' @param path A \code{character} path where the pacakge is located. See \code{\link[utils]{package.skeleton}}
 #' @param force \code{logical} Force the package skeleton to be recreated even if it exists. see \code{\link[utils]{package.skeleton}}
 #' @param code_files Optional \code{character} vector of paths to Rmd files that process raw data
-#' into R objects. Treated differently than \code{code_files} in \code{\link[utils]{package.skeleton}}. 
+#' into R objects. Treated differently than \code{code_files} in \code{\link[utils]{package.skeleton}}.
 #' Will always pass an empty \code{character()} vector to that function.
-#' @param r_object_names \code{vector} of quoted r object names , tables, etc. created when the files in \code{code_files} are run. 
+#' @param r_object_names \code{vector} of quoted r object names , tables, etc. created when the files in \code{code_files} are run.
 #' @export
 #' @examples
 #' \dontrun{
@@ -33,12 +34,12 @@
 #' }
 datapackage.skeleton <-
   function(name = NULL,
-           list = character(),
-           environment = .GlobalEnv,
-           path = ".",
-           force = FALSE,
-           code_files = character(),
-           r_object_names = character()) {
+             list = character(),
+             environment = .GlobalEnv,
+             path = ".",
+             force = FALSE,
+             code_files = character(),
+             r_object_names = character()) {
     if (is.null(name)) {
       stop("Must supply a package name", call. = FALSE)
     }
@@ -52,10 +53,10 @@ datapackage.skeleton <-
         code_files =
           character()
       )
-    } else{
+    } else {
       flog.fatal("list argument is not used by datapackage.skeleton().")
     }
-    #create the rest of the necessary elements in the package
+    # create the rest of the necessary elements in the package
     package_path <- file.path(path, name)
     description <-
       desc(file = file.path(package_path, "DESCRIPTION"))
@@ -71,11 +72,13 @@ datapackage.skeleton <-
       recursive = TRUE
     )
     dir.create(file.path(package_path, "data"),
-               showWarnings = FALSE,
-               recursive = TRUE)
+      showWarnings = FALSE,
+      recursive = TRUE
+    )
     dir.create(file.path(package_path, "R"),
-               showWarnings = FALSE,
-               recursive = TRUE)
+      showWarnings = FALSE,
+      recursive = TRUE
+    )
     dir.create(
       file.path(package_path, "inst/extdata"),
       recursive = TRUE,
@@ -151,4 +154,4 @@ datapackage.skeleton <-
     file.remove(oldrfiles)
     file.remove(oldrdfiles)
     invisible(NULL)
-}
+  }

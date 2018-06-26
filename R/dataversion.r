@@ -11,24 +11,34 @@
 dataVersion <- function(pkg, lib.loc = NULL) {
   res <- suppressWarnings(
     packageDescription(pkg,
-                       lib.loc = lib.loc,
-                       fields = "DataVersion"))
-  if (!is.na(res))
+      lib.loc = lib.loc,
+      fields = "DataVersion"
+    )
+  )
+  if (!is.na(res)) {
     package_version(res)
-  else  
-    stop(gettextf(paste0("package %s not found ",
-                  "or has no DataVersion string"),
-                  sQuote(pkg)),
-         domain = NA)
+  } else {
+    stop(gettextf(
+      paste0(
+        "package %s not found ",
+        "or has no DataVersion string"
+      ),
+      sQuote(pkg)
+    ),
+    domain = NA
+    )
+  }
 }
 .increment_data_version <-
   function(pkg_description, new_data_digest, which = "patch") {
     if (!which %in% c("major", "minor", "patch")) {
       stop(
-        paste0("version component to increment",
-               "is misspecified in ",
-               ".increment_data_version, ",
-               "package DataPackageR")
+        paste0(
+          "version component to increment",
+          "is misspecified in ",
+          ".increment_data_version, ",
+          "package DataPackageR"
+        )
       )
     }
     verstring <- strsplit(pkg_description[["DataVersion"]], "\\.")[[1]]

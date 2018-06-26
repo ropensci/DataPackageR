@@ -17,8 +17,8 @@
 #' @importFrom knitr knit
 #' @export
 package_build <- function(packageName = NULL,
-                                vignettes = FALSE,
-                                masterfile = NULL, log=INFO) {
+                          vignettes = FALSE,
+                          masterfile = NULL, log=INFO) {
   flog.threshold(log)
   flog.appender(appender.console())
   requireNamespace("rprojroot")
@@ -37,13 +37,15 @@ package_build <- function(packageName = NULL,
   package_path <- normalizePath(packageName, winslash = "/")
   if (!file.exists(package_path)) {
     flog.fatal(paste0("Non existent package ", packageName))
-               stop("exiting", call. = FALSE)
+    stop("exiting", call. = FALSE)
   }
   # This should always be a proper name of a directory, either current or a
   # subdirectory
   packageName <- basename(package_path)
-  if (inherits(try(is_r_package$find_file(path = package_path))
-               , "try-error")) {
+  if (inherits(
+    try(is_r_package$find_file(path = package_path))
+    , "try-error"
+  )) {
     flog.fatal(paste0(
       package_path,
       " is not a valid R package directory beneath ",
@@ -59,15 +61,19 @@ package_build <- function(packageName = NULL,
   success <-
     DataPackageR(arg = package_path, masterfile = masterfile)
   if (!success) {
-    flog.fatal(paste0("Preprocessing failed.",
-                      "Something has gone wrong,",
-                      " see the errors above"))
+    flog.fatal(paste0(
+      "Preprocessing failed.",
+      "Something has gone wrong,",
+      " see the errors above"
+    ))
     stop("exiting", call. = FALSE)
   }
   flog.info("Building documentation")
   roxygenise(package_path,
-             clean = ifelse(is.null(masterfile),
-                            TRUE, FALSE))
+    clean = ifelse(is.null(masterfile),
+      TRUE, FALSE
+    )
+  )
   if (vignettes) {
     # build vignettes explicitly,
     # ensures they are installed properly
@@ -75,17 +81,20 @@ package_build <- function(packageName = NULL,
   }
   flog.info("Building package")
   build(package_path,
-        path = dirname(package_path),
-        vignettes = vignettes)
+    path = dirname(package_path),
+    vignettes = vignettes
+  )
 }
 
-#'Specify which data objects to keep
+#' Specify which data objects to keep
 #'
-#'Specify the names of the data objects to keep. To be called after all preprocessing code.
-#'@param obj \code{character} vector of object names
-#'@export
+#' Specify the names of the data objects to keep. To be called after all preprocessing code.
+#' @param obj \code{character} vector of object names
+#' @export
 keepDataObjects <- function(obj) {
   # remove everything except the objects specified in obj
-  rm(list = setdiff(objects(envir = parent.frame()),
-                    obj), envir = parent.frame())
+  rm(list = setdiff(
+    objects(envir = parent.frame()),
+    obj
+  ), envir = parent.frame())
 }

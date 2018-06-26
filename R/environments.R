@@ -8,6 +8,6 @@
 #' @export
 #'
 #' @examples
-datapackager_object_read = function(name){
-  get(name,get("ENVS",parent.frame()))
+datapackager_object_read <- function(name) {
+  get(name, get("ENVS", parent.frame()))
 }

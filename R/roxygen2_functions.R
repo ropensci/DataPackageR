@@ -17,8 +17,8 @@ comments <- function(refs) {
   com
 }
 
-#'@importFrom stats setNames
-#'@importFrom stringr str_trim
+#' @importFrom stats setNames
+#' @importFrom stringr str_trim
 read.description <- function(file) {
   dcf <- read.dcf(file, keep.white = "Authors@R")
   dcf_list <- setNames(as.list(dcf[1, ]), colnames(dcf))
@@ -27,7 +27,8 @@ read.description <- function(file) {
 
 read_pkg_description <- function(path) {
   desc_path <- file.path(path, "DESCRIPTION")
-  if (!file.exists(desc_path))
+  if (!file.exists(desc_path)) {
     stop("Can't find DESCRIPTION")
+  }
   read.description(desc_path)
 }

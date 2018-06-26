@@ -49,15 +49,15 @@ DataPackageR <- function(arg = NULL, masterfile = NULL) {
   data_dir <- normalizePath(file.path(pkg_dir, "data"), winslash = "/")
   raw_data_dir <- target
 
-  #validate that render_root exists. 
-  #if it's an old temp dir, what then?
+  # validate that render_root exists.
+  # if it's an old temp dir, what then?
   .validate_render_root <- function(x) {
     # catch an error if it doesn't exist
     render_root <- try(normalizePath(x, mustWork = TRUE, winslash = "/"), silent = TRUE)
     if (inherits(render_root, "try-error")) {
       flog.warn(paste0("render_root  = ", render_root, " doesn't exist."))
       # try creating, even if it's an old temp dir.
-      # This isn't ideal. Would like to rather say it's a temporary 
+      # This isn't ideal. Would like to rather say it's a temporary
       # directory and use the current one..
       if (!dir.create(render_root, recursive = TRUE)) {
         flog.error(paste0("can't create render_root  = ", render_root))
@@ -80,7 +80,7 @@ DataPackageR <- function(arg = NULL, masterfile = NULL) {
     # get the current directory
     old <- getwd()
     on.exit(setwd(old))
-    setwd(pkg_dir) #TODO: ideally replace this soon
+    setwd(pkg_dir) # TODO: ideally replace this soon
     # log to the log file Create a log directory in inst/extdata
     logpath <- file.path(normalizePath("inst/extdata", winslash = "/"), "Logfiles")
     dir.create(logpath, recursive = TRUE, showWarnings = FALSE)
@@ -207,9 +207,9 @@ DataPackageR <- function(arg = NULL, masterfile = NULL) {
     ENVS <- new.env(hash = TRUE, parent = .GlobalEnv)
     for (i in seq_along(r_files)) {
       dataenv <- new.env(hash = TRUE, parent = .GlobalEnv)
-      # assign ENVS into dataenv. 
+      # assign ENVS into dataenv.
       # provide functions in the package to read from it.
-      assign(x = "ENVS",value = ENVS, dataenv)
+      assign(x = "ENVS", value = ENVS, dataenv)
       flog.info(paste0(
         "Processing ", i, " of ",
         length(r_files), ": ", r_files[i],
@@ -233,7 +233,7 @@ DataPackageR <- function(arg = NULL, masterfile = NULL) {
         }
       }
     }
-    #currently environments for each file are independent.
+    # currently environments for each file are independent.
     dataenv <- ENVS
     # Digest each object
     new_data_digest <- .digest_data_env(ls(ENVS), dataenv, pkg_description)
