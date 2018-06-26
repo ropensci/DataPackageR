@@ -1,7 +1,6 @@
 .doc_parse <- function(all_r_files) {
     sources <- lapply(all_r_files, function(x) parse(x, keep.source = TRUE))
-    docs <- lapply(sources, function(x) comments(getSrcref(x)))
-    docs <- lapply(sources, function(x) comments(getSrcref(x)))
+    docs <- lapply(sources, function(x) try(comments(getSrcref(x))))
     docs <- lapply(docs, function(x) lapply(x, as.character))
     indx <- lapply(
       lapply(docs,
