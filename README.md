@@ -1,18 +1,3 @@
----
-title: "Using DataPackageR"
-author: "Greg Finak <gfinak@fredhutch.org>"
-date: "2018-06-25"
-output: 
-  rmarkdown::html_vignette:
-    keep_md: TRUE
-
-vignette: >
-  %\VignetteIndexEntry{A quick guide to using DataPackageR}
-  %\VignetteEngine{knitr::rmarkdown}
-  \usepackage[utf8]{inputenc}
-  \usepackage{graphicx}
----
-
 
 # NEWS
 
@@ -27,11 +12,11 @@ A package to reproducibly process raw data into packaged, analysis-ready data se
  [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/RGLab/DataPackageR?branch=master&svg=true)](https://ci.appveyor.com/project/RGLab/DataPackageR)
 [![DOI](https://zenodo.org/badge/29267435.svg)](https://doi.org/10.5281/zenodo.1292095)
 
-## Code of conduct
+## Code of conduct 
 
 Please note that this project is released with a [Contributor Code of Conduct](CODE_OF_CONDUCT.md).
   By participating in this project you agree to abide by its terms.
-  
+
 ## Preprint and publication.
 
 The publication describing the package is now available at [Gates Open Research](https://gatesopenresearch.org/articles/2-31/v1).
@@ -126,33 +111,32 @@ The contents of this directory are:
 ```
                                               levelName
 1  Test                                                
-2   ¦--git-commit-message-8fc8136dde8d.txt             
-3   ¦--libloc_213_722ad5f9e07c7fe1.rds                 
-4   ¦--preview-8fc8122e04f2.dir                        
-5   ¦   °--README.html                                 
-6   ¦--preview-8fc82b0f632f.dir                        
-7   ¦   ¦--usingDataPackageR.html                      
-8   ¦   °--usingDataPackageR.md                        
-9   ¦--preview-8fc83fb8baef.dir                        
-10  ¦   ¦--usingDataPackageR.html                      
-11  ¦   °--usingDataPackageR.md                        
-12  ¦--preview-8fc84f21a9bf.dir                        
-13  ¦   °--README.html                                 
-14  ¦--preview-8fc878f8c197.dir                        
-15  ¦   ¦--usingDataPackageR.html                      
-16  ¦   °--usingDataPackageR.md                        
-17  ¦--preview-8fc8b46b531.dir                         
-18  ¦   ¦--usingDataPackageR.html                      
-19  ¦   °--usingDataPackageR.md                        
-20  ¦--rs-graphics-e124d6bc-6a4c-4068-8e4a-ae9c8a2eb1a7
-21  ¦   ¦--empty.png                                   
-22  ¦   °--INDEX                                       
-23  °--Test                                            
-24      ¦--data-raw                                    
-25      ¦   °--subsetCars.Rmd                          
-26      ¦--datapackager.yml                            
-27      ¦--DESCRIPTION                                 
-28      °--Read-and-delete-me                          
+2   ¦--datapackager.yml                                
+3   ¦--Rprofile-devtools                               
+4   ¦--rs-graphics-320f9b2b-0bab-4f25-ba9e-66eb667018e7
+5   ¦   ¦--empty.png                                   
+6   ¦   °--INDEX                                       
+7   ¦--Test_1.0.tar.gz                                 
+8   °--Test                                            
+9       ¦--data-raw                                    
+10      ¦   ¦--documentation.R                         
+11      ¦   ¦--subsetCars.knit.md                      
+12      ¦   ¦--subsetCars.Rmd                          
+13      ¦   °--subsetCars.utf8.md                      
+14      ¦--DATADIGEST                                  
+15      ¦--datapackager.yml                            
+16      ¦--DESCRIPTION                                 
+17      ¦--inst                                        
+18      ¦   ¦--doc                                     
+19      ¦   ¦   ¦--subsetCars.html                     
+20      ¦   ¦   °--subsetCars.Rmd                      
+21      ¦   °--extdata                                 
+22      ¦       °--Logfiles                            
+23      ¦           ¦--processing.log                  
+24      ¦           °--subsetCars.html                 
+25      ¦--Read-and-delete-me                          
+26      °--vignettes                                   
+27          °--subsetCars.Rmd                          
 ```
 
 `datapackager.yml` can be edited as necessary to include additional processing scripts (which should be placed in `data-raw`), and raw data should be located under under `/inst/extdata`. It should be copied into that path and the data munging scripts edited to read from there.
@@ -169,7 +153,8 @@ configuration:
       name: subsetCars.Rmd
       enabled: yes
   objects: cars_over_20
-  render_root: /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpLMrqrN/200981
+  render_root:
+    tmp: '185367'
 ```
 
 It includes a `files` property that has an entry for each script, with the `name:` and `enabled:` keys for each file. The `objects` property  lists the data objects produced by the scripts.
@@ -187,11 +172,11 @@ To run the build process:
 # Within the package directory
 setwd(tmp)
 DataPackageR:::package_build("Test") 
-INFO [2018-06-25 14:19:36] Logging to /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpLMrqrN/Test/inst/extdata/Logfiles/processing.log
-INFO [2018-06-25 14:19:36] Processing data
-INFO [2018-06-25 14:19:36] Reading yaml configuration
-INFO [2018-06-25 14:19:36] Found /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpLMrqrN/Test/data-raw/subsetCars.Rmd
-INFO [2018-06-25 14:19:36] Processing 1 of 1: /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpLMrqrN/Test/data-raw/subsetCars.Rmd
+INFO [2018-06-26 07:53:13] Logging to /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpfaLm8c/Test/inst/extdata/Logfiles/processing.log
+INFO [2018-06-26 07:53:13] Processing data
+INFO [2018-06-26 07:53:13] Reading yaml configuration
+INFO [2018-06-26 07:53:13] Found /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpfaLm8c/Test/data-raw/subsetCars.Rmd
+INFO [2018-06-26 07:53:13] Processing 1 of 1: /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpfaLm8c/Test/data-raw/subsetCars.Rmd
 
 
 processing file: subsetCars.Rmd
@@ -232,28 +217,28 @@ label: unnamed-chunk-10
   |.................................................................| 100%
   ordinary text without R code
 output file: subsetCars.knit.md
-/usr/local/bin/pandoc +RTS -K512m -RTS subsetCars.utf8.md --to html4 --from markdown+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash+smart --output /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpLMrqrN/Test/inst/extdata/Logfiles/subsetCars.html --email-obfuscation none --self-contained --standalone --section-divs --template /Library/Frameworks/R.framework/Versions/3.5/Resources/library/rmarkdown/rmd/h/default.html --no-highlight --variable highlightjs=1 --variable 'theme:bootstrap' --include-in-header /var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//RtmpLMrqrN/rmarkdown-str8fc821b62338.html --mathjax --variable 'mathjax-url:https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' 
+/usr/local/bin/pandoc +RTS -K512m -RTS subsetCars.utf8.md --to html4 --from markdown+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash+smart --output /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpfaLm8c/Test/inst/extdata/Logfiles/subsetCars.html --email-obfuscation none --self-contained --standalone --section-divs --template /Library/Frameworks/R.framework/Versions/3.5/Resources/library/rmarkdown/rmd/h/default.html --no-highlight --variable highlightjs=1 --variable 'theme:bootstrap' --include-in-header /var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//RtmpfaLm8c/rmarkdown-str1032a54936bd4.html --mathjax --variable 'mathjax-url:https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' 
 
 Output created: inst/extdata/Logfiles/subsetCars.html
-INFO [2018-06-25 14:19:36] 1 required data objects created by subsetCars.Rmd
-INFO [2018-06-25 14:19:36] Saving to data
-INFO [2018-06-25 14:19:36] Copied documentation to R/Test.R
-* Creating `vignettes`.
+INFO [2018-06-26 07:53:13] 1 required data objects created by subsetCars.Rmd
+INFO [2018-06-26 07:53:13] Processed data sets match existing data sets at version 0.1.0
+INFO [2018-06-26 07:53:13] Saving to data
+INFO [2018-06-26 07:53:13] Copied documentation to R/Test.R
 * Adding `inst/doc` to ./.gitignore
-INFO [2018-06-25 14:19:36] Done
-INFO [2018-06-25 14:19:36] Building documentation
+INFO [2018-06-26 07:53:13] Done
+INFO [2018-06-26 07:53:13] Building documentation
 First time using roxygen2. Upgrading automatically...
-Updating roxygen version in /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpLMrqrN/Test/DESCRIPTION
+Updating roxygen version in /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpfaLm8c/Test/DESCRIPTION
 Writing NAMESPACE
 Writing Test.Rd
 Writing cars_over_20.Rd
-INFO [2018-06-25 14:19:36] Building package
+INFO [2018-06-26 07:53:13] Building package
 '/Library/Frameworks/R.framework/Resources/bin/R' --no-site-file  \
   --no-environ --no-save --no-restore --quiet CMD build  \
-  '/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpLMrqrN/Test'  \
+  '/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpfaLm8c/Test'  \
   --no-resave-data --no-manual --no-build-vignettes 
 
-[1] "/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpLMrqrN/Test_1.0.tar.gz"
+[1] "/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpfaLm8c/Test_1.0.tar.gz"
 ```
 
 ### Logging the build process
@@ -335,7 +320,7 @@ Package: Test
 Type: Package
 Title: What the package does (short line)
 Version: 1.0
-Date: 2018-19-25
+Date: 2018-53-26
 Author: Who wrote it
 Maintainer: Who to complain to <yourfault@somewhere.net>
 Description: More about what it does (maybe more than one line)
@@ -389,7 +374,8 @@ configuration:
   objects:
   - object1
   - object2
-  render_root: /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpLMrqrN/540215
+  render_root:
+    tmp: '339581'
 ```
 
 `config` is a newly constructed yaml configuration object. It can be written to the package directory:
@@ -419,7 +405,8 @@ configuration:
   objects:
   - object1
   - object2
-  render_root: /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpLMrqrN/540215
+  render_root:
+    tmp: '339581'
 ```
 
 Where `config` is a configuration read from a data package root directory. The `config` object needs to be written back to the package root in order for the changes to take effect. The consequence of toggling a file to `enable: no` is that it will be skipped when the package is built, but the data will be retained, and the documentation will not be altered. 

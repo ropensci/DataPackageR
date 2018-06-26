@@ -49,11 +49,16 @@ DataPackageR <- function(arg = NULL, masterfile = NULL) {
   data_dir <- normalizePath(file.path(pkg_dir, "data"), winslash = "/")
   raw_data_dir <- target
 
+  #validate that render_root exists. 
+  #if it's an old temp dir, what then?
   .validate_render_root <- function(x) {
+    # catch an error if it doesn't exist
     render_root <- try(normalizePath(x, mustWork = TRUE, winslash = "/"), silent = TRUE)
     if (inherits(render_root, "try-error")) {
       flog.warn(paste0("render_root  = ", render_root, " doesn't exist."))
-      # try creating
+      # try creating, even if it's an old temp dir.
+      # This isn't ideal. Would like to rather say it's a temporary 
+      # directory and use the current one..
       if (!dir.create(render_root, recursive = TRUE)) {
         flog.error(paste0("can't create render_root  = ", render_root))
         return(FALSE)
@@ -137,7 +142,7 @@ DataPackageR <- function(arg = NULL, masterfile = NULL) {
       }
     }
     objects_to_keep <- map(ymlconf, "objects")[["configuration"]]
-    render_root <- ymlconf[["configuration"]][["render_root"]]
+    render_root <- .get_render_root(ymlconf)
     if (!.validate_render_root(render_root)) {
       flog.fatal("Can't create, or render_root = ", render_root, " doesn't exist")
       stop("error", call. = FALSE)
