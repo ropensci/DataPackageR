@@ -5,7 +5,7 @@ test_that("datapackage skeleton builds correct structure", {
     package = "DataPackageR"
   )
   tmp <<- tempdir()
-  tmp <<- normalizePath(tmp)
+  tmp <<- normalizePath(tmp, winslash = "/", mustWork = TRUE)
 
   expect_null(
     datapackage.skeleton(
