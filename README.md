@@ -1,10 +1,3 @@
-<<<<<<< HEAD
-
-# NEWS
-
-- Added the `render_root` property to the YAML configuration. Specifies where `render()` processing is done, instead of the `data-raw` directory.
-=======
->>>>>>> b0bd60dc11b34c5c334c7958a24c2cbbb7211593
 
 # DataPackageR
 
