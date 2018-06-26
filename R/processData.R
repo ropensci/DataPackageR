@@ -207,6 +207,9 @@ DataPackageR <- function(arg = NULL, masterfile = NULL) {
     ENVS <- new.env(hash = TRUE, parent = .GlobalEnv)
     for (i in seq_along(r_files)) {
       dataenv <- new.env(hash = TRUE, parent = .GlobalEnv)
+      # assign ENVS into dataenv. 
+      # provide functions in the package to read from it.
+      assign(x = "ENVS",value = ENVS, dataenv)
       flog.info(paste0(
         "Processing ", i, " of ",
         length(r_files), ": ", r_files[i],
@@ -230,6 +233,7 @@ DataPackageR <- function(arg = NULL, masterfile = NULL) {
         }
       }
     }
+    #currently environments for each file are independent.
     dataenv <- ENVS
     # Digest each object
     new_data_digest <- .digest_data_env(ls(ENVS), dataenv, pkg_description)

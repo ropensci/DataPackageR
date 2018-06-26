@@ -19,6 +19,18 @@ When you click the **Knit** button a document will be generated that includes bo
 summary(cars)
 ```
 
+## Reading objects from previously run files
+
+```{r reading_from_environments}
+library(DataPackageR)
+cars_over_20 = datapackager_object_read("cars_over_20")
+print(cars_over_20)
+f = function(){
+  datapackager_object_read("cars_over_20")
+}
+print(f())
+```
+
 ## Including Plots
 
 You can also embed plots, for example:

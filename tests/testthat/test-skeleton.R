@@ -35,11 +35,11 @@ test_that("package can be built from different locations", {
     file.path(tmp, "subsetCars")
   )), "subsetCars_1.0.tar.gz")
   old <- getwd()
+  on.exit(setwd(old))
   setwd(file.path(tmp, "subsetCars"))
   expect_equal(basename(package_build(".")), "subsetCars_1.0.tar.gz")
   expect_error(package_build("subsetCars"))
   unlink(file.path(tmp, "subsetCars"), recursive = TRUE, force = TRUE)
-  setwd(old)
 })
 
 context("yaml config")
