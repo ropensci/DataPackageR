@@ -20,7 +20,7 @@ datapackage.skeleton(name = NULL, list = character(),
 \item{force}{\code{logical} Force the package skeleton to be recreated even if it exists. see \code{\link[utils]{package.skeleton}}}
 
 \item{code_files}{Optional \code{character} vector of paths to Rmd files that process raw data
-into R objects. Treated differently than \code{code_files} in \code{\link[utils]{package.skeleton}}. 
+into R objects. Treated differently than \code{code_files} in \code{\link[utils]{package.skeleton}}.
 Will always pass an empty \code{character()} vector to that function.}
 
 \item{r_object_names}{\code{vector} of quoted r object names , tables, etc. created when the files in \code{code_files} are run.}

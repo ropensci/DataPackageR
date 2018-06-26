@@ -11,7 +11,7 @@ construct_yml_config(code = NULL, data = NULL, render_root = NULL)
 
 \item{data}{A vector of quoted object names}
 
-\item{render_root}{The root directory where the package data processing code will be rendered. 
+\item{render_root}{The root directory where the package data processing code will be rendered.
 Defaults to is set to a randomly generated named subdirectory of \code{tempdir()}.}
 }
 \value{
