@@ -178,7 +178,7 @@ yml_write <- function(config, path = NULL) {
   }
   render_root <- file.path(tempdir(), sub)
   tempdir_exists <-
-    try(normalizePath(dirname(render_root),
+    try(normalizePath(dirname(render_root), winslash="/",
                       mustWork = TRUE),
         silent = TRUE)
   if (!dir.exists(render_root)) {

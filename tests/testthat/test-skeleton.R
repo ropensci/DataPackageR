@@ -580,8 +580,12 @@ test_that("package built in different edge cases", {
          force = TRUE)
 
   yml <- DataPackageR:::construct_yml_config("foo.Rmd")
-  expect_true(yml_enable_compile(yml,"foo.Rmd")[["configuration"]][["files"]][["foo.Rmd"]][["enabled"]])
-  expect_false(yml_disable_compile(yml,"foo.Rmd")[["configuration"]][["files"]][["foo.Rmd"]][["enabled"]])
+  expect_true(
+    yml_enable_compile(yml,
+      "foo.Rmd")[["configuration"]][["files"]][["foo.Rmd"]][["enabled"]])
+  expect_false(
+    yml_disable_compile(yml,
+        "foo.Rmd")[["configuration"]][["files"]][["foo.Rmd"]][["enabled"]])
   expect_error(yml_write("/"))
   expect_equal(
     DataPackageR:::.combine_digests(
@@ -611,11 +615,21 @@ test_that("package built in different edge cases", {
       list(DataVersion = "1.a.1")))
   expect_error(DataPackageR:::check_dep_version(dep_name = "missing"))
   expect_error(DataPackageR:::check_dep_version(dep_name = "utils",dep_ver = 1))
-  expect_error(DataPackageR:::check_dep_version(dep_name = "utils",dep_compare = 1))
-  v = getNamespaceVersion("utils")
-  expect_true(DataPackageR:::check_dep_version(dep_name = "utils", dep_compare = "identical", dep_ver = v))
-  expect_error(DataPackageR:::check_suggested("utils",version = NULL, compare = "=="))
-  expect_error(DataPackageR:::check_suggested("utis",version = "1.1.1", compare = "=="))
+  expect_error(
+    DataPackageR:::check_dep_version(
+      dep_name = "utils",dep_compare = 1))
+  v <- getNamespaceVersion("utils")
+  expect_true(
+    DataPackageR:::check_dep_version(
+      dep_name = "utils",
+      dep_compare = "identical",
+      dep_ver = v))
+  expect_error(
+    DataPackageR:::check_suggested("utils",
+            version = NULL, compare = "=="))
+  expect_error(
+    DataPackageR:::check_suggested("utis",
+          version = "1.1.1", compare = "=="))
   expect_equal(dim(DataPackageR:::suggets_dep("curl")),c(1,3))
   expect_true(DataPackageR:::can_overwrite("bar"))
   expect_false(DataPackageR:::can_overwrite("/tmp"))
