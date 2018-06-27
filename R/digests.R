@@ -32,7 +32,7 @@
   )
 }
 
-.compare_digests <- function(old_digest, new_digest, delta = NULL) {
+.compare_digests <- function(old_digest, new_digest) {
   valid <- ifelse(length(old_digest) != length(new_digest), FALSE, TRUE)
   if (valid) {
     for (i in names(new_digest)[-1L]) {

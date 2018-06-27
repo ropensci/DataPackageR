@@ -4,16 +4,12 @@
 \alias{package_build}
 \title{Preprocess, document and build a data package}
 \usage{
-package_build(packageName = NULL, vignettes = FALSE, masterfile = NULL,
-  log = INFO)
+package_build(packageName = NULL, vignettes = FALSE, log = INFO)
 }
 \arguments{
 \item{packageName}{\code{character} path to package source directory. Defaults to the current path when NULL.}
 
 \item{vignettes}{\code{logical} specify whether to build vignettes. Default FALSE.}
-
-\item{masterfile}{\code{characer} path to file in data-raw that sources processing scripts. Will do
-a partial build of the package.}
 
 \item{log}{log level \code{INFO,WARN,DEBUG,FATAL}}
 }

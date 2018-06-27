@@ -6,11 +6,10 @@
 #'
 #' @param packageName \code{character} path to package source directory. Defaults to the current path when NULL.
 #' @param vignettes \code{logical} specify whether to build vignettes. Default FALSE.
-#' @param masterfile \code{characer} path to file in data-raw that sources processing scripts. Will do
-#' a partial build of the package.
 #' @param log log level \code{INFO,WARN,DEBUG,FATAL}
 #' @importFrom roxygen2 roxygenise roxygenize
-#' @importFrom devtools build_vignettes build parse_deps use_build_ignore use_rstudio create_description
+#' @importFrom devtools build_vignettes build parse_deps  create_description
+#' @importFrom usethis use_build_ignore use_rstudio
 #' @importFrom rprojroot is_r_package
 #' @importFrom yaml read_yaml
 #' @importFrom futile.logger flog.debug flog.info flog.warn flog.error flog.fatal flog.appender flog.threshold INFO appender.console appender.tee
@@ -18,7 +17,7 @@
 #' @export
 package_build <- function(packageName = NULL,
                           vignettes = FALSE,
-                          masterfile = NULL, log=INFO) {
+                         log=INFO) {
   flog.threshold(log)
   flog.appender(appender.console())
   requireNamespace("rprojroot")
@@ -33,15 +32,16 @@ package_build <- function(packageName = NULL,
       flog.fatal(paste0(package_path, " is not an R package root directory"))
       stop("exiting", call. = FALSE)
     }
-  }
-  package_path <- normalizePath(packageName, winslash = "/")
-  if (!file.exists(package_path)) {
-    flog.fatal(paste0("Non existent package ", packageName))
-    stop("exiting", call. = FALSE)
+  }else{
+    package_path <- normalizePath(packageName, winslash = "/")
+    if (!file.exists(package_path)) {
+      flog.fatal(paste0("Non existent package ", packageName))
+      stop("exiting", call. = FALSE)
+    }
+    packageName <- basename(package_path)
   }
   # This should always be a proper name of a directory, either current or a
   # subdirectory
-  packageName <- basename(package_path)
   if (inherits(
     try(is_r_package$find_file(path = package_path))
     , "try-error"
@@ -53,32 +53,18 @@ package_build <- function(packageName = NULL,
     ))
     stop("exiting", call. = FALSE)
   }
-  if (!is_r_package$find_file(path = package_path) == package_path) {
-    flog.fatal(paste0(package_path, " is not an R package root directory"))
-    stop("exiting", call. = FALSE)
-  }
+  
   # Return success if we've processed everything
   success <-
-    DataPackageR(arg = package_path, masterfile = masterfile)
-  if (!success) {
-    flog.fatal(paste0(
-      "Preprocessing failed.",
-      "Something has gone wrong,",
-      " see the errors above"
-    ))
-    stop("exiting", call. = FALSE)
-  }
+    DataPackageR(arg = package_path)
+   ifelse(success,
+          flog.info("DataPackageR succeeded"),
+          flog.warn("DataPackageR failed"))
   flog.info("Building documentation")
   roxygenise(package_path,
-    clean = ifelse(is.null(masterfile),
-      TRUE, FALSE
+    clean = TRUE
     )
-  )
-  if (vignettes) {
-    # build vignettes explicitly,
-    # ensures they are installed properly
-    build_vignettes(package_path)
-  }
+  
   flog.info("Building package")
   build(package_path,
     path = dirname(package_path),

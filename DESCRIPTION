@@ -9,7 +9,6 @@ Description: Construct reproducible analytic data sets as R packages.
 License: MIT + file LICENSE
 Depends: R (>= 3.5.0)
 Imports:
-    optparse,
     digest,
     knitr,
     utils,
@@ -25,6 +24,7 @@ Imports:
     futile.logger,
     rprojroot,
     data.tree,
+    usethis
 VignetteBuilder: knitr
 RoxygenNote: 6.0.1
 Suggests:

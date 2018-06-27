@@ -4,13 +4,10 @@
 \alias{DataPackageR}
 \title{Process data generation code in 'data-raw'}
 \usage{
-DataPackageR(arg = NULL, masterfile = NULL)
+DataPackageR(arg = NULL)
 }
 \arguments{
 \item{arg}{\code{character} name of the package to build.}
-
-\item{masterfile}{\code{characer} path to file in data-raw that sources processing scripts. Will do
-a partial build of the package.}
 }
 \value{
 logical TRUE if succesful, FALSE, if not.

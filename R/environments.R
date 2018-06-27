@@ -6,8 +6,6 @@
 #'
 #' @return An R object.
 #' @export
-#'
-#' @examples
 datapackager_object_read <- function(name) {
   get(name, get("ENVS", parent.frame()))
 }

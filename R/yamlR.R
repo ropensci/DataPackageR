@@ -177,11 +177,10 @@ yml_write <- function(config, path = NULL) {
     sub <- as.character(as.integer(runif(1) * 1000000))
   }
   render_root <- file.path(tempdir(), sub)
-  tempdir_exists <- try(normalizePath(dirname(render_root), mustWork = TRUE), silent = TRUE)
-  if (inherits(tempdir_exists, "try-error")) {
-    flog.fatal(paste0(dirname(render_root), " doesn't exist!"))
-    stop("error", call. = FALSE)
-  }
+  tempdir_exists <-
+    try(normalizePath(dirname(render_root),
+                      mustWork = TRUE),
+        silent = TRUE)
   if (!dir.exists(render_root)) {
     if (!dir.create(render_root, recursive = TRUE, showWarnings = FALSE)) {
       flog.error("Failed to create render_root = ", render_root)
@@ -219,7 +218,8 @@ construct_yml_config <- function(code = NULL, data = NULL, render_root = NULL) {
   # see processData - it gets validated and created if not existing.
   # would prefer to have something like "NULL" or "tmp" specify a default to a
   # temporary directory.  But also have a consistent subdirectory beneath it.
-  # currently not consistent, since we are randomly generating a subdirectory name.
+  # currently not consistent, since we are randomly 
+  # generating a subdirectory name.
   # we could use "tmp: subdir" and construct the path.
 
   yml <- list(configuration = list(files = files, objects = data))
@@ -227,9 +227,14 @@ construct_yml_config <- function(code = NULL, data = NULL, render_root = NULL) {
     render_root <- .create_tmpdir_render_root()
     yml[["configuration"]]$render_root$tmp <- basename(render_root)
   } else {
-    render_root <- try(normalizePath(render_root, winslash = "/", mustWork = TRUE), silent = TRUE)
+    render_root <-
+      try(normalizePath(render_root,
+                        winslash = "/",
+                        mustWork = TRUE),
+          silent = TRUE)
     if (inherits(render_root, "try-error")) {
-      flog.fatal(paste0(dirname(render_root), " doesn't exist!"))
+      flog.fatal(paste0(dirname(render_root),
+                        " doesn't exist!"))
       stop("error", call. = FALSE)
     }
     yml[["configuration"]]$render_root <- render_root
@@ -238,7 +243,7 @@ construct_yml_config <- function(code = NULL, data = NULL, render_root = NULL) {
 }
 
 .get_render_root <- function(x) {
-  if (!is.null(x$configuration$render_root$tmp)) {
+  if ("tmp"%in%names(x$configuration$render_root)) {
     sub <- x$configuration$render_root$tmp
     render_root <- .create_tmpdir_render_root(sub)
     return(render_root)

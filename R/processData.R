@@ -27,17 +27,15 @@ NULL
 #' Meant to be called before R CMD build.
 #' @name DataPackageR
 #' @param arg \code{character} name of the package to build.
-#' @param masterfile \code{characer} path to file in data-raw that sources processing scripts. Will do
-#' a partial build of the package.
 #' @return logical TRUE if succesful, FALSE, if not.
 #' @importFrom desc desc
 #' @importFrom rmarkdown render
-#' @importFrom utils getSrcref
-#' @importFrom devtools as.package document
+#' @importFrom utils getSrcref modifyList
+#' @importFrom devtools document
 #' @importFrom here here
 #' @importFrom here set_here
 #' @importFrom data.tree as.Node
-DataPackageR <- function(arg = NULL, masterfile = NULL) {
+DataPackageR <- function(arg = NULL) {
   requireNamespace("futile.logger")
   requireNamespace("yaml")
   old <- getwd()
@@ -53,7 +51,9 @@ DataPackageR <- function(arg = NULL, masterfile = NULL) {
   # if it's an old temp dir, what then?
   .validate_render_root <- function(x) {
     # catch an error if it doesn't exist
-    render_root <- try(normalizePath(x, mustWork = TRUE, winslash = "/"), silent = TRUE)
+    render_root <-
+      try(normalizePath(x, mustWork = TRUE,
+                        winslash = "/"), silent = TRUE)
     if (inherits(render_root, "try-error")) {
       flog.warn(paste0("render_root  = ", render_root, " doesn't exist."))
       # try creating, even if it's an old temp dir.
@@ -78,11 +78,13 @@ DataPackageR <- function(arg = NULL, masterfile = NULL) {
       dir.create(data_dir)
     }
     # get the current directory
-    old <- getwd()
+    old <- setwd(pkg_dir) # TODO: ideally replace this soon
     on.exit(setwd(old))
-    setwd(pkg_dir) # TODO: ideally replace this soon
     # log to the log file Create a log directory in inst/extdata
-    logpath <- file.path(normalizePath("inst/extdata", winslash = "/"), "Logfiles")
+    logpath <-
+      file.path(normalizePath("inst/extdata",
+                              winslash = "/"),
+                "Logfiles")
     dir.create(logpath, recursive = TRUE, showWarnings = FALSE)
     # open a log file
     LOGFILE <- file.path(logpath, "processing.log")
@@ -129,6 +131,10 @@ DataPackageR <- function(arg = NULL, masterfile = NULL) {
     }
     flog.info("Reading yaml configuration")
     # files that have enable: TRUE
+    assert_that("configuration" %in% names(ymlconf))
+    assert_that("files" %in% names(ymlconf[["configuration"]]))
+    assert_that(!is.null(names(ymlconf[["configuration"]][["files"]])))
+    
     r_files <- unique(names(
       Filter(
         x = ymlconf[["configuration"]][["files"]],
@@ -144,7 +150,8 @@ DataPackageR <- function(arg = NULL, masterfile = NULL) {
     objects_to_keep <- map(ymlconf, "objects")[["configuration"]]
     render_root <- .get_render_root(ymlconf)
     if (!.validate_render_root(render_root)) {
-      flog.fatal("Can't create, or render_root = ", render_root, " doesn't exist")
+      flog.fatal(paste0("Can't create, or render_root = ", 
+                 render_root, " doesn't exist"))
       stop("error", call. = FALSE)
     } else {
       render_root <- normalizePath(render_root, winslash = "/")
@@ -243,9 +250,11 @@ DataPackageR <- function(arg = NULL, masterfile = NULL) {
         new_data_digest
       )
       can_write <- FALSE
+     stopifnot( !((!.compare_digests(old_data_digest,
+                         new_data_digest
+      )) & string_check$isgreater))
       if (.compare_digests(old_data_digest,
-        new_data_digest,
-        delta = masterfile
+        new_data_digest
       ) &
         string_check$isequal) {
         can_write <- TRUE
@@ -255,8 +264,7 @@ DataPackageR <- function(arg = NULL, masterfile = NULL) {
           new_data_digest[["DataVersion"]]
         ))
       } else if ((!.compare_digests(old_data_digest,
-        new_data_digest,
-        delta = masterfile
+        new_data_digest
       )) &
         string_check$isequal) {
         updated_version <- .increment_data_version(
@@ -272,8 +280,7 @@ DataPackageR <- function(arg = NULL, masterfile = NULL) {
           new_data_digest[["DataVersion"]]
         ))
       } else if (.compare_digests(old_data_digest,
-        new_data_digest,
-        delta = masterfile
+        new_data_digest
       ) &
         string_check$isgreater) {
         # edge case that shouldn't happen
@@ -283,21 +290,8 @@ DataPackageR <- function(arg = NULL, masterfile = NULL) {
           "Data hasn't changed but the ",
           "DataVersion has been bumped."
         ))
-      } else if ((!.compare_digests(old_data_digest,
-        new_data_digest,
-        delta = masterfile
-      )) &
-        string_check$isgreater) {
-        # edge case that shouldn't happen since
-        # we now bump the version automatically
-        can_write <- TRUE
-        flog.info(paste0(
-          "Data has changed and the ",
-          "DataVersion has been bumped."
-        ))
-      } else if (string_check$isless & .compare_digests(old_data_digest,
-        new_data_digest,
-        delta = masterfile
+      }  else if (string_check$isless & .compare_digests(old_data_digest,
+        new_data_digest
       )) {
         # edge case that shouldn't happen but
         # we test for it in the test suite.
@@ -309,8 +303,7 @@ DataPackageR <- function(arg = NULL, masterfile = NULL) {
         pkg_description[["DataVersion"]] <- new_data_digest[["DataVersion"]]
         can_write <- TRUE
       } else if (string_check$isless & !.compare_digests(old_data_digest,
-        new_data_digest,
-        delta = masterfile
+        new_data_digest
       )) {
         updated_version <- .increment_data_version(
           pkg_description,
@@ -325,28 +318,16 @@ DataPackageR <- function(arg = NULL, masterfile = NULL) {
           pkg_description,
           ls(dataenv),
           dataenv,
-          old_data_digest = old_data_digest,
-          masterfile = masterfile
+          old_data_digest = old_data_digest
         )
         do_documentation <- TRUE
-      } else {
-        # We really should never end up here.
-        flog.fatal(paste0(
-          "Some data has changed, but the",
-          " DataVersion string has not been",
-          " incremented or\nis less than the",
-          " version in DATADIGEST \nUpdate the",
-          " DataVersion string to be greater than ",
-          old_data_digest[["DataVersion"]],
-          " in the DESCRIPTION file\nand re-run",
-          "R CMD DataPackageR."
-        ))
-        {
-          stop("error", call. = FALSE)
-        }
       }
     } else {
-      .save_data(new_data_digest, pkg_description, ls(dataenv), dataenv)
+      .save_data(new_data_digest,
+                 pkg_description,
+                 ls(dataenv),
+                 dataenv,
+                 old_data_digest = NULL)
       do_documentation <- TRUE
     }
     if (do_documentation) {
@@ -425,7 +406,8 @@ DataPackageR <- function(arg = NULL, masterfile = NULL) {
           file.path("R", paste0(pkg_description$Package, ".R"))
         )
       )
-      # TODO test that we have documented everything successfully and that all files
+      # TODO test that we have documented 
+      # everything successfully and that all files
       # have been parsed successfully
       can_write <- TRUE
     }
