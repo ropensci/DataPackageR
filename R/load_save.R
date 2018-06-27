@@ -31,6 +31,6 @@ load_all_datasets <- function(packageName) {
   # Update description file
   to_update <- desc(file = "DESCRIPTION")
   to_update$set("DataVersion", pkg_description[["DataVersion"]])
-  to_update$set("Date", format(Sys.time(), "%Y-%M-%d"))
+  to_update$set("Date", format(Sys.time(), "%Y-%m-%d"))
   to_update$write()
 }
