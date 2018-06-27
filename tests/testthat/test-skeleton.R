@@ -536,7 +536,7 @@ test_that("package built in different edge cases", {
   config[["configuration"]]$render_root <- NULL
   expect_error(DataPackageR:::.get_render_root(config))
   expect_equal(basename(DataPackageR:::.get_render_root(
-    construct_yml_config("foo", render_root = "/tmp")
+    construct_yml_config("foo", render_root = normalizePath("/tmp",winslash="/"))
   )), "tmp")
   expect_error(package_build("/tmp"))
   expect_error(dataVersion("foo"))
@@ -632,7 +632,7 @@ test_that("package built in different edge cases", {
           version = "1.1.1", compare = "=="))
   expect_equal(dim(DataPackageR:::suggets_dep("curl")),c(1,3))
   expect_true(DataPackageR:::can_overwrite("bar"))
-  expect_false(DataPackageR:::can_overwrite("/tmp"))
+  expect_false(DataPackageR:::can_overwrite(normalizePath("/tmp",winslash="/")))
   expect_error(DataPackageR:::check_package_name("5."))
   
   package.skeleton("foo",path = tmp)
