@@ -535,10 +535,12 @@ test_that("package built in different edge cases", {
   expect_equal(DataPackageR:::.get_render_root(config),"")
   config[["configuration"]]$render_root <- NULL
   expect_error(DataPackageR:::.get_render_root(config))
-  expect_equal(basename(DataPackageR:::.get_render_root(
-    construct_yml_config("foo", render_root = normalizePath("/tmp",winslash="/"))
-  )), "tmp")
-  expect_error(package_build("/tmp"))
+  yml <- construct_yml_config("foo",render_root = normalizePath(tempdir(), winslash = "/"))
+  expect_equal(
+    basename(DataPackageR:::.get_render_root(yml)),
+    basename(normalizePath(tempdir(), winslash = "/"))
+  )
+  expect_error(package_build(tempdir()))
   expect_error(dataVersion("foo"))
   expect_error(
     DataPackageR:::.increment_data_version("foo",
@@ -547,7 +549,7 @@ test_that("package built in different edge cases", {
   expect_error(DataPackageR:::check_suggested("foo",
                                               version = NULL,
                                               compare = NULL))
-  expect_error(DataPackageR:::DataPackageR("/tmp"))
+  expect_error(DataPackageR:::DataPackageR(tempdir()))
   package.skeleton("foo",path = tmp)
   dir.create(file.path(tmp,"foo","data-raw"))
   expect_error(DataPackageR:::DataPackageR(file.path(tmp,"foo")))
@@ -632,11 +634,11 @@ test_that("package built in different edge cases", {
           version = "1.1.1", compare = "=="))
   expect_equal(dim(DataPackageR:::suggets_dep("curl")),c(1,3))
   expect_true(DataPackageR:::can_overwrite("bar"))
-  expect_false(DataPackageR:::can_overwrite(normalizePath("/tmp",winslash="/")))
+  expect_false(DataPackageR:::can_overwrite(normalizePath(tempdir(),winslash="/")))
   expect_error(DataPackageR:::check_package_name("5."))
   
   package.skeleton("foo",path = tmp)
-  expect_error(DataPackageR:::load_pkg_description("/tmp",create = FALSE))
+  expect_error(DataPackageR:::load_pkg_description(tempdir(),create = FALSE))
   expect_true("package" %in% names(DataPackageR:::load_pkg_description(
     file.path(tmp,"foo"),
     create=FALSE)))
