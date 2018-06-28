@@ -535,7 +535,9 @@ test_that("package built in different edge cases", {
   expect_equal(DataPackageR:::.get_render_root(config),"")
   config[["configuration"]]$render_root <- NULL
   expect_error(DataPackageR:::.get_render_root(config))
-  yml <- construct_yml_config("foo",render_root = normalizePath(tempdir(), winslash = "/"))
+  yml <- construct_yml_config("foo",
+                        render_root = normalizePath(tempdir(), 
+                                    winslash = "/"))
   expect_equal(
     basename(DataPackageR:::.get_render_root(yml)),
     basename(normalizePath(tempdir(), winslash = "/"))
@@ -546,9 +548,6 @@ test_that("package built in different edge cases", {
     DataPackageR:::.increment_data_version("foo",
                                            new_data_digest = "bar",
                                            which = "path"))
-  expect_error(DataPackageR:::check_suggested("foo",
-                                              version = NULL,
-                                              compare = NULL))
   expect_error(DataPackageR:::DataPackageR(tempdir()))
   package.skeleton("foo",path = tmp)
   dir.create(file.path(tmp,"foo","data-raw"))
@@ -626,18 +625,11 @@ test_that("package built in different edge cases", {
       dep_name = "utils",
       dep_compare = "identical",
       dep_ver = v))
-  expect_error(
-    DataPackageR:::check_suggested("utils",
-            version = NULL, compare = "=="))
-  expect_error(
-    DataPackageR:::check_suggested("utis",
-          version = "1.1.1", compare = "=="))
-  expect_equal(dim(DataPackageR:::suggets_dep("curl")),c(1,3))
-  expect_true(DataPackageR:::can_overwrite("bar"))
-  expect_false(DataPackageR:::can_overwrite(normalizePath(tempdir(),winslash="/")))
+   expect_false(DataPackageR:::can_overwrite(
+    normalizePath(tempdir(),winslash="/")))
   expect_error(DataPackageR:::check_package_name("5."))
   
-  package.skeleton("foo",path = tmp)
+  package.skeleton("foo",path = tempdir())
   expect_error(DataPackageR:::load_pkg_description(tempdir(),create = FALSE))
   expect_true("package" %in% names(DataPackageR:::load_pkg_description(
     file.path(tmp,"foo"),
@@ -647,12 +639,63 @@ test_that("package built in different edge cases", {
   expect_error(DataPackageR:::create_description(file.path(tmp)))
   
   expect_true(
-    DataPackageR:::use_build_ignore("blah",
-          pkg = file.path(tmp,"foo")))
+    DataPackageR:::use_build_ignore(files = "blah",
+          pkg = file.path(tempdir(),"foo")))
+  expect_true(DataPackageR:::use_directory(
+    pkg = file.path(tempdir(),"foo"), path = "R",
+    ignore = TRUE))
+  expect_true(DataPackageR:::use_directory(
+    pkg = file.path(tempdir(),"foo"), path = "R",
+    ignore = FALSE))
+  expect_error(DataPackageR:::use_directory(
+    pkg = file.path(tempdir(),"foo"), path = "DESCRIPTION",
+    ignore = FALSE))
+  expect_equal(
+    DataPackageR:::package_file(
+      path = file.path(tempdir(),"foo")),
+    normalizePath(file.path(tempdir(),"foo"),
+                  winslash = "/"))
+  expect_equal(
+    DataPackageR:::package_file("DESCRIPTION",
+      path = file.path(tempdir(),"foo")),
+    normalizePath(file.path(tempdir(),"foo","DESCRIPTION"),
+                  winslash = "/"))
+  
+  expect_error(
+    DataPackageR:::package_file(
+      path = c(1,2)))
+  expect_error(
+    DataPackageR:::package_file(
+      path = "not_existing"))
+  file.create(file.path(tempdir(),"not_a_dir"))
+  expect_error(
+    DataPackageR:::package_file(
+      path = file.path(tempdir(),"not_a_dir")))
+  expect_equal(basename(DataPackageR:::package_file(
+      path = file.path(tempdir(),"foo","R"))),"foo")
+  
+ flog.appender(appender.console())
+ expect_false({DataPackageR:::.compare_digests(
+    list(DataVersion = "1.1.1",
+         a = letters[1:10]), 
+    list(DataVersion = "1.1.2", 
+         a = LETTERS[1:10]))})
+  
   unlink(file.path(tmp,"foo"),
          force = TRUE,
          recursive = TRUE)
   expect_error(yml_list_objects("foo"))
+  expect_false(DataPackageR:::.validate_render_root("/foobar"))
+  expect_error(DataPackageR:::yml_add_files("subsetCars","foo.rmd"))
+  expect_error(DataPackageR:::yml_disable_compile("subsetCars", "foo.rmd"))
+  expect_error(DataPackageR:::yml_enable_compile("subsetCars", "foo.rmd"))
+  expect_error(DataPackageR:::yml_add_objects("subsetCars", "foo.rmd"))
+  expect_error(DataPackageR:::yml_list_files("subsetCars"))
+  expect_error(DataPackageR:::yml_remove_objects("subsetCars","bar"))
+  expect_error(DataPackageR:::yml_remove_files("subsetCars","foo.rmd"))
+  yml = DataPackageR:::construct_yml_config("foo.Rmd","foobar")
+  expect_equal(length(names(yml[["configuration"]][["files"]])),1)
+  expect_equal(length(names(yml_remove_files(yml,"foo.Rmd")[["configuration"]][["files"]])),0)
 })
 
 test_that("datapackager_object_read",{

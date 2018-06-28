@@ -17,7 +17,7 @@
 #' @export
 package_build <- function(packageName = NULL,
                           vignettes = FALSE,
-                         log=INFO) {
+                          log=INFO) {
   flog.threshold(log)
   flog.appender(appender.console())
   requireNamespace("rprojroot")
@@ -32,7 +32,7 @@ package_build <- function(packageName = NULL,
       flog.fatal(paste0(package_path, " is not an R package root directory"))
       stop("exiting", call. = FALSE)
     }
-  }else{
+  } else {
     package_path <- normalizePath(packageName, winslash = "/")
     if (!file.exists(package_path)) {
       flog.fatal(paste0("Non existent package ", packageName))
@@ -53,18 +53,19 @@ package_build <- function(packageName = NULL,
     ))
     stop("exiting", call. = FALSE)
   }
-  
+
   # Return success if we've processed everything
   success <-
     DataPackageR(arg = package_path)
-   ifelse(success,
-          flog.info("DataPackageR succeeded"),
-          flog.warn("DataPackageR failed"))
+  ifelse(success,
+    flog.info("DataPackageR succeeded"),
+    flog.warn("DataPackageR failed")
+  )
   flog.info("Building documentation")
   roxygenise(package_path,
     clean = TRUE
-    )
-  
+  )
+
   flog.info("Building package")
   build(package_path,
     path = dirname(package_path),

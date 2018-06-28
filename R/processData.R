@@ -19,6 +19,25 @@
 #' @name DataPackageR-package
 NULL
 
+
+.validate_render_root <- function(x) {
+  # catch an error if it doesn't exist
+  render_root <-
+    try(normalizePath(x,
+                      mustWork = TRUE,
+                      winslash = "/"
+    ), silent = TRUE)
+  if (inherits(render_root, "try-error")) {
+    flog.error(paste0("render_root  = ", x, " doesn't exist."))
+    # try creating, even if it's an old temp dir.
+    # This isn't ideal. Would like to rather say it's a temporary
+    # directory and use the current one..
+    return(FALSE)
+  }
+  return(TRUE)
+}
+
+
 #' Process data generation code in 'data-raw'
 #'
 #' Assumes .R files in 'data-raw' generate rda files to be stored in 'data'.
@@ -49,25 +68,7 @@ DataPackageR <- function(arg = NULL) {
 
   # validate that render_root exists.
   # if it's an old temp dir, what then?
-  .validate_render_root <- function(x) {
-    # catch an error if it doesn't exist
-    render_root <-
-      try(normalizePath(x, mustWork = TRUE,
-                        winslash = "/"), silent = TRUE)
-    if (inherits(render_root, "try-error")) {
-      flog.warn(paste0("render_root  = ", render_root, " doesn't exist."))
-      # try creating, even if it's an old temp dir.
-      # This isn't ideal. Would like to rather say it's a temporary
-      # directory and use the current one..
-      if (!dir.create(render_root, recursive = TRUE)) {
-        flog.error(paste0("can't create render_root  = ", render_root))
-        return(FALSE)
-      } else {
-        return(TRUE)
-      }
-    }
-    return(TRUE)
-  }
+  
   if (!file.exists(target)) {
     flog.fatal(paste0("Directory ", target, " doesn't exist."))
     {
@@ -82,9 +83,12 @@ DataPackageR <- function(arg = NULL) {
     on.exit(setwd(old))
     # log to the log file Create a log directory in inst/extdata
     logpath <-
-      file.path(normalizePath("inst/extdata",
-                              winslash = "/"),
-                "Logfiles")
+      file.path(
+        normalizePath("inst/extdata",
+          winslash = "/"
+        ),
+        "Logfiles"
+      )
     dir.create(logpath, recursive = TRUE, showWarnings = FALSE)
     # open a log file
     LOGFILE <- file.path(logpath, "processing.log")
@@ -134,7 +138,7 @@ DataPackageR <- function(arg = NULL) {
     assert_that("configuration" %in% names(ymlconf))
     assert_that("files" %in% names(ymlconf[["configuration"]]))
     assert_that(!is.null(names(ymlconf[["configuration"]][["files"]])))
-    
+
     r_files <- unique(names(
       Filter(
         x = ymlconf[["configuration"]][["files"]],
@@ -150,8 +154,10 @@ DataPackageR <- function(arg = NULL) {
     objects_to_keep <- map(ymlconf, "objects")[["configuration"]]
     render_root <- .get_render_root(ymlconf)
     if (!.validate_render_root(render_root)) {
-      flog.fatal(paste0("Can't create, or render_root = ", 
-                 render_root, " doesn't exist"))
+      flog.fatal(paste0(
+        "Can't create, or render_root = ",
+        render_root, " doesn't exist"
+      ))
       stop("error", call. = FALSE)
     } else {
       render_root <- normalizePath(render_root, winslash = "/")
@@ -250,10 +256,12 @@ DataPackageR <- function(arg = NULL) {
         new_data_digest
       )
       can_write <- FALSE
-     stopifnot( !((!.compare_digests(old_data_digest,
-                         new_data_digest
+      stopifnot(!((!.compare_digests(
+        old_data_digest,
+        new_data_digest
       )) & string_check$isgreater))
-      if (.compare_digests(old_data_digest,
+      if (.compare_digests(
+        old_data_digest,
         new_data_digest
       ) &
         string_check$isequal) {
@@ -263,7 +271,8 @@ DataPackageR <- function(arg = NULL) {
           "existing data sets at version ",
           new_data_digest[["DataVersion"]]
         ))
-      } else if ((!.compare_digests(old_data_digest,
+      } else if ((!.compare_digests(
+        old_data_digest,
         new_data_digest
       )) &
         string_check$isequal) {
@@ -279,7 +288,8 @@ DataPackageR <- function(arg = NULL) {
           "string incremented automatically to ",
           new_data_digest[["DataVersion"]]
         ))
-      } else if (.compare_digests(old_data_digest,
+      } else if (.compare_digests(
+        old_data_digest,
         new_data_digest
       ) &
         string_check$isgreater) {
@@ -290,7 +300,8 @@ DataPackageR <- function(arg = NULL) {
           "Data hasn't changed but the ",
           "DataVersion has been bumped."
         ))
-      }  else if (string_check$isless & .compare_digests(old_data_digest,
+      } else if (string_check$isless & .compare_digests(
+        old_data_digest,
         new_data_digest
       )) {
         # edge case that shouldn't happen but
@@ -302,7 +313,8 @@ DataPackageR <- function(arg = NULL) {
         new_data_digest <- old_data_digest
         pkg_description[["DataVersion"]] <- new_data_digest[["DataVersion"]]
         can_write <- TRUE
-      } else if (string_check$isless & !.compare_digests(old_data_digest,
+      } else if (string_check$isless & !.compare_digests(
+        old_data_digest,
         new_data_digest
       )) {
         updated_version <- .increment_data_version(
@@ -324,10 +336,11 @@ DataPackageR <- function(arg = NULL) {
       }
     } else {
       .save_data(new_data_digest,
-                 pkg_description,
-                 ls(dataenv),
-                 dataenv,
-                 old_data_digest = NULL)
+        pkg_description,
+        ls(dataenv),
+        dataenv,
+        old_data_digest = NULL
+      )
       do_documentation <- TRUE
     }
     if (do_documentation) {
@@ -406,7 +419,7 @@ DataPackageR <- function(arg = NULL) {
           file.path("R", paste0(pkg_description$Package, ".R"))
         )
       )
-      # TODO test that we have documented 
+      # TODO test that we have documented
       # everything successfully and that all files
       # have been parsed successfully
       can_write <- TRUE
@@ -416,17 +429,13 @@ DataPackageR <- function(arg = NULL) {
     .ppfiles_mkvignettes(dir = pkg_dir)
   }
   flog.info("Done")
-  if (can_write) {
-    return(TRUE)
-  } else {
-    return(FALSE)
-  }
+  return(can_write)
 }
 
 
 .ppfiles_mkvignettes <- function(dir = NULL) {
   pkg <- as.package(dir)
-  check_suggested("rmarkdown")
+  # check_suggested("rmarkdown")
   add_desc_package(pkg, "Suggests", "knitr")
   add_desc_package(pkg, "Suggests", "rmarkdown")
   add_desc_package(pkg, "VignetteBuilder", "knitr")

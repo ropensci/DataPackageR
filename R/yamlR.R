@@ -178,9 +178,12 @@ yml_write <- function(config, path = NULL) {
   }
   render_root <- file.path(tempdir(), sub)
   tempdir_exists <-
-    try(normalizePath(dirname(render_root), winslash="/",
-                      mustWork = TRUE),
-        silent = TRUE)
+    try(normalizePath(dirname(render_root),
+      winslash = "/",
+      mustWork = TRUE
+    ),
+    silent = TRUE
+    )
   if (!dir.exists(render_root)) {
     if (!dir.create(render_root, recursive = TRUE, showWarnings = FALSE)) {
       flog.error("Failed to create render_root = ", render_root)
@@ -218,7 +221,7 @@ construct_yml_config <- function(code = NULL, data = NULL, render_root = NULL) {
   # see processData - it gets validated and created if not existing.
   # would prefer to have something like "NULL" or "tmp" specify a default to a
   # temporary directory.  But also have a consistent subdirectory beneath it.
-  # currently not consistent, since we are randomly 
+  # currently not consistent, since we are randomly
   # generating a subdirectory name.
   # we could use "tmp: subdir" and construct the path.
 
@@ -229,12 +232,16 @@ construct_yml_config <- function(code = NULL, data = NULL, render_root = NULL) {
   } else {
     render_root <-
       try(normalizePath(render_root,
-                        winslash = "/",
-                        mustWork = TRUE),
-          silent = TRUE)
+        winslash = "/",
+        mustWork = TRUE
+      ),
+      silent = TRUE
+      )
     if (inherits(render_root, "try-error")) {
-      flog.fatal(paste0(dirname(render_root),
-                        " doesn't exist!"))
+      flog.fatal(paste0(
+        dirname(render_root),
+        " doesn't exist!"
+      ))
       stop("error", call. = FALSE)
     }
     yml[["configuration"]]$render_root <- render_root
@@ -243,7 +250,7 @@ construct_yml_config <- function(code = NULL, data = NULL, render_root = NULL) {
 }
 
 .get_render_root <- function(x) {
-  if ("tmp"%in%names(x$configuration$render_root)) {
+  if ("tmp" %in% names(x$configuration$render_root)) {
     sub <- x$configuration$render_root$tmp
     render_root <- .create_tmpdir_render_root(sub)
     return(render_root)

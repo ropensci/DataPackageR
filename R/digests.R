@@ -37,7 +37,7 @@
   if (valid) {
     for (i in names(new_digest)[-1L]) {
       if (new_digest[[i]] != old_digest[[i]]) {
-        flog.warn(i, " has changed.")
+        flog.warn(paste0(i, " has changed."))
         valid <- FALSE
       }
     }
