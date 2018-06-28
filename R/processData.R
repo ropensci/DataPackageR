@@ -24,8 +24,8 @@ NULL
   # catch an error if it doesn't exist
   render_root <-
     try(normalizePath(x,
-                      mustWork = TRUE,
-                      winslash = "/"
+      mustWork = TRUE,
+      winslash = "/"
     ), silent = TRUE)
   if (inherits(render_root, "try-error")) {
     flog.error(paste0("render_root  = ", x, " doesn't exist."))
@@ -68,7 +68,7 @@ DataPackageR <- function(arg = NULL) {
 
   # validate that render_root exists.
   # if it's an old temp dir, what then?
-  
+
   if (!file.exists(target)) {
     flog.fatal(paste0("Directory ", target, " doesn't exist."))
     {
