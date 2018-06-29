@@ -185,9 +185,7 @@ yml_write <- function(config, path = NULL) {
     silent = TRUE
     )
   if (!dir.exists(render_root)) {
-    if (!dir.create(render_root, recursive = TRUE, showWarnings = FALSE)) {
-      flog.error("Failed to create render_root = ", render_root)
-    }
+    dir.create(render_root, recursive = TRUE, showWarnings = FALSE)
   }
   render_root <- normalizePath(render_root, winslash = "/", mustWork = TRUE)
   return(render_root)

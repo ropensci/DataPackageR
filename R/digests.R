@@ -1,5 +1,5 @@
-.save_digest <- function(data_digest) {
-  write.dcf(data_digest, "DATADIGEST")
+.save_digest <- function(data_digest, path = NULL) {
+  write.dcf(data_digest, file.path(path, "DATADIGEST"))
 }
 
 .check_dataversion_string <- function(old_data_digest, new_data_digest) {
@@ -16,9 +16,7 @@
       old_data_digest[["DataVersion"]],
       " and ", new_data_digest[["DataVersion"]]
     ))
-    {
-      stop("exiting", call. = FALSE)
-    }
+    # stop("exiting", call. = FALSE)
   }
   greater <- apply(t(cbind(oldv, newv)), 2, function(x) x[2] > x[1])
   equal <- apply(t(cbind(oldv, newv)), 2, function(x) x[2] == x[1])
@@ -78,10 +76,10 @@
   return(combined)
 }
 
-.parse_data_digest <- function() {
+.parse_data_digest <- function(pkg_dir = NULL) {
   digest <- NULL
-  if (file.exists("DATADIGEST")) {
-    ret <- read.dcf("DATADIGEST")
+  if (file.exists(file.path(pkg_dir, "DATADIGEST"))) {
+    ret <- read.dcf(file.path(pkg_dir, "DATADIGEST"))
     digest <- as.list(as.character(ret))
     names(digest) <- colnames(ret)
   }
@@ -94,9 +92,8 @@
       "DESCRIPTION file must have a DataVersion",
       " line. i.e. DataVersion: 0.2.0"
     ))
-    {
-      stop("exiting", call. = FALSE)
-    }
+    # stop("exiting", call. = FALSE)
+    
   }
   new_data_digest <- list()
   new_data_digest[["DataVersion"]] <- pkg_description[["DataVersion"]]

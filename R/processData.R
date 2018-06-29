@@ -57,8 +57,8 @@ NULL
 DataPackageR <- function(arg = NULL) {
   requireNamespace("futile.logger")
   requireNamespace("yaml")
-  old <- getwd()
-  on.exit(setwd(old))
+  # old <- getwd()
+  # on.exit(setwd(old))
   pkg_dir <- arg
   pkg_dir <- normalizePath(pkg_dir, winslash = "/")
   raw_data_dir <- "data-raw"
@@ -75,20 +75,13 @@ DataPackageR <- function(arg = NULL) {
       stop("exiting", call. = FALSE)
     }
   } else {
-    if (!file.exists(data_dir)) {
-      dir.create(data_dir)
-    }
-    # get the current directory
-    old <- setwd(pkg_dir) # TODO: ideally replace this soon
-    on.exit(setwd(old))
-    # log to the log file Create a log directory in inst/extdata
     logpath <-
-      file.path(
-        normalizePath("inst/extdata",
-          winslash = "/"
-        ),
-        "Logfiles"
+      normalizePath(
+        file.path(pkg_dir, "inst/extdata"),
+        winslash = "/"
       )
+    logpath <- file.path(logpath, "Logfiles")
+
     dir.create(logpath, recursive = TRUE, showWarnings = FALSE)
     # open a log file
     LOGFILE <- file.path(logpath, "processing.log")
@@ -96,7 +89,8 @@ DataPackageR <- function(arg = NULL) {
     flog.info(paste0("Logging to ", LOGFILE))
     # we know it's a proper package root, but we want to test if we have the
     # necessary subdirectories
-    if (!all(file_test(c("R", "inst", "data", "data-raw"), op = "-d"))) {
+    testme <- file.path(pkg_dir, c("R", "inst", "data", "data-raw"))
+    if (!all(file_test(testme, op = "-d"))) {
       flog.fatal(paste0(
         "You need a valid package data strucutre.",
         " Missing ./R ./inst ./data or",
@@ -172,17 +166,13 @@ DataPackageR <- function(arg = NULL) {
       ))
       stop("error", call. = FALSE)
     }
-    if (any(!file.exists(r_files))) {
-      flog.error(paste0(
-        "Can't find ",
-        r_files[!file.exists(r_files)]
-      ))
-      stop("error", call. = FALSE)
-    }
     flog.info(paste0("Found ", r_files))
     # TODO fix hidden warnings in test cases
-    old_data_digest <- .parse_data_digest()
-    pkg_description <- try(read.description(file = "DESCRIPTION"),
+    old_data_digest <- .parse_data_digest(pkg_dir = pkg_dir)
+    description_file <- normalizePath(file.path(pkg_dir, "DESCRIPTION"),
+      winslash = "/"
+    )
+    pkg_description <- try(read.description(file = description_file),
       silent = TRUE
     )
     if (inherits(pkg_description, "try-error")) {
@@ -200,12 +190,8 @@ DataPackageR <- function(arg = NULL) {
       }
     }
     # check that we have at least one file
-    if (length(r_files) == 0) {
-      flog.fatal("You must specify at least one file to process.")
-      {
-        stop("exiting", call. = FALSE)
-      }
-    }
+    # This is caught elsewhere
+
     if (length(objects_to_keep) == 0) {
       flog.fatal("You must specify at least one data object.")
       {
@@ -330,7 +316,8 @@ DataPackageR <- function(arg = NULL) {
           pkg_description,
           ls(dataenv),
           dataenv,
-          old_data_digest = old_data_digest
+          old_data_digest = old_data_digest,
+          pkg_path = pkg_dir
         )
         do_documentation <- TRUE
       }
@@ -339,7 +326,8 @@ DataPackageR <- function(arg = NULL) {
         pkg_description,
         ls(dataenv),
         dataenv,
-        old_data_digest = NULL
+        old_data_digest = NULL,
+        pkg_path = pkg_dir
       )
       do_documentation <- TRUE
     }
@@ -404,7 +392,7 @@ DataPackageR <- function(arg = NULL) {
       # or remove it The new approach just builds
       # all the docs independent of what's enabled.
       save_docs <- do.call(c, doc_parsed)
-      docfile <- file(file.path("R",
+      docfile <- file(file.path(pkg_dir, "R",
         pattern = paste0(pkg_description$Package, ".R")
       ),
       open = "w"
@@ -416,7 +404,7 @@ DataPackageR <- function(arg = NULL) {
       flog.info(
         paste0(
           "Copied documentation to ",
-          file.path("R", paste0(pkg_description$Package, ".R"))
+          file.path(pkg_dir, "R", paste0(pkg_description$Package, ".R"))
         )
       )
       # TODO test that we have documented
@@ -441,9 +429,9 @@ DataPackageR <- function(arg = NULL) {
   add_desc_package(pkg, "VignetteBuilder", "knitr")
   use_directory("vignettes", pkg = pkg)
   use_git_ignore("inst/doc", pkg = pkg)
-  lines <- readLines(".gitignore")
+  lines <- readLines(file.path(pkg$path, ".gitignore"))
   lines <- gsub("inst/doc", "", lines)
-  writeLines(lines, ".gitignore")
+  writeLines(lines, file.path(pkg$path, ".gitignore"))
   try(dir.create(file.path(pkg$path, "inst/doc"),
     showWarnings = FALSE
   ),
