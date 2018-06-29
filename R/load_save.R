@@ -16,7 +16,7 @@
     save(list = obj, file = data_save_rda_path, envir = dataenv)
   }
   # Update description file
-  to_update <- desc(file = file.path(pkg_path, "DESCRIPTION"))
+  to_update <- desc::desc(file = file.path(pkg_path, "DESCRIPTION"))
   to_update$set("DataVersion", pkg_description[["DataVersion"]])
   to_update$set("Date", format(Sys.time(), "%Y-%m-%d"))
   to_update$write()

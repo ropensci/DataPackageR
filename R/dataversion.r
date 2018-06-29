@@ -6,11 +6,11 @@
 #' @param pkg \code{character} the package name
 #' @param lib.loc \code{character} path to library location.
 #' @seealso \code{\link[utils]{packageVersion}}
-#' @importFrom utils packageVersion capture.output data file_test install.packages menu package.skeleton packageDescription
+#' @importFrom utils capture.output file_test package.skeleton packageDescription
 #' @export
 dataVersion <- function(pkg, lib.loc = NULL) {
   res <- suppressWarnings(
-    packageDescription(pkg,
+    utils::packageDescription(pkg,
       lib.loc = lib.loc,
       fields = "DataVersion"
     )

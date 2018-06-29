@@ -21,8 +21,8 @@ comments <- function(refs) {
 #' @importFrom stringr str_trim
 read.description <- function(file) {
   dcf <- read.dcf(file, keep.white = "Authors@R")
-  dcf_list <- setNames(as.list(dcf[1, ]), colnames(dcf))
-  lapply(dcf_list, str_trim)
+  dcf_list <- stats::setNames(as.list(dcf[1, ]), colnames(dcf))
+  lapply(dcf_list, stringr::str_trim)
 }
 
 read_pkg_description <- function(path) {

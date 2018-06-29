@@ -22,7 +22,7 @@ yml_find <- function(path) {
       call. = FALSE
     )
   }
-  config <- yaml.load_file(config_yml)
+  config <- yaml::yaml.load_file(config_yml)
   attr(config, "path") <- config_yml
   return(config)
 }
@@ -42,7 +42,7 @@ yml_add_files <- function(config, filenames) {
       config[["configuration"]][["files"]][[i]]$enabled <- TRUE
     }
   }
-  cat(as.yaml(config))
+  cat(yaml::as.yaml(config))
   return(config)
 }
 
@@ -91,7 +91,7 @@ yml_add_objects <- function(config, objects) {
       config[["configuration"]][["objects"]],
       objects
     ))
-  cat(as.yaml(config))
+  cat(yaml::as.yaml(config))
   return(config)
 }
 
@@ -114,8 +114,8 @@ yml_list_files <- function(config) {
     # assume config is a package root path
     config <- yml_find(config)
   }
-  cat(unlist(map(config[["configuration"]][["files"]], "name")))
-  invisible(unlist(map(config[["configuration"]][["files"]], "name")))
+  cat(unlist(purrr::map(config[["configuration"]][["files"]], "name")))
+  invisible(unlist(purrr::map(config[["configuration"]][["files"]], "name")))
 }
 
 #' @rdname yaml
@@ -130,7 +130,7 @@ yml_remove_objects <- function(config, objects) {
       config[["configuration"]][["objects"]],
       objects
     )
-  cat(as.yaml(config))
+  cat(yaml::as.yaml(config))
   return(config)
 }
 
@@ -146,7 +146,7 @@ yml_remove_files <- function(config, filenames) {
       config[["configuration"]][["files"]][[i]] <- NULL
     }
   }
-  cat(as.yaml(config))
+  cat(yaml::as.yaml(config))
   return(config)
 }
 
@@ -168,13 +168,13 @@ yml_write <- function(config, path = NULL) {
   } else {
     path <- file.path(path, "datapackager.yml")
   }
-  write_yaml(config, file = path)
+  yaml::write_yaml(config, file = path)
 }
 
 
 .create_tmpdir_render_root <- function(sub=NULL) {
   if (is.null(sub)) {
-    sub <- as.character(as.integer(runif(1) * 1000000))
+    sub <- as.character(as.integer(stats::runif(1) * 1000000))
   }
   render_root <- file.path(tempdir(), sub)
   tempdir_exists <-

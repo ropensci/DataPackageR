@@ -50,10 +50,6 @@ NULL
 #' @importFrom desc desc
 #' @importFrom rmarkdown render
 #' @importFrom utils getSrcref modifyList
-#' @importFrom devtools document
-#' @importFrom here here
-#' @importFrom here set_here
-#' @importFrom data.tree as.Node
 DataPackageR <- function(arg = NULL) {
   requireNamespace("futile.logger")
   requireNamespace("yaml")
@@ -90,7 +86,7 @@ DataPackageR <- function(arg = NULL) {
     # we know it's a proper package root, but we want to test if we have the
     # necessary subdirectories
     testme <- file.path(pkg_dir, c("R", "inst", "data", "data-raw"))
-    if (!all(file_test(testme, op = "-d"))) {
+    if (!all(utils::file_test(testme, op = "-d"))) {
       flog.fatal(paste0(
         "You need a valid package data strucutre.",
         " Missing ./R ./inst ./data or",
@@ -121,7 +117,7 @@ DataPackageR <- function(arg = NULL) {
       }
     }
     if (!all(c("files", "objects") %in%
-      map(ymlconf, names)[["configuration"]])) {
+      purrr::map(ymlconf, names)[["configuration"]])) {
       flog.fatal("YAML is missing files: and objects: entries")
       {
         stop("exiting", call. = FALSE)
@@ -145,7 +141,7 @@ DataPackageR <- function(arg = NULL) {
         stop("error", call. = FALSE)
       }
     }
-    objects_to_keep <- map(ymlconf, "objects")[["configuration"]]
+    objects_to_keep <- purrr::map(ymlconf, "objects")[["configuration"]]
     render_root <- .get_render_root(ymlconf)
     if (!.validate_render_root(render_root)) {
       flog.fatal(paste0(
@@ -215,7 +211,7 @@ DataPackageR <- function(arg = NULL) {
         "\n"
       ))
       # config file goes in the root render the r and rmd files
-      render(
+      rmarkdown::render(
         input = r_files[i], envir = dataenv,
         output_dir = logpath, clean = FALSE, knit_root_dir = render_root
       )
@@ -465,7 +461,7 @@ DataPackageR <- function(arg = NULL) {
       )
     }
   )
-  capture.output(purrr::map(
+  utils::capture.output(purrr::map(
     rmdfiles_for_vignettes,
     function(x) {
       file.copy(x,

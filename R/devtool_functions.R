@@ -323,7 +323,7 @@ build_description <- function(name, extra = list()) {
         LazyData = "true"
       )
     )
-  desc <- modifyList(defaults, extra)
+  desc <- utils::modifyList(defaults, extra)
   desc <- lapply(desc, function(x)
     paste(x, collapse = ", "))
   desc

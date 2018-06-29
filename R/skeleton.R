@@ -2,11 +2,11 @@
 #' @importFrom purrr map
 .codefile_validate <- function(code_files) {
   # do they exist?
-  assert_that(all(unlist(map(
+  assertthat::assert_that(all(unlist(purrr::map(
     code_files, file.exists
   ))), msg = "code_files do not all exist!")
   # are the .Rmd files?
-  assert_that(all(grepl(".*\\.r$", tolower(code_files)) |
+  assertthat::assert_that(all(grepl(".*\\.r$", tolower(code_files)) |
     grepl(".*\\.rmd$", tolower(code_files))),
   msg = "code files are not Rmd or R files!"
   )
@@ -45,7 +45,7 @@ datapackage.skeleton <-
     }
     if (length(list) == 0) {
       # don't pass on the code_files here, but use that argument to
-      package.skeleton(
+      utils::package.skeleton(
         name = name,
         environment = environment,
         path = path,
@@ -59,7 +59,7 @@ datapackage.skeleton <-
     # create the rest of the necessary elements in the package
     package_path <- file.path(path, name)
     description <-
-      desc(file = file.path(package_path, "DESCRIPTION"))
+      desc::desc(file = file.path(package_path, "DESCRIPTION"))
     description$set("DataVersion" = "0.1.0")
     description$set("Package" = name)
     message("Adding DataVersion string to DESCRIPTION")
