@@ -8,8 +8,8 @@
 #' @param vignettes \code{logical} specify whether to build vignettes. Default FALSE.
 #' @param log log level \code{INFO,WARN,DEBUG,FATAL}
 #' @importFrom roxygen2 roxygenise roxygenize
-#' @importFrom devtools build_vignettes build parse_deps  create_description
-#' @importFrom usethis use_build_ignore use_rstudio
+#' @importFrom devtools build_vignettes build parse_deps
+#' @importFrom usethis use_build_ignore use_rstudio proj_set use_directory
 #' @importFrom rprojroot is_r_package
 #' @importFrom yaml read_yaml
 #' @importFrom futile.logger flog.debug flog.info flog.warn flog.error flog.fatal flog.appender flog.threshold INFO appender.console appender.tee

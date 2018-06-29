@@ -93,7 +93,6 @@
       " line. i.e. DataVersion: 0.2.0"
     ))
     # stop("exiting", call. = FALSE)
-    
   }
   new_data_digest <- list()
   new_data_digest[["DataVersion"]] <- pkg_description[["DataVersion"]]

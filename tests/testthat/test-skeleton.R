@@ -34,6 +34,7 @@ test_that("package can be built from different locations", {
   expect_equal(basename(package_build(
     file.path(tmp, "subsetCars")
   )), "subsetCars_1.0.tar.gz")
+  
   old <- setwd(file.path(tmp, "subsetCars"))
   on.exit(setwd(old))
   expect_equal(basename(package_build(".")), "subsetCars_1.0.tar.gz")
@@ -465,58 +466,6 @@ test_that("data changes but version out of sync", {
   )
 })
 
-
-context("devtool_functions.R")
-test_that("create_namespace", {
-  expect_null(DataPackageR:::create_namespace(tmp))
-})
-
-test_that("extract_package_name", {
-  file <- system.file("extdata", "tests", "subsetCars.Rmd",
-    package = "DataPackageR"
-  )
-  datapackage.skeleton(
-    name = "subsetCars",
-    path = tmp,
-    code_files = c(file),
-    force = TRUE,
-    r_object_names = c("cars_over_20")
-  )
-  expect_equal(
-    DataPackageR:::extract_package_name(
-      file.path(tmp, "subsetCars")
-    ),
-    "subsetCars"
-  )
-  unlink(file.path(tmp, "subsetCars"))
-})
-
-
-test_that("check_package_name", {
-  file <- system.file("extdata", "tests", "subsetCars.Rmd",
-    package = "DataPackageR"
-  )
-  datapackage.skeleton(
-    name = "subsetCars",
-    path = tmp,
-    code_files = c(file),
-    force = TRUE,
-    r_object_names = c("cars_over_20")
-  )
-  expect_null(DataPackageR:::check_package_name(file.path(tmp, "subsetCars")))
-  unlink(file.path(tmp, "subsetCars"))
-})
-
-
-test_that(".setup", {
-  tmp <- tempdir()
-  tmp <- file.path(tmp, "test")
-  dir.create(tmp)
-  expect_true(DataPackageR:::.setup(path = tmp))
-  unlink(tmp, force = TRUE, recursive = TRUE)
-})
-
-
 context("varying arguments")
 test_that("package built in different edge cases", {
   file <- system.file("extdata", "tests", "subsetCars.Rmd",
@@ -654,97 +603,12 @@ test_that("package built in different edge cases", {
       list(DataVersion = "1.a.1")
     )
   )
-  expect_error(DataPackageR:::check_dep_version(dep_name = "missing"))
-  expect_error(DataPackageR:::check_dep_version(
-    dep_name = "utils", dep_ver = 1
-  ))
-  expect_error(
-    DataPackageR:::check_dep_version(
-      dep_name = "utils", dep_compare = 1
-    )
-  )
-  v <- getNamespaceVersion("utils")
-  expect_true(
-    DataPackageR:::check_dep_version(
-      dep_name = "utils",
-      dep_compare = "identical",
-      dep_ver = v
-    )
-  )
-  expect_false(DataPackageR:::can_overwrite(
-    normalizePath(tempdir(), winslash = "/")
-  ))
-  expect_true(DataPackageR:::can_overwrite(
-    normalizePath("not_a_path", winslash = "/")
-  ))
-  expect_error(DataPackageR:::check_package_name("5."))
+
   unlink(file.path(tmp, "foo"),
     force = TRUE,
     recursive = TRUE
   )
   package.skeleton("foo", path = tempdir())
-  expect_error(DataPackageR:::load_pkg_description(tempdir()))
-  expect_true("package" %in% names(DataPackageR:::load_pkg_description(
-    file.path(tmp, "foo"))))
-
-  expect_false(DataPackageR:::create_description(file.path(tmp, "foo")))
-  expect_error(DataPackageR:::create_description(file.path(tmp)))
-
-  expect_true(
-    DataPackageR:::use_build_ignore(
-      files = "blah",
-      pkg = file.path(tempdir(), "foo")
-    )
-  )
-  expect_true(DataPackageR:::use_directory(
-    pkg = file.path(tempdir(), "foo"), path = "R",
-    ignore = TRUE
-  ))
-  expect_true(DataPackageR:::use_directory(
-    pkg = file.path(tempdir(), "foo"), path = "R",
-    ignore = FALSE
-  ))
-  expect_error(DataPackageR:::use_directory(
-    pkg = file.path(tempdir(), "foo"), path = "DESCRIPTION",
-    ignore = FALSE
-  ))
-  expect_equal(
-    normalizePath(DataPackageR:::package_file(
-      path = file.path(tempdir(), "foo")
-    ), winslash="/"),
-    normalizePath(file.path(tempdir(), "foo"),
-      winslash = "/"
-    )
-  )
-  expect_equal(
-    normalizePath(DataPackageR:::package_file("DESCRIPTION",
-      path = file.path(tempdir(), "foo")
-    ), winslash = "/"),
-    normalizePath(file.path(tempdir(), "foo", "DESCRIPTION"),
-      winslash = "/"
-    )
-  )
-  expect_error(DataPackageR:::package_file(path=tempdir(),""))
-  
-  expect_error(
-    DataPackageR:::package_file(
-      path = c(1, 2)
-    )
-  )
-  expect_error(
-    DataPackageR:::package_file(
-      path = "not_existing"
-    )
-  )
-  file.create(file.path(tempdir(), "not_a_dir"))
-  expect_error(
-    DataPackageR:::package_file(
-      path = file.path(tempdir(), "not_a_dir")
-    )
-  )
-  expect_equal(basename(DataPackageR:::package_file(
-    path = file.path(tempdir(), "foo", "R")
-  )), "foo")
 
   library(futile.logger)
   flog.appender(appender.console())
@@ -854,9 +718,6 @@ test_that("package built in different edge cases", {
     force = TRUE,
     r_object_names = "cars_over_20"
   )
-  expect_equal(DataPackageR:::create_namespace(
-    file.path(tempdir(), "subsetCars")), NULL)
-  
   yml <- yml_find(file.path(tempdir(), "subsetCars"))
   ymlbak <- yml
   yml$configuration <- NULL
@@ -910,13 +771,10 @@ test_that("package built in different edge cases", {
       file.path(tempdir(), "subsetCars")
     )
   )
-  expect_false(DataPackageR:::can_overwrite(tempdir()))
-  expect_equal(DataPackageR:::create_namespace(
-    file.path(tempdir(), "subsetCars")), NULL)
   unlink(file.path(tempdir(), "subsetCars", "data"),
-         force = TRUE,
-         recursive = TRUE)
-  expect_error(DataPackageR:::load_pkg_description("foo"))
+    force = TRUE,
+    recursive = TRUE
+  )
 })
 
 test_that("datapackager_object_read", {

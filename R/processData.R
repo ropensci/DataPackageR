@@ -53,13 +53,10 @@ NULL
 DataPackageR <- function(arg = NULL) {
   requireNamespace("futile.logger")
   requireNamespace("yaml")
-  # old <- getwd()
-  # on.exit(setwd(old))
   pkg_dir <- arg
   pkg_dir <- normalizePath(pkg_dir, winslash = "/")
   raw_data_dir <- "data-raw"
   target <- normalizePath(file.path(pkg_dir, raw_data_dir), winslash = "/")
-  data_dir <- normalizePath(file.path(pkg_dir, "data"), winslash = "/")
   raw_data_dir <- target
 
   # validate that render_root exists.
@@ -418,32 +415,24 @@ DataPackageR <- function(arg = NULL) {
 
 
 .ppfiles_mkvignettes <- function(dir = NULL) {
-  pkg <- as.package(dir)
-  # check_suggested("rmarkdown")
-  add_desc_package(pkg, "Suggests", "knitr")
-  add_desc_package(pkg, "Suggests", "rmarkdown")
-  add_desc_package(pkg, "VignetteBuilder", "knitr")
-  use_directory("vignettes", pkg = pkg)
-  use_git_ignore("inst/doc", pkg = pkg)
-  lines <- readLines(file.path(pkg$path, ".gitignore"))
-  lines <- gsub("inst/doc", "", lines)
-  writeLines(lines, file.path(pkg$path, ".gitignore"))
-  try(dir.create(file.path(pkg$path, "inst/doc"),
-    showWarnings = FALSE
-  ),
-  silent = TRUE
-  )
+  usethis::proj_set(dir)
+  pkg <- desc::desc(dir)
+  pkg$set_dep("knitr", "Suggests")
+  pkg$set_dep("rmarkdown", "Suggests")
+  pkg$set("VignetteBuilder" = "knitr")
+  usethis::use_directory("vignettes")
+  usethis::use_directory("inst/doc")
   # TODO maybe copy only the files that have both html and Rmd.
   rmdfiles_for_vignettes <-
     list.files(
-      path = file.path(pkg$path, "data-raw"),
+      path = file.path(dir, "data-raw"),
       pattern = "Rmd$",
       full.names = TRUE,
       recursive = FALSE
     )
   htmlfiles_for_vignettes <-
     list.files(
-      path = file.path(pkg$path, "inst/extdata/Logfiles"),
+      path = file.path(dir, "inst/extdata/Logfiles"),
       pattern = "html$",
       full.names = TRUE,
       recursive = FALSE
@@ -453,7 +442,7 @@ DataPackageR <- function(arg = NULL) {
     function(x) {
       file.copy(x,
         file.path(
-          pkg$path,
+          dir,
           "inst/doc",
           basename(x)
         ),
@@ -466,7 +455,7 @@ DataPackageR <- function(arg = NULL) {
     function(x) {
       file.copy(x,
         file.path(
-          pkg$path,
+          dir,
           "vignettes",
           basename(x)
         ),
@@ -475,7 +464,7 @@ DataPackageR <- function(arg = NULL) {
     }
   ))
   vignettes_to_process <- list.files(
-    path = file.path(pkg$path, "vignettes"),
+    path = file.path(dir, "vignettes"),
     pattern = "Rmd$",
     full.names = TRUE,
     recursive = FALSE
@@ -525,7 +514,7 @@ DataPackageR <- function(arg = NULL) {
     writeLines(write_me_out[[i]], con = i)
     writeLines(write_me_out[[i]],
       con = file.path(
-        pkg$path,
+        dir,
         "inst/doc",
         basename(i)
       )
