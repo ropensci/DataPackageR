@@ -709,17 +709,17 @@ test_that("package built in different edge cases", {
     ignore = FALSE
   ))
   expect_equal(
-    DataPackageR:::package_file(
+    normalizePath(DataPackageR:::package_file(
       path = file.path(tempdir(), "foo")
-    ),
+    ), winslash="/"),
     normalizePath(file.path(tempdir(), "foo"),
       winslash = "/"
     )
   )
   expect_equal(
-    DataPackageR:::package_file("DESCRIPTION",
+    normalizePath(DataPackageR:::package_file("DESCRIPTION",
       path = file.path(tempdir(), "foo")
-    ),
+    ), winslash = "/"),
     normalizePath(file.path(tempdir(), "foo", "DESCRIPTION"),
       winslash = "/"
     )
