@@ -23,7 +23,6 @@ Imports:
     stringr,
     futile.logger,
     rprojroot,
-    data.tree,
     usethis
 VignetteBuilder: knitr
 RoxygenNote: 6.0.1
