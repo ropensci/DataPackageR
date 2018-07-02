@@ -17,7 +17,7 @@
 #' close(con)
 #' pname <- basename(tempfile())
 #' datapackage_skeleton(name=pname,
-#'    path = tempdir(), 
+#'    path = tempdir(),
 #'    force = TRUE,
 #'    r_object_names = "tbl",
 #'    code_files = f)

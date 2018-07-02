@@ -15,8 +15,8 @@
 #' @importFrom futile.logger flog.debug flog.info flog.warn flog.error flog.fatal flog.appender flog.threshold INFO appender.console appender.tee
 #' @importFrom knitr knit
 #' @export
-#' @examples 
-#' 
+#' @examples
+#'
 #' f <- tempdir()
 #' f <- file.path(f,"foo.Rmd")
 #' con <- file(f)
@@ -24,12 +24,12 @@
 #' close(con)
 #' pname <- basename(tempfile())
 #' datapackage_skeleton(name=pname,
-#'    path=tempdir(), 
+#'    path=tempdir(),
 #'    force = TRUE,
 #'    r_object_names = "tbl",
 #'    code_files = f)
-#'    
-#'package_build(file.path(tempdir(),pname))
+#'
+#' package_build(file.path(tempdir(),pname))
 package_build <- function(packageName = NULL,
                           vignettes = FALSE,
                           log=INFO) {
@@ -96,6 +96,5 @@ package_build <- function(packageName = NULL,
 #' @rdname keepDataObjects-defunct
 #' @export
 keepDataObjects <- function(...) {
-  .Defunct(msg = "keepDataObjects is defunct as of version 0.12.1 of DataPackageR. \nUse the config.yml file to control packaging.")
-
+  .Defunct(msg = "keepDataObjects is defunct as of version 0.12.1 of DataPackageR. \nUse the config.yml file to control packaging.") # nolint
 }

@@ -9,15 +9,15 @@ A framework to automate the processing, tidying and packaging of raw data into a
 data sets as R packages.
 }
 \details{
-DataPackageR will automate running of data processing code, 
-storing tidied data sets in an R pacakge, producing 
+DataPackageR will automate running of data processing code,
+storing tidied data sets in an R pacakge, producing
 data documentation stubs, tracking data object finger prints (md5 hash)
 and tracking and incrementing a "DataVersion" string
-in the DESCRIPTION file of the package when raw data or data 
+in the DESCRIPTION file of the package when raw data or data
 objects change.
-Code to perform the data processing is passed to DataPacakgeR by the user. 
-The user also specifies the names of the tidy data objects to be stored, 
-documented and tracked in the final package. Raw data should be read from 
+Code to perform the data processing is passed to DataPacakgeR by the user.
+The user also specifies the names of the tidy data objects to be stored,
+documented and tracked in the final package. Raw data should be read from
 "inst/extdata" but large raw data files can be read from sources external
 to the package source tree.
 
@@ -26,19 +26,19 @@ Its properties include a list of R and Rmd files that are to be rendered / sourc
 which read data and do the actual processing.
 It also includes a list of r object names created by those files. These objects
 are stored in the final package and accessible via the \code{data()} API.
-The documentation for these objects is accessible via "?object-name", and md5 
+The documentation for these objects is accessible via "?object-name", and md5
 fingerprints of these objects are created and tracked.
 
 The Rmd and R files used to process the objects are transformed into vignettes
 accessible in the final package so that the processing is fully documented.
 
-A DATADIGEST file in the package source keeps track of the data object fingerprints. 
-A DataVersion string is added to the package DESCRIPTION file and upated when these 
+A DATADIGEST file in the package source keeps track of the data object fingerprints.
+A DataVersion string is added to the package DESCRIPTION file and upated when these
 objects are updated or changed on subsequent builds.
 
 Once the package is built and installed, the data objects created in the package are accessible via
-the \code{data()} API, and 
-Calling \code{datapackage_skeleton()} and passing in R / Rmd file names, and r object names 
+the \code{data()} API, and
+Calling \code{datapackage_skeleton()} and passing in R / Rmd file names, and r object names
 onstructs a skeleton data package source tree and an associated \code{config.yml} file.
 
 Calling \code{build_package()} sets the build process in motion.
@@ -58,12 +58,12 @@ close(con)
 
 pname <- basename(tempfile())
 datapackage_skeleton(name=pname,
-   path=tempdir(), 
+   path=tempdir(),
    force = TRUE,
    r_object_names = "tbl",
    code_files = f)
-   
-# call build_package to run the "foo.Rmd" processing and 
+
+# call build_package to run the "foo.Rmd" processing and
 # build a data package.
 package_build(file.path(tempdir(), pname))
 

@@ -166,7 +166,7 @@ datapackage_skeleton <-
 #' close(con)
 #' pname <- basename(tempfile())
 #' datapackage_skeleton(name = pname,
-#'    path = tempdir(), 
+#'    path = tempdir(),
 #'    force = TRUE,
 #'    r_object_names = "tbl",
 #'    code_files = f)
@@ -178,11 +178,13 @@ datapackage.skeleton <- function(name = NULL,
                                  code_files = character(),
                                  r_object_names = character()) {
   warning("Please use datapackage_skeleton() instead of datapackage.skeleton()")
-  datapackage_skeleton(name = name,
-                       list = list,
-                       environment = environment,
-                       path = path,
-                       force = force,
-                       code_files = code_files,
-                       r_object_names = r_object_names)
+  datapackage_skeleton(
+    name = name,
+    list = list,
+    environment = environment,
+    path = path,
+    force = force,
+    code_files = code_files,
+    r_object_names = r_object_names
+  )
 }
