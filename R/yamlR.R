@@ -10,9 +10,19 @@
 #' @export
 #'
 #' @examples
-#' \dontrun{
-#' yml_find('/tmp')
-#' }
+#' f <- tempdir()
+#' f <- file.path(f,"foo.Rmd")
+#' con <- file(f)
+#' writeLines("```{r}\n a= 100 \n```\n",con=con)
+#' close(con)
+#' unlink(file.path(tempdir(),"MyDataPackage"),force = TRUE, recursive = TRUE)
+#' datapackage_skeleton(name="MyDataPackage",
+#'    path=tempdir(), 
+#'    force = TRUE,
+#'    r_object_names = "a",
+#'    code_files = f)
+#' yml <- yml_find(file.path(tempdir(),"MyDataPackage"))
+#' cat(as.yaml(yml))
 yml_find <- function(path) {
   path <- normalizePath(path, winslash = "/")
   config_yml <- is_r_package$find_file("datapackager.yml", path = path)

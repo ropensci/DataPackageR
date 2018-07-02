@@ -11,12 +11,12 @@
 #' @return An R object.
 #' @export
 #' @examples 
-#' \dontshow{
+#'
 #' ENVS <- new.env() # ENVS would be in the environment
 #'                  # where the data processing is run. It is
 #'                  # handled automatically by the package.
 #' assign("find_me", 100, ENVS) #This is done automatically by DataPackageR
-#' }
+#' 
 #' datapackager_object_read("find_me") # This would appear in an Rmd processed by 
 #'                                     # DataPackageR to access the object named "find_me" created
 #'                                     # by a previous script. "find_me" would also need to

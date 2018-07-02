@@ -52,7 +52,17 @@ Edit a yaml configuration file via an API.
 Add, remove files and objects, enable or disable parsing of specific files,  list objects or files in a yaml config, or write a config back to a package.
 }
 \examples{
-\dontrun{
-yml_find('/tmp')
-}
+f <- tempdir()
+f <- file.path(f,"foo.Rmd")
+con <- file(f)
+writeLines("```{r}\\n a= 100 \\n```\\n",con=con)
+close(con)
+unlink(file.path(tempdir(),"MyDataPackage"),force = TRUE, recursive = TRUE)
+datapackage_skeleton(name="MyDataPackage",
+   path=tempdir(), 
+   force = TRUE,
+   r_object_names = "a",
+   code_files = f)
+yml <- yml_find(file.path(tempdir(),"MyDataPackage"))
+cat(as.yaml(yml))
 }

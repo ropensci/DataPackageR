@@ -11,7 +11,7 @@
 #' @importFrom utils capture.output file_test package.skeleton packageDescription
 #' @export
 #' @examples
-#' \dontshow{
+#' 
 #' f <- tempdir()
 #' f <- file.path(f,"foo.Rmd")
 #' con <- file(f)
@@ -24,7 +24,7 @@
 #'    r_object_names = "a",
 #'    code_files = f)
 #'    package_build(file.path(tempdir(),"MyDataPackage"))
-#'}
+#'
 #'    devtools::load_all(file.path(tempdir(),"MyDataPackage"))
 #'    data_version("MyDataPackage")
 data_version <- function(pkg, lib.loc = NULL) {

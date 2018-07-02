@@ -41,13 +41,12 @@ to reflect the additional necessary steps.
 renamed \code{datapackage.skeleton()} to \code{datapackage_skeleton()}.
 }
 \examples{
-\dontshow{
 f <- tempdir()
 f <- file.path(f,"foo.Rmd")
 con <- file(f)
 writeLines("```{r}\\na= 100\\n```\\n",con=con)
 close(con)
-}
+
 datapackage_skeleton(name="MyDataPackage",
    path=tempdir(), 
    force = TRUE,

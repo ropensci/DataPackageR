@@ -159,13 +159,12 @@ datapackage_skeleton <-
 #' @aliases datapackage_skeleton
 #' @export
 #' @examples
-#' \dontshow{
 #' f <- tempdir()
 #' f <- file.path(f,"foo.Rmd")
 #' con <- file(f)
 #' writeLines("```{r}\na= 100\n```\n",con=con)
 #' close(con)
-#' }
+#' 
 #' datapackage_skeleton(name="MyDataPackage",
 #'    path=tempdir(), 
 #'    force = TRUE,

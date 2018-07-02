@@ -48,9 +48,9 @@
 #' # construct a data package skeleton named "MyDataPackage" and pass
 #' # in the Rmd file name with full path, and the name of the object(s) it
 #' # creates.
-#' \dontshow{
+#' 
 #' unlink(file.path(tempdir(),"MyDataPackage"),force = TRUE, recursive = TRUE)
-#' }
+#' 
 #' datapackage_skeleton(name="MyDataPackage",
 #'    path=tempdir(), 
 #'    force = TRUE,

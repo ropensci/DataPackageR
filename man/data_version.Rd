@@ -21,7 +21,7 @@ Retreives the DataVersion of a package if available
 \code{dataVersion()} has been renamed to \code{data_version()}
 }
 \examples{
-\dontshow{
+
 f <- tempdir()
 f <- file.path(f,"foo.Rmd")
 con <- file(f)
@@ -34,7 +34,7 @@ datapackage_skeleton(name="MyDataPackage",
    r_object_names = "a",
    code_files = f)
    package_build(file.path(tempdir(),"MyDataPackage"))
-}
+
    devtools::load_all(file.path(tempdir(),"MyDataPackage"))
    data_version("MyDataPackage")
 }
