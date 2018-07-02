@@ -25,16 +25,17 @@ Retreives the DataVersion of a package if available
 f <- tempdir()
 f <- file.path(f,"foo.Rmd")
 con <- file(f)
-writeLines("```{r}\\na= 100\\n```\\n",con=con)
+writeLines("```{r}\\n a= 100 \\n```\\n",con=con)
 close(con)
+unlink(file.path(tempdir(),"MyDataPackage"),force = TRUE, recursive = TRUE)
 datapackage_skeleton(name="MyDataPackage",
    path=tempdir(), 
    force = TRUE,
    r_object_names = "a",
    code_files = f)
    package_build(file.path(tempdir(),"MyDataPackage"))
-   devtools::load_all(file.path(tempdir(),"MyDataPackage"))
 }
+   devtools::load_all(file.path(tempdir(),"MyDataPackage"))
    data_version("MyDataPackage")
 }
 \seealso{

@@ -5,19 +5,84 @@
 \alias{DataPackageR-package}
 \title{DataPackageR}
 \description{
-Package to install the DataPackageR script that can be called via the R CMD mechanism.
-R CMD DataPackageR packagename looks for .R files in 'data-raw' within the 'packagename' package source tree.
-It sources a an .R file in 'data-raw' named 'datasets.R'. The 'datasets.R' file can source other files in '/data-raw'.
-This must be done via a call like: \code{sys.source('myRfile.R',env=topenv())}.
-The 'datasets.R' file and files it sources are expected to read raw data from
-'inst/extdata', or other sources, process them in some way, such that they are tidy and standardized.  The
-objects remaining in the environment after the code is run are presumed to be the data sets that will be written to
-'/data'. The user should also document these data sets
-using 'roxygen2' in the .R files under the 'data-raw' directory. The package will extract documentation for the data objects it finds, as well as for
-a data set with the name of the package, if present, and place it in the '/R' directory under the name 'packagename.R'. The 'DataPackageR' code will compare the digest of these data set objects against the contents of a 'DATADIGEST' file
-in the package source tree (if present), and will also look for a 'DataVersion: x.y.z' string in the DESCRIPTION file of the
-package. If the data have changed, the user will be warned that the DataVersion needs to be incemented. If no DATADIGEST file exists, one will be created.
-If the DataVersion string has been incremented and the digest matches DATADIGEST (if it exists), or if the data hasn't changed and the DataVersion string
-is unchanged, the code will write the data objects to '/data'. The user can then build the package with
-R CMD build packagename.
+A framework to automate the processing, tidying and packaging of raw data into analysis-ready
+data sets as R packages.
+}
+\details{
+DataPackageR will automate running of data processing code, 
+storing tidied data sets in an R pacakge, producing 
+data documentation stubs, tracking data object finger prints (md5 hash)
+and tracking and incrementing a "DataVersion" string
+in the DESCRIPTION file of the package when raw data or data 
+objects change.
+Code to perform the data processing is passed to DataPacakgeR by the user. 
+The user also specifies the names of the tidy data objects to be stored, 
+documented and tracked in the final package. Raw data should be read from 
+"inst/extdata" but large raw data files can be read from sources external
+to the package source tree.
+
+Configuration is controlled via the config.yml file created at the package root.
+Its properties include a list of R and Rmd files that are to be rendered / sourced and
+which read data and do the actual processing.
+It also includes a list of r object names created by those files. These objects
+are stored in the final package and accessible via the \code{data()} API.
+The documentation for these objects is accessible via "?object-name", and md5 
+fingerprints of these objects are created and tracked.
+
+The Rmd and R files used to process the objects are transformed into vignettes
+accessible in the final package so that the processing is fully documented.
+
+A DATADIGEST file in the package source keeps track of the data object fingerprints. 
+A DataVersion string is added to the package DESCRIPTION file and upated when these 
+objects are updated or changed on subsequent builds.
+
+Once the package is built and installed, the data objects created in the package are accessible via
+the \code{data()} API, and 
+Calling \code{datapackage_skeleton()} and passing in R / Rmd file names, and r object names 
+onstructs a skeleton data package source tree and an associated \code{config.yml} file.
+
+Calling \code{build_package()} sets the build process in motion.
+}
+\examples{
+# A simple Rmd file that creates one data object
+# named "tbl".
+f <- tempdir()
+f <- file.path(f,"foo.Rmd")
+con <- file(f)
+writeLines("```{r}\\n tbl = table(sample(1:10,1000,replace=TRUE)) \\n```\\n",con=con)
+close(con)
+
+# construct a data package skeleton named "MyDataPackage" and pass
+# in the Rmd file name with full path, and the name of the object(s) it
+# creates.
+\dontshow{
+unlink(file.path(tempdir(),"MyDataPackage"),force = TRUE, recursive = TRUE)
+}
+datapackage_skeleton(name="MyDataPackage",
+   path=tempdir(), 
+   force = TRUE,
+   r_object_names = "tbl",
+   code_files = f)
+   
+# call build_package to run the "foo.Rmd" processing and 
+# build a data package named "MyDataPackage".
+package_build(file.path(tempdir(),"MyDataPackage"))
+
+# "install" the data package
+devtools::load_all(file.path(tempdir(),"MyDataPackage"))
+
+# read the data version
+data_version("MyDataPackage")
+
+# list the data sets in the package.
+data(package="MyDataPackage")
+
+# The data objects are in the package source under "/data"
+list.files(pattern="rda", path = file.path(tempdir(),"MyDataPackage","data"), full = TRUE)
+
+# The documentation that needs to be edited is in "/R"
+list.files(pattern="R", path = file.path(tempdir(),"MyDataPackage","R"), full = TRUE)
+readLines(list.files(pattern="R", path = file.path(tempdir(),"MyDataPackage","R"), full = TRUE))
+# view the documentation with
+?tbl
 }

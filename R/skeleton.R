@@ -119,7 +119,7 @@ datapackage_skeleton <-
         .codefile_validate(code_files)
         # copy them over
         purrr::map(code_files, function(x)
-          file.copy(x, file.path(package_path, "data-raw")))
+          file.copy(x, file.path(package_path, "data-raw"), overwrite = TRUE))
       }
 
 
