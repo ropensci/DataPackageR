@@ -16,7 +16,6 @@ Imports:
     desc,
     yaml,
     purrr,
-    here,
     roxygen2 (>= 6.0.1),
     devtools (>= 1.12.0),
     assertthat,
