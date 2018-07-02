@@ -8,3 +8,4 @@ README.html
 ^\.travis\.yml$
 ^CODE_OF_CONDUCT\.md$
 ^appveyor\.yml$
+NEWS.md

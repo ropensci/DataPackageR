@@ -64,5 +64,5 @@ datapackage_skeleton(name=pname,
    r_object_names = "tbl",
    code_files = f)
 yml <- yml_find(file.path(tempdir(),pname))
-cat(as.yaml(yml))
+cat(yaml::as.yaml(yml))
 }

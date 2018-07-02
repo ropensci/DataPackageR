@@ -22,7 +22,7 @@
 #'    r_object_names = "tbl",
 #'    code_files = f)
 #' yml <- yml_find(file.path(tempdir(),pname))
-#' cat(as.yaml(yml))
+#' cat(yaml::as.yaml(yml))
 yml_find <- function(path) {
   path <- normalizePath(path, winslash = "/")
   config_yml <- is_r_package$find_file("datapackager.yml", path = path)

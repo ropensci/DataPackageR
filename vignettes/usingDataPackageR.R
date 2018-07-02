@@ -2,7 +2,7 @@
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "",
-  eval=TRUE
+  eval = TRUE
 )
 
 ## ------------------------------------------------------------------------

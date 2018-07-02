@@ -12,7 +12,7 @@
 
 <meta name="author" content="Greg Finak gfinak@fredhutch.org" />
 
-<meta name="date" content="2018-06-26" />
+<meta name="date" content="2018-07-02" />
 
 <title>Using DataPackageR</title>
 
@@ -280,20 +280,14 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 <h1 class="title toc-ignore">Using DataPackageR</h1>
 <h4 class="author"><em>Greg Finak <a href="mailto:gfinak@fredhutch.org">gfinak@fredhutch.org</a></em></h4>
-<h4 class="date"><em>2018-06-26</em></h4>
+<h4 class="date"><em>2018-07-02</em></h4>
 
 
 
-<div id="news" class="section level1">
-<h1>NEWS</h1>
-<ul>
-<li>Added the <code>render_root</code> property to the YAML configuration. Specifies where <code>render()</code> processing is done, instead of the <code>data-raw</code> directory.</li>
-</ul>
-</div>
 <div id="datapackager" class="section level1">
 <h1>DataPackageR</h1>
 <p>A package to reproducibly process raw data into packaged, analysis-ready data sets.</p>
-<p><a href="https://travis-ci.org/RGLab/DataPackageR"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI5MCIgaGVpZ2h0PSIyMCI+PGxpbmVhckdyYWRpZW50IGlkPSJhIiB4Mj0iMCIgeTI9IjEwMCUiPjxzdG9wIG9mZnNldD0iMCIgc3RvcC1jb2xvcj0iI2JiYiIgc3RvcC1vcGFjaXR5PSIuMSIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1vcGFjaXR5PSIuMSIvPjwvbGluZWFyR3JhZGllbnQ+PHJlY3Qgcng9IjMiIHdpZHRoPSI5MCIgaGVpZ2h0PSIyMCIgZmlsbD0iIzU1NSIvPjxyZWN0IHJ4PSIzIiB4PSIzNyIgd2lkdGg9IjUzIiBoZWlnaHQ9IjIwIiBmaWxsPSIjNGMxIi8+PHBhdGggZmlsbD0iIzRjMSIgZD0iTTM3IDBoNHYyMGgtNHoiLz48cmVjdCByeD0iMyIgd2lkdGg9IjkwIiBoZWlnaHQ9IjIwIiBmaWxsPSJ1cmwoI2EpIi8+PGcgZmlsbD0iI2ZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkRlamFWdSBTYW5zLFZlcmRhbmEsR2VuZXZhLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTEiPjx0ZXh0IHg9IjE5LjUiIHk9IjE1IiBmaWxsPSIjMDEwMTAxIiBmaWxsLW9wYWNpdHk9Ii4zIj5idWlsZDwvdGV4dD48dGV4dCB4PSIxOS41IiB5PSIxNCI+YnVpbGQ8L3RleHQ+PHRleHQgeD0iNjIuNSIgeT0iMTUiIGZpbGw9IiMwMTAxMDEiIGZpbGwtb3BhY2l0eT0iLjMiPnBhc3Npbmc8L3RleHQ+PHRleHQgeD0iNjIuNSIgeT0iMTQiPnBhc3Npbmc8L3RleHQ+PC9nPjwvc3ZnPg==" alt="Build Status" /></a> <a href="https://codecov.io/github/RGLab/DataPackageR?branch=master"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI5NiIgaGVpZ2h0PSIyMCI+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImIiIHgyPSIwIiB5Mj0iMTAwJSI+CiAgICAgICAgPHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjYmJiIiBzdG9wLW9wYWNpdHk9Ii4xIiAvPgogICAgICAgIDxzdG9wIG9mZnNldD0iMSIgc3RvcC1vcGFjaXR5PSIuMSIgLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgICA8bWFzayBpZD0iYSI+CiAgICAgICAgPHJlY3Qgd2lkdGg9Ijk2IiBoZWlnaHQ9IjIwIiByeD0iMyIgZmlsbD0iI2ZmZiIgLz4KICAgIDwvbWFzaz4KICAgIDxnIG1hc2s9InVybCgjYSkiPgogICAgICAgIDxwYXRoIGZpbGw9IiM1NTUiIGQ9Ik0wIDBoNjB2MjBIMHoiIC8+CiAgICAgICAgPHBhdGggZmlsbD0iI2YzOWEyMSIgZD0iTTYwIDBoMzZ2MjBINjB6IiAvPgogICAgICAgIDxwYXRoIGZpbGw9InVybCgjYikiIGQ9Ik0wIDBoOTZ2MjBIMHoiIC8+CiAgICA8L2c+CiAgICA8ZyBmaWxsPSIjZmZmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iRGVqYVZ1IFNhbnMsVmVyZGFuYSxHZW5ldmEsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMSI+CiAgICAgICAgPHRleHQgeD0iMzAiIHk9IjE1IiBmaWxsPSIjMDEwMTAxIiBmaWxsLW9wYWNpdHk9Ii4zIj5jb2RlY292PC90ZXh0PgogICAgICAgIDx0ZXh0IHg9IjMwIiB5PSIxNCI+Y29kZWNvdjwvdGV4dD4KICAgICAgICA8dGV4dCB4PSI3NyIgeT0iMTUiIGZpbGw9IiMwMTAxMDEiIGZpbGwtb3BhY2l0eT0iLjMiPjc5JTwvdGV4dD4KICAgICAgICA8dGV4dCB4PSI3NyIgeT0iMTQiPjc5JTwvdGV4dD4KICAgIDwvZz4KPC9zdmc+" alt="Coverage status" /></a> <a href="https://ci.appveyor.com/project/RGLab/DataPackageR"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDYiIGhlaWdodD0iMjAiIHN0eWxlPSJzaGFwZS1yZW5kZXJpbmc6Z2VvbWV0cmljUHJlY2lzaW9uOyBpbWFnZS1yZW5kZXJpbmc6b3B0aW1pemVRdWFsaXR5OyBmaWxsLXJ1bGU6ZXZlbm9kZDsgY2xpcC1ydWxlOmV2ZW5vZGQiPg0KICA8bGluZWFyR3JhZGllbnQgaWQ9ImIiIHgyPSIwIiB5Mj0iMTAwJSI+DQogICAgPHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjYmJiIiBzdG9wLW9wYWNpdHk9Ii4xIi8+DQogICAgPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLW9wYWNpdHk9Ii4xIi8+DQogIDwvbGluZWFyR3JhZGllbnQ+DQogIDxtYXNrIGlkPSJhIj4NCiAgICA8cmVjdCB3aWR0aD0iMTA2IiBoZWlnaHQ9IjIwIiByeD0iMyIgZmlsbD0iI2ZmZiIvPg0KICA8L21hc2s+DQogIDxnIG1hc2s9InVybCgjYSkiPg0KICAgIDxwYXRoIGZpbGw9IiM1NTUiIGQ9Ik0wIDBoNTN2MjBIMHoiLz4NCiAgICA8cGF0aCBmaWxsPSIjNGMxIiBkPSJNNTMgMGg4NHYyMEg1M3oiLz4NCiAgICA8cGF0aCBmaWxsPSJ1cmwoI2IpIiBkPSJNMCAwaDEwNnYyMEgweiIvPg0KICA8L2c+DQogIDxnIHRyYW5zZm9ybT0ibWF0cml4KDAuMDQ1LDAsMCwwLjA0NSwwLDEuMDIyNzI3MikiPg0KICAgIDxwYXRoIGZpbGw9IiNjY2MiIGQ9Ik0yNDIgNDhjODYsMCAxNTUsNjkgMTU1LDE1NCAwLDg2IC02OSwxNTUgLTE1NSwxNTUgLTg1LDAgLTE1NCwtNjkgLTE1NCwtMTU1IDAsLTg1IDY5LC0xNTQgMTU0LC0xNTR6bTM4IDE4NGMtMTcsMjIgLTQ4LDI2IC02OSw5IC0yMSwtMTYgLTI0LC00NyAtNywtNjkgMTgsLTIxIDQ5LC0yNSA3MCwtOSAyMSwxNyAyNCw0OCA2LDY5em0tODIgMTAxbDU5IC01N2MtMjIsNSAtNDUsMSAtNjMsLTE0IC0yMSwtMTYgLTMwLC00MyAtMjcsLTY4bC01MyA1OGMwLDAgLTcsLTEzIC05LC0zN2w5MyAtNzNjMjgsLTIwIDY2LC0yMSA5MywwIDMwLDI0IDM2LDY4IDE0LDEwMWwtNjggOTdjLTEwLDAgLTMwLC0zIC0zOSwtN3oiLz4NCiAgPC9nPg0KICA8ZyBmaWxsPSIjZmZmIiBmb250LWZhbWlseT0iRGVqYVZ1IFNhbnMsVmVyZGFuYSxHZW5ldmEsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMSI+DQoNCiAgICA8dGV4dCB4PSIyMiIgeT0iMTUiIGZpbGw9IiMwMTAxMDEiIGZpbGwtb3BhY2l0eT0iLjMiPmJ1aWxkPC90ZXh0Pg0KICAgIDx0ZXh0IHg9IjIyIiB5PSIxNCI+YnVpbGQ8L3RleHQ+DQoNCiAgICA8dGV4dCB4PSI1OCIgeT0iMTUiIGZpbGw9IiMwMTAxMDEiIGZpbGwtb3BhY2l0eT0iLjMiPnBhc3Npbmc8L3RleHQ+DQogICAgPHRleHQgeD0iNTgiIHk9IjE0Ij5wYXNzaW5nPC90ZXh0Pg0KICA8L2c+DQo8L3N2Zz4=" alt="AppVeyor build status" /></a> <a href="https://doi.org/10.5281/zenodo.1292095"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciCiAgICAgd2lkdGg9IjE4NiIgaGVpZ2h0PSIyMCI+CiAgICAgICAgPGxpbmVhckdyYWRpZW50IGlkPSJiIiB4Mj0iMCIgeTI9IjEwMCUiPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiNiYmIiIHN0b3Atb3BhY2l0eT0iLjEiLz4KICAgICAgICAgICAgPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLW9wYWNpdHk9Ii4xIi8+CiAgICAgICAgPC9saW5lYXJHcmFkaWVudD4KICAgICAgICA8bWFzayBpZD0iYSIgd2lkdGg9IjE4NiIgaGVpZ2h0PSIyMCI+CiAgICAgICAgICAgIDxyZWN0IHdpZHRoPSIxODYiIGhlaWdodD0iMjAiIHJ4PSIzIgogICAgICAgICAgICBmaWxsPSIjZmZmIi8+CiAgICAgICAgPC9tYXNrPgogICAgICAgIDxnIG1hc2s9InVybCgjYSkiPgogICAgICAgICAgICA8cGF0aCBmaWxsPSIjNTU1IiBkPSJNMCAwaDMxdjIwSDB6IiAvPgogICAgICAgICAgICA8cGF0aCBmaWxsPSIjMDA3ZWM2IgogICAgICAgICAgICBkPSJNMzEgMGgxNTV2MjBIMzF6IgogICAgICAgICAgICAvPgogICAgICAgICAgICA8cGF0aCBmaWxsPSJ1cmwoI2IpIiBkPSJNMCAwaDE4NnYyMEgweiIgLz4KICAgICAgICA8L2c+CiAgICAgICAgPGcgZmlsbD0iI2ZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkRlamFWdSBTYW5zLAogICAgICAgIFZlcmRhbmEsR2VuZXZhLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTEiPgogICAgICAgICAgICA8dGV4dCB4PSIxNiIgeT0iMTUiIGZpbGw9IiMwMTAxMDEiCiAgICAgICAgICAgIGZpbGwtb3BhY2l0eT0iLjMiPgogICAgICAgICAgICAgICAgRE9JCiAgICAgICAgICAgIDwvdGV4dD4KICAgICAgICAgICAgPHRleHQgeD0iMTYiIHk9IjE0Ij4KICAgICAgICAgICAgICAgIERPSQogICAgICAgICAgICA8L3RleHQ+CiAgICAgICAgICAgIDx0ZXh0IHg9IjEwOCIKICAgICAgICAgICAgeT0iMTUiIGZpbGw9IiMwMTAxMDEiIGZpbGwtb3BhY2l0eT0iLjMiPgogICAgICAgICAgICAgICAgMTAuNTI4MS96ZW5vZG8uMTI5MjMxMgogICAgICAgICAgICA8L3RleHQ+CiAgICAgICAgICAgIDx0ZXh0IHg9IjEwOCIgeT0iMTQiPgogICAgICAgICAgICAgICAgMTAuNTI4MS96ZW5vZG8uMTI5MjMxMgogICAgICAgICAgICA8L3RleHQ+CiAgICAgICAgPC9nPgogICAgPC9zdmc+" alt="DOI" /></a></p>
+<p><a href="https://travis-ci.org/RGLab/DataPackageR"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MSIgaGVpZ2h0PSIyMCI+PGxpbmVhckdyYWRpZW50IGlkPSJhIiB4Mj0iMCIgeTI9IjEwMCUiPjxzdG9wIG9mZnNldD0iMCIgc3RvcC1jb2xvcj0iI2JiYiIgc3RvcC1vcGFjaXR5PSIuMSIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1vcGFjaXR5PSIuMSIvPjwvbGluZWFyR3JhZGllbnQ+PHJlY3Qgcng9IjMiIHdpZHRoPSI4MSIgaGVpZ2h0PSIyMCIgZmlsbD0iIzU1NSIvPjxyZWN0IHJ4PSIzIiB4PSIzNyIgd2lkdGg9IjQ0IiBoZWlnaHQ9IjIwIiBmaWxsPSIjZTA1ZDQ0Ii8+PHBhdGggZmlsbD0iI2UwNWQ0NCIgZD0iTTM3IDBoNHYyMGgtNHoiLz48cmVjdCByeD0iMyIgd2lkdGg9IjgxIiBoZWlnaHQ9IjIwIiBmaWxsPSJ1cmwoI2EpIi8+PGcgZmlsbD0iI2ZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkRlamFWdSBTYW5zLFZlcmRhbmEsR2VuZXZhLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTEiPjx0ZXh0IHg9IjE5LjUiIHk9IjE1IiBmaWxsPSIjMDEwMTAxIiBmaWxsLW9wYWNpdHk9Ii4zIj5idWlsZDwvdGV4dD48dGV4dCB4PSIxOS41IiB5PSIxNCI+YnVpbGQ8L3RleHQ+PHRleHQgeD0iNTgiIHk9IjE1IiBmaWxsPSIjMDEwMTAxIiBmaWxsLW9wYWNpdHk9Ii4zIj5mYWlsaW5nPC90ZXh0Pjx0ZXh0IHg9IjU4IiB5PSIxNCI+ZmFpbGluZzwvdGV4dD48L2c+PC9zdmc+" alt="Build Status" /></a> <a href="https://codecov.io/github/RGLab/DataPackageR?branch=master"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI5NiIgaGVpZ2h0PSIyMCI+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImIiIHgyPSIwIiB5Mj0iMTAwJSI+CiAgICAgICAgPHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjYmJiIiBzdG9wLW9wYWNpdHk9Ii4xIiAvPgogICAgICAgIDxzdG9wIG9mZnNldD0iMSIgc3RvcC1vcGFjaXR5PSIuMSIgLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgICA8bWFzayBpZD0iYSI+CiAgICAgICAgPHJlY3Qgd2lkdGg9Ijk2IiBoZWlnaHQ9IjIwIiByeD0iMyIgZmlsbD0iI2ZmZiIgLz4KICAgIDwvbWFzaz4KICAgIDxnIG1hc2s9InVybCgjYSkiPgogICAgICAgIDxwYXRoIGZpbGw9IiM1NTUiIGQ9Ik0wIDBoNjB2MjBIMHoiIC8+CiAgICAgICAgPHBhdGggZmlsbD0iIzVmY2MwYiIgZD0iTTYwIDBoMzZ2MjBINjB6IiAvPgogICAgICAgIDxwYXRoIGZpbGw9InVybCgjYikiIGQ9Ik0wIDBoOTZ2MjBIMHoiIC8+CiAgICA8L2c+CiAgICA8ZyBmaWxsPSIjZmZmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iRGVqYVZ1IFNhbnMsVmVyZGFuYSxHZW5ldmEsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMSI+CiAgICAgICAgPHRleHQgeD0iMzAiIHk9IjE1IiBmaWxsPSIjMDEwMTAxIiBmaWxsLW9wYWNpdHk9Ii4zIj5jb2RlY292PC90ZXh0PgogICAgICAgIDx0ZXh0IHg9IjMwIiB5PSIxNCI+Y29kZWNvdjwvdGV4dD4KICAgICAgICA8dGV4dCB4PSI3NyIgeT0iMTUiIGZpbGw9IiMwMTAxMDEiIGZpbGwtb3BhY2l0eT0iLjMiPjk4JTwvdGV4dD4KICAgICAgICA8dGV4dCB4PSI3NyIgeT0iMTQiPjk4JTwvdGV4dD4KICAgIDwvZz4KPC9zdmc+" alt="Coverage status" /></a> <a href="https://ci.appveyor.com/project/RGLab/DataPackageR"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI5NyIgaGVpZ2h0PSIyMCIgc3R5bGU9InNoYXBlLXJlbmRlcmluZzpnZW9tZXRyaWNQcmVjaXNpb247IGltYWdlLXJlbmRlcmluZzpvcHRpbWl6ZVF1YWxpdHk7IGZpbGwtcnVsZTpldmVub2RkOyBjbGlwLXJ1bGU6ZXZlbm9kZCI+DQogIDxsaW5lYXJHcmFkaWVudCBpZD0iYiIgeDI9IjAiIHkyPSIxMDAlIj4NCiAgICA8c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiNiYmIiIHN0b3Atb3BhY2l0eT0iLjEiLz4NCiAgICA8c3RvcCBvZmZzZXQ9IjEiIHN0b3Atb3BhY2l0eT0iLjEiLz4NCiAgPC9saW5lYXJHcmFkaWVudD4NCiAgPG1hc2sgaWQ9ImEiPg0KICAgIDxyZWN0IHdpZHRoPSI5NyIgaGVpZ2h0PSIyMCIgcng9IjMiIGZpbGw9IiNmZmYiLz4NCiAgPC9tYXNrPg0KICA8ZyBtYXNrPSJ1cmwoI2EpIj4NCiAgICA8cGF0aCBmaWxsPSIjNTU1IiBkPSJNMCAwaDUzdjIwSDB6Ii8+DQogICAgPHBhdGggZmlsbD0iI2UwNWQ0NCIgZD0iTTUzIDBoNzV2MjBINTN6Ii8+DQogICAgPHBhdGggZmlsbD0idXJsKCNiKSIgZD0iTTAgMGg5N3YyMEgweiIvPg0KICA8L2c+DQogIDxnIHRyYW5zZm9ybT0ibWF0cml4KDAuMDQ1LDAsMCwwLjA0NSwwLDEuMDIyNzI3MikiPg0KICAgIDxwYXRoIGZpbGw9IiNjY2MiIGQ9Ik0yNDIgNDhjODYsMCAxNTUsNjkgMTU1LDE1NCAwLDg2IC02OSwxNTUgLTE1NSwxNTUgLTg1LDAgLTE1NCwtNjkgLTE1NCwtMTU1IDAsLTg1IDY5LC0xNTQgMTU0LC0xNTR6bTM4IDE4NGMtMTcsMjIgLTQ4LDI2IC02OSw5IC0yMSwtMTYgLTI0LC00NyAtNywtNjkgMTgsLTIxIDQ5LC0yNSA3MCwtOSAyMSwxNyAyNCw0OCA2LDY5em0tODIgMTAxbDU5IC01N2MtMjIsNSAtNDUsMSAtNjMsLTE0IC0yMSwtMTYgLTMwLC00MyAtMjcsLTY4bC01MyA1OGMwLDAgLTcsLTEzIC05LC0zN2w5MyAtNzNjMjgsLTIwIDY2LC0yMSA5MywwIDMwLDI0IDM2LDY4IDE0LDEwMWwtNjggOTdjLTEwLDAgLTMwLC0zIC0zOSwtN3oiLz4NCiAgPC9nPg0KICA8ZyBmaWxsPSIjZmZmIiBmb250LWZhbWlseT0iRGVqYVZ1IFNhbnMsVmVyZGFuYSxHZW5ldmEsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMSI+DQoNCiAgICA8dGV4dCB4PSIyMiIgeT0iMTUiIGZpbGw9IiMwMTAxMDEiIGZpbGwtb3BhY2l0eT0iLjMiPmJ1aWxkPC90ZXh0Pg0KICAgIDx0ZXh0IHg9IjIyIiB5PSIxNCI+YnVpbGQ8L3RleHQ+DQoNCiAgICA8dGV4dCB4PSI1OCIgeT0iMTUiIGZpbGw9IiMwMTAxMDEiIGZpbGwtb3BhY2l0eT0iLjMiPmZhaWxpbmc8L3RleHQ+DQogICAgPHRleHQgeD0iNTgiIHk9IjE0Ij5mYWlsaW5nPC90ZXh0Pg0KICA8L2c+DQo8L3N2Zz4=" alt="AppVeyor build status" /></a> <a href="https://doi.org/10.5281/zenodo.1292095"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciCiAgICAgd2lkdGg9IjE4NiIgaGVpZ2h0PSIyMCI+CiAgICAgICAgPGxpbmVhckdyYWRpZW50IGlkPSJiIiB4Mj0iMCIgeTI9IjEwMCUiPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiNiYmIiIHN0b3Atb3BhY2l0eT0iLjEiLz4KICAgICAgICAgICAgPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLW9wYWNpdHk9Ii4xIi8+CiAgICAgICAgPC9saW5lYXJHcmFkaWVudD4KICAgICAgICA8bWFzayBpZD0iYSIgd2lkdGg9IjE4NiIgaGVpZ2h0PSIyMCI+CiAgICAgICAgICAgIDxyZWN0IHdpZHRoPSIxODYiIGhlaWdodD0iMjAiIHJ4PSIzIgogICAgICAgICAgICBmaWxsPSIjZmZmIi8+CiAgICAgICAgPC9tYXNrPgogICAgICAgIDxnIG1hc2s9InVybCgjYSkiPgogICAgICAgICAgICA8cGF0aCBmaWxsPSIjNTU1IiBkPSJNMCAwaDMxdjIwSDB6IiAvPgogICAgICAgICAgICA8cGF0aCBmaWxsPSIjMDA3ZWM2IgogICAgICAgICAgICBkPSJNMzEgMGgxNTV2MjBIMzF6IgogICAgICAgICAgICAvPgogICAgICAgICAgICA8cGF0aCBmaWxsPSJ1cmwoI2IpIiBkPSJNMCAwaDE4NnYyMEgweiIgLz4KICAgICAgICA8L2c+CiAgICAgICAgPGcgZmlsbD0iI2ZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkRlamFWdSBTYW5zLAogICAgICAgIFZlcmRhbmEsR2VuZXZhLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTEiPgogICAgICAgICAgICA8dGV4dCB4PSIxNiIgeT0iMTUiIGZpbGw9IiMwMTAxMDEiCiAgICAgICAgICAgIGZpbGwtb3BhY2l0eT0iLjMiPgogICAgICAgICAgICAgICAgRE9JCiAgICAgICAgICAgIDwvdGV4dD4KICAgICAgICAgICAgPHRleHQgeD0iMTYiIHk9IjE0Ij4KICAgICAgICAgICAgICAgIERPSQogICAgICAgICAgICA8L3RleHQ+CiAgICAgICAgICAgIDx0ZXh0IHg9IjEwOCIKICAgICAgICAgICAgeT0iMTUiIGZpbGw9IiMwMTAxMDEiIGZpbGwtb3BhY2l0eT0iLjMiPgogICAgICAgICAgICAgICAgMTAuNTI4MS96ZW5vZG8uMTI5MjMxMgogICAgICAgICAgICA8L3RleHQ+CiAgICAgICAgICAgIDx0ZXh0IHg9IjEwOCIgeT0iMTQiPgogICAgICAgICAgICAgICAgMTAuNTI4MS96ZW5vZG8uMTI5MjMxMgogICAgICAgICAgICA8L3RleHQ+CiAgICAgICAgPC9nPgogICAgPC9zdmc+" alt="DOI" /></a></p>
 <div id="code-of-conduct" class="section level2">
 <h2>Code of conduct</h2>
 <p>Please note that this project is released with a <a href="CODE_OF_CONDUCT.md">Contributor Code of Conduct</a>. By participating in this project you agree to abide by its terms.</p>
@@ -337,58 +331,41 @@ devtools::install_github(&quot;RGLab/DataPackageR&quot;, auth_token=NULL)</code>
 <a class="sourceLine" id="cb2-3" data-line-number="3">tmp =<span class="st"> </span><span class="kw">normalizePath</span>(<span class="kw">tempdir</span>())</a>
 <a class="sourceLine" id="cb2-4" data-line-number="4">processing_code =<span class="st"> </span><span class="kw">system.file</span>(<span class="st">&quot;extdata&quot;</span>,<span class="st">&quot;tests&quot;</span>,<span class="st">&quot;subsetCars.Rmd&quot;</span>,<span class="dt">package=</span><span class="st">&quot;DataPackageR&quot;</span>)</a>
 <a class="sourceLine" id="cb2-5" data-line-number="5"><span class="kw">print</span>(processing_code)</a>
-<a class="sourceLine" id="cb2-6" data-line-number="6">[<span class="dv">1</span>] <span class="st">&quot;/Library/Frameworks/R.framework/Versions/3.5/Resources/library/DataPackageR/extdata/tests/subsetCars.Rmd&quot;</span></a>
+<a class="sourceLine" id="cb2-6" data-line-number="6">[<span class="dv">1</span>] <span class="st">&quot;/Users/gfinak/Documents/Projects/DataPackageR/inst/extdata/tests/subsetCars.Rmd&quot;</span></a>
 <a class="sourceLine" id="cb2-7" data-line-number="7"><span class="kw">setwd</span>(tmp)</a>
 <a class="sourceLine" id="cb2-8" data-line-number="8">DataPackageR<span class="op">::</span><span class="kw">datapackage.skeleton</span>(<span class="st">&quot;Test&quot;</span>, </a>
 <a class="sourceLine" id="cb2-9" data-line-number="9">                                   <span class="dt">force=</span><span class="ot">TRUE</span>, </a>
 <a class="sourceLine" id="cb2-10" data-line-number="10">                                   <span class="dt">code_files =</span> processing_code, </a>
 <a class="sourceLine" id="cb2-11" data-line-number="11">                                   <span class="dt">r_object_names =</span> <span class="st">&quot;cars_over_20&quot;</span>) <span class="co"># cars_over_20 is an R object </span></a>
-<a class="sourceLine" id="cb2-12" data-line-number="12">Creating directories ...</a>
-<a class="sourceLine" id="cb2-13" data-line-number="13">Creating DESCRIPTION ...</a>
-<a class="sourceLine" id="cb2-14" data-line-number="14">Creating NAMESPACE ...</a>
-<a class="sourceLine" id="cb2-15" data-line-number="15">Creating Read<span class="op">-</span>and<span class="op">-</span>delete<span class="op">-</span>me ...</a>
-<a class="sourceLine" id="cb2-16" data-line-number="16">Saving functions and data ...</a>
-<a class="sourceLine" id="cb2-17" data-line-number="17">Making help files ...</a>
-<a class="sourceLine" id="cb2-18" data-line-number="18">Done.</a>
-<a class="sourceLine" id="cb2-19" data-line-number="19">Further steps are described <span class="cf">in</span> <span class="st">'./Test/Read-and-delete-me'</span>.</a>
-<a class="sourceLine" id="cb2-20" data-line-number="20">Adding DataVersion string to DESCRIPTION</a>
-<a class="sourceLine" id="cb2-21" data-line-number="21">Creating data and data<span class="op">-</span>raw directories</a>
-<a class="sourceLine" id="cb2-22" data-line-number="22">configuring yaml file</a>
-<a class="sourceLine" id="cb2-23" data-line-number="23">                                                                    <span class="co"># created in the Rmd file.</span></a></code></pre></div>
+<a class="sourceLine" id="cb2-12" data-line-number="12">Warning <span class="cf">in</span> DataPackageR<span class="op">::</span><span class="kw">datapackage.skeleton</span>(<span class="st">&quot;Test&quot;</span>, <span class="dt">force =</span> <span class="ot">TRUE</span>,</a>
+<a class="sourceLine" id="cb2-13" data-line-number="13"><span class="dt">code_files =</span> processing_code, <span class="op">:</span><span class="st"> </span>Please use <span class="kw">datapackage_skeleton</span>() instead</a>
+<a class="sourceLine" id="cb2-14" data-line-number="14">of <span class="kw">datapackage.skeleton</span>()</a>
+<a class="sourceLine" id="cb2-15" data-line-number="15">Creating directories ...</a>
+<a class="sourceLine" id="cb2-16" data-line-number="16">Creating DESCRIPTION ...</a>
+<a class="sourceLine" id="cb2-17" data-line-number="17">Creating NAMESPACE ...</a>
+<a class="sourceLine" id="cb2-18" data-line-number="18">Creating Read<span class="op">-</span>and<span class="op">-</span>delete<span class="op">-</span>me ...</a>
+<a class="sourceLine" id="cb2-19" data-line-number="19">Saving functions and data ...</a>
+<a class="sourceLine" id="cb2-20" data-line-number="20">Making help files ...</a>
+<a class="sourceLine" id="cb2-21" data-line-number="21">Done.</a>
+<a class="sourceLine" id="cb2-22" data-line-number="22">Further steps are described <span class="cf">in</span> <span class="st">'./Test/Read-and-delete-me'</span>.</a>
+<a class="sourceLine" id="cb2-23" data-line-number="23">Adding DataVersion string to DESCRIPTION</a>
+<a class="sourceLine" id="cb2-24" data-line-number="24">Creating data and data<span class="op">-</span>raw directories</a>
+<a class="sourceLine" id="cb2-25" data-line-number="25">configuring yaml file</a>
+<a class="sourceLine" id="cb2-26" data-line-number="26">                                                                    <span class="co"># created in the Rmd file.</span></a></code></pre></div>
 <div id="package-skeleton-structure" class="section level3">
 <h3>Package skeleton structure</h3>
 <p>This has created a directory, “Test” with the skeleton of a data package.</p>
 <p>The <code>DESCRIPTION</code> file should be filled out to describe your package. It contains a new <code>DataVersion</code> string, and the revision is automatically incremented if the packaged data changes.</p>
 <p><code>Read-and-delete-me</code> has some helpful instructions on how to proceed.</p>
 <p>The <code>data-raw</code> directory is where the data cleaning code (<code>Rmd</code>) files reside. The contents of this directory are:</p>
-<pre><code>                                              levelName
-1  Test                                                
-2   ¦--datapackager.yml                                
-3   ¦--Rprofile-devtools                               
-4   ¦--rs-graphics-320f9b2b-0bab-4f25-ba9e-66eb667018e7
-5   ¦   ¦--empty.png                                   
-6   ¦   °--INDEX                                       
-7   ¦--Test_1.0.tar.gz                                 
-8   °--Test                                            
-9       ¦--data-raw                                    
-10      ¦   ¦--documentation.R                         
-11      ¦   ¦--subsetCars.knit.md                      
-12      ¦   ¦--subsetCars.Rmd                          
-13      ¦   °--subsetCars.utf8.md                      
-14      ¦--DATADIGEST                                  
-15      ¦--datapackager.yml                            
-16      ¦--DESCRIPTION                                 
-17      ¦--inst                                        
-18      ¦   ¦--doc                                     
-19      ¦   ¦   ¦--subsetCars.html                     
-20      ¦   ¦   °--subsetCars.Rmd                      
-21      ¦   °--extdata                                 
-22      ¦       °--Logfiles                            
-23      ¦           ¦--processing.log                  
-24      ¦           °--subsetCars.html                 
-25      ¦--Read-and-delete-me                          
-26      °--vignettes                                   
-27          °--subsetCars.Rmd                          </code></pre>
+<pre><code>                   levelName
+1 Test                      
+2  °--Test                  
+3      ¦--DESCRIPTION       
+4      ¦--Read-and-delete-me
+5      ¦--data-raw          
+6      ¦   °--subsetCars.Rmd
+7      °--datapackager.yml  </code></pre>
 <p><code>datapackager.yml</code> can be edited as necessary to include additional processing scripts (which should be placed in <code>data-raw</code>), and raw data should be located under under <code>/inst/extdata</code>. It should be copied into that path and the data munging scripts edited to read from there.</p>
 </div>
 <div id="yaml-configuration" class="section level3">
@@ -401,7 +378,7 @@ devtools::install_github(&quot;RGLab/DataPackageR&quot;, auth_token=NULL)</code>
       enabled: yes
   objects: cars_over_20
   render_root:
-    tmp: '185367'</code></pre>
+    tmp: '787709'</code></pre>
 <p>It includes a <code>files</code> property that has an entry for each script, with the <code>name:</code> and <code>enabled:</code> keys for each file. The <code>objects</code> property lists the data objects produced by the scripts.</p>
 <p>The <code>render_root</code> property specifies the directory where the Rmd files are rendered. If temporary objects are produced during the processing, they will appear in this directory without polluting the package source tree. A temporary directory is used by default.</p>
 </div>
@@ -412,73 +389,36 @@ devtools::install_github(&quot;RGLab/DataPackageR&quot;, auth_token=NULL)</code>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="co"># Within the package directory</span></a>
 <a class="sourceLine" id="cb5-2" data-line-number="2"><span class="kw">setwd</span>(tmp)</a>
 <a class="sourceLine" id="cb5-3" data-line-number="3">DataPackageR<span class="op">:::</span><span class="kw">package_build</span>(<span class="st">&quot;Test&quot;</span>) </a>
-<a class="sourceLine" id="cb5-4" data-line-number="4">INFO [<span class="dv">2018-06-26</span> <span class="dv">07</span><span class="op">:</span><span class="dv">53</span><span class="op">:</span><span class="dv">13</span>] Logging to <span class="op">/</span>private<span class="op">/</span>var<span class="op">/</span>folders<span class="op">/</span>jh<span class="op">/</span>x0h3v3pd4dd497g3gtzsm8500000gn<span class="op">/</span>T<span class="op">/</span>RtmpfaLm8c<span class="op">/</span>Test<span class="op">/</span>inst<span class="op">/</span>extdata<span class="op">/</span>Logfiles<span class="op">/</span>processing.log</a>
-<a class="sourceLine" id="cb5-5" data-line-number="5">INFO [<span class="dv">2018-06-26</span> <span class="dv">07</span><span class="op">:</span><span class="dv">53</span><span class="op">:</span><span class="dv">13</span>] Processing data</a>
-<a class="sourceLine" id="cb5-6" data-line-number="6">INFO [<span class="dv">2018-06-26</span> <span class="dv">07</span><span class="op">:</span><span class="dv">53</span><span class="op">:</span><span class="dv">13</span>] Reading yaml configuration</a>
-<a class="sourceLine" id="cb5-7" data-line-number="7">INFO [<span class="dv">2018-06-26</span> <span class="dv">07</span><span class="op">:</span><span class="dv">53</span><span class="op">:</span><span class="dv">13</span>] Found <span class="op">/</span>private<span class="op">/</span>var<span class="op">/</span>folders<span class="op">/</span>jh<span class="op">/</span>x0h3v3pd4dd497g3gtzsm8500000gn<span class="op">/</span>T<span class="op">/</span>RtmpfaLm8c<span class="op">/</span>Test<span class="op">/</span>data<span class="op">-</span>raw<span class="op">/</span>subsetCars.Rmd</a>
-<a class="sourceLine" id="cb5-8" data-line-number="8">INFO [<span class="dv">2018-06-26</span> <span class="dv">07</span><span class="op">:</span><span class="dv">53</span><span class="op">:</span><span class="dv">13</span>] Processing <span class="dv">1</span> of <span class="dv">1</span><span class="op">:</span><span class="st"> </span><span class="er">/</span>private<span class="op">/</span>var<span class="op">/</span>folders<span class="op">/</span>jh<span class="op">/</span>x0h3v3pd4dd497g3gtzsm8500000gn<span class="op">/</span>T<span class="op">/</span>RtmpfaLm8c<span class="op">/</span>Test<span class="op">/</span>data<span class="op">-</span>raw<span class="op">/</span>subsetCars.Rmd</a>
-<a class="sourceLine" id="cb5-9" data-line-number="9"></a>
-<a class="sourceLine" id="cb5-10" data-line-number="10"></a>
-<a class="sourceLine" id="cb5-11" data-line-number="11">processing file<span class="op">:</span><span class="st"> </span>subsetCars.Rmd</a>
+<a class="sourceLine" id="cb5-4" data-line-number="4">INFO [<span class="dv">2018-07-02</span> <span class="dv">12</span><span class="op">:</span><span class="dv">26</span><span class="op">:</span><span class="dv">31</span>] Logging to <span class="op">/</span>private<span class="op">/</span>var<span class="op">/</span>folders<span class="op">/</span>jh<span class="op">/</span>x0h3v3pd4dd497g3gtzsm8500000gn<span class="op">/</span>T<span class="op">/</span>Rtmp7wPrTh<span class="op">/</span>Test<span class="op">/</span>inst<span class="op">/</span>extdata<span class="op">/</span>Logfiles<span class="op">/</span>processing.log</a>
+<a class="sourceLine" id="cb5-5" data-line-number="5">INFO [<span class="dv">2018-07-02</span> <span class="dv">12</span><span class="op">:</span><span class="dv">26</span><span class="op">:</span><span class="dv">31</span>] Processing data</a>
+<a class="sourceLine" id="cb5-6" data-line-number="6">INFO [<span class="dv">2018-07-02</span> <span class="dv">12</span><span class="op">:</span><span class="dv">26</span><span class="op">:</span><span class="dv">31</span>] Reading yaml configuration</a>
+<a class="sourceLine" id="cb5-7" data-line-number="7">INFO [<span class="dv">2018-07-02</span> <span class="dv">12</span><span class="op">:</span><span class="dv">26</span><span class="op">:</span><span class="dv">31</span>] Found <span class="op">/</span>private<span class="op">/</span>var<span class="op">/</span>folders<span class="op">/</span>jh<span class="op">/</span>x0h3v3pd4dd497g3gtzsm8500000gn<span class="op">/</span>T<span class="op">/</span>Rtmp7wPrTh<span class="op">/</span>Test<span class="op">/</span>data<span class="op">-</span>raw<span class="op">/</span>subsetCars.Rmd</a>
+<a class="sourceLine" id="cb5-8" data-line-number="8">INFO [<span class="dv">2018-07-02</span> <span class="dv">12</span><span class="op">:</span><span class="dv">26</span><span class="op">:</span><span class="dv">31</span>] Processing <span class="dv">1</span> of <span class="dv">1</span><span class="op">:</span><span class="st"> </span><span class="er">/</span>private<span class="op">/</span>var<span class="op">/</span>folders<span class="op">/</span>jh<span class="op">/</span>x0h3v3pd4dd497g3gtzsm8500000gn<span class="op">/</span>T<span class="op">/</span>Rtmp7wPrTh<span class="op">/</span>Test<span class="op">/</span>data<span class="op">-</span>raw<span class="op">/</span>subsetCars.Rmd</a>
+<a class="sourceLine" id="cb5-9" data-line-number="9">processing file<span class="op">:</span><span class="st"> </span>subsetCars.Rmd</a>
+<a class="sourceLine" id="cb5-10" data-line-number="10">output file<span class="op">:</span><span class="st"> </span>subsetCars.knit.md</a>
+<a class="sourceLine" id="cb5-11" data-line-number="11"><span class="op">/</span>usr<span class="op">/</span>local<span class="op">/</span>bin<span class="op">/</span>pandoc <span class="op">+</span>RTS <span class="op">-</span>K512m <span class="op">-</span>RTS subsetCars.utf8.md <span class="op">--</span>to html4 <span class="op">--</span>from markdown<span class="op">+</span>autolink_bare_uris<span class="op">+</span>ascii_identifiers<span class="op">+</span>tex_math_single_backslash<span class="op">+</span>smart <span class="op">--</span>output <span class="op">/</span>private<span class="op">/</span>var<span class="op">/</span>folders<span class="op">/</span>jh<span class="op">/</span>x0h3v3pd4dd497g3gtzsm8500000gn<span class="op">/</span>T<span class="op">/</span>Rtmp7wPrTh<span class="op">/</span>Test<span class="op">/</span>inst<span class="op">/</span>extdata<span class="op">/</span>Logfiles<span class="op">/</span>subsetCars.html <span class="op">--</span>email<span class="op">-</span>obfuscation none <span class="op">--</span>self<span class="op">-</span>contained <span class="op">--</span>standalone <span class="op">--</span>section<span class="op">-</span>divs <span class="op">--</span>template <span class="op">/</span>Library<span class="op">/</span>Frameworks<span class="op">/</span>R.framework<span class="op">/</span>Versions<span class="op">/</span><span class="fl">3.5</span><span class="op">/</span>Resources<span class="op">/</span>library<span class="op">/</span>rmarkdown<span class="op">/</span>rmd<span class="op">/</span>h<span class="op">/</span>default.html <span class="op">--</span>no<span class="op">-</span>highlight <span class="op">--</span>variable highlightjs=<span class="dv">1</span> <span class="op">--</span>variable <span class="st">'theme:bootstrap'</span> <span class="op">--</span>include<span class="op">-</span><span class="cf">in</span><span class="op">-</span>header <span class="op">/</span>var<span class="op">/</span>folders<span class="op">/</span>jh<span class="op">/</span>x0h3v3pd4dd497g3gtzsm8500000gn<span class="op">/</span>T<span class="op">/</span><span class="er">/</span>Rtmp7wPrTh<span class="op">/</span>rmarkdown<span class="op">-</span>strcd9679f83bd2.html <span class="op">--</span>mathjax <span class="op">--</span>variable <span class="st">'mathjax-url:https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'</span> </a>
 <a class="sourceLine" id="cb5-12" data-line-number="12"></a>
-<a class="sourceLine" id="cb5-13" data-line-number="13">  <span class="op">|</span><span class="st">                                                                       </span></a>
-<a class="sourceLine" id="cb5-14" data-line-number="14"><span class="st">  </span><span class="er">|</span><span class="st">                                                                 </span><span class="er">|</span><span class="st">   </span><span class="dv">0</span>%</a>
-<a class="sourceLine" id="cb5-15" data-line-number="15">  <span class="op">|</span><span class="st">                                                                       </span></a>
-<a class="sourceLine" id="cb5-16" data-line-number="16"><span class="st">  </span><span class="er">|</span>.........                                                        <span class="op">|</span><span class="st">  </span><span class="dv">14</span>%</a>
-<a class="sourceLine" id="cb5-17" data-line-number="17">  ordinary text without R code</a>
-<a class="sourceLine" id="cb5-18" data-line-number="18"></a>
-<a class="sourceLine" id="cb5-19" data-line-number="19"></a>
-<a class="sourceLine" id="cb5-20" data-line-number="20">  <span class="op">|</span><span class="st">                                                                       </span></a>
-<a class="sourceLine" id="cb5-21" data-line-number="21"><span class="st">  </span><span class="er">|</span>...................                                              <span class="op">|</span><span class="st">  </span><span class="dv">29</span>%</a>
-<a class="sourceLine" id="cb5-22" data-line-number="22">label<span class="op">:</span><span class="st"> </span><span class="kw">setup</span> (with options) </a>
-<a class="sourceLine" id="cb5-23" data-line-number="23">List of <span class="dv">1</span></a>
-<a class="sourceLine" id="cb5-24" data-line-number="24"> <span class="op">$</span><span class="st"> </span>include<span class="op">:</span><span class="st"> </span>logi <span class="ot">FALSE</span></a>
-<a class="sourceLine" id="cb5-25" data-line-number="25"></a>
-<a class="sourceLine" id="cb5-26" data-line-number="26"></a>
-<a class="sourceLine" id="cb5-27" data-line-number="27">  <span class="op">|</span><span class="st">                                                                       </span></a>
-<a class="sourceLine" id="cb5-28" data-line-number="28"><span class="st">  </span><span class="er">|</span>............................                                     <span class="op">|</span><span class="st">  </span><span class="dv">43</span>%</a>
-<a class="sourceLine" id="cb5-29" data-line-number="29">  ordinary text without R code</a>
-<a class="sourceLine" id="cb5-30" data-line-number="30"></a>
-<a class="sourceLine" id="cb5-31" data-line-number="31"></a>
-<a class="sourceLine" id="cb5-32" data-line-number="32">  <span class="op">|</span><span class="st">                                                                       </span></a>
-<a class="sourceLine" id="cb5-33" data-line-number="33"><span class="st">  </span><span class="er">|</span>.....................................                            <span class="op">|</span><span class="st">  </span><span class="dv">57</span>%</a>
-<a class="sourceLine" id="cb5-34" data-line-number="34">label<span class="op">:</span><span class="st"> </span>cars</a>
-<a class="sourceLine" id="cb5-35" data-line-number="35"></a>
-<a class="sourceLine" id="cb5-36" data-line-number="36">  <span class="op">|</span><span class="st">                                                                       </span></a>
-<a class="sourceLine" id="cb5-37" data-line-number="37"><span class="st">  </span><span class="er">|</span>..............................................                   <span class="op">|</span><span class="st">  </span><span class="dv">71</span>%</a>
-<a class="sourceLine" id="cb5-38" data-line-number="38">  ordinary text without R code</a>
-<a class="sourceLine" id="cb5-39" data-line-number="39"></a>
-<a class="sourceLine" id="cb5-40" data-line-number="40"></a>
-<a class="sourceLine" id="cb5-41" data-line-number="41">  <span class="op">|</span><span class="st">                                                                       </span></a>
-<a class="sourceLine" id="cb5-42" data-line-number="42"><span class="st">  </span><span class="er">|</span>........................................................         <span class="op">|</span><span class="st">  </span><span class="dv">86</span>%</a>
-<a class="sourceLine" id="cb5-43" data-line-number="43">label<span class="op">:</span><span class="st"> </span>unnamed<span class="op">-</span>chunk<span class="dv">-10</span></a>
-<a class="sourceLine" id="cb5-44" data-line-number="44"></a>
-<a class="sourceLine" id="cb5-45" data-line-number="45">  <span class="op">|</span><span class="st">                                                                       </span></a>
-<a class="sourceLine" id="cb5-46" data-line-number="46"><span class="st">  </span><span class="er">|</span>.................................................................<span class="op">|</span><span class="st"> </span><span class="dv">100</span>%</a>
-<a class="sourceLine" id="cb5-47" data-line-number="47">  ordinary text without R code</a>
-<a class="sourceLine" id="cb5-48" data-line-number="48">output file<span class="op">:</span><span class="st"> </span>subsetCars.knit.md</a>
-<a class="sourceLine" id="cb5-49" data-line-number="49"><span class="op">/</span>usr<span class="op">/</span>local<span class="op">/</span>bin<span class="op">/</span>pandoc <span class="op">+</span>RTS <span class="op">-</span>K512m <span class="op">-</span>RTS subsetCars.utf8.md <span class="op">--</span>to html4 <span class="op">--</span>from markdown<span class="op">+</span>autolink_bare_uris<span class="op">+</span>ascii_identifiers<span class="op">+</span>tex_math_single_backslash<span class="op">+</span>smart <span class="op">--</span>output <span class="op">/</span>private<span class="op">/</span>var<span class="op">/</span>folders<span class="op">/</span>jh<span class="op">/</span>x0h3v3pd4dd497g3gtzsm8500000gn<span class="op">/</span>T<span class="op">/</span>RtmpfaLm8c<span class="op">/</span>Test<span class="op">/</span>inst<span class="op">/</span>extdata<span class="op">/</span>Logfiles<span class="op">/</span>subsetCars.html <span class="op">--</span>email<span class="op">-</span>obfuscation none <span class="op">--</span>self<span class="op">-</span>contained <span class="op">--</span>standalone <span class="op">--</span>section<span class="op">-</span>divs <span class="op">--</span>template <span class="op">/</span>Library<span class="op">/</span>Frameworks<span class="op">/</span>R.framework<span class="op">/</span>Versions<span class="op">/</span><span class="fl">3.5</span><span class="op">/</span>Resources<span class="op">/</span>library<span class="op">/</span>rmarkdown<span class="op">/</span>rmd<span class="op">/</span>h<span class="op">/</span>default.html <span class="op">--</span>no<span class="op">-</span>highlight <span class="op">--</span>variable highlightjs=<span class="dv">1</span> <span class="op">--</span>variable <span class="st">'theme:bootstrap'</span> <span class="op">--</span>include<span class="op">-</span><span class="cf">in</span><span class="op">-</span>header <span class="op">/</span>var<span class="op">/</span>folders<span class="op">/</span>jh<span class="op">/</span>x0h3v3pd4dd497g3gtzsm8500000gn<span class="op">/</span>T<span class="op">/</span><span class="er">/</span>RtmpfaLm8c<span class="op">/</span>rmarkdown<span class="op">-</span>str1032a54936bd4.html <span class="op">--</span>mathjax <span class="op">--</span>variable <span class="st">'mathjax-url:https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'</span> </a>
-<a class="sourceLine" id="cb5-50" data-line-number="50"></a>
-<a class="sourceLine" id="cb5-51" data-line-number="51">Output created<span class="op">:</span><span class="st"> </span>inst<span class="op">/</span>extdata<span class="op">/</span>Logfiles<span class="op">/</span>subsetCars.html</a>
-<a class="sourceLine" id="cb5-52" data-line-number="52">INFO [<span class="dv">2018-06-26</span> <span class="dv">07</span><span class="op">:</span><span class="dv">53</span><span class="op">:</span><span class="dv">13</span>] <span class="dv">1</span> required data objects created by subsetCars.Rmd</a>
-<a class="sourceLine" id="cb5-53" data-line-number="53">INFO [<span class="dv">2018-06-26</span> <span class="dv">07</span><span class="op">:</span><span class="dv">53</span><span class="op">:</span><span class="dv">13</span>] Processed data sets match existing data sets at version <span class="dv">0</span>.<span class="fl">1.0</span></a>
-<a class="sourceLine" id="cb5-54" data-line-number="54">INFO [<span class="dv">2018-06-26</span> <span class="dv">07</span><span class="op">:</span><span class="dv">53</span><span class="op">:</span><span class="dv">13</span>] Saving to data</a>
-<a class="sourceLine" id="cb5-55" data-line-number="55">INFO [<span class="dv">2018-06-26</span> <span class="dv">07</span><span class="op">:</span><span class="dv">53</span><span class="op">:</span><span class="dv">13</span>] Copied documentation to R<span class="op">/</span>Test.R</a>
-<a class="sourceLine" id="cb5-56" data-line-number="56"><span class="op">*</span><span class="st"> </span>Adding <span class="st">`</span><span class="dt">inst/doc</span><span class="st">`</span> to .<span class="op">/</span>.gitignore</a>
-<a class="sourceLine" id="cb5-57" data-line-number="57">INFO [<span class="dv">2018-06-26</span> <span class="dv">07</span><span class="op">:</span><span class="dv">53</span><span class="op">:</span><span class="dv">13</span>] Done</a>
-<a class="sourceLine" id="cb5-58" data-line-number="58">INFO [<span class="dv">2018-06-26</span> <span class="dv">07</span><span class="op">:</span><span class="dv">53</span><span class="op">:</span><span class="dv">13</span>] Building documentation</a>
-<a class="sourceLine" id="cb5-59" data-line-number="59">First time using roxygen2. Upgrading automatically...</a>
-<a class="sourceLine" id="cb5-60" data-line-number="60">Updating roxygen version <span class="cf">in</span> <span class="op">/</span>private<span class="op">/</span>var<span class="op">/</span>folders<span class="op">/</span>jh<span class="op">/</span>x0h3v3pd4dd497g3gtzsm8500000gn<span class="op">/</span>T<span class="op">/</span>RtmpfaLm8c<span class="op">/</span>Test<span class="op">/</span>DESCRIPTION</a>
-<a class="sourceLine" id="cb5-61" data-line-number="61">Writing NAMESPACE</a>
-<a class="sourceLine" id="cb5-62" data-line-number="62">Writing Test.Rd</a>
-<a class="sourceLine" id="cb5-63" data-line-number="63">Writing cars_over_<span class="fl">20.</span>Rd</a>
-<a class="sourceLine" id="cb5-64" data-line-number="64">INFO [<span class="dv">2018-06-26</span> <span class="dv">07</span><span class="op">:</span><span class="dv">53</span><span class="op">:</span><span class="dv">13</span>] Building package</a>
-<a class="sourceLine" id="cb5-65" data-line-number="65"><span class="st">'/Library/Frameworks/R.framework/Resources/bin/R'</span> <span class="op">--</span>no<span class="op">-</span>site<span class="op">-</span>file  \</a>
-<a class="sourceLine" id="cb5-66" data-line-number="66">  <span class="op">--</span>no<span class="op">-</span>environ <span class="op">--</span>no<span class="op">-</span>save <span class="op">--</span>no<span class="op">-</span>restore <span class="op">--</span>quiet CMD build  \</a>
-<a class="sourceLine" id="cb5-67" data-line-number="67">  <span class="st">'/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpfaLm8c/Test'</span>  \</a>
-<a class="sourceLine" id="cb5-68" data-line-number="68">  <span class="op">--</span>no<span class="op">-</span>resave<span class="op">-</span>data <span class="op">--</span>no<span class="op">-</span>manual <span class="op">--</span>no<span class="op">-</span>build<span class="op">-</span>vignettes </a>
-<a class="sourceLine" id="cb5-69" data-line-number="69"></a>
-<a class="sourceLine" id="cb5-70" data-line-number="70">[<span class="dv">1</span>] <span class="st">&quot;/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpfaLm8c/Test_1.0.tar.gz&quot;</span></a></code></pre></div>
+<a class="sourceLine" id="cb5-13" data-line-number="13">Output created<span class="op">:</span><span class="st"> </span>Test<span class="op">/</span>inst<span class="op">/</span>extdata<span class="op">/</span>Logfiles<span class="op">/</span>subsetCars.html</a>
+<a class="sourceLine" id="cb5-14" data-line-number="14">INFO [<span class="dv">2018-07-02</span> <span class="dv">12</span><span class="op">:</span><span class="dv">26</span><span class="op">:</span><span class="dv">31</span>] <span class="dv">1</span> required data objects created by subsetCars.Rmd</a>
+<a class="sourceLine" id="cb5-15" data-line-number="15">INFO [<span class="dv">2018-07-02</span> <span class="dv">12</span><span class="op">:</span><span class="dv">26</span><span class="op">:</span><span class="dv">31</span>] Saving to data</a>
+<a class="sourceLine" id="cb5-16" data-line-number="16">INFO [<span class="dv">2018-07-02</span> <span class="dv">12</span><span class="op">:</span><span class="dv">26</span><span class="op">:</span><span class="dv">32</span>] Copied documentation to <span class="op">/</span>private<span class="op">/</span>var<span class="op">/</span>folders<span class="op">/</span>jh<span class="op">/</span>x0h3v3pd4dd497g3gtzsm8500000gn<span class="op">/</span>T<span class="op">/</span>Rtmp7wPrTh<span class="op">/</span>Test<span class="op">/</span>R<span class="op">/</span>Test.R</a>
+<a class="sourceLine" id="cb5-17" data-line-number="17">✔ Creating <span class="st">'vignettes/'</span></a>
+<a class="sourceLine" id="cb5-18" data-line-number="18">✔ Creating <span class="st">'inst/doc/'</span></a>
+<a class="sourceLine" id="cb5-19" data-line-number="19">INFO [<span class="dv">2018-07-02</span> <span class="dv">12</span><span class="op">:</span><span class="dv">26</span><span class="op">:</span><span class="dv">32</span>] Done</a>
+<a class="sourceLine" id="cb5-20" data-line-number="20">INFO [<span class="dv">2018-07-02</span> <span class="dv">12</span><span class="op">:</span><span class="dv">26</span><span class="op">:</span><span class="dv">32</span>] DataPackageR succeeded</a>
+<a class="sourceLine" id="cb5-21" data-line-number="21">INFO [<span class="dv">2018-07-02</span> <span class="dv">12</span><span class="op">:</span><span class="dv">26</span><span class="op">:</span><span class="dv">32</span>] Building documentation</a>
+<a class="sourceLine" id="cb5-22" data-line-number="22">First time using roxygen2. Upgrading automatically...</a>
+<a class="sourceLine" id="cb5-23" data-line-number="23">Updating roxygen version <span class="cf">in</span> <span class="op">/</span>private<span class="op">/</span>var<span class="op">/</span>folders<span class="op">/</span>jh<span class="op">/</span>x0h3v3pd4dd497g3gtzsm8500000gn<span class="op">/</span>T<span class="op">/</span>Rtmp7wPrTh<span class="op">/</span>Test<span class="op">/</span>DESCRIPTION</a>
+<a class="sourceLine" id="cb5-24" data-line-number="24">Writing NAMESPACE</a>
+<a class="sourceLine" id="cb5-25" data-line-number="25">Writing Test.Rd</a>
+<a class="sourceLine" id="cb5-26" data-line-number="26">Writing cars_over_<span class="fl">20.</span>Rd</a>
+<a class="sourceLine" id="cb5-27" data-line-number="27">INFO [<span class="dv">2018-07-02</span> <span class="dv">12</span><span class="op">:</span><span class="dv">26</span><span class="op">:</span><span class="dv">32</span>] Building package</a>
+<a class="sourceLine" id="cb5-28" data-line-number="28"><span class="st">'/Library/Frameworks/R.framework/Resources/bin/R'</span> <span class="op">--</span>no<span class="op">-</span>site<span class="op">-</span>file  \</a>
+<a class="sourceLine" id="cb5-29" data-line-number="29">  <span class="op">--</span>no<span class="op">-</span>environ <span class="op">--</span>no<span class="op">-</span>save <span class="op">--</span>no<span class="op">-</span>restore <span class="op">--</span>quiet CMD build  \</a>
+<a class="sourceLine" id="cb5-30" data-line-number="30">  <span class="st">'/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmp7wPrTh/Test'</span>  \</a>
+<a class="sourceLine" id="cb5-31" data-line-number="31">  <span class="op">--</span>no<span class="op">-</span>resave<span class="op">-</span>data <span class="op">--</span>no<span class="op">-</span>manual <span class="op">--</span>no<span class="op">-</span>build<span class="op">-</span>vignettes </a>
+<a class="sourceLine" id="cb5-32" data-line-number="32"></a>
+<a class="sourceLine" id="cb5-33" data-line-number="33">[<span class="dv">1</span>] <span class="st">&quot;/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmp7wPrTh/Test_1.0.tar.gz&quot;</span></a></code></pre></div>
 </div>
 <div id="logging-the-build-process" class="section level3">
 <h3>Logging the build process</h3>
@@ -489,33 +429,34 @@ devtools::install_github(&quot;RGLab/DataPackageR&quot;, auth_token=NULL)</code>
 <h3>The package source directory after building</h3>
 <pre><code>                         levelName
 1  Test                           
-2   ¦--data-raw                   
-3   ¦   ¦--documentation.R        
-4   ¦   ¦--subsetCars.knit.md     
-5   ¦   ¦--subsetCars.Rmd         
-6   ¦   °--subsetCars.utf8.md     
-7   ¦--data                       
-8   ¦   °--cars_over_20.rda       
-9   ¦--DATADIGEST                 
-10  ¦--datapackager.yml           
-11  ¦--DESCRIPTION                
-12  ¦--inst                       
-13  ¦   ¦--doc                    
-14  ¦   ¦   ¦--subsetCars.html    
-15  ¦   ¦   °--subsetCars.Rmd     
-16  ¦   °--extdata                
-17  ¦       °--Logfiles           
-18  ¦           ¦--processing.log 
-19  ¦           °--subsetCars.html
-20  ¦--man                        
-21  ¦   ¦--cars_over_20.Rd        
-22  ¦   °--Test.Rd                
-23  ¦--NAMESPACE                  
-24  ¦--R                          
-25  ¦   °--Test.R                 
-26  ¦--Read-and-delete-me         
-27  °--vignettes                  
-28      °--subsetCars.Rmd         </code></pre>
+2   ¦--DATADIGEST                 
+3   ¦--DESCRIPTION                
+4   ¦--NAMESPACE                  
+5   ¦--R                          
+6   ¦   °--Test.R                 
+7   ¦--Read-and-delete-me         
+8   ¦--data-raw                   
+9   ¦   ¦--documentation.R        
+10  ¦   ¦--subsetCars.R           
+11  ¦   ¦--subsetCars.Rmd         
+12  ¦   ¦--subsetCars.knit.md     
+13  ¦   °--subsetCars.utf8.md     
+14  ¦--data                       
+15  ¦   °--cars_over_20.rda       
+16  ¦--datapackager.yml           
+17  ¦--inst                       
+18  ¦   ¦--doc                    
+19  ¦   ¦   ¦--subsetCars.Rmd     
+20  ¦   ¦   °--subsetCars.html    
+21  ¦   °--extdata                
+22  ¦       °--Logfiles           
+23  ¦           ¦--processing.log 
+24  ¦           °--subsetCars.html
+25  ¦--man                        
+26  ¦   ¦--Test.Rd                
+27  ¦   °--cars_over_20.Rd        
+28  °--vignettes                  
+29      °--subsetCars.Rmd         </code></pre>
 <div id="details" class="section level4">
 <h4>Details</h4>
 <p>A number of things have changed. The subsetCars processing script now appears under <code>/vignettes</code> and <code>inst/doc</code> as a processed html report so that it will be available to view via <code>vignette()</code> once the package is installed. <code>inst/extdata/Logfiles</code> contains a log file of the entire build process as well as intermediate files created while parsing the R / Rmd code. Documentation Rd files appear in <code>/man</code>, these should be edite to provide further details on the data objects in the package. The data objects are stored under <code>/data</code> where we see <code>cars_over_20.rda</code>, the object we initially specified in <code>datapackager.yml</code>.</p>
@@ -542,15 +483,12 @@ cars_over_20: 3ccb5b0aaa74fe7cfc0d3ca6ab0b5cf3</code></pre>
 Type: Package
 Title: What the package does (short line)
 Version: 1.0
-Date: 2018-53-26
+Date: 2018-07-02
 Author: Who wrote it
 Maintainer: Who to complain to &lt;yourfault@somewhere.net&gt;
 Description: More about what it does (maybe more than one line)
 License: What license is it under?
 DataVersion: 0.1.0
-Suggests: knitr,
-    rmarkdown
-VignetteBuilder: knitr
 RoxygenNote: 6.0.1</code></pre>
 </div>
 <div id="next-steps" class="section level3">
@@ -586,7 +524,7 @@ RoxygenNote: 6.0.1</code></pre>
 <a class="sourceLine" id="cb10-14" data-line-number="14"><span class="st">  </span><span class="op">-</span><span class="st"> </span>object1</a>
 <a class="sourceLine" id="cb10-15" data-line-number="15">  <span class="op">-</span><span class="st"> </span>object2</a>
 <a class="sourceLine" id="cb10-16" data-line-number="16">  render_root<span class="op">:</span></a>
-<a class="sourceLine" id="cb10-17" data-line-number="17"><span class="st">    </span>tmp<span class="op">:</span><span class="st"> '339581'</span></a></code></pre></div>
+<a class="sourceLine" id="cb10-17" data-line-number="17"><span class="st">    </span>tmp<span class="op">:</span><span class="st"> '127771'</span></a></code></pre></div>
 <p><code>config</code> is a newly constructed yaml configuration object. It can be written to the package directory:</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">path_to_package =<span class="st"> </span><span class="kw">tempdir</span>() <span class="co">#pretend this is the root of our package</span></a>
 <a class="sourceLine" id="cb11-2" data-line-number="2"><span class="kw">yml_write</span>(config,<span class="dt">path =</span> path_to_package)</a></code></pre></div>
@@ -606,7 +544,7 @@ RoxygenNote: 6.0.1</code></pre>
 <a class="sourceLine" id="cb12-12" data-line-number="12"><span class="st">  </span><span class="op">-</span><span class="st"> </span>object1</a>
 <a class="sourceLine" id="cb12-13" data-line-number="13">  <span class="op">-</span><span class="st"> </span>object2</a>
 <a class="sourceLine" id="cb12-14" data-line-number="14">  render_root<span class="op">:</span></a>
-<a class="sourceLine" id="cb12-15" data-line-number="15"><span class="st">    </span>tmp<span class="op">:</span><span class="st"> '339581'</span></a></code></pre></div>
+<a class="sourceLine" id="cb12-15" data-line-number="15"><span class="st">    </span>tmp<span class="op">:</span><span class="st"> '127771'</span></a></code></pre></div>
 <p>Where <code>config</code> is a configuration read from a data package root directory. The <code>config</code> object needs to be written back to the package root in order for the changes to take effect. The consequence of toggling a file to <code>enable: no</code> is that it will be skipped when the package is built, but the data will be retained, and the documentation will not be altered.</p>
 </div>
 </div>

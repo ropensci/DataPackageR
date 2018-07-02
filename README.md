@@ -19,9 +19,6 @@ The publication describing the package is now available at [Gates Open Research]
 
 The preprint is on [biorxiv](https://doi.org/10.1101/342907).
 
-## NEWS 
-
-- Added the `render_root` property to the YAML configuration. Specifies where `render()` processing is done, instead of the `data-raw` directory.
 
 ## Goals
 

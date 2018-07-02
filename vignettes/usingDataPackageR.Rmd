@@ -16,12 +16,9 @@ vignette: >
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "",
-  eval=TRUE
+  eval = TRUE
 )
 ```
-# NEWS
-
-- Added the `render_root` property to the YAML configuration. Specifies where `render()` processing is done, instead of the `data-raw` directory.
 
 # DataPackageR
 

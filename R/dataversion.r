@@ -23,10 +23,10 @@
 #'    force = TRUE,
 #'    r_object_names = "tbl",
 #'    code_files = f)
-#'    package_build(file.path(tempdir(),"MyDataPackage"))
+#'    package_build(file.path(tempdir(),pname))
 #'
-#'    devtools::load_all(file.path(tempdir(),"MyDataPackage"))
-#'    data_version("MyDataPackage")
+#'    devtools::load_all(file.path(tempdir(),pname))
+#'    data_version(pname)
 data_version <- function(pkg, lib.loc = NULL) {
   res <- suppressWarnings(
     utils::packageDescription(pkg,
