@@ -237,7 +237,7 @@ test_that("can remove a data item", {
 })
 
 context("documentation")
-test_that("can_read_pkg_description,  dataVersion", {
+test_that("can_read_pkg_description,  data_version", {
   file <- system.file("extdata", "tests", "subsetCars.Rmd",
     package = "DataPackageR"
   )
@@ -257,7 +257,7 @@ test_that("can_read_pkg_description,  dataVersion", {
     structure(list(c(0L, 1L, 0L)),
       class = c("package_version", "numeric_version")
     )
-  expect_equal(dataVersion("subsetCars"), expected_version)
+  expect_equal(data_version("subsetCars"), expected_version)
   unlink(file.path(tmp, "subsetCars"),
     recursive = TRUE,
     force = TRUE
@@ -505,7 +505,7 @@ test_that("package built in different edge cases", {
     basename(normalizePath(tempdir(), winslash = "/"))
   )
   expect_error(package_build(tempdir()))
-  expect_error(dataVersion("foo"))
+  expect_error(data_version("foo"))
   expect_error(
     DataPackageR:::.increment_data_version("foo",
       new_data_digest = "bar",

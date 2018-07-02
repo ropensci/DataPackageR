@@ -2,6 +2,7 @@
 
 export(construct_yml_config)
 export(dataVersion)
+export(data_version)
 export(datapackage.skeleton)
 export(datapackager_object_read)
 export(keepDataObjects)

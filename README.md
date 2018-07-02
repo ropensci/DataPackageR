@@ -49,8 +49,8 @@ The `datapackage.skeleton()` API lets you point `DataPackageR` at your data proc
 The `package_build()` API runs the processing code specified in the `.yml` files and produces html reports of the processing as **package vignettes**. It also builds boilerplate `roxygen` documentation of the R objects specified in the `.yml`, computes checksums of stored R objects and version tags the entire data set collection.
 
 If raw data changes, the user can rebuild the data sets in the R package with subsequent calls to `package_build()` which will re-run the processing, compare the cheksums of new R objects against those currently stored in the package. 
-Any changes force an increment of the `Dataversion` string in the package DESCRIPTION file. 
-When the package is installed, data sets can be accessed via the standard `data()` API, package vignettes describing the data processing can be accessed via `vignette()`, documentation via `?`, and the data version via `dataVersion(packageName)`. 
+Any changes force an increment of the `DataVersion` string in the package DESCRIPTION file. 
+When the package is installed, data sets can be accessed via the standard `data()` API, package vignettes describing the data processing can be accessed via `vignette()`, documentation via `?`, and the data version via `data_version(packageName)`. 
 
 
 # Installation 

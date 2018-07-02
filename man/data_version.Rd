@@ -2,9 +2,12 @@
 % Please edit documentation in R/dataversion.r
 \name{dataVersion}
 \alias{dataVersion}
+\alias{data_version}
 \title{Get the DataVersion for a package}
 \usage{
 dataVersion(pkg, lib.loc = NULL)
+
+data_version(pkg, lib.loc = NULL)
 }
 \arguments{
 \item{pkg}{\code{character} the package name}
@@ -13,6 +16,9 @@ dataVersion(pkg, lib.loc = NULL)
 }
 \description{
 Retreives the DataVersion of a package if available
+}
+\note{
+\code{dataVersion()} has been renamed to \code{data_version()}
 }
 \seealso{
 \code{\link[utils]{packageVersion}}

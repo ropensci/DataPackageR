@@ -6,13 +6,16 @@
 #' @param pkg \code{character} the package name
 #' @param lib.loc \code{character} path to library location.
 #' @seealso \code{\link[utils]{packageVersion}}
+#' @rdname data_version
+#' @note \code{dataVersion()} has been renamed to \code{data_version()}
 #' @importFrom utils capture.output file_test package.skeleton packageDescription
 #' @export
 dataVersion <- function(pkg, lib.loc = NULL) {
+  warning("Please use data_version() instead of dataVersion().")
   res <- suppressWarnings(
     utils::packageDescription(pkg,
-      lib.loc = lib.loc,
-      fields = "DataVersion"
+                              lib.loc = lib.loc,
+                              fields = "DataVersion"
     )
   )
   if (!is.na(res)) {
@@ -29,6 +32,11 @@ dataVersion <- function(pkg, lib.loc = NULL) {
     )
   }
 }
+
+#' @rdname data_version
+#' @export
+data_version <- dataVersion
+
 .increment_data_version <-
   function(pkg_description, new_data_digest, which = "patch") {
     if (!which %in% c("major", "minor", "patch")) {
