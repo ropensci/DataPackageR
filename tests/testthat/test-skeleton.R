@@ -8,7 +8,7 @@ test_that("datapackage skeleton builds correct structure", {
   tmp <<- normalizePath(tmp, winslash = "/", mustWork = TRUE)
 
   expect_null(
-    datapackage.skeleton(
+    datapackage_skeleton(
       name = "subsetCars",
       path = tmp,
       code_files = c(file),
@@ -24,7 +24,7 @@ test_that("package can be built from different locations", {
   file <- system.file("extdata", "tests", "subsetCars.Rmd",
     package = "DataPackageR"
   )
-  datapackage.skeleton(
+  datapackage_skeleton(
     name = "subsetCars",
     path = tmp,
     code_files = c(file),
@@ -48,7 +48,7 @@ test_that("yaml reading, adding, removing, listing, and writing", {
     package = "DataPackageR"
   )
   expect_null(
-    datapackage.skeleton(
+    datapackage_skeleton(
       name = "subsetCars",
       path = tmp,
       code_files = c(file),
@@ -177,7 +177,7 @@ test_that("can add a data item", {
     package = "DataPackageR"
   )
   expect_null(
-    datapackage.skeleton(
+    datapackage_skeleton(
       name = "subsetCars",
       path = tmp,
       code_files = c(file, file2),
@@ -208,7 +208,7 @@ test_that("can remove a data item", {
     package = "DataPackageR"
   )
   expect_null(
-    datapackage.skeleton(
+    datapackage_skeleton(
       name = "subsetCars",
       path = tmp,
       code_files = c(file, file2),
@@ -244,7 +244,7 @@ test_that("can_read_pkg_description,  data_version", {
   file2 <- system.file("extdata", "tests", "extra.rmd",
     package = "DataPackageR"
   )
-  datapackage.skeleton(
+  datapackage_skeleton(
     name = "subsetCars",
     path = tmp,
     code_files = c(file, file2),
@@ -274,7 +274,7 @@ test_that("edge cases work as expected", {
     package = "DataPackageR"
   )
   expect_error(
-    datapackage.skeleton(
+    datapackage_skeleton(
       name = NULL,
       path = tmp,
       code_files = c(file1, file2),
@@ -282,7 +282,7 @@ test_that("edge cases work as expected", {
       r_object_names = c("cars_over_20", "pressure")
     )
   )
-  datapackage.skeleton(
+  datapackage_skeleton(
     name = "subsetCars",
     list = list(),
     path = tmp,
@@ -302,7 +302,7 @@ test_that("can add a file", {
     package = "DataPackageR"
   )
   expect_null(
-    datapackage.skeleton(
+    datapackage_skeleton(
       name = "subsetCars",
       path = tmp,
       code_files = c(file),
@@ -386,7 +386,7 @@ test_that("auto bump version when data unchanged", {
     package = "DataPackageR"
   )
   expect_null(
-    datapackage.skeleton(
+    datapackage_skeleton(
       name = "subsetCars",
       path = tmp,
       code_files = c(file),
@@ -414,7 +414,7 @@ test_that("manual bump version when data unchanged", {
     package = "DataPackageR"
   )
   expect_null(
-    datapackage.skeleton(
+    datapackage_skeleton(
       name = "subsetCars",
       path = tmp,
       code_files = c(file),
@@ -442,7 +442,7 @@ test_that("data changes but version out of sync", {
     package = "DataPackageR"
   )
   expect_null(
-    datapackage.skeleton(
+    datapackage_skeleton(
       name = "subsetCars",
       path = tmp,
       code_files = c(file),
@@ -472,7 +472,7 @@ test_that("package built in different edge cases", {
     package = "DataPackageR"
   )
   tmp <- tempdir()
-  datapackage.skeleton(
+  datapackage_skeleton(
     name = "subsetCars",
     path = tmp,
     code_files = c(file),
@@ -512,17 +512,17 @@ test_that("package built in different edge cases", {
       which = "path"
     )
   )
-  expect_error(DataPackageR:::DataPackageR(tempdir()))
+  suppressWarnings(expect_error(DataPackageR:::DataPackageR(tempdir())))
   unlink(file.path(tmp, "foo"),
     force = TRUE,
     recursive = TRUE
   )
   package.skeleton("foo", path = tmp)
   dir.create(file.path(tmp, "foo", "data-raw"))
-  expect_error(DataPackageR:::DataPackageR(file.path(tmp, "foo")))
+  suppressWarnings(expect_error(DataPackageR:::DataPackageR(file.path(tmp, "foo"))))
   unlink(file.path(tmp, "foo", "R"), recursive = TRUE, force = TRUE)
   unlink(file.path(tmp, "foo", "inst"), recursive = TRUE, force = TRUE)
-  expect_error(DataPackageR:::DataPackageR(file.path(tmp, "foo")))
+  suppressWarnings(expect_error(DataPackageR:::DataPackageR(file.path(tmp, "foo"))))
   unlink(file.path(tmp, "foo"), force = TRUE, recursive = TRUE)
 
 
@@ -532,7 +532,7 @@ test_that("package built in different edge cases", {
   unlink(file.path(tmp, "foo", "DESCRIPTION"))
   yml <- DataPackageR:::construct_yml_config("foo.Rmd")
   yml_write(yml, path = file.path(tmp, "foo"))
-  expect_error(DataPackageR:::DataPackageR(file.path(tmp, "foo")))
+  suppressWarnings(expect_error(DataPackageR:::DataPackageR(file.path(tmp, "foo"))))
   yml$configuration$files <- " "
   yml_write(yml, path = file.path(tmp, "foo"))
   expect_error(DataPackageR:::DataPackageR(file.path(tmp, "foo")))
@@ -542,9 +542,9 @@ test_that("package built in different edge cases", {
     force = TRUE,
     recursive = TRUE
   )
-  expect_error(construct_yml_config("foo",
+  suppressWarnings(expect_error(construct_yml_config("foo",
     render_root = "bar"
-  ))
+  )))
   unlink(file.path(tmp, "subsetCars"),
     recursive = TRUE,
     force = TRUE
@@ -594,14 +594,14 @@ test_that("package built in different edge cases", {
   e <- new.env()
   d <- list()
   assign("a", 10, e)
-  expect_error(DataPackageR:::.digest_data_env("a", e, d))
+  suppressWarnings(expect_error(DataPackageR:::.digest_data_env("a", e, d)))
 
-  expect_error(
+  suppressWarnings(expect_error(
     DataPackageR:::.check_dataversion_string(
       list(DataVersion = "1.1.1"),
       list(DataVersion = "1.a.1")
     )
-  )
+  ))
 
   unlink(file.path(tmp, "foo"),
     force = TRUE,
@@ -611,32 +611,32 @@ test_that("package built in different edge cases", {
 
   library(futile.logger)
   flog.appender(appender.console())
-  expect_false({
+  suppressWarnings(expect_false({
     DataPackageR:::.compare_digests(
       list(
         DataVersion = "1.1.1",
-        a = letters[1:10]
+        a = paste0(letters[1:10], collapse = "")
       ),
       list(
         DataVersion = "1.1.2",
-        a = LETTERS[1:10]
+        a = paste0(LETTERS[1:10], collapse = "")
       )
     )
-  })
+  }))
 
   unlink(file.path(tmp, "foo"),
     force = TRUE,
     recursive = TRUE
   )
-  expect_error(yml_list_objects("foo"))
+  suppressWarnings(expect_error(yml_list_objects("foo")))
   expect_false(DataPackageR:::.validate_render_root("/foobar"))
-  expect_error(DataPackageR:::yml_add_files("subsetCars", "foo.rmd"))
-  expect_error(DataPackageR:::yml_disable_compile("subsetCars", "foo.rmd"))
-  expect_error(DataPackageR:::yml_enable_compile("subsetCars", "foo.rmd"))
-  expect_error(DataPackageR:::yml_add_objects("subsetCars", "foo.rmd"))
-  expect_error(DataPackageR:::yml_list_files("subsetCars"))
-  expect_error(DataPackageR:::yml_remove_objects("subsetCars", "bar"))
-  expect_error(DataPackageR:::yml_remove_files("subsetCars", "foo.rmd"))
+  suppressWarnings(expect_error(DataPackageR:::yml_add_files("subsetCars", "foo.rmd")))
+  suppressWarnings(expect_error(DataPackageR:::yml_disable_compile("subsetCars", "foo.rmd")))
+  suppressWarnings(expect_error(DataPackageR:::yml_enable_compile("subsetCars", "foo.rmd")))
+  suppressWarnings(expect_error(DataPackageR:::yml_add_objects("subsetCars", "foo.rmd")))
+  suppressWarnings(expect_error(DataPackageR:::yml_list_files("subsetCars")))
+  suppressWarnings(expect_error(DataPackageR:::yml_remove_objects("subsetCars", "bar")))
+  suppressWarnings(expect_error(DataPackageR:::yml_remove_files("subsetCars", "foo.rmd")))
   yml <- DataPackageR:::construct_yml_config("foo.Rmd", "foobar")
   expect_equal(length(names(yml[["configuration"]][["files"]])), 1)
   expect_equal(length(names(
@@ -649,7 +649,7 @@ test_that("package built in different edge cases", {
     "foo.Rmd",
     render_root = "foobar"
   ))
-  expect_error(DataPackageR:::datapackage.skeleton(
+  expect_error(DataPackageR:::datapackage_skeleton(
     name = "foo", path = tempdir(), list = list()
   ))
   unlink(normalizePath(file.path(
@@ -658,7 +658,7 @@ test_that("package built in different edge cases", {
   ), winslash = "/"),
   recursive = TRUE, force = TRUE
   )
-  expect_error(DataPackageR:::datapackage.skeleton(
+  expect_error(DataPackageR:::datapackage_skeleton(
     name = "foo", path = tempdir(), r_object_names = "bar",
     list = list(a = "b")
   ))
@@ -670,7 +670,7 @@ test_that("package built in different edge cases", {
   )
   package.skeleton(path = tempdir(), "foo")
   dir.create(file.path(tempdir(), "foo", "data-raw"))
-  expect_error(DataPackageR:::DataPackageR(file.path(tempdir(), "foo")))
+  suppressWarnings(expect_error(DataPackageR:::DataPackageR(file.path(tempdir(), "foo"))))
   yml <- DataPackageR:::construct_yml_config("foo")
   yml_write(yml, path = file.path(tempdir(), "foo"))
   expect_error(DataPackageR:::DataPackageR(file.path(tempdir(), "foo")))
@@ -686,7 +686,7 @@ test_that("package built in different edge cases", {
     recursive = TRUE
   )
   expect_error(DataPackageR:::DataPackageR(file.path(tempdir(), "foo")))
-  datapackage.skeleton(
+  datapackage_skeleton(
     name = "subsetCars",
     path = tempdir(),
     code_files = system.file("extdata", "tests", "subsetCars.Rmd",
@@ -699,16 +699,16 @@ test_that("package built in different edge cases", {
     force = TRUE,
     recursive = TRUE
   )
-  expect_error(
+  suppressWarnings(expect_error(
     DataPackageR:::DataPackageR(
       file.path(tempdir(), "subsetCars")
     )
-  )
+  ))
   unlink(file.path(tempdir(), "subsetCars"),
     force = TRUE,
     recursive = TRUE
   )
-  datapackage.skeleton(
+  datapackage_skeleton(
     name = "subsetCars",
     path = tempdir(),
     code_files = system.file("extdata", "tests", "subsetCars.Rmd",

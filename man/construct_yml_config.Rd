@@ -23,7 +23,7 @@ Can be written to disk via \code{yml_write}.
 \code{render_root} is set to a randomly generated named subdirectory of \code{tempdir()}.
 }
 \examples{
-conf = construct_yml_config(code=c('file1.rmd','file2.rmd'), data=c('object1','object2'))
-tmp = normalizePath(tempdir(), winslash = "/")
+conf <- construct_yml_config(code = c('file1.rmd','file2.rmd'), data=c('object1','object2'))
+tmp <- normalizePath(tempdir(), winslash = "/")
 yml_write(conf,path=tmp)
 }

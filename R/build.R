@@ -15,6 +15,20 @@
 #' @importFrom futile.logger flog.debug flog.info flog.warn flog.error flog.fatal flog.appender flog.threshold INFO appender.console appender.tee
 #' @importFrom knitr knit
 #' @export
+#' @examples 
+#' \dontshow{
+#' f <- tempdir()
+#' f <- file.path(f,"foo.Rmd")
+#' con <- file(f)
+#' writeLines("```{r}\na= 100\n```\n",con=con)
+#' close(con)
+#' datapackage_skeleton(name="MyDataPackage",
+#'    path=tempdir(), 
+#'    force = TRUE,
+#'    r_object_names = "a",
+#'    code_files = f)
+#'    }
+#'package_build(file.path(tempdir(),"MyDataPackage"))
 package_build <- function(packageName = NULL,
                           vignettes = FALSE,
                           log=INFO) {

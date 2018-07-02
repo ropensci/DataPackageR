@@ -10,8 +10,23 @@
 #' @note \code{dataVersion()} has been renamed to \code{data_version()}
 #' @importFrom utils capture.output file_test package.skeleton packageDescription
 #' @export
-dataVersion <- function(pkg, lib.loc = NULL) {
-  warning("Please use data_version() instead of dataVersion().")
+#' @examples
+#' \dontshow{
+#' f <- tempdir()
+#' f <- file.path(f,"foo.Rmd")
+#' con <- file(f)
+#' writeLines("```{r}\na= 100\n```\n",con=con)
+#' close(con)
+#' datapackage_skeleton(name="MyDataPackage",
+#'    path=tempdir(), 
+#'    force = TRUE,
+#'    r_object_names = "a",
+#'    code_files = f)
+#'    package_build(file.path(tempdir(),"MyDataPackage"))
+#'    devtools::load_all(file.path(tempdir(),"MyDataPackage"))
+#'}
+#'    data_version("MyDataPackage")
+data_version <- function(pkg, lib.loc = NULL) {
   res <- suppressWarnings(
     utils::packageDescription(pkg,
                               lib.loc = lib.loc,
@@ -35,7 +50,10 @@ dataVersion <- function(pkg, lib.loc = NULL) {
 
 #' @rdname data_version
 #' @export
-data_version <- dataVersion
+dataVersion <- function(pkg, lib.loc = NULL){
+  warning("Please use data_version() instead of dataVersion().")
+  data_version(pkg = pkg, lib.loc = lib.loc)
+}
 
 .increment_data_version <-
   function(pkg_description, new_data_digest, which = "patch") {

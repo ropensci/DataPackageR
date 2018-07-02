@@ -2,8 +2,15 @@
 % Please edit documentation in R/skeleton.R
 \name{datapackage.skeleton}
 \alias{datapackage.skeleton}
+\alias{datapackage_skeleton}
+\alias{datapackage.skeleton}
+\alias{datapackage_skeleton}
 \title{Create a Data Package skeleton for use with DataPackageR.}
 \usage{
+datapackage_skeleton(name = NULL, list = character(),
+  environment = .GlobalEnv, path = ".", force = FALSE,
+  code_files = character(), r_object_names = character())
+
 datapackage.skeleton(name = NULL, list = character(),
   environment = .GlobalEnv, path = ".", force = FALSE,
   code_files = character(), r_object_names = character())
@@ -30,8 +37,20 @@ Creates a package skeleton for use with preprpocessData. Creates the additional 
 datasets, namely the DataVersion string in DESCRIPTION, DATADIGEST, and the data-raw directory. Updates Read-and-delete-me
 to reflect the additional necessary steps.
 }
-\examples{
-\dontrun{
-datapackage.skeleton(name="MyDataPackage",path="/tmp")
+\note{
+renamed \code{datapackage.skeleton()} to \code{datapackage_skeleton()}.
 }
+\examples{
+\dontshow{
+f <- tempdir()
+f <- file.path(f,"foo.Rmd")
+con <- file(f)
+writeLines("```{r}\\na= 100\\n```\\n",con=con)
+close(con)
+}
+datapackage_skeleton(name="MyDataPackage",
+   path=tempdir(), 
+   force = TRUE,
+   r_object_names = "a",
+   code_files = f)
 }
