@@ -162,13 +162,13 @@ datapackage_skeleton <-
 #' f <- tempdir()
 #' f <- file.path(f,"foo.Rmd")
 #' con <- file(f)
-#' writeLines("```{r}\na= 100\n```\n",con=con)
+#' writeLines("```{r}\n tbl = table(sample(1:10,1000,replace=TRUE)) \n```\n",con=con)
 #' close(con)
-#' 
-#' datapackage_skeleton(name="MyDataPackage",
-#'    path=tempdir(), 
+#' pname <- basename(tempfile())
+#' datapackage_skeleton(name = pname,
+#'    path = tempdir(), 
 #'    force = TRUE,
-#'    r_object_names = "a",
+#'    r_object_names = "tbl",
 #'    code_files = f)
 datapackage.skeleton <- function(name = NULL,
                                  list = character(),

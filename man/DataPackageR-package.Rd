@@ -56,33 +56,32 @@ close(con)
 # in the Rmd file name with full path, and the name of the object(s) it
 # creates.
 
-unlink(file.path(tempdir(),"MyDataPackage"),force = TRUE, recursive = TRUE)
-
-datapackage_skeleton(name="MyDataPackage",
+pname <- basename(tempfile())
+datapackage_skeleton(name=pname,
    path=tempdir(), 
    force = TRUE,
    r_object_names = "tbl",
    code_files = f)
    
 # call build_package to run the "foo.Rmd" processing and 
-# build a data package named "MyDataPackage".
-package_build(file.path(tempdir(),"MyDataPackage"))
+# build a data package.
+package_build(file.path(tempdir(), pname))
 
 # "install" the data package
-devtools::load_all(file.path(tempdir(),"MyDataPackage"))
+devtools::load_all(file.path(tempdir(), pname))
 
 # read the data version
-data_version("MyDataPackage")
+data_version(pname)
 
 # list the data sets in the package.
-data(package="MyDataPackage")
+data(package = pname)
 
 # The data objects are in the package source under "/data"
-list.files(pattern="rda", path = file.path(tempdir(),"MyDataPackage","data"), full = TRUE)
+list.files(pattern="rda", path = file.path(tempdir(),pname,"data"), full = TRUE)
 
 # The documentation that needs to be edited is in "/R"
-list.files(pattern="R", path = file.path(tempdir(),"MyDataPackage","R"), full = TRUE)
-readLines(list.files(pattern="R", path = file.path(tempdir(),"MyDataPackage","R"), full = TRUE))
+list.files(pattern="R", path = file.path(tempdir(), pname,"R"), full = TRUE)
+readLines(list.files(pattern="R", path = file.path(tempdir(),pname,"R"), full = TRUE))
 # view the documentation with
 ?tbl
 }

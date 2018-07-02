@@ -55,14 +55,14 @@ Add, remove files and objects, enable or disable parsing of specific files,  lis
 f <- tempdir()
 f <- file.path(f,"foo.Rmd")
 con <- file(f)
-writeLines("```{r}\\n a= 100 \\n```\\n",con=con)
+writeLines("```{r}\\n tbl = table(sample(1:10,1000,replace=TRUE)) \\n```\\n",con=con)
 close(con)
-unlink(file.path(tempdir(),"MyDataPackage"),force = TRUE, recursive = TRUE)
-datapackage_skeleton(name="MyDataPackage",
-   path=tempdir(), 
+pname <- basename(tempfile())
+datapackage_skeleton(name=pname,
+   path = tempdir(), 
    force = TRUE,
-   r_object_names = "a",
+   r_object_names = "tbl",
    code_files = f)
-yml <- yml_find(file.path(tempdir(),"MyDataPackage"))
+yml <- yml_find(file.path(tempdir(),pname))
 cat(as.yaml(yml))
 }

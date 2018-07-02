@@ -20,16 +20,16 @@
 #' f <- tempdir()
 #' f <- file.path(f,"foo.Rmd")
 #' con <- file(f)
-#' writeLines("```{r}\na= 100\n```\n",con=con)
+#' writeLines("```{r}\n tbl = table(sample(1:10,1000,replace=TRUE)) \n```\n",con=con)
 #' close(con)
-#' unlink(file.path(tempdir(),"MyDataPackage"),force = TRUE, recursive = TRUE)
-#' datapackage_skeleton(name="MyDataPackage",
+#' pname <- basename(tempfile())
+#' datapackage_skeleton(name=pname,
 #'    path=tempdir(), 
 #'    force = TRUE,
-#'    r_object_names = "a",
+#'    r_object_names = "tbl",
 #'    code_files = f)
 #'    
-#'package_build(file.path(tempdir(),"MyDataPackage"))
+#'package_build(file.path(tempdir(),pname))
 package_build <- function(packageName = NULL,
                           vignettes = FALSE,
                           log=INFO) {
