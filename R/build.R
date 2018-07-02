@@ -73,15 +73,14 @@ package_build <- function(packageName = NULL,
   )
 }
 
-#' Specify which data objects to keep
+#' These functions are no longer available.
 #'
-#' Specify the names of the data objects to keep. To be called after all preprocessing code.
-#' @param obj \code{character} vector of object names
+#' @name keepDataObjects-defunct
+#' @aliases  keepDataObjects
+#' @param ... arguments
+#' @rdname keepDataObjects-defunct
 #' @export
-keepDataObjects <- function(obj) {
-  # remove everything except the objects specified in obj
-  rm(list = setdiff(
-    objects(envir = parent.frame()),
-    obj
-  ), envir = parent.frame())
+keepDataObjects <- function(...) {
+  .Defunct(msg = "keepDataObjects is defunct as of version 0.12.1 of DataPackageR. \nUse the config.yml file to control packaging.")
+
 }

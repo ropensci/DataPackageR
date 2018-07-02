@@ -542,7 +542,6 @@ test_that("package built in different edge cases", {
     force = TRUE,
     recursive = TRUE
   )
-  expect_null(keepDataObjects(obj = ls()))
   expect_error(construct_yml_config("foo",
     render_root = "bar"
   ))
