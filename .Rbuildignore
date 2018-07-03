@@ -9,3 +9,4 @@ README.html
 ^CODE_OF_CONDUCT\.md$
 ^appveyor\.yml$
 NEWS.md
+bibliography.bib

@@ -482,6 +482,7 @@ DataPackageR <- function(arg = NULL) {
   pkg$set_dep("knitr", "Suggests")
   pkg$set_dep("rmarkdown", "Suggests")
   pkg$set("VignetteBuilder" = "knitr")
+  pkg$write()
   usethis::use_directory("vignettes")
   usethis::use_directory("inst/doc")
   # TODO maybe copy only the files that have both html and Rmd.
