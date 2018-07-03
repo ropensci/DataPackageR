@@ -10,3 +10,4 @@ README.html
 ^appveyor\.yml$
 NEWS.md
 bibliography.bib
+YAML_CONFIG.Rmd
