@@ -101,23 +101,25 @@ DataPakcageR provides a number of benefits when packaging your data.
     tidy data, saving space and time consumers of your data set need to
     spend downloading and re-processing it.
 
-  - It maintains a reproducible record of the data processing along with
-    the package. Consumers of the data package can verify how the
-    processing was done, increasing confidence in your data.
+  - It maintains a reproducible record (vignettes) of the data
+    processing along with the package. Consumers of the data package can
+    verify how the processing was done, increasing confidence in your
+    data.
 
   - It automates construction of the documenation and maintains a data
-    set version and fingerprint of each data object in the package. If
-    the data changes and the package is rebuilt, the data version is
-    automatically updated.
+    set version and an md5 fingerprint of each data object in the
+    package. If the data changes and the package is rebuilt, the data
+    version is automatically updated.
 
 ## Similar work
 
 There are a number of tools out there that address similar and
-complementary problems.
+complementary problems:
 
   - **datastorr** [github
-    repo](https://github.com/ropenscilabs/datastorr) Simple data
-    retrieval and versioning using GitHub to store data.
+    repo](https://github.com/ropenscilabs/datastorr)
+    
+    Simple data retrieval and versioning using GitHub to store data.
     
       - Caches downloads and uses github releases to version data.
       - Deal consistently with translating the file stored online into a
@@ -148,6 +150,8 @@ complementary problems.
   - **template** [github repo](https://github.com/ropensci/rrrpkg)
     
     An R package template for data packages.
+
+See the [publication](#publication) for further discussion.
 
 ## Installation
 
@@ -183,7 +187,7 @@ DataPackageR::datapackage_skeleton(
 #> Saving functions and data ...
 #> Making help files ...
 #> Done.
-#> Further steps are described in '/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//RtmpjSiNpS/mtcars20/Read-and-delete-me'.
+#> Further steps are described in '/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//RtmptEqdQt/mtcars20/Read-and-delete-me'.
 #> Adding DataVersion string to DESCRIPTION
 #> Creating data and data-raw directories
 #> configuring yaml file
@@ -196,12 +200,12 @@ DataPackageR:::package_build(file.path(tempdir(),"mtcars20"))
 #> processing file: subsetCars.Rmd
 #> output file: subsetCars.knit.md
 #> 
-#> Output created: /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpjSiNpS/mtcars20/inst/extdata/Logfiles/subsetCars.html
+#> Output created: /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmptEqdQt/mtcars20/inst/extdata/Logfiles/subsetCars.html
 #> First time using roxygen2. Upgrading automatically...
-#> Updating roxygen version in /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpjSiNpS/mtcars20/DESCRIPTION
+#> Updating roxygen version in /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmptEqdQt/mtcars20/DESCRIPTION
 #> '/Library/Frameworks/R.framework/Resources/bin/R' --no-site-file  \
 #>   --no-environ --no-save --no-restore --quiet CMD build  \
-#>   '/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpjSiNpS/mtcars20'  \
+#>   '/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmptEqdQt/mtcars20'  \
 #>   --no-resave-data --no-manual --no-build-vignettes
 #> 
 
@@ -227,10 +231,11 @@ assert_data_version(data_package_name = "mtcars20",
                     acceptable = "equal")
 ```
 
-## Preprint and publication.
+## Preprint and publication. <a id = "publication"></a>
 
-The publication describing the package is now available at [Gates Open
-Research](https://gatesopenresearch.org/articles/2-31/v1).
+The publication describing the package, Finak et al. (2018), is now
+available at [Gates Open
+Research](https://gatesopenresearch.org/articles/2-31/v1) .
 
 The preprint is on [biorxiv](https://doi.org/10.1101/342907).
 
@@ -243,6 +248,15 @@ to abide by its terms.
 # References
 
 <div id="refs" class="references">
+
+<div id="ref-Finak2018-tu">
+
+Finak, Greg, Bryan Mayer, William Fulp, Paul Obrecht, Alicia Sato, Eva
+Chung, Drienna Holman, and Raphael Gottardo. 2018. “DataPackageR:
+Reproducible Data Preprocessing, Standardization and Sharing Using
+R/Bioconductor for Collaborative Data Analysis.” *bioRxiv*.
+
+</div>
 
 <div id="ref-Gentleman2004-oj">
 
