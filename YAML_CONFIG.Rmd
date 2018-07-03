@@ -7,15 +7,15 @@ editor_options:
 
 # Configuring and controlling DataPackageR builds.
 
-Data package builds are controlled using the `config.yml` file. 
+Data package builds are controlled using the `datapackager.yml` file. 
 
 This file is created in the package source tree when the user creates a package using `datapackage_skeleton()`. 
 
 It is automatically populated with the names of the `code_files` and `data_objects` the passed in to datapackage_skeleton.
 
-## The `config.yml` file.
+## The `datapackager.yml` file.
 
-The structure of a correctly formatted `config.yml` file is shown below:
+The structure of a correctly formatted `datapackager.yml` file is shown below:
 
 ```{r, echo = FALSE, results = 'hide'}
 library(DataPackageR)
