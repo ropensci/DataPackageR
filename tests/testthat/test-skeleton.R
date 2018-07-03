@@ -821,4 +821,5 @@ test_that("datapackager_object_read", {
   expect_equal(eval(datapackager_object_read("foo"),
                     dataenv),
                100)
+  expect_true(is.character(DataPackageR::project_path()))
 })

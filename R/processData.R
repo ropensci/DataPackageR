@@ -112,7 +112,7 @@ NULL
 #' @importFrom desc desc
 #' @importFrom rmarkdown render
 #' @importFrom utils getSrcref modifyList
-#' @importFrom usethis proj_set
+#' @importFrom usethis proj_set proj_get
 DataPackageR <- function(arg = NULL) {
   requireNamespace("futile.logger")
   requireNamespace("yaml")
@@ -585,4 +585,16 @@ DataPackageR <- function(arg = NULL) {
       )
     )
   }
+}
+
+#' Get DataPackageR Project Root Path
+#'
+#' @details Returns the path to the data package project root.
+#' @return \code{character}
+#' @export
+#'
+#' @examples
+#' project_path()
+project_path <- function(){
+  usethis::proj_get()
 }
