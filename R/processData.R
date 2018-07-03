@@ -112,11 +112,13 @@ NULL
 #' @importFrom desc desc
 #' @importFrom rmarkdown render
 #' @importFrom utils getSrcref modifyList
+#' @importFrom usethis proj_set
 DataPackageR <- function(arg = NULL) {
   requireNamespace("futile.logger")
   requireNamespace("yaml")
   pkg_dir <- arg
   pkg_dir <- normalizePath(pkg_dir, winslash = "/")
+  usethis::proj_set(path = pkg_dir)
   raw_data_dir <- "data-raw"
   target <- normalizePath(file.path(pkg_dir, raw_data_dir), winslash = "/")
   raw_data_dir <- target
