@@ -290,6 +290,11 @@ A script (e.g., `script2.Rmd`) running after `script1.Rmd` can access a stored d
 
 `DataPackageR::datapackager_object_read("script1_dataset")`. 
 
+Passing of data objects amongst scripts can be turned off via:
+
+`package_build(deps = FALSE)`
+
+
 # Additional Details
 
 We provide some additional details for the interested.

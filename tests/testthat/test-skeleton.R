@@ -37,7 +37,8 @@ test_that("package can be built from different locations", {
         file.path(tmp, "subsetCars"))),
     "subsetCars_1.0.tar.gz")
   
-  old <- setwd(file.path(tmp, "subsetCars"))
+  old <- 
+    setwd(file.path(tmp, "subsetCars"))
   on.exit(setwd(old))
   expect_equal(basename(package_build(".")), "subsetCars_1.0.tar.gz")
   expect_error(package_build("subsetCars"))
@@ -474,6 +475,9 @@ test_that("package built in different edge cases", {
          force = TRUE,
          recursive = TRUE)
   package.skeleton("foo", path = tmp)
+  suppressWarnings(expect_error(
+    DataPackageR:::DataPackageR(
+      file.path(tmp, "foo"))))
   dir.create(file.path(tmp, "foo", "data-raw"))
   suppressWarnings(expect_error(
     DataPackageR:::DataPackageR(
@@ -492,8 +496,8 @@ test_that("package built in different edge cases", {
          recursive = TRUE)
   
   
-  package.skeleton("foo", path = tmp)
-  expect_error(yml_find(file.path(tmp, "foo")))
+  package.skeleton("foo", path = tempdir(),force=TRUE)
+  expect_error(yml_find(file.path(tempdir(), "foo")))
   dir.create(file.path(tmp, "foo", "data-raw"))
   unlink(file.path(tmp, "foo", "DESCRIPTION"))
   yml <- DataPackageR:::construct_yml_config("foo.Rmd")

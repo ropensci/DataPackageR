@@ -4,10 +4,12 @@
 \alias{DataPackageR}
 \title{Process data generation code in 'data-raw'}
 \usage{
-DataPackageR(arg = NULL)
+DataPackageR(arg = NULL, deps = TRUE)
 }
 \arguments{
 \item{arg}{\code{character} name of the package to build.}
+
+\item{deps}{\code{logical} should scripts pass data objects to each other (default=TRUE)}
 }
 \value{
 logical TRUE if succesful, FALSE, if not.

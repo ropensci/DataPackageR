@@ -7,6 +7,7 @@
 #' @param packageName \code{character} path to package source directory. Defaults to the current path when NULL.
 #' @param vignettes \code{logical} specify whether to build vignettes. Default FALSE.
 #' @param log log level \code{INFO,WARN,DEBUG,FATAL}
+#' @param deps \code{logical} should we pass data objects into subsequent scripts? Default TRUE
 #' @importFrom roxygen2 roxygenise roxygenize
 #' @importFrom devtools build_vignettes build parse_deps
 #' @importFrom usethis use_build_ignore use_rstudio proj_set use_directory
@@ -32,7 +33,8 @@
 #' package_build(file.path(tempdir(),pname))
 package_build <- function(packageName = NULL,
                           vignettes = FALSE,
-                          log=INFO) {
+                          log = INFO,
+                          deps = TRUE) {
   flog.threshold(log)
   flog.appender(appender.console())
   requireNamespace("rprojroot")
@@ -71,7 +73,7 @@ package_build <- function(packageName = NULL,
 
   # Return success if we've processed everything
   success <-
-    DataPackageR(arg = package_path)
+    DataPackageR(arg = package_path, deps = deps)
   ifelse(success,
     flog.info("DataPackageR succeeded"),
     flog.warn("DataPackageR failed")

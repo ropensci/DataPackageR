@@ -4,7 +4,8 @@
 \alias{package_build}
 \title{Preprocess, document and build a data package}
 \usage{
-package_build(packageName = NULL, vignettes = FALSE, log = INFO)
+package_build(packageName = NULL, vignettes = FALSE, log = INFO,
+  deps = TRUE)
 }
 \arguments{
 \item{packageName}{\code{character} path to package source directory. Defaults to the current path when NULL.}
@@ -12,6 +13,8 @@ package_build(packageName = NULL, vignettes = FALSE, log = INFO)
 \item{vignettes}{\code{logical} specify whether to build vignettes. Default FALSE.}
 
 \item{log}{log level \code{INFO,WARN,DEBUG,FATAL}}
+
+\item{deps}{\code{logical} should we pass data objects into subsequent scripts? Default TRUE}
 }
 \description{
 Combines the preprocessing, documentation, and build steps into one.

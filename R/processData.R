@@ -108,12 +108,13 @@ NULL
 #' Meant to be called before R CMD build.
 #' @name DataPackageR
 #' @param arg \code{character} name of the package to build.
+#' @param deps \code{logical} should scripts pass data objects to each other (default=TRUE) 
 #' @return logical TRUE if succesful, FALSE, if not.
 #' @importFrom desc desc
 #' @importFrom rmarkdown render
 #' @importFrom utils getSrcref modifyList
 #' @importFrom usethis proj_set proj_get
-DataPackageR <- function(arg = NULL) {
+DataPackageR <- function(arg = NULL, deps = TRUE) {
   requireNamespace("futile.logger")
   requireNamespace("yaml")
   pkg_dir <- arg
@@ -132,7 +133,7 @@ DataPackageR <- function(arg = NULL) {
       stop("exiting", call. = FALSE)
     }
   } else {
-    logpath <-
+    logpath <- 
       normalizePath(
         file.path(pkg_dir, "inst/extdata"),
         winslash = "/"
@@ -232,20 +233,9 @@ DataPackageR <- function(arg = NULL) {
     pkg_description <- try(read.description(file = description_file),
       silent = TRUE
     )
-    if (inherits(pkg_description, "try-error")) {
-      flog.fatal("No valid DESCRIPTION file")
-      {
-        stop(
-          paste0(
-            "You need a valid package DESCRIPTION file.",
-            "Please see Writing R Extensions",
-            "(http://cran.r-project.org/doc/manuals/",
-            "r-release/R-exts.html#The-DESCRIPTION-file).\n"
-          ),
-          pkg_description
-        )
-      }
-    }
+    # The test for a valid DESCRIPTION here is no longer needed since
+    # we use proj_set().
+    
     # check that we have at least one file
     # This is caught elsewhere
 
@@ -264,8 +254,9 @@ DataPackageR <- function(arg = NULL) {
     for (i in seq_along(r_files)) {
       dataenv <- new.env(hash = TRUE, parent = .GlobalEnv)
       # assign ENVS into dataenv.
-      # provide functions in the package to read from it.
-      assign(x = "ENVS", value = ENVS, dataenv)
+      # provide functions in the package to read from it (if deps = TRUE)
+      if(deps)
+        assign(x = "ENVS", value = ENVS, dataenv)
       flog.info(paste0(
         "Processing ", i, " of ",
         length(r_files), ": ", r_files[i],
