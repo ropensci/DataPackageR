@@ -598,3 +598,28 @@ DataPackageR <- function(arg = NULL) {
 project_path <- function(){
   usethis::proj_get()
 }
+
+
+#' Get DataPackageR extdata path
+#'
+#' @details Returns the path to the datapackage extdata directory.
+#' @return \code{character}
+#' @export
+#'
+#' @examples
+#' project_extdata_path()
+project_extdata_path <- function(){
+  file.path(usethis::proj_get(),"inst","extdata")
+}
+
+#' Get DataPackageR data path
+#'
+#' @details Returns the path to the datapackage data directory.
+#' @return \code{character}
+#' @export
+#'
+#' @examples
+#' project_data_path()
+project_data_path <- function(){
+  file.path(usethis::proj_get(),"data")
+}

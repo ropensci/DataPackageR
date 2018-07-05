@@ -181,6 +181,25 @@ assert_data_version(data_package_name = "mtcars20",
                     acceptable = "equal")
 ```
 
+### Reading external data
+
+In an Rmd file, external data (stored in `inst/extdata` at the data package source, or eslewhere) can be located relative to:
+
+```{r, eval = FALSE}
+# This returns the datapackage source 
+# root directory. 
+DataPackageR::project_path()
+
+# This returns the datapackage  
+# inst/extdata directory. 
+DataPackageR::project_extdata_path()
+
+# This returns the path to the datapackage  
+# data directory. 
+DataPackageR::project_data_path()
+```
+
+
 ## Preprint and publication. <a id = "publication"></a>
 
 The publication describing the package, @Finak2018-tu, is now available at   [Gates Open Research](https://gatesopenresearch.org/articles/2-31/v1) .
