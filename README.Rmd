@@ -28,7 +28,7 @@ DataPackageR is used to reproducibly process raw data into packaged, analysis-re
 - [yaml configuration guide](YAML_CONFIG.md)
 
 
-## What's the problem?
+## What problems does DataPackageR tackle?
 
 You have diverse raw data sets that you need to preprocess and tidy in order to:
 
@@ -74,6 +74,10 @@ You have diverse raw data sets that you need to preprocess and tidy in order to:
 - **Manual effort**
 
   There is still a substantial manual effort to set up the correct directory structures for an R data package. This can dissuade many individuals, particularly new users who have never built an R package, from going this route.
+  
+- **Scale** 
+
+  Seting up and building R data packages by hand is a workable solution for a small project or a small number of projects, but when dealing with many projects each involving many data sets, tools are needed to help automate the process.
   
 ## DataPackageR
 

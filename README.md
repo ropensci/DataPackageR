@@ -16,7 +16,7 @@ status](https://ci.appveyor.com/api/projects/status/github/RGLab/DataPackageR?br
 
   - [yaml configuration guide](YAML_CONFIG.md)
 
-## What’s the problem?
+## What problems does DataPackageR tackle?
 
 You have diverse raw data sets that you need to preprocess and tidy in
 order to:
@@ -87,6 +87,13 @@ order to:
     directory structures for an R data package. This can dissuade many
     individuals, particularly new users who have never built an R
     package, from going this route.
+
+  - **Scale**
+    
+    Seting up and building R data packages by hand is a workable
+    solution for a small project or a small number of projects, but when
+    dealing with many projects each involving many data sets, tools are
+    needed to help automate the process.
 
 ## DataPackageR
 
@@ -191,7 +198,7 @@ DataPackageR::datapackage_skeleton(
 #> Saving functions and data ...
 #> Making help files ...
 #> Done.
-#> Further steps are described in '/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//RtmpOx8l0R/mtcars20/Read-and-delete-me'.
+#> Further steps are described in '/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//Rtmpwy0gLc/mtcars20/Read-and-delete-me'.
 #> Adding DataVersion string to DESCRIPTION
 #> Creating data and data-raw directories
 #> configuring yaml file
@@ -204,12 +211,12 @@ DataPackageR:::package_build(file.path(tempdir(),"mtcars20"))
 #> processing file: subsetCars.Rmd
 #> output file: subsetCars.knit.md
 #> 
-#> Output created: /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpOx8l0R/mtcars20/inst/extdata/Logfiles/subsetCars.html
+#> Output created: /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmpwy0gLc/mtcars20/inst/extdata/Logfiles/subsetCars.html
 #> First time using roxygen2. Upgrading automatically...
-#> Updating roxygen version in /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpOx8l0R/mtcars20/DESCRIPTION
+#> Updating roxygen version in /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmpwy0gLc/mtcars20/DESCRIPTION
 #> '/Library/Frameworks/R.framework/Resources/bin/R' --no-site-file  \
 #>   --no-environ --no-save --no-restore --quiet CMD build  \
-#>   '/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpOx8l0R/mtcars20'  \
+#>   '/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmpwy0gLc/mtcars20'  \
 #>   --no-resave-data --no-manual --no-build-vignettes
 #> 
 
@@ -233,6 +240,25 @@ DataPackageR::data_version("mtcars20")
 assert_data_version(data_package_name = "mtcars20",
                     version_string = "0.1.0",
                     acceptable = "equal")
+```
+
+### Reading external data
+
+In an Rmd file, external data (stored in `inst/extdata` at the data
+package source, or eslewhere) can be located relative to:
+
+``` r
+# This returns the datapackage source 
+# root directory. 
+DataPackageR::project_path()
+
+# This returns the datapackage  
+# inst/extdata directory. 
+DataPackageR::project_extdata_path()
+
+# This returns the path to the datapackage  
+# data directory. 
+DataPackageR::project_data_path()
 ```
 
 ## Preprint and publication. <a id = "publication"></a>

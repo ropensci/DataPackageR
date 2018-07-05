@@ -6,7 +6,7 @@ output:
   rmarkdown::html_vignette:
     keep_md: TRUE
 vignette: >
-  %\VignetteIndexEntry{A quick guide to using DataPackageR}
+  %\VignetteIndexEntry{A Guide to using DataPackageR}
   %\VignetteEngine{knitr::rmarkdown}
   \usepackage[utf8]{inputenc}
   \usepackage{graphicx}
@@ -22,68 +22,9 @@ knitr::opts_chunk$set(
 
 # DataPackageR
 
-A package to reproducibly process raw data into packaged, analysis-ready data sets.
+## Set up a new data package.
 
- [![Build Status](https://travis-ci.org/RGLab/DataPackageR.svg?branch=master)](https://travis-ci.org/RGLab/DataPackageR)
- [![Coverage status](https://codecov.io/gh/RGLab/DataPackageR/branch/master/graph/badge.svg)](https://codecov.io/github/RGLab/DataPackageR?branch=master)
- [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/RGLab/DataPackageR?branch=master&svg=true)](https://ci.appveyor.com/project/RGLab/DataPackageR)
-[![DOI](https://zenodo.org/badge/29267435.svg)](https://doi.org/10.5281/zenodo.1292095)
-
-## Code of conduct 
-
-Please note that this project is released with a [Contributor Code of Conduct](CODE_OF_CONDUCT.md).
-  By participating in this project you agree to abide by its terms.
-
-## Preprint and publication.
-
-The publication describing the package is now available at [Gates Open Research](https://gatesopenresearch.org/articles/2-31/v1).
-
-The preprint is on [biorxiv](https://doi.org/10.1101/342907).
-
-## Goals
-
-You have raw data that needs to be tidied and otherwise processed into a standardized analytic data set (a data set that is ready for analysis). 
-You want to do the processing using best practices for reproducible research. 
-
-### The current state of affairs
-
-Normally, you'll write some code that does the tidying and outputs a tidy data set. 
-If you want to distribute your data set, you can put it in an R package. 
-The preferred mechanism is to place your data tidying code in `data-raw` in the package source tree and use the `devtools` package (specifically `devtools::use_data`) to save the data into the `data` directory. The build process will include your data set in the final package.
-You'll also have to remember to document the data set in `roxygen`, and write a vignette showing how to use the data. 
-For version control and easy distribution you might post the package on github. 
-
-### Scaling up
-
-The process outlined works well for smaller data sets. 
-It can be a hassle if you have complex data that change frequently (as is often the case in biology, where data trickle in from collaborators and follow-up experiments), or more generally if you have large data sets where raw data can't be distributed as part of the package source due to size restrictions (e.g. FASTQ files for sequencing, FCS files for flow cytometry, or other "omics" data).
-
-### DataPackageR
-
-The `DataPackageR` package simplifies bundling of code, data and documentation into a single R package that can be versioned and distributed.
-The `datapackage.skeleton()` API lets you point `DataPackageR` at your data processing code (in the form of Rmd and / or R files). These are expected to produce `data objects` to be stored in the final package. The names of these are also passed to `datapackage.skeleton()`. This produces the necessary package structure, and populations a `datapackager.yml` configuration file used by the build process.
-
-The `package_build()` API runs the processing code specified in the `.yml` files and produces html reports of the processing as **package vignettes**. It also builds boilerplate `roxygen` documentation of the R objects specified in the `.yml`, computes checksums of stored R objects and version tags the entire data set collection.
-
-If raw data changes, the user can rebuild the data sets in the R package with subsequent calls to `package_build()` which will re-run the processing, compare the cheksums of new R objects against those currently stored in the package. 
-Any changes force an increment of the `Dataversion` string in the package DESCRIPTION file. 
-When the package is installed, data sets can be accessed via the standard `data()` API, package vignettes describing the data processing can be accessed via `vignette()`, documentation via `?`, and the data version via `dataVersion(packageName)`. 
-
-
-# Installation 
-
-The usual package installation mechanism works: 
-
-```
-library(devtools)
-devtools::install_github("RGLab/DataPackageR", auth_token=NULL)
-```
-
-# Usage
-
-Set up a new data package.
-
-We'll set up a new data package that processes the `cars` data by subsetting it to include only measurements of stopping distances of cars at speeds greater than 20 mph. It is processed using an Rmd file located in `inst/extdata/tests/subsetCars.Rmd` that produces a new object called `cars_over_20`. The package will be called `Test`. The work will be done in the system `/tmp` directory.
+We'll set up a new data package based on example in the [README](https://github.com/RGLab/DataPackageR/blob/master/README.md) and provide more detailed information.
 
 ```{r }
 library(data.tree)
