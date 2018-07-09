@@ -70,7 +70,7 @@ Creating Read-and-delete-me ...
 Saving functions and data ...
 Making help files ...
 Done.
-Further steps are described in '/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//RtmpdnlBey/mtcars20/Read-and-delete-me'.
+Further steps are described in '/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//RtmpP8RBDl/mtcars20/Read-and-delete-me'.
 Adding DataVersion string to DESCRIPTION
 Creating data and data-raw directories
 configuring yaml file
@@ -118,7 +118,7 @@ configuration:
       enabled: yes
   objects: cars_over_20
   render_root:
-    tmp: '158965'
+    tmp: '555525'
 ```
 
 The two main pieces of information in the configuration are a list of the files to be processed and the data sets the package will store.
@@ -143,9 +143,9 @@ In this example we are reading from `data(mtcars)` rather than from the file sys
 
 To locate the data to read from the filesystem:
 
-- `DataPackageR::project_extdata_path()` to get the path to `inst/extdata` from inside an `Rmd` or `R` file. (e.g., /var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//RtmpdnlBey/mtcars20/inst/extdata)
+- `DataPackageR::project_extdata_path()` to get the path to `inst/extdata` from inside an `Rmd` or `R` file. (e.g., /var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//RtmpP8RBDl/mtcars20/inst/extdata)
 
-- `DataPackageR::project_path()`  to get the path to the datapackage root. (e.g., /var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//RtmpdnlBey/mtcars20)
+- `DataPackageR::project_path()`  to get the path to the datapackage root. (e.g., /var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//RtmpP8RBDl/mtcars20)
 
 Raw data stored externally can be retreived relative to these paths.
 
@@ -159,36 +159,36 @@ Once the skeleton framework is set up,
 # Run the preprocessing code to build cars_over_20
 # and reproducibly enclose it in a package.
 DataPackageR:::package_build(file.path(tempdir(),"mtcars20"))
-INFO [2018-07-09 09:38:47] Logging to /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpdnlBey/mtcars20/inst/extdata/Logfiles/processing.log
-INFO [2018-07-09 09:38:47] Processing data
-INFO [2018-07-09 09:38:47] Reading yaml configuration
-INFO [2018-07-09 09:38:47] Found /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpdnlBey/mtcars20/data-raw/subsetCars.Rmd
-INFO [2018-07-09 09:38:47] Processing 1 of 1: /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpdnlBey/mtcars20/data-raw/subsetCars.Rmd
+INFO [2018-07-09 14:24:08] Logging to /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpP8RBDl/mtcars20/inst/extdata/Logfiles/processing.log
+INFO [2018-07-09 14:24:08] Processing data
+INFO [2018-07-09 14:24:09] Reading yaml configuration
+INFO [2018-07-09 14:24:09] Found /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpP8RBDl/mtcars20/data-raw/subsetCars.Rmd
+INFO [2018-07-09 14:24:09] Processing 1 of 1: /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpP8RBDl/mtcars20/data-raw/subsetCars.Rmd
 processing file: subsetCars.Rmd
 output file: subsetCars.knit.md
-/usr/local/bin/pandoc +RTS -K512m -RTS subsetCars.utf8.md --to html4 --from markdown+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash+smart --output /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpdnlBey/mtcars20/inst/extdata/Logfiles/subsetCars.html --email-obfuscation none --self-contained --standalone --section-divs --template /Library/Frameworks/R.framework/Versions/3.5/Resources/library/rmarkdown/rmd/h/default.html --no-highlight --variable highlightjs=1 --variable 'theme:bootstrap' --include-in-header /var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//RtmpdnlBey/rmarkdown-strb4d47dc2696a.html --mathjax --variable 'mathjax-url:https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' 
+/usr/local/bin/pandoc +RTS -K512m -RTS subsetCars.utf8.md --to html4 --from markdown+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash+smart --output /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpP8RBDl/mtcars20/inst/extdata/Logfiles/subsetCars.html --email-obfuscation none --self-contained --standalone --section-divs --template /Library/Frameworks/R.framework/Versions/3.5/Resources/library/rmarkdown/rmd/h/default.html --no-highlight --variable highlightjs=1 --variable 'theme:bootstrap' --include-in-header /var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//RtmpP8RBDl/rmarkdown-str10ef7314648bd.html --mathjax --variable 'mathjax-url:https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' 
 
-Output created: /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpdnlBey/mtcars20/inst/extdata/Logfiles/subsetCars.html
-INFO [2018-07-09 09:38:47] 1 required data objects created by subsetCars.Rmd
-INFO [2018-07-09 09:38:47] Saving to data
-INFO [2018-07-09 09:38:47] Copied documentation to /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpdnlBey/mtcars20/R/mtcars20.R
+Output created: /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpP8RBDl/mtcars20/inst/extdata/Logfiles/subsetCars.html
+INFO [2018-07-09 14:24:09] 1 required data objects created by subsetCars.Rmd
+INFO [2018-07-09 14:24:09] Saving to data
+INFO [2018-07-09 14:24:09] Copied documentation to /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpP8RBDl/mtcars20/R/mtcars20.R
 ✔ Creating 'vignettes/'
 ✔ Creating 'inst/doc/'
-INFO [2018-07-09 09:38:47] Done
-INFO [2018-07-09 09:38:47] DataPackageR succeeded
-INFO [2018-07-09 09:38:47] Building documentation
+INFO [2018-07-09 14:24:09] Done
+INFO [2018-07-09 14:24:09] DataPackageR succeeded
+INFO [2018-07-09 14:24:09] Building documentation
 First time using roxygen2. Upgrading automatically...
-Updating roxygen version in /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpdnlBey/mtcars20/DESCRIPTION
+Updating roxygen version in /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpP8RBDl/mtcars20/DESCRIPTION
 Writing NAMESPACE
 Writing mtcars20.Rd
 Writing cars_over_20.Rd
-INFO [2018-07-09 09:38:47] Building package
+INFO [2018-07-09 14:24:09] Building package
 '/Library/Frameworks/R.framework/Resources/bin/R' --no-site-file  \
   --no-environ --no-save --no-restore --quiet CMD build  \
-  '/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpdnlBey/mtcars20'  \
+  '/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpP8RBDl/mtcars20'  \
   --no-resave-data --no-manual --no-build-vignettes 
 
-[1] "/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpdnlBey/mtcars20_1.0.tar.gz"
+[1] "/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpP8RBDl/mtcars20_1.0.tar.gz"
 ```
 
 
@@ -274,8 +274,8 @@ The data set documentation will be accessible via `?cars_over_20`, and the data 
 ```r
 # Let's use the package we just created.
 install.packages(file.path(tempdir(),"mtcars20_1.0.tar.gz"), type = "source", repos = NULL)
-library(mtcars20)
-data("cars_over_20") # load the data
+requireNamespace('mtcars20',quietly = TRUE)
+data("cars_over_20", package = "mtcars20") # load the data
 cars_over_20  # Now we can use it.
    speed dist
 44    22   66
@@ -341,7 +341,7 @@ configuration:
   - object1
   - object2
   render_root:
-    tmp: '378263'
+    tmp: '597067'
 ```
 
 `config` is a newly constructed yaml configuration object. It can be written to the package directory:
@@ -374,7 +374,7 @@ configuration:
   - object1
   - object2
   render_root:
-    tmp: '378263'
+    tmp: '597067'
 ```
 
 Note that the modified configuration needs to be written back to the package source directory in order for the 

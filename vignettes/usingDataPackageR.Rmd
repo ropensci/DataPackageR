@@ -204,9 +204,10 @@ The data set documentation will be accessible via `?cars_over_20`, and the data 
 ```{r}
 # Let's use the package we just created.
 install.packages(file.path(tempdir(),"mtcars20_1.0.tar.gz"), type = "source", repos = NULL)
-library(mtcars20)
+attachNamespace('mtcars20') #use library() in your code
 data("cars_over_20") # load the data
-cars_over_20  # Now we can use it.
+
+cars_over_20 # now we can use it.
 ?cars_over_20 # See the documentation you wrote in data-raw/documentation.R.
 
 vignettes = vignette(package="mtcars20")
