@@ -1,6 +1,17 @@
 ---
-output: github_document
-bibliography: bibliography.bib
+title: "The DataPackageR YAML configuration file."
+author: "Greg Finak <gfinak@fredhutch.org>"
+date: "2018-07-09"
+output: 
+  rmarkdown::html_vignette:
+    keep_md: TRUE
+    toc: yes
+  bibliography: bibliography.bib
+vignette: >
+  %\VignetteIndexEntry{DataPackageR YAML configuration.}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+  \usepackage{graphicx}
 editor_options: 
   chunk_output_type: inline
 ---
@@ -17,14 +28,18 @@ It is automatically populated with the names of the `code_files` and `data_objec
 
 The structure of a correctly formatted `datapackager.yml` file is shown below:
 
-```{r, echo = FALSE, results = 'hide'}
-library(DataPackageR)
-library(yaml)
-yml <- DataPackageR::construct_yml_config(code = "subsetCars.Rmd", data = "cars_over_20")
-```
 
-```{r, echo = FALSE, comment=""}
-cat(yaml::as.yaml(yml))
+
+
+```
+configuration:
+  files:
+    subsetCars.Rmd:
+      name: subsetCars.Rmd
+      enabled: yes
+  objects: cars_over_20
+  render_root:
+    tmp: '738856'
 ```
 
 ## YAML config file properties.
@@ -69,7 +84,8 @@ DataPackageR provides a number of API calls to construct, read, modify, and writ
   
 ##### Example
   The YAML config shown above was created by: 
-```{r}
+
+```r
 # Note this is done by the datapackage_skeleton. 
 # The user doesn't usually need to call 
 # construct_yml_config()
@@ -83,10 +99,12 @@ yml <- DataPackageR::construct_yml_config(
 #### `yml_find` 
 
   Read a yaml config file from a package path into an r object.
+  
 ##### Example
   Read the YAML config file from the `mtcars20` example.
   
-```{r eval=FALSE}
+
+```r
 # returns an r object representation of
 # the config file.
 mtcars20_config <- yml_find(
@@ -101,8 +119,13 @@ mtcars20_config <- yml_find(
 
 ##### Example
 
-```{r, comment=""}
+
+```r
   yml_list_objects(yml)
+```
+
+```
+cars_over_20
 ```
   
 #### `yml_list_files` 
@@ -111,8 +134,13 @@ mtcars20_config <- yml_find(
 
 ##### Example
 
-```{r, comment=""}
+
+```r
   yml_list_files(yml)
+```
+
+```
+subsetCars.Rmd
 ```
   
 #### `yml_disable_compile` 
@@ -121,11 +149,22 @@ mtcars20_config <- yml_find(
 
 ##### Example
 
-```{r, comment="", echo = 1}
+
+```r
 yml_disabled <- yml_disable_compile(
     yml,
     filenames = "subsetCars.Rmd")
-cat(as.yaml(yml_disabled))
+```
+
+```
+configuration:
+  files:
+    subsetCars.Rmd:
+      name: subsetCars.Rmd
+      enabled: no
+  objects: cars_over_20
+  render_root:
+    tmp: '180706'
 ```
 
 #### `yml_enable_compile` 
@@ -134,11 +173,22 @@ cat(as.yaml(yml_disabled))
 
 ##### Example
 
-```{r, comment="", echo = 1}
+
+```r
 yml_enabled <- yml_enable_compile(
     yml,
     filenames = "subsetCars.Rmd")
-cat(as.yaml(yml_enabled))
+```
+
+```
+configuration:
+  files:
+    subsetCars.Rmd:
+      name: subsetCars.Rmd
+      enabled: yes
+  objects: cars_over_20
+  render_root:
+    tmp: '180706'
 ```
 
 #### `yml_add_files` 
@@ -147,11 +197,39 @@ cat(as.yaml(yml_enabled))
   
 ##### Example
 
-```{r, comment="", echo = 1}
+
+```r
 yml_twofiles <- yml_add_files(
     yml,
     filenames = "anotherFile.Rmd")
-cat(as.yaml(yml_twofiles))
+```
+
+```
+configuration:
+  files:
+    subsetCars.Rmd:
+      name: subsetCars.Rmd
+      enabled: yes
+    anotherFile.Rmd:
+      name: anotherFile.Rmd
+      enabled: yes
+  objects: cars_over_20
+  render_root:
+    tmp: '180706'
+```
+
+```
+configuration:
+  files:
+    subsetCars.Rmd:
+      name: subsetCars.Rmd
+      enabled: yes
+    anotherFile.Rmd:
+      name: anotherFile.Rmd
+      enabled: yes
+  objects: cars_over_20
+  render_root:
+    tmp: '180706'
 ```
 
 #### `yml_add_objects` 
@@ -160,11 +238,43 @@ cat(as.yaml(yml_twofiles))
 
 ##### Example
 
-```{r, comment="", echo = 1}
+
+```r
 yml_twoobj <- yml_add_objects(
     yml_twofiles,
     objects = "another_object")
-cat(as.yaml(yml_twoobj))
+```
+
+```
+configuration:
+  files:
+    subsetCars.Rmd:
+      name: subsetCars.Rmd
+      enabled: yes
+    anotherFile.Rmd:
+      name: anotherFile.Rmd
+      enabled: yes
+  objects:
+  - cars_over_20
+  - another_object
+  render_root:
+    tmp: '180706'
+```
+
+```
+configuration:
+  files:
+    subsetCars.Rmd:
+      name: subsetCars.Rmd
+      enabled: yes
+    anotherFile.Rmd:
+      name: anotherFile.Rmd
+      enabled: yes
+  objects:
+  - cars_over_20
+  - another_object
+  render_root:
+    tmp: '180706'
 ```
 
 #### `yml_remove_files` 
@@ -173,11 +283,37 @@ cat(as.yaml(yml_twoobj))
 
 ##### Example
 
-```{r, comment="", echo = 1}
+
+```r
 yml_twoobj <- yml_remove_files(
     yml_twoobj,
     filenames = "anotherFile.Rmd")
-cat(as.yaml(yml_twoobj))
+```
+
+```
+configuration:
+  files:
+    subsetCars.Rmd:
+      name: subsetCars.Rmd
+      enabled: yes
+  objects:
+  - cars_over_20
+  - another_object
+  render_root:
+    tmp: '180706'
+```
+
+```
+configuration:
+  files:
+    subsetCars.Rmd:
+      name: subsetCars.Rmd
+      enabled: yes
+  objects:
+  - cars_over_20
+  - another_object
+  render_root:
+    tmp: '180706'
 ```
 
 #### `yml_remove_objects` 
@@ -186,11 +322,33 @@ cat(as.yaml(yml_twoobj))
 
 ##### Example
 
-```{r, comment="", echo = 1}
+
+```r
 yml_oneobj <- yml_remove_objects(
     yml_twoobj,
     objects = "another_object")
-cat(as.yaml(yml_oneobj))
+```
+
+```
+configuration:
+  files:
+    subsetCars.Rmd:
+      name: subsetCars.Rmd
+      enabled: yes
+  objects: cars_over_20
+  render_root:
+    tmp: '180706'
+```
+
+```
+configuration:
+  files:
+    subsetCars.Rmd:
+      name: subsetCars.Rmd
+      enabled: yes
+  objects: cars_over_20
+  render_root:
+    tmp: '180706'
 ```
 
 #### `yml_write` 
@@ -199,7 +357,8 @@ cat(as.yaml(yml_oneobj))
 
 ##### Example
 
-```{r, eval = FALSE}
+
+```r
 yml_write(yml_oneobj, path = "path_to_package")
 ```
 

@@ -1,7 +1,7 @@
 ---
 title: "Using DataPackageR"
 author: "Greg Finak <gfinak@fredhutch.org>"
-date: "2018-07-05"
+date: "2018-07-09"
 output: 
   rmarkdown::html_vignette:
     keep_md: TRUE
@@ -17,7 +17,15 @@ vignette: >
 
 ## Purpose
 
-This vignette demonstrates how to use DataPackageR to build a datapackage from the `mtcars` data set.
+This vignette demonstrates how to use DataPackageR to build a data package. 
+
+DataPackageR aims to simplify data package construction.
+
+It provides mechanisms for reproducibly preprocessing and tidying raw data into into documented, versioned, and packaged analysis-ready data sets. 
+
+Long-running or computationally intensive data processing can be decoupled from the usual `R CMD build` process while maintinaing [data lineage](https://en.wikipedia.org/wiki/Data_lineage).
+
+In this vignette we will subset and package the `mtcars` data set.
 
 ## Set up a new data package.
 
@@ -62,7 +70,7 @@ Creating Read-and-delete-me ...
 Saving functions and data ...
 Making help files ...
 Done.
-Further steps are described in '/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//Rtmp3EWJ9k/mtcars20/Read-and-delete-me'.
+Further steps are described in '/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//RtmpXVZFpW/mtcars20/Read-and-delete-me'.
 Adding DataVersion string to DESCRIPTION
 Creating data and data-raw directories
 configuring yaml file
@@ -70,7 +78,7 @@ configuring yaml file
 
 ### What's in the package skeleton structure?
 
-This has created a datapackage source tree named "mtcars2" (in a temporary directory). 
+This has created a datapackage source tree named "mtcars20" (in a temporary directory). 
 For a real use case you would pick a `path` on your filesystem where you could then initialize a new github repository for the package.
 
 The contents of `mtcars20` are:
@@ -111,7 +119,7 @@ configuration:
       enabled: yes
   objects: cars_over_20
   render_root:
-    tmp: '95288'
+    tmp: '694862'
 ```
 
 The two main pieces of information in the configuration are a list of the files to be processed and the data sets the package will store.
@@ -124,7 +132,7 @@ The objects must be listed in the yaml configuration file. `datapackage_skeleton
 
 DataPackageR provides an API for modifying this file, so it does not need to be done by hand. 
 
-Further information on the contents of the YAML configuration file, and the API are in the [YAML Configuration Details](https://github.com/RGLab/DataPackageR/blob/master/YAML_CONFIG.md)
+Further information on the contents of the YAML configuration file, and the API are in the [YAML Configuration Details](YAML_CONFIG.html)
 
 ### Where do I put raw data?
 
@@ -136,9 +144,9 @@ In this example we are reading from `data(mtcars)` rather than from the file sys
 
 To locate the data to read from the filesystem:
 
-- `DataPackageR::project_extdata_path()` to get the path to `inst/extdata` from inside an `Rmd` or `R` file. (e.g., /var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//Rtmp3EWJ9k/mtcars20/inst/extdata)
+- `DataPackageR::project_extdata_path()` to get the path to `inst/extdata` from inside an `Rmd` or `R` file. (e.g., /var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//RtmpXVZFpW/mtcars20/inst/extdata)
 
-- `DataPackageR::project_path()`  to get the path to the datapackage root. (e.g., /var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//Rtmp3EWJ9k/mtcars20)
+- `DataPackageR::project_path()`  to get the path to the datapackage root. (e.g., /var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//RtmpXVZFpW/mtcars20)
 
 Raw data stored externally can be retreived relative to these paths.
 
@@ -152,37 +160,42 @@ Once the skeleton framework is set up,
 # Run the preprocessing code to build cars_over_20
 # and reproducibly enclose it in a package.
 DataPackageR:::package_build(file.path(tempdir(),"mtcars20"))
-INFO [2018-07-05 11:41:30] Logging to /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmp3EWJ9k/mtcars20/inst/extdata/Logfiles/processing.log
-INFO [2018-07-05 11:41:30] Processing data
-INFO [2018-07-05 11:41:30] Reading yaml configuration
-INFO [2018-07-05 11:41:30] Found /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmp3EWJ9k/mtcars20/data-raw/subsetCars.Rmd
-INFO [2018-07-05 11:41:30] Processing 1 of 1: /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmp3EWJ9k/mtcars20/data-raw/subsetCars.Rmd
+INFO [2018-07-09 09:24:58] Logging to /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpXVZFpW/mtcars20/inst/extdata/Logfiles/processing.log
+INFO [2018-07-09 09:24:58] Processing data
+INFO [2018-07-09 09:24:58] Reading yaml configuration
+INFO [2018-07-09 09:24:58] Found /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpXVZFpW/mtcars20/data-raw/subsetCars.Rmd
+INFO [2018-07-09 09:24:58] Processing 1 of 1: /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpXVZFpW/mtcars20/data-raw/subsetCars.Rmd
 processing file: subsetCars.Rmd
 output file: subsetCars.knit.md
-/usr/local/bin/pandoc +RTS -K512m -RTS subsetCars.utf8.md --to html4 --from markdown+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash+smart --output /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmp3EWJ9k/mtcars20/inst/extdata/Logfiles/subsetCars.html --email-obfuscation none --self-contained --standalone --section-divs --template /Library/Frameworks/R.framework/Versions/3.5/Resources/library/rmarkdown/rmd/h/default.html --no-highlight --variable highlightjs=1 --variable 'theme:bootstrap' --include-in-header /var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//Rtmp3EWJ9k/rmarkdown-str1c6861088f2d.html --mathjax --variable 'mathjax-url:https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' 
+/usr/local/bin/pandoc +RTS -K512m -RTS subsetCars.utf8.md --to html4 --from markdown+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash+smart --output /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpXVZFpW/mtcars20/inst/extdata/Logfiles/subsetCars.html --email-obfuscation none --self-contained --standalone --section-divs --template /Library/Frameworks/R.framework/Versions/3.5/Resources/library/rmarkdown/rmd/h/default.html --no-highlight --variable highlightjs=1 --variable 'theme:bootstrap' --include-in-header /var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//RtmpXVZFpW/rmarkdown-straf102acc05f9.html --mathjax --variable 'mathjax-url:https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' 
 
-Output created: /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmp3EWJ9k/mtcars20/inst/extdata/Logfiles/subsetCars.html
-INFO [2018-07-05 11:41:30] 1 required data objects created by subsetCars.Rmd
-INFO [2018-07-05 11:41:30] Saving to data
-INFO [2018-07-05 11:41:30] Copied documentation to /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmp3EWJ9k/mtcars20/R/mtcars20.R
+Output created: /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpXVZFpW/mtcars20/inst/extdata/Logfiles/subsetCars.html
+INFO [2018-07-09 09:24:59] 1 required data objects created by subsetCars.Rmd
+INFO [2018-07-09 09:24:59] Saving to data
+INFO [2018-07-09 09:24:59] Copied documentation to /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpXVZFpW/mtcars20/R/mtcars20.R
 ✔ Creating 'vignettes/'
 ✔ Creating 'inst/doc/'
-INFO [2018-07-05 11:41:30] Done
-INFO [2018-07-05 11:41:30] DataPackageR succeeded
-INFO [2018-07-05 11:41:30] Building documentation
+INFO [2018-07-09 09:24:59] Done
+INFO [2018-07-09 09:24:59] DataPackageR succeeded
+INFO [2018-07-09 09:24:59] Building documentation
 First time using roxygen2. Upgrading automatically...
-Updating roxygen version in /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmp3EWJ9k/mtcars20/DESCRIPTION
+Updating roxygen version in /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpXVZFpW/mtcars20/DESCRIPTION
 Writing NAMESPACE
 Writing mtcars20.Rd
 Writing cars_over_20.Rd
-INFO [2018-07-05 11:41:30] Building package
+INFO [2018-07-09 09:24:59] Building package
 '/Library/Frameworks/R.framework/Resources/bin/R' --no-site-file  \
   --no-environ --no-save --no-restore --quiet CMD build  \
-  '/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmp3EWJ9k/mtcars20'  \
+  '/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpXVZFpW/mtcars20'  \
   --no-resave-data --no-manual --no-build-vignettes 
 
-[1] "/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmp3EWJ9k/mtcars20_1.0.tar.gz"
+[1] "/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpXVZFpW/mtcars20_1.0.tar.gz"
 ```
+
+
+### Why not just use R CMD build?
+
+If the processing script is time consuming or the data set is particularly large, then `R CMD build` would run the code each time the package is installed. In such cases, raw data may not be available, or the environment to do the data processing may not be set up for each user of the data. DataPackageR decouples data processing from package building/installation for data consumers.
 
 ### A log of the build process
 
@@ -306,16 +319,12 @@ assert_data_version(data_package_name = "mtcars20",
                                            #and provides an informative error.
 ```
 
-# Next steps 
-
-You should place the data package source directory under `git` version control.
-This allows you to version control your data processing code. 
 
 # Partial builds and migrating old data packages.
 
 Version 1.12.0 has moved away from controlling the build process using `datasets.R` and an additional `masterfile` argument. 
 
-The build process is now controlled via a `datapackager.yml` configuration file located in the package root directory.  (see [YAML Configuration Details](https://github.com/RGLab/DataPackageR/blob/master/YAML_CONFIG.md))
+The build process is now controlled via a `datapackager.yml` configuration file located in the package root directory.  (see [YAML Configuration Details](YAML_CONFIG.html))
 
 You can migrate an old package by constructing such a config file using the `construct_yml_config()` API.
 
@@ -335,7 +344,7 @@ configuration:
   - object1
   - object2
   render_root:
-    tmp: '288022'
+    tmp: '141841'
 ```
 
 `config` is a newly constructed yaml configuration object. It can be written to the package directory:
@@ -370,7 +379,7 @@ configuration:
   - object1
   - object2
   render_root:
-    tmp: '288022'
+    tmp: '141841'
 ```
 
 Note that the modified configuration needs to be written back to the package source directory in order for the 
@@ -400,6 +409,29 @@ If a script writes files to the working directory, that is where files will appe
 A script (e.g., `script2.Rmd`) running after `script1.Rmd` can access a stored data object named `script1_dataset` created by `script1.Rmd` by calling
 
 `DataPackageR::datapackager_object_read("script1_dataset")`. 
+
+Passing of data objects amongst scripts can be turned off via:
+
+`package_build(deps = FALSE)`
+
+# Next steps 
+
+We recommend the following once your package is created.
+
+## Place your package under source control
+
+You now have a data package source tree. 
+
+- **Place your package under version control**
+    1. Call `git init` in the package source root to initialize a new git repository.
+    2. [Create a new repository for your data package on github](https://help.github.com/articles/create-a-repo/).
+    3. Push your local package repository to `github`. [see step 7](https://help.github.com/articles/adding-an-existing-project-to-github-using-the-command-line/)
+
+
+This will let you version control your data processing code, and provide a mechanism for sharing your package with others.
+
+
+For more details on using git and github with R, there is an excellent guide provided by Jenny Bryan: [Happy Git and GitHub for the useR](http://happygitwithr.com/) and Hadley Wickham's [book on R packages](http://r-pkgs.had.co.nz/).
 
 # Additional Details
 
@@ -436,7 +468,7 @@ Package: mtcars20
 Type: Package
 Title: What the package does (short line)
 Version: 1.0
-Date: 2018-07-05
+Date: 2018-07-09
 Author: Who wrote it
 Maintainer: Who to complain to <yourfault@somewhere.net>
 Description: More about what it does (maybe more than one line)
@@ -448,10 +480,6 @@ Suggests:
 VignetteBuilder: knitr
 RoxygenNote: 6.0.1
 ```
-
-## Why not use R CMD build?
-
-If the processing script is time consuming or the data set is particularly large, then `R CMD build` would run the code each time the package is installed. In such cases, raw data may not be available, or the environment to do the data processing may not be set up for each user of the data. In such cases, DataPackageR provides a mechanism to decouple data processing from package building/installation for downstream users of the data.
 
 
 

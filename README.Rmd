@@ -25,7 +25,7 @@ DataPackageR is used to reproducibly process raw data into packaged, analysis-re
  [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/RGLab/DataPackageR?branch=master&svg=true)](https://ci.appveyor.com/project/RGLab/DataPackageR)
 [![DOI](https://zenodo.org/badge/29267435.svg)](https://doi.org/10.5281/zenodo.1292095)
 
-- [yaml configuration guide](YAML_CONFIG.md)
+- [yaml configuration guide](vignettes/YAML_CONFIG.md)
 
 
 ## What problems does DataPackageR tackle?
@@ -39,6 +39,8 @@ You have diverse raw data sets that you need to preprocess and tidy in order to:
 - Save time in the future when you return to this project but have forgotten all about what you did.
 
 ### Why package data sets?
+
+**Definition:** A *data package* is a formal R package whose sole purpose is to contain, access, and / or document data sets.
 
 - **Reproducibility.**
 

@@ -23,7 +23,15 @@ knitr::opts_chunk$set(
 
 ## Purpose
 
-This vignette demonstrates how to use DataPackageR to build a datapackage from the `mtcars` data set.
+This vignette demonstrates how to use DataPackageR to build a data package. 
+
+DataPackageR aims to simplify data package construction.
+
+It provides mechanisms for reproducibly preprocessing and tidying raw data into into documented, versioned, and packaged analysis-ready data sets. 
+
+Long-running or computationally intensive data processing can be decoupled from the usual `R CMD build` process while maintinaing [data lineage](https://en.wikipedia.org/wiki/Data_lineage).
+
+In this vignette we will subset and package the `mtcars` data set.
 
 ## Set up a new data package.
 
@@ -64,7 +72,7 @@ DataPackageR::datapackage_skeleton(
 
 ### What's in the package skeleton structure?
 
-This has created a datapackage source tree named "mtcars2" (in a temporary directory). 
+This has created a datapackage source tree named "mtcars20" (in a temporary directory). 
 For a real use case you would pick a `path` on your filesystem where you could then initialize a new github repository for the package.
 
 The contents of `mtcars20` are:
@@ -107,7 +115,7 @@ The objects must be listed in the yaml configuration file. `datapackage_skeleton
 
 DataPackageR provides an API for modifying this file, so it does not need to be done by hand. 
 
-Further information on the contents of the YAML configuration file, and the API are in the [YAML Configuration Details](https://github.com/RGLab/DataPackageR/blob/master/YAML_CONFIG.md)
+Further information on the contents of the YAML configuration file, and the API are in the [YAML Configuration Details](YAML_CONFIG.html)
 
 ### Where do I put raw data?
 
@@ -135,6 +143,11 @@ Once the skeleton framework is set up,
 # and reproducibly enclose it in a package.
 DataPackageR:::package_build(file.path(tempdir(),"mtcars20"))
 ```
+
+
+### Why not just use R CMD build?
+
+If the processing script is time consuming or the data set is particularly large, then `R CMD build` would run the code each time the package is installed. In such cases, raw data may not be available, or the environment to do the data processing may not be set up for each user of the data. DataPackageR decouples data processing from package building/installation for data consumers.
 
 ### A log of the build process
 
@@ -219,16 +232,12 @@ assert_data_version(data_package_name = "mtcars20",
                                            #and provides an informative error.
 ```
 
-# Next steps 
-
-You should place the data package source directory under `git` version control.
-This allows you to version control your data processing code. 
 
 # Partial builds and migrating old data packages.
 
 Version 1.12.0 has moved away from controlling the build process using `datasets.R` and an additional `masterfile` argument. 
 
-The build process is now controlled via a `datapackager.yml` configuration file located in the package root directory.  (see [YAML Configuration Details](https://github.com/RGLab/DataPackageR/blob/master/YAML_CONFIG.md))
+The build process is now controlled via a `datapackager.yml` configuration file located in the package root directory.  (see [YAML Configuration Details](YAML_CONFIG.html))
 
 You can migrate an old package by constructing such a config file using the `construct_yml_config()` API.
 
@@ -294,6 +303,24 @@ Passing of data objects amongst scripts can be turned off via:
 
 `package_build(deps = FALSE)`
 
+# Next steps 
+
+We recommend the following once your package is created.
+
+## Place your package under source control
+
+You now have a data package source tree. 
+
+- **Place your package under version control**
+    1. Call `git init` in the package source root to initialize a new git repository.
+    2. [Create a new repository for your data package on github](https://help.github.com/articles/create-a-repo/).
+    3. Push your local package repository to `github`. [see step 7](https://help.github.com/articles/adding-an-existing-project-to-github-using-the-command-line/)
+
+
+This will let you version control your data processing code, and provide a mechanism for sharing your package with others.
+
+
+For more details on using git and github with R, there is an excellent guide provided by Jenny Bryan: [Happy Git and GitHub for the useR](http://happygitwithr.com/) and Hadley Wickham's [book on R packages](http://r-pkgs.had.co.nz/).
 
 # Additional Details
 
@@ -325,10 +352,6 @@ The description file has the new `DataVersion` string.
 ```{r echo=FALSE}
 cat(readLines(file.path(tempdir(),"mtcars20","DESCRIPTION")),sep="\n")
 ```
-
-## Why not use R CMD build?
-
-If the processing script is time consuming or the data set is particularly large, then `R CMD build` would run the code each time the package is installed. In such cases, raw data may not be available, or the environment to do the data processing may not be set up for each user of the data. In such cases, DataPackageR provides a mechanism to decouple data processing from package building/installation for downstream users of the data.
 
 
 
