@@ -44,25 +44,25 @@ cat(as.yaml(yml_enabled))
 yml_twofiles <- yml_add_files(
     yml,
     filenames = "anotherFile.Rmd")
-cat(as.yaml(yml_twofiles))
+# cat(as.yaml(yml_twofiles))
 
 ## ---- comment="", echo = 1-----------------------------------------------
 yml_twoobj <- yml_add_objects(
     yml_twofiles,
     objects = "another_object")
-cat(as.yaml(yml_twoobj))
+# cat(as.yaml(yml_twoobj))
 
 ## ---- comment="", echo = 1-----------------------------------------------
 yml_twoobj <- yml_remove_files(
     yml_twoobj,
     filenames = "anotherFile.Rmd")
-cat(as.yaml(yml_twoobj))
+# cat(as.yaml(yml_twoobj))
 
 ## ---- comment="", echo = 1-----------------------------------------------
 yml_oneobj <- yml_remove_objects(
     yml_twoobj,
     objects = "another_object")
-cat(as.yaml(yml_oneobj))
+# cat(as.yaml(yml_oneobj))
 
 ## ---- eval = FALSE-------------------------------------------------------
 #  yml_write(yml_oneobj, path = "path_to_package")

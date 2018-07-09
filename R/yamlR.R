@@ -48,7 +48,7 @@ yml_add_files <- function(config, filenames) {
   for (i in filenames) {
     if (is.null(config[["configuration"]][["files"]][[i]])) {
       config[["configuration"]][["files"]][[i]] <- list()
-      config[["configuration"]][["files"]][[i]]$name <- i
+      # config[["configuration"]][["files"]][[i]]$name <- i
       config[["configuration"]][["files"]][[i]]$enabled <- TRUE
     }
   }
@@ -124,8 +124,10 @@ yml_list_files <- function(config) {
     # assume config is a package root path
     config <- yml_find(config)
   }
-  cat(unlist(purrr::map(config[["configuration"]][["files"]], "name")))
-  invisible(unlist(purrr::map(config[["configuration"]][["files"]], "name")))
+  # cat(unlist(purrr::map(config[["configuration"]][["files"]], "name")))
+  cat(names(config[["configuration"]][["files"]]))
+  # invisible(unlist(purrr::map(config[["configuration"]][["files"]], "name")))
+  invisible(names(config[["configuration"]][["files"]]))
 }
 
 #' @rdname yaml
@@ -221,7 +223,7 @@ construct_yml_config <- function(code = NULL, data = NULL, render_root = NULL) {
   files <- vector(length = length(code), mode = "list")
   names(files) <- code
   for (i in code) {
-    files[[i]]$name <- i
+    # files[[i]]$name <- i
     files[[i]]$enabled <- TRUE
   }
   # create render root at a temporary directory.

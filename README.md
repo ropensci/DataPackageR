@@ -201,7 +201,7 @@ DataPackageR::datapackage_skeleton(
 #> Saving functions and data ...
 #> Making help files ...
 #> Done.
-#> Further steps are described in '/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//RtmpNPoc2o/mtcars20/Read-and-delete-me'.
+#> Further steps are described in '/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//RtmprT0WSs/mtcars20/Read-and-delete-me'.
 #> Adding DataVersion string to DESCRIPTION
 #> Creating data and data-raw directories
 #> configuring yaml file
@@ -214,12 +214,12 @@ DataPackageR:::package_build(file.path(tempdir(),"mtcars20"))
 #> processing file: subsetCars.Rmd
 #> output file: subsetCars.knit.md
 #> 
-#> Output created: /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpNPoc2o/mtcars20/inst/extdata/Logfiles/subsetCars.html
+#> Output created: /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmprT0WSs/mtcars20/inst/extdata/Logfiles/subsetCars.html
 #> First time using roxygen2. Upgrading automatically...
-#> Updating roxygen version in /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpNPoc2o/mtcars20/DESCRIPTION
+#> Updating roxygen version in /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmprT0WSs/mtcars20/DESCRIPTION
 #> '/Library/Frameworks/R.framework/Resources/bin/R' --no-site-file  \
 #>   --no-environ --no-save --no-restore --quiet CMD build  \
-#>   '/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpNPoc2o/mtcars20'  \
+#>   '/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmprT0WSs/mtcars20'  \
 #>   --no-resave-data --no-manual --no-build-vignettes
 #> 
 

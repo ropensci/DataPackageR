@@ -3,19 +3,18 @@ context("datapackage skeleton")
 test_that("datapackage skeleton builds correct structure", {
   file <- system.file("extdata", "tests", "subsetCars.Rmd",
                       package = "DataPackageR")
-  tmp <<- tempdir()
-  tmp <<- normalizePath(tmp, winslash = "/", mustWork = TRUE)
+  # normalizePath(tempdir(), winslash = "/", mustWork = TRUE)
   
   expect_null(
     datapackage_skeleton(
       name = "subsetCars",
-      path = tmp,
+      path = tempdir(),
       code_files = c(file),
       force = TRUE,
       r_object_names = "cars_over_20"
     )
   )
-  unlink(file.path(tmp, "subsetCars"),
+  unlink(file.path(tempdir(), "subsetCars"),
          recursive = TRUE,
          force = TRUE)
 })
@@ -26,7 +25,7 @@ test_that("package can be built from different locations", {
                       package = "DataPackageR")
   datapackage_skeleton(
     name = "subsetCars",
-    path = tmp,
+    path = tempdir(),
     code_files = c(file),
     force = TRUE,
     r_object_names = "cars_over_20"
@@ -34,15 +33,15 @@ test_that("package can be built from different locations", {
   expect_equal(
     basename(
       package_build(
-        file.path(tmp, "subsetCars"))),
+        file.path(tempdir(), "subsetCars"))),
     "subsetCars_1.0.tar.gz")
   
   old <- 
-    setwd(file.path(tmp, "subsetCars"))
+    setwd(file.path(tempdir(), "subsetCars"))
   on.exit(setwd(old))
   expect_equal(basename(package_build(".")), "subsetCars_1.0.tar.gz")
-  expect_error(package_build("subsetCars"))
-  unlink(file.path(tmp, "subsetCars"),
+  suppressWarnings(expect_error(package_build("subsetCars")))
+  unlink(file.path(tempdir(), "subsetCars"),
          recursive = TRUE,
          force = TRUE)
 })
@@ -54,7 +53,7 @@ test_that("yaml reading, adding, removing, listing, and writing", {
   expect_null(
     datapackage_skeleton(
       name = "subsetCars",
-      path = tmp,
+      path = tempdir(),
       code_files = c(file),
       force = TRUE,
       r_object_names = "cars_over_20"
@@ -65,12 +64,12 @@ test_that("yaml reading, adding, removing, listing, and writing", {
     structure(list(
       configuration = list(
         files = list(subsetCars.Rmd =
-                       list(name = "subsetCars.Rmd", enabled = TRUE)),
+                       list(enabled = TRUE)),
         objects = "cars_over_20",
         render_root = "dummy"
       )
     ))
-  config <- yml_find(file.path(tmp, "subsetCars"))
+  config <- yml_find(file.path(tempdir(), "subsetCars"))
   config$configuration$render_root <- "dummy"
   attr(test_config, "path") <- attr(config, "path")
   expect_identical(config, test_config)
@@ -80,8 +79,8 @@ test_that("yaml reading, adding, removing, listing, and writing", {
     structure(list(
       configuration = list(
         files = list(
-          subsetCars.Rmd = list(name = "subsetCars.Rmd", enabled = TRUE),
-          extra.rmd = list(name = "extra.rmd", enabled = TRUE)
+          subsetCars.Rmd = list(enabled = TRUE),
+          extra.rmd = list(enabled = TRUE)
         ),
         objects = "cars_over_20",
         render_root = "dummy"
@@ -97,8 +96,8 @@ test_that("yaml reading, adding, removing, listing, and writing", {
     structure(list(
       configuration = list(
         files = list(
-          subsetCars.Rmd = list(name = "subsetCars.Rmd", enabled = TRUE),
-          extra.rmd = list(name = "extra.rmd", enabled = TRUE)
+          subsetCars.Rmd = list(enabled = TRUE),
+          extra.rmd = list(enabled = TRUE)
         ),
         objects = "cars_over_20",
         render_root = "dummy"
@@ -114,8 +113,8 @@ test_that("yaml reading, adding, removing, listing, and writing", {
     structure(list(
       configuration = list(
         files = list(
-          subsetCars.Rmd = list(name = "subsetCars.Rmd", enabled = TRUE),
-          extra.rmd = list(name = "extra.rmd", enabled = TRUE)
+          subsetCars.Rmd = list(enabled = TRUE),
+          extra.rmd = list(enabled = TRUE)
         ),
         objects = c("cars_over_20",
                     "foo_obj"),
@@ -133,8 +132,8 @@ test_that("yaml reading, adding, removing, listing, and writing", {
     structure(list(
       configuration = list(
         files = list(
-          subsetCars.Rmd = list(name = "subsetCars.Rmd", enabled = TRUE),
-          extra.rmd = list(name = "extra.rmd", enabled = TRUE)
+          subsetCars.Rmd = list(enabled = TRUE),
+          extra.rmd = list(enabled = TRUE)
         ),
         objects = "cars_over_20",
         render_root = "dummy"
@@ -147,8 +146,7 @@ test_that("yaml reading, adding, removing, listing, and writing", {
   
   list <- yml_list_files(config)
   expect_identical(list,
-                   c(subsetCars.Rmd = "subsetCars.Rmd",
-                     extra.rmd = "extra.rmd"))
+                   c("subsetCars.Rmd","extra.rmd"))
   
   
   
@@ -161,19 +159,19 @@ test_that("yaml reading, adding, removing, listing, and writing", {
     structure(list(
       configuration = list(
         files = list(
-          subsetCars.Rmd = list(name = "subsetCars.Rmd", enabled = TRUE),
-          extra.rmd = list(name = "extra.rmd", enabled = TRUE)
+          subsetCars.Rmd = list(enabled = TRUE),
+          extra.rmd = list(enabled = TRUE)
         ),
         objects = "cars_over_20",
         render_root = "dummy"
       )
     ), path = "/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmp7DyEjM/subsetCars/datapackager.yml") # nolint
   
-  config <- yml_find(file.path(tmp, "subsetCars"))
+  config <- yml_find(file.path(tempdir(), "subsetCars"))
   attr(test_config, "path") <- attr(config, "path")
   config$configuration$render_root <- "dummy"
   expect_identical(config, test_config)
-  unlink(file.path(tmp, "subsetCars"),
+  unlink(file.path(tempdir(), "subsetCars"),
          recursive = TRUE,
          force = TRUE)
 })
@@ -187,23 +185,23 @@ test_that("can add a data item", {
   expect_null(
     datapackage_skeleton(
       name = "subsetCars",
-      path = tmp,
+      path = tempdir(),
       code_files = c(file, file2),
       force = TRUE,
       r_object_names = c("cars_over_20")
     )
   )
-  package_build(file.path(tmp, "subsetCars"))
-  expect_equal(list.files(file.path(tmp, "subsetCars", "data")),
+  package_build(file.path(tempdir(), "subsetCars"))
+  expect_equal(list.files(file.path(tempdir(), "subsetCars", "data")),
                "cars_over_20.rda")
   expect_true(all(
     c("subsetCars", "cars_over_20") %in%
       names(DataPackageR:::.doc_parse(
-        list.files(file.path(tmp, "subsetCars", "R"),
+        list.files(file.path(tempdir(), "subsetCars", "R"),
                    full.names = TRUE)
       ))
   ))
-  unlink(file.path(tmp, "subsetCars"),
+  unlink(file.path(tempdir(), "subsetCars"),
          recursive = TRUE,
          force = TRUE)
 })
@@ -216,28 +214,28 @@ test_that("can remove a data item", {
   expect_null(
     datapackage_skeleton(
       name = "subsetCars",
-      path = tmp,
+      path = tempdir(),
       code_files = c(file, file2),
       force = TRUE,
       r_object_names = c("cars_over_20", "pressure")
     )
   )
-  package_build(file.path(tmp, "subsetCars"))
+  package_build(file.path(tempdir(), "subsetCars"))
   # have we saved the new object?
-  config <- yml_find(file.path(tmp, "subsetCars"))
+  config <- yml_find(file.path(tempdir(), "subsetCars"))
   config <- yml_disable_compile(config, basename(file2))
   yml_write(config)
-  package_build(file.path(tmp, "subsetCars"))
-  expect_equal(list.files(file.path(tmp, "subsetCars", "data")),
+  package_build(file.path(tempdir(), "subsetCars"))
+  expect_equal(list.files(file.path(tempdir(), "subsetCars", "data")),
                c("cars_over_20.rda", "pressure.rda"))
   expect_true(all(
     c("subsetCars", "cars_over_20", "pressure") %in%
       names(DataPackageR:::.doc_parse(
-        list.files(file.path(tmp, "subsetCars", "R"),
+        list.files(file.path(tempdir(), "subsetCars", "R"),
                    full.names = TRUE)
       ))
   ))
-  unlink(file.path(tmp, "subsetCars"),
+  unlink(file.path(tempdir(), "subsetCars"),
          recursive = TRUE,
          force = TRUE)
 })
@@ -250,18 +248,18 @@ test_that("can_read_pkg_description,  data_version", {
                        package = "DataPackageR")
   datapackage_skeleton(
     name = "subsetCars",
-    path = tmp,
+    path = tempdir(),
     code_files = c(file, file2),
     force = TRUE,
     r_object_names = c("cars_over_20", "pressure")
   )
-  DataPackageR:::read_pkg_description(file.path(tmp, "subsetCars"))
-  devtools::load_all(file.path(tmp, "subsetCars"))
+  DataPackageR:::read_pkg_description(file.path(tempdir(), "subsetCars"))
+  devtools::load_all(file.path(tempdir(), "subsetCars"))
   expected_version <-
     structure(list(c(0L, 1L, 0L)),
               class = c("package_version", "numeric_version"))
   expect_equal(data_version("subsetCars"), expected_version)
-  unlink(file.path(tmp, "subsetCars"),
+  unlink(file.path(tempdir(), "subsetCars"),
          recursive = TRUE,
          force = TRUE)
 })
@@ -276,7 +274,7 @@ test_that("edge cases work as expected", {
   expect_error(
     datapackage_skeleton(
       name = NULL,
-      path = tmp,
+      path = tempdir(),
       code_files = c(file1, file2),
       force = TRUE,
       r_object_names = c("cars_over_20", "pressure")
@@ -285,12 +283,12 @@ test_that("edge cases work as expected", {
   datapackage_skeleton(
     name = "subsetCars",
     list = list(),
-    path = tmp,
+    path = tempdir(),
     code_files = c(file2),
     force = TRUE,
     r_object_names = c("cars_over_20")
   )
-  unlink(file.path(tmp, "subsetCars"),
+  unlink(file.path(tempdir(), "subsetCars"),
          recursive = TRUE,
          force = TRUE)
 })
@@ -304,30 +302,30 @@ test_that("can add a file", {
   expect_null(
     datapackage_skeleton(
       name = "subsetCars",
-      path = tmp,
+      path = tempdir(),
       code_files = c(file),
       force = TRUE,
       r_object_names = c("cars_over_20")
     )
   )
-  package_build(file.path(tmp, "subsetCars"))
-  expect_equal(list.files(file.path(tmp, "subsetCars", "data")),
+  package_build(file.path(tempdir(), "subsetCars"))
+  expect_equal(list.files(file.path(tempdir(), "subsetCars", "data")),
                "cars_over_20.rda")
   expect_true(all(
     c("subsetCars", "cars_over_20") %in%
       names(DataPackageR:::.doc_parse(
-        list.files(file.path(tmp, "subsetCars", "R"), full.names = TRUE)
+        list.files(file.path(tempdir(), "subsetCars", "R"), full.names = TRUE)
       ))
   ))
-  config <- yml_find(file.path(tmp, "subsetCars"))
+  config <- yml_find(file.path(tempdir(), "subsetCars"))
   config <- yml_add_files(config, "extra.rmd")
   yml_write(config)
-  file.copy(from = file2, file.path(tmp, "subsetCars", "data-raw"))
-  expect_equal(basename(package_build(file.path(tmp,
+  file.copy(from = file2, file.path(tempdir(), "subsetCars", "data-raw"))
+  expect_equal(basename(package_build(file.path(tempdir(),
                                                 "subsetCars"))),
                "subsetCars_1.0.tar.gz")
   expect_equal(names(DataPackageR:::.doc_parse(
-    list.files(file.path(tmp,
+    list.files(file.path(tempdir(),
                          "subsetCars",
                          "R"),
                full.names = TRUE)
@@ -335,22 +333,22 @@ test_that("can add a file", {
   c("subsetCars", "cars_over_20"))
   config <- yml_add_objects(config, "pressure")
   yml_write(config)
-  expect_equal(basename(package_build(file.path(tmp,
+  expect_equal(basename(package_build(file.path(tempdir(),
                                                 "subsetCars"))),
                "subsetCars_1.0.tar.gz")
   expect_equal(names(DataPackageR:::.doc_parse(
-    list.files(file.path(tmp,
+    list.files(file.path(tempdir(),
                          "subsetCars",
                          "R"),
                full.names = TRUE)
   )),
   c("subsetCars", "cars_over_20", "pressure"))
   expect_equal(basename(list.files(
-    file.path(tmp, "subsetCars", "data"),
+    file.path(tempdir(), "subsetCars", "data"),
     full.names = TRUE
   )),
   c("cars_over_20.rda", "pressure.rda"))
-  unlink(file.path(tmp, "subsetCars"),
+  unlink(file.path(tempdir(), "subsetCars"),
          recursive = TRUE,
          force = TRUE)
 })
@@ -363,18 +361,18 @@ test_that("auto bump version when data unchanged", {
   expect_null(
     datapackage_skeleton(
       name = "subsetCars",
-      path = tmp,
+      path = tempdir(),
       code_files = c(file),
       force = TRUE,
       r_object_names = c("cars_over_20")
     )
   )
-  package_build(file.path(tmp, "subsetCars"))
-  pkg <- desc::desc(file.path(tmp, "subsetCars"))
+  package_build(file.path(tempdir(), "subsetCars"))
+  pkg <- desc::desc(file.path(tempdir(), "subsetCars"))
   pkg$set("DataVersion", "0.0.0")
   pkg$write()
-  package_build(file.path(tmp, "subsetCars"))
-  unlink(file.path(tmp, "subsetCars"),
+  package_build(file.path(tempdir(), "subsetCars"))
+  unlink(file.path(tempdir(), "subsetCars"),
          recursive = TRUE,
          force = TRUE)
 })
@@ -388,18 +386,18 @@ test_that("manual bump version when data unchanged", {
   expect_null(
     datapackage_skeleton(
       name = "subsetCars",
-      path = tmp,
+      path = tempdir(),
       code_files = c(file),
       force = TRUE,
       r_object_names = c("cars_over_20")
     )
   )
-  package_build(file.path(tmp, "subsetCars"))
-  pkg <- desc::desc(file.path(tmp, "subsetCars"))
+  package_build(file.path(tempdir(), "subsetCars"))
+  pkg <- desc::desc(file.path(tempdir(), "subsetCars"))
   pkg$set("DataVersion", "0.2.0")
   pkg$write()
-  package_build(file.path(tmp, "subsetCars"))
-  unlink(file.path(tmp, "subsetCars"),
+  package_build(file.path(tempdir(), "subsetCars"))
+  unlink(file.path(tempdir(), "subsetCars"),
          recursive = TRUE,
          force = TRUE)
 })
@@ -413,23 +411,23 @@ test_that("data changes but version out of sync", {
   expect_null(
     datapackage_skeleton(
       name = "subsetCars",
-      path = tmp,
+      path = tempdir(),
       code_files = c(file),
       force = TRUE,
       r_object_names = c("cars_over_20")
     )
   )
-  package_build(file.path(tmp, "subsetCars"))
-  config <- yml_find(file.path(tmp, "subsetCars"))
+  package_build(file.path(tempdir(), "subsetCars"))
+  config <- yml_find(file.path(tempdir(), "subsetCars"))
   config <- yml_add_files(config, "extra.rmd")
   config <- yml_add_objects(config, "pressure")
-  file.copy(file2, file.path(tmp, "subsetCars", "data-raw"))
+  file.copy(file2, file.path(tempdir(), "subsetCars", "data-raw"))
   yml_write(config)
-  pkg <- desc::desc(file.path(tmp, "subsetCars"))
+  pkg <- desc::desc(file.path(tempdir(), "subsetCars"))
   pkg$set("DataVersion", "0.0.0")
   pkg$write()
-  package_build(file.path(tmp, "subsetCars"))
-  unlink(file.path(tmp, "subsetCars"),
+  package_build(file.path(tempdir(), "subsetCars"))
+  unlink(file.path(tempdir(), "subsetCars"),
          recursive = TRUE,
          force = TRUE)
 })
@@ -438,22 +436,21 @@ context("varying arguments")
 test_that("package built in different edge cases", {
   file <- system.file("extdata", "tests", "subsetCars.Rmd",
                       package = "DataPackageR")
-  tmp <- tempdir()
   datapackage_skeleton(
     name = "subsetCars",
-    path = tmp,
+    path = tempdir(),
     code_files = c(file),
     force = TRUE,
     r_object_names = "cars_over_20"
   )
   expect_error(package_build(packageName = NULL))
-  old <- setwd(file.path(tmp, "subsetCars"))
+  old <- setwd(file.path(tempdir(), "subsetCars"))
   on.exit(setwd(old))
   expect_equal(basename(package_build(packageName = NULL)),
                "subsetCars_1.0.tar.gz")
-  expect_equal(yml_list_objects(file.path(tmp, "subsetCars")), "cars_over_20")
+  expect_equal(yml_list_objects(file.path(tempdir(), "subsetCars")), "cars_over_20")
   
-  config <- yml_find(file.path(tmp, "subsetCars"))
+  config <- yml_find(file.path(tempdir(), "subsetCars"))
   config[["configuration"]]$render_root <- ""
   expect_equal(DataPackageR:::.get_render_root(config), "")
   config[["configuration"]]$render_root <- NULL
@@ -471,51 +468,51 @@ test_that("package built in different edge cases", {
                                            which = "path")
   )
   suppressWarnings(expect_error(DataPackageR:::DataPackageR(tempdir())))
-  unlink(file.path(tmp, "foo"),
+  unlink(file.path(tempdir(), "foo"),
          force = TRUE,
          recursive = TRUE)
-  package.skeleton("foo", path = tmp)
+  package.skeleton("foo", path = tempdir())
   suppressWarnings(expect_error(
     DataPackageR:::DataPackageR(
-      file.path(tmp, "foo"))))
-  dir.create(file.path(tmp, "foo", "data-raw"))
+      file.path(tempdir(), "foo"))))
+  dir.create(file.path(tempdir(), "foo", "data-raw"))
   suppressWarnings(expect_error(
     DataPackageR:::DataPackageR(
-      file.path(tmp, "foo"))))
-  unlink(file.path(tmp, "foo", "R"),
+      file.path(tempdir(), "foo"))))
+  unlink(file.path(tempdir(), "foo", "R"),
          recursive = TRUE,
          force = TRUE)
-  unlink(file.path(tmp, "foo", "inst"),
+  unlink(file.path(tempdir(), "foo", "inst"),
          recursive = TRUE,
          force = TRUE)
   suppressWarnings(expect_error(
     DataPackageR:::DataPackageR(
-      file.path(tmp, "foo"))))
-  unlink(file.path(tmp, "foo"),
+      file.path(tempdir(), "foo"))))
+  unlink(file.path(tempdir(), "foo"),
          force = TRUE,
          recursive = TRUE)
   
   
   package.skeleton("foo", path = tempdir(),force=TRUE)
   expect_error(yml_find(file.path(tempdir(), "foo")))
-  dir.create(file.path(tmp, "foo", "data-raw"))
-  unlink(file.path(tmp, "foo", "DESCRIPTION"))
+  dir.create(file.path(tempdir(), "foo", "data-raw"))
+  unlink(file.path(tempdir(), "foo", "DESCRIPTION"))
   yml <- DataPackageR:::construct_yml_config("foo.Rmd")
-  yml_write(yml, path = file.path(tmp, "foo"))
+  yml_write(yml, path = file.path(tempdir(), "foo"))
   suppressWarnings(expect_error(
     DataPackageR:::DataPackageR(
-      file.path(tmp, "foo"))))
+      file.path(tempdir(), "foo"))))
   yml$configuration$files <- " "
-  yml_write(yml, path = file.path(tmp, "foo"))
-  expect_error(DataPackageR:::DataPackageR(file.path(tmp, "foo")))
+  yml_write(yml, path = file.path(tempdir(), "foo"))
+  expect_error(DataPackageR:::DataPackageR(file.path(tempdir(), "foo")))
   
   
-  unlink(file.path(tmp, "foo"),
+  unlink(file.path(tempdir(), "foo"),
          force = TRUE,
          recursive = TRUE)
   suppressWarnings(expect_error(construct_yml_config("foo",
                                                      render_root = "bar")))
-  unlink(file.path(tmp, "subsetCars"),
+  unlink(file.path(tempdir(), "subsetCars"),
          recursive = TRUE,
          force = TRUE)
   
@@ -556,7 +553,7 @@ test_that("package built in different edge cases", {
     list(DataVersion = "1.a.1")
   )))
   
-  unlink(file.path(tmp, "foo"),
+  unlink(file.path(tempdir(), "foo"),
          force = TRUE,
          recursive = TRUE)
   package.skeleton("foo", path = tempdir())
@@ -574,7 +571,7 @@ test_that("package built in different edge cases", {
     ))
   }))
   
-  unlink(file.path(tmp, "foo"),
+  unlink(file.path(tempdir(), "foo"),
          force = TRUE,
          recursive = TRUE)
   suppressWarnings(expect_error(yml_list_objects("foo")))
@@ -625,7 +622,7 @@ test_that("package built in different edge cases", {
   )
   unlink("foo", recursive = TRUE, force = TRUE)
   expect_error(DataPackageR:::read_pkg_description("foo"))
-  unlink(file.path(tmp, "foo"),
+  unlink(file.path(tempdir(), "foo"),
          force = TRUE,
          recursive = TRUE)
   package.skeleton(path = tempdir(), "foo")
@@ -726,7 +723,7 @@ test_that("assert_data_version", {
   package_build(file.path(tempdir(), pname))
   
   devtools::load_all(file.path(tempdir(), pname))
-  expect_true(dataVersion(pkg = pname) == numeric_version("0.1.0"))
+  suppressWarnings(expect_true(dataVersion(pkg = pname) == numeric_version("0.1.0")))
   expect_true(
     assert_data_version(
       data_package_name = pname,

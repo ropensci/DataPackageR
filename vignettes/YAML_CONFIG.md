@@ -35,11 +35,10 @@ The structure of a correctly formatted `datapackager.yml` file is shown below:
 configuration:
   files:
     subsetCars.Rmd:
-      name: subsetCars.Rmd
       enabled: yes
   objects: cars_over_20
   render_root:
-    tmp: '738856'
+    tmp: '134702'
 ```
 
 ## YAML config file properties.
@@ -52,12 +51,12 @@ It has three properties:
   
   The files (`R` or `Rmd`) to be processed by DataPackageR. They are processed in the order shown. Users running multi-script workflows with dependencies between the scripts need to ensure the files are processed in the correct order. 
   
-  Here `subsetCars.Rmd` is the only file to process.
+  Here `subsetCars.Rmd` is the only file to process. The name is transformed to an absolute path within the package.
   
-  Each file itself has several properties:
+  Each file itself has just one property:
   
-  - `name:` 
-     The name of the file. This is transformed to an absolute path within the package.
+  <!-- - `name:`  -->
+     <!-- The name of the file. This is transformed to an absolute path within the package. -->
     
   - `enabled:` 
      A logical `yes`, `no` flag indicating whether the file should be rendered during the build, or whether it should be skipped.
@@ -160,11 +159,10 @@ yml_disabled <- yml_disable_compile(
 configuration:
   files:
     subsetCars.Rmd:
-      name: subsetCars.Rmd
       enabled: no
   objects: cars_over_20
   render_root:
-    tmp: '180706'
+    tmp: '929985'
 ```
 
 #### `yml_enable_compile` 
@@ -184,11 +182,10 @@ yml_enabled <- yml_enable_compile(
 configuration:
   files:
     subsetCars.Rmd:
-      name: subsetCars.Rmd
       enabled: yes
   objects: cars_over_20
   render_root:
-    tmp: '180706'
+    tmp: '929985'
 ```
 
 #### `yml_add_files` 
@@ -208,28 +205,12 @@ yml_twofiles <- yml_add_files(
 configuration:
   files:
     subsetCars.Rmd:
-      name: subsetCars.Rmd
       enabled: yes
     anotherFile.Rmd:
-      name: anotherFile.Rmd
       enabled: yes
   objects: cars_over_20
   render_root:
-    tmp: '180706'
-```
-
-```
-configuration:
-  files:
-    subsetCars.Rmd:
-      name: subsetCars.Rmd
-      enabled: yes
-    anotherFile.Rmd:
-      name: anotherFile.Rmd
-      enabled: yes
-  objects: cars_over_20
-  render_root:
-    tmp: '180706'
+    tmp: '929985'
 ```
 
 #### `yml_add_objects` 
@@ -249,32 +230,14 @@ yml_twoobj <- yml_add_objects(
 configuration:
   files:
     subsetCars.Rmd:
-      name: subsetCars.Rmd
       enabled: yes
     anotherFile.Rmd:
-      name: anotherFile.Rmd
       enabled: yes
   objects:
   - cars_over_20
   - another_object
   render_root:
-    tmp: '180706'
-```
-
-```
-configuration:
-  files:
-    subsetCars.Rmd:
-      name: subsetCars.Rmd
-      enabled: yes
-    anotherFile.Rmd:
-      name: anotherFile.Rmd
-      enabled: yes
-  objects:
-  - cars_over_20
-  - another_object
-  render_root:
-    tmp: '180706'
+    tmp: '929985'
 ```
 
 #### `yml_remove_files` 
@@ -294,26 +257,12 @@ yml_twoobj <- yml_remove_files(
 configuration:
   files:
     subsetCars.Rmd:
-      name: subsetCars.Rmd
       enabled: yes
   objects:
   - cars_over_20
   - another_object
   render_root:
-    tmp: '180706'
-```
-
-```
-configuration:
-  files:
-    subsetCars.Rmd:
-      name: subsetCars.Rmd
-      enabled: yes
-  objects:
-  - cars_over_20
-  - another_object
-  render_root:
-    tmp: '180706'
+    tmp: '929985'
 ```
 
 #### `yml_remove_objects` 
@@ -333,22 +282,10 @@ yml_oneobj <- yml_remove_objects(
 configuration:
   files:
     subsetCars.Rmd:
-      name: subsetCars.Rmd
       enabled: yes
   objects: cars_over_20
   render_root:
-    tmp: '180706'
-```
-
-```
-configuration:
-  files:
-    subsetCars.Rmd:
-      name: subsetCars.Rmd
-      enabled: yes
-  objects: cars_over_20
-  render_root:
-    tmp: '180706'
+    tmp: '929985'
 ```
 
 #### `yml_write` 
