@@ -248,7 +248,7 @@ assert_data_version(data_package_name = "mtcars20",
 ### Reading external data
 
 In an Rmd file, external data (stored in `inst/extdata` at the data
-package source, or eslewhere) can be located relative to:
+package source, or elsewhere) can be located relative to:
 
 ``` r
 # This returns the datapackage source 
