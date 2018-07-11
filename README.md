@@ -100,7 +100,7 @@ purpose is to contain, access, and / or document data sets.
 
 ## DataPackageR
 
-DataPakcageR provides a number of benefits when packaging your data.
+DataPackageR provides a number of benefits when packaging your data.
 
   - It aims to automate away much of the tedium of packaging data sets
     without getting too much in the way, and keeps your processing
