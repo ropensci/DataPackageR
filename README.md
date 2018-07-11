@@ -149,7 +149,7 @@ complementary problems:
   - **The modern data package**
     [pdf](https://github.com/noamross/2018-04-18-rstats-nyc/blob/master/Noam_Ross_ModernDataPkg_rstatsnyc_2018-04-20.pdf)
     
-    A presenataion from @noamross touching on modern tools for open
+    A presentation from @noamross touching on modern tools for open
     science and reproducibility. Discusses `datastorr` and `fst` as well
     as standardized metadata and documentation.
 
