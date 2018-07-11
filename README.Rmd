@@ -83,7 +83,7 @@ You have diverse raw data sets that you need to preprocess and tidy in order to:
   
 ## DataPackageR
 
-DataPakcageR provides a number of benefits when packaging your data.  
+DataPackageR provides a number of benefits when packaging your data.
 
 - It aims to automate away much of the tedium of packaging data sets without getting too much in the way, and keeps your processing workflow reproducible.
 
@@ -93,7 +93,7 @@ DataPakcageR provides a number of benefits when packaging your data.
 
 - It maintains a reproducible record (vignettes) of the data processing along with the package. Consumers of the data package can verify how the processing was done, increasing confidence in your data. 
 
-- It automates construction of the documenation and maintains a data set version and an md5 fingerprint of each data object in the package. If the data changes and the package is rebuilt, the data version is automatically updated.
+- It automates construction of the documentation and maintains a data set version and an md5 fingerprint of each data object in the package. If the data changes and the package is rebuilt, the data version is automatically updated.
 
 ## Similar work
 
@@ -118,7 +118,7 @@ There are a number of tools out there that address similar and complementary pro
 - **The modern data package**
   [pdf](https://github.com/noamross/2018-04-18-rstats-nyc/blob/master/Noam_Ross_ModernDataPkg_rstatsnyc_2018-04-20.pdf)
 
-  A presenataion from \@noamross touching on modern tools for open science and reproducibility. Discusses `datastorr` and `fst` as well as standardized metadata and documentation.
+  A presentation from \@noamross touching on modern tools for open science and reproducibility. Discusses `datastorr` and `fst` as well as standardized metadata and documentation.
  
 - **rrrpkg**
   [github repo](https://github.com/ropensci/rrrpkg)
@@ -198,7 +198,7 @@ assert_data_version(data_package_name = "mtcars20",
 
 ### Reading external data
 
-In an Rmd file, external data (stored in `inst/extdata` at the data package source, or eslewhere) can be located relative to:
+In an Rmd file, external data (stored in `inst/extdata` at the data package source, or elsewhere) can be located relative to:
 
 ```{r, eval = FALSE}
 # This returns the datapackage source 

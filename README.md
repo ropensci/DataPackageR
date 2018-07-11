@@ -100,7 +100,7 @@ purpose is to contain, access, and / or document data sets.
 
 ## DataPackageR
 
-DataPakcageR provides a number of benefits when packaging your data.
+DataPackageR provides a number of benefits when packaging your data.
 
   - It aims to automate away much of the tedium of packaging data sets
     without getting too much in the way, and keeps your processing
@@ -118,7 +118,7 @@ DataPakcageR provides a number of benefits when packaging your data.
     verify how the processing was done, increasing confidence in your
     data.
 
-  - It automates construction of the documenation and maintains a data
+  - It automates construction of the documentation and maintains a data
     set version and an md5 fingerprint of each data object in the
     package. If the data changes and the package is rebuilt, the data
     version is automatically updated.
@@ -149,7 +149,7 @@ complementary problems:
   - **The modern data package**
     [pdf](https://github.com/noamross/2018-04-18-rstats-nyc/blob/master/Noam_Ross_ModernDataPkg_rstatsnyc_2018-04-20.pdf)
     
-    A presenataion from @noamross touching on modern tools for open
+    A presentation from @noamross touching on modern tools for open
     science and reproducibility. Discusses `datastorr` and `fst` as well
     as standardized metadata and documentation.
 
@@ -257,7 +257,7 @@ assert_data_version(data_package_name = "mtcars20",
 ### Reading external data
 
 In an Rmd file, external data (stored in `inst/extdata` at the data
-package source, or eslewhere) can be located relative to:
+package source, or elsewhere) can be located relative to:
 
 ``` r
 # This returns the datapackage source 
