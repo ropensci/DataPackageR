@@ -26,7 +26,7 @@ DataPackageR is used to reproducibly process raw data into packaged, analysis-re
 [![DOI](https://zenodo.org/badge/29267435.svg)](https://doi.org/10.5281/zenodo.1292095)
 
 - [yaml configuration guide](vignettes/YAML_CONFIG.md)
-
+- [a more detailed technical vignette](vignettes/usingDataPackageR.md)
 
 ## What problems does DataPackageR tackle?
 

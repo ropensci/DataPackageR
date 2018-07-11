@@ -15,6 +15,7 @@ status](https://ci.appveyor.com/api/projects/status/github/RGLab/DataPackageR?br
 [![DOI](https://zenodo.org/badge/29267435.svg)](https://doi.org/10.5281/zenodo.1292095)
 
   - [yaml configuration guide](vignettes/YAML_CONFIG.md)
+  - [a more detailed technical vignette](vignettes/usingDataPackageR.md)
 
 ## What problems does DataPackageR tackle?
 
@@ -209,7 +210,7 @@ DataPackageR::datapackage_skeleton(
 #> Saving functions and data ...
 #> Making help files ...
 #> Done.
-#> Further steps are described in '/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//RtmpZRQK41/mtcars20/Read-and-delete-me'.
+#> Further steps are described in '/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//RtmpVZPMWH/mtcars20/Read-and-delete-me'.
 #> Adding DataVersion string to DESCRIPTION
 #> Creating data and data-raw directories
 #> configuring yaml file
@@ -223,12 +224,12 @@ DataPackageR:::package_build(packageName = file.path(tempdir(),"mtcars20"))
 #> processing file: subsetCars.Rmd
 #> output file: subsetCars.knit.md
 #> 
-#> Output created: /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpZRQK41/mtcars20/inst/extdata/Logfiles/subsetCars.html
+#> Output created: /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpVZPMWH/mtcars20/inst/extdata/Logfiles/subsetCars.html
 #> First time using roxygen2. Upgrading automatically...
-#> Updating roxygen version in /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpZRQK41/mtcars20/DESCRIPTION
+#> Updating roxygen version in /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpVZPMWH/mtcars20/DESCRIPTION
 #> '/Library/Frameworks/R.framework/Resources/bin/R' --no-site-file  \
 #>   --no-environ --no-save --no-restore --quiet CMD build  \
-#>   '/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpZRQK41/mtcars20'  \
+#>   '/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpVZPMWH/mtcars20'  \
 #>   --no-resave-data --no-manual --no-build-vignettes
 #> 
 
