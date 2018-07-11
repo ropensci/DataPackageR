@@ -118,7 +118,7 @@ DataPackageR provides a number of benefits when packaging your data.
     verify how the processing was done, increasing confidence in your
     data.
 
-  - It automates construction of the documenation and maintains a data
+  - It automates construction of the documentation and maintains a data
     set version and an md5 fingerprint of each data object in the
     package. If the data changes and the package is rebuilt, the data
     version is automatically updated.
