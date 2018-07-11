@@ -150,20 +150,29 @@ library(DataPackageR)
 # the cars in the mtcars dataset
 # with speed > 20.
 # Our dataset will be called cars_over_20.
+# There are three steps:
 
-# Get the code file that turns the raw data
-# to our packaged and processed analysis-ready dataset.
+# 1. Get the code file that turns the raw data
+# into our packaged and processed analysis-ready dataset.
+# This is in a file called subsetCars.Rmd located in exdata/tests of the DataPackageR package.
+# For your own projects you would write your own Rmd processing file.
 processing_code <- system.file(
   "extdata", "tests", "subsetCars.Rmd", package = "DataPackageR"
 )
 
-# Create the package framework.
+# 2. Create the package framework.
+# We pass in the Rmd file in the `processing_code` variable and the names of the data objects it creates (called "cars_over_20")
+# The new package is called "mtcars20"
 DataPackageR::datapackage_skeleton(
-  "mtcars20", force = TRUE, code_files = processing_code, r_object_names = "cars_over_20", path = tempdir()) 
+  "mtcars20", force = TRUE, 
+  code_files = processing_code, 
+  r_object_names = "cars_over_20", 
+  path = tempdir()) 
 
-# Run the preprocessing code to build cars_over_20
-# and reproducibly enclose it in a package.
-DataPackageR:::package_build(file.path(tempdir(),"mtcars20"))
+# 3. Run the preprocessing code to build the cars_over_20 data set 
+# and reproducibly enclose it in the mtcars20 package.
+# packageName is the full path to the package source directory created at step 2.
+DataPackageR:::package_build(packageName = file.path(tempdir(),"mtcars20"))
 
 # Let's use the package we just created.
 install.packages(file.path(tempdir(),"mtcars20_1.0.tar.gz"), type = "source", repos = NULL)

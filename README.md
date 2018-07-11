@@ -184,16 +184,24 @@ library(DataPackageR)
 # the cars in the mtcars dataset
 # with speed > 20.
 # Our dataset will be called cars_over_20.
+# There are three steps:
 
-# Get the code file that turns the raw data
-# to our packaged and processed analysis-ready dataset.
+# 1. Get the code file that turns the raw data
+# into our packaged and processed analysis-ready dataset.
+# This is in a file called subsetCars.Rmd located in exdata/tests of the DataPackageR package.
+# For your own projects you would write your own Rmd processing file.
 processing_code <- system.file(
   "extdata", "tests", "subsetCars.Rmd", package = "DataPackageR"
 )
 
-# Create the package framework.
+# 2. Create the package framework.
+# We pass in the Rmd file in the `processing_code` variable and the names of the data objects it creates (called "cars_over_20")
+# The new package is called "mtcars20"
 DataPackageR::datapackage_skeleton(
-  "mtcars20", force = TRUE, code_files = processing_code, r_object_names = "cars_over_20", path = tempdir()) 
+  "mtcars20", force = TRUE, 
+  code_files = processing_code, 
+  r_object_names = "cars_over_20", 
+  path = tempdir()) 
 #> Creating directories ...
 #> Creating DESCRIPTION ...
 #> Creating NAMESPACE ...
@@ -201,25 +209,26 @@ DataPackageR::datapackage_skeleton(
 #> Saving functions and data ...
 #> Making help files ...
 #> Done.
-#> Further steps are described in '/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//RtmprT0WSs/mtcars20/Read-and-delete-me'.
+#> Further steps are described in '/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//RtmpZRQK41/mtcars20/Read-and-delete-me'.
 #> Adding DataVersion string to DESCRIPTION
 #> Creating data and data-raw directories
 #> configuring yaml file
 
-# Run the preprocessing code to build cars_over_20
-# and reproducibly enclose it in a package.
-DataPackageR:::package_build(file.path(tempdir(),"mtcars20"))
+# 3. Run the preprocessing code to build the cars_over_20 data set 
+# and reproducibly enclose it in the mtcars20 package.
+# packageName is the full path to the package source directory created at step 2.
+DataPackageR:::package_build(packageName = file.path(tempdir(),"mtcars20"))
 #> 
 #> 
 #> processing file: subsetCars.Rmd
 #> output file: subsetCars.knit.md
 #> 
-#> Output created: /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmprT0WSs/mtcars20/inst/extdata/Logfiles/subsetCars.html
+#> Output created: /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpZRQK41/mtcars20/inst/extdata/Logfiles/subsetCars.html
 #> First time using roxygen2. Upgrading automatically...
-#> Updating roxygen version in /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmprT0WSs/mtcars20/DESCRIPTION
+#> Updating roxygen version in /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpZRQK41/mtcars20/DESCRIPTION
 #> '/Library/Frameworks/R.framework/Resources/bin/R' --no-site-file  \
 #>   --no-environ --no-save --no-restore --quiet CMD build  \
-#>   '/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmprT0WSs/mtcars20'  \
+#>   '/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpZRQK41/mtcars20'  \
 #>   --no-resave-data --no-manual --no-build-vignettes
 #> 
 
