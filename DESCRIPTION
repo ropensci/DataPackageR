@@ -4,7 +4,7 @@ Title: Construct Reproducible Analytic Data Sets as R Packages
 Authors@R:
     c(person(given = "Greg Finak", role=c("aut","cre","cph"), email="gfinak@fredhutch.org"),
       person(given = "Paul Obrecht", role=c("ctb")))
-Version: 0.14.1
+Version: 0.14.2
 Description: Construct reproducible analytic data sets as R packages. 
 License: MIT + file LICENSE
 Depends: R (>= 3.5.0)
