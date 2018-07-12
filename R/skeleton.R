@@ -1,5 +1,6 @@
 #' @importFrom assertthat assert_that
 #' @importFrom purrr map
+#' @importFrom usethis create_package
 .codefile_validate <- function(code_files) {
   # do they exist?
   assertthat::assert_that(all(unlist(purrr::map(
