@@ -33,7 +33,7 @@
 datapackage_skeleton <-
   function(name = NULL,
              list = character(),
-             environment = .GlobalEnv,
+             environment = new.env(),
              path = ".",
              force = FALSE,
              code_files = character(),
@@ -43,14 +43,15 @@ datapackage_skeleton <-
     }
     if (length(list) == 0) {
       # don't pass on the code_files here, but use that argument to
-      utils::package.skeleton(
-        name = name,
-        environment = environment,
-        path = path,
-        force = force,
-        code_files =
-          character()
-      )
+      # utils::package.skeleton(
+      #   name = name,
+      #   environment = environment,
+      #   path = path,
+      #   force = force,
+      #   code_files =
+      #     character()
+      # )
+      usethis::create_package(path = file.path(path,name), rstudio = FALSE, open = FALSE)
     } else {
       flog.fatal("list argument is not used by datapackage.skeleton().")
     }
@@ -59,29 +60,15 @@ datapackage_skeleton <-
     description <-
       desc::desc(file = file.path(package_path, "DESCRIPTION"))
     description$set("DataVersion" = "0.1.0")
+    description$set("Version" = "1.0")
     description$set("Package" = name)
     message("Adding DataVersion string to DESCRIPTION")
 
     description$write()
     message("Creating data and data-raw directories")
-    dir.create(
-      file.path(package_path, "data-raw"),
-      showWarnings = FALSE,
-      recursive = TRUE
-    )
-    dir.create(file.path(package_path, "data"),
-      showWarnings = FALSE,
-      recursive = TRUE
-    )
-    dir.create(file.path(package_path, "R"),
-      showWarnings = FALSE,
-      recursive = TRUE
-    )
-    dir.create(
-      file.path(package_path, "inst/extdata"),
-      recursive = TRUE,
-      showWarnings = FALSE
-    )
+    usethis::use_directory("data-raw")
+    usethis::use_directory("data")
+    usethis::use_directory("inst/extdata")
     con <-
       file(file.path(package_path, "Read-and-delete-me"), open = "w")
     writeLines(

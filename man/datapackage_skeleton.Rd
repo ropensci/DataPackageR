@@ -8,7 +8,7 @@
 \title{Create a Data Package skeleton for use with DataPackageR.}
 \usage{
 datapackage_skeleton(name = NULL, list = character(),
-  environment = .GlobalEnv, path = ".", force = FALSE,
+  environment = new.env(), path = ".", force = FALSE,
   code_files = character(), r_object_names = character())
 
 datapackage.skeleton(name = NULL, list = character(),
