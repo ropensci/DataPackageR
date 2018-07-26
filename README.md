@@ -68,7 +68,7 @@ purpose is to contain, access, and / or document data sets.
 
   - **Package size limits.**
     
-    R packages have a 5MB size limit, at least on CRAN. BioCondctor has
+    R packages have a 5MB size limit, at least on CRAN. BioConductor has
     explicit [data
     package](https://www.bioconductor.org/developers/package-guidelines/#package-types)
     types that can be larger and use git LFS for very large files.
@@ -94,7 +94,7 @@ purpose is to contain, access, and / or document data sets.
 
   - **Scale**
     
-    Seting up and building R data packages by hand is a workable
+    Setting up and building R data packages by hand is a workable
     solution for a small project or a small number of projects, but when
     dealing with many projects each involving many data sets, tools are
     needed to help automate the process.
@@ -156,7 +156,7 @@ complementary problems:
 
   - **rrrpkg** [github repo](https://github.com/ropensci/rrrpkg)
     
-    A doucment from ropensci describing using an R package as a research
+    A document from ropensci describing using an R package as a research
     compendium. Based on ideas originally introduced by Robert Gentleman
     and Duncan Temple Lang (Gentleman and Lang (2004))
 
