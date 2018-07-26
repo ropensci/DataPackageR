@@ -67,7 +67,7 @@ You have diverse raw data sets that you need to preprocess and tidy in order to:
 
 - **Package size limits.**
 
-  R packages have a 5MB size limit, at least on CRAN. BioCondctor has explicit [data package](https://www.bioconductor.org/developers/package-guidelines/#package-types) types that can be larger and use git LFS for very large files. 
+  R packages have a 5MB size limit, at least on CRAN. BioConductor has explicit [data package](https://www.bioconductor.org/developers/package-guidelines/#package-types) types that can be larger and use git LFS for very large files. 
   
   Sharing large volumes of raw data in an R package format is still not ideal, and there are public biological data repositories better suited for raw data: e.g.,  [GEO](https://www.ncbi.nlm.nih.gov/geo/), [SRA](https://www.ncbi.nlm.nih.gov/sra), [ImmPort](http://www.immport.org/immport-open/public/home/home), [ImmuneSpace](https://immunespace.org/), [FlowRepository](https://flowrepository.org/).
   
@@ -79,7 +79,7 @@ You have diverse raw data sets that you need to preprocess and tidy in order to:
   
 - **Scale** 
 
-  Seting up and building R data packages by hand is a workable solution for a small project or a small number of projects, but when dealing with many projects each involving many data sets, tools are needed to help automate the process.
+  Setting up and building R data packages by hand is a workable solution for a small project or a small number of projects, but when dealing with many projects each involving many data sets, tools are needed to help automate the process.
   
 ## DataPackageR
 
@@ -123,7 +123,7 @@ There are a number of tools out there that address similar and complementary pro
 - **rrrpkg**
   [github repo](https://github.com/ropensci/rrrpkg)
 
-  A doucment from ropensci describing using an R package as a research compendium. Based on ideas originally introduced by Robert Gentleman and Duncan Temple Lang (@Gentleman2004-oj)
+  A document from ropensci describing using an R package as a research compendium. Based on ideas originally introduced by Robert Gentleman and Duncan Temple Lang (@Gentleman2004-oj)
 
 - **template**
   [github repo](https://github.com/ropensci/rrrpkg)
