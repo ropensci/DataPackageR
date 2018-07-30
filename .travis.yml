@@ -1,5 +1,7 @@
 language: r
 r: 
+  - oldrel
+  - release
   - devel
 cache: packages
 r_github_packages:
