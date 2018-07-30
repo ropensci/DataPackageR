@@ -91,6 +91,7 @@ package_build <- function(packageName = NULL,
   # try to install and then reload the package in the current session
   install.packages(location,repos = NULL, type = "source")
   devtools::reload(package_path)
+  return(location)
 }
 
 #' These functions are no longer available.
