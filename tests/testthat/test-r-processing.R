@@ -17,7 +17,6 @@ test_that("R file processing works", {
   v <- vignette(package="rfiletest")
   expect_equal(v$results[,"Item"],"rfileTest")
   
-  remove.packages("rfiletest")  
   unlink(file.path(tempdir(), "rfiletest"),
          recursive = TRUE,
          force = TRUE)

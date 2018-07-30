@@ -80,7 +80,7 @@ package_build <- function(packageName = NULL,
     flog.warn("DataPackageR failed")
   )
   flog.info("Building documentation")
-  roxygenise(package_path,
+  roxygen2::roxygenise(package_path,
     clean = TRUE
   )
 
