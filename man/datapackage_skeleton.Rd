@@ -3,8 +3,6 @@
 \name{datapackage.skeleton}
 \alias{datapackage.skeleton}
 \alias{datapackage_skeleton}
-\alias{datapackage.skeleton}
-\alias{datapackage_skeleton}
 \title{Create a Data Package skeleton for use with DataPackageR.}
 \usage{
 datapackage_skeleton(name = NULL, list = character(),
