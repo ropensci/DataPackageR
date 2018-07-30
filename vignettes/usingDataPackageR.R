@@ -71,7 +71,7 @@ data("cars_over_20") # load the data
 cars_over_20 # now we can use it.
 ?cars_over_20 # See the documentation you wrote in data-raw/documentation.R.
   
-vignettes = vignette(package="mtcars20")
+vignettes = vignette(package = "mtcars20")
 vignettes$results
 
 ## ------------------------------------------------------------------------

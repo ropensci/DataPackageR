@@ -25,6 +25,7 @@ Imports:
     usethis
 VignetteBuilder: knitr
 RoxygenNote: 6.1.0
+Encoding: UTF-8
 Suggests:
     testthat,
     covr,

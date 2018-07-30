@@ -110,7 +110,7 @@ configuration:
       enabled: yes
   objects: cars_over_20
   render_root:
-    tmp: '623177'
+    tmp: '736248'
 ```
 
 The two main pieces of information in the configuration are a list of the files to be processed and the data sets the package will store.
@@ -135,9 +135,9 @@ In this example we are reading from `data(mtcars)` rather than from the file sys
 
 To locate the data to read from the filesystem:
 
-- `DataPackageR::project_extdata_path()` to get the path to `inst/extdata` from inside an `Rmd` or `R` file. (e.g., /var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//RtmpU5a0OS/mtcars20/inst/extdata)
+- `DataPackageR::project_extdata_path()` to get the path to `inst/extdata` from inside an `Rmd` or `R` file. (e.g., /var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//RtmpN6bh3i/mtcars20/inst/extdata)
 
-- `DataPackageR::project_path()`  to get the path to the datapackage root. (e.g., /var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//RtmpU5a0OS/mtcars20)
+- `DataPackageR::project_path()`  to get the path to the datapackage root. (e.g., /var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//RtmpN6bh3i/mtcars20)
 
 Raw data stored externally can be retreived relative to these paths.
 
@@ -151,37 +151,38 @@ Once the skeleton framework is set up,
 # Run the preprocessing code to build cars_over_20
 # and reproducibly enclose it in a package.
 DataPackageR:::package_build(file.path(tempdir(),"mtcars20"))
-INFO [2018-07-30 11:31:04] Logging to /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpU5a0OS/mtcars20/inst/extdata/Logfiles/processing.log
-INFO [2018-07-30 11:31:04] Processing data
-INFO [2018-07-30 11:31:04] Reading yaml configuration
-INFO [2018-07-30 11:31:04] Found /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpU5a0OS/mtcars20/data-raw/subsetCars.Rmd
-INFO [2018-07-30 11:31:04] Processing 1 of 1: /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpU5a0OS/mtcars20/data-raw/subsetCars.Rmd
+INFO [2018-07-30 11:55:31] Logging to /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpN6bh3i/mtcars20/inst/extdata/Logfiles/processing.log
+INFO [2018-07-30 11:55:31] Processing data
+INFO [2018-07-30 11:55:31] Reading yaml configuration
+INFO [2018-07-30 11:55:31] Found /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpN6bh3i/mtcars20/data-raw/subsetCars.Rmd
+INFO [2018-07-30 11:55:31] Processing 1 of 1: /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpN6bh3i/mtcars20/data-raw/subsetCars.Rmd
 processing file: subsetCars.Rmd
 output file: subsetCars.knit.md
-/usr/local/bin/pandoc +RTS -K512m -RTS subsetCars.utf8.md --to html4 --from markdown+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash+smart --output /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpU5a0OS/mtcars20/inst/extdata/Logfiles/subsetCars.html --email-obfuscation none --self-contained --standalone --section-divs --template /Library/Frameworks/R.framework/Versions/3.5/Resources/library/rmarkdown/rmd/h/default.html --no-highlight --variable highlightjs=1 --variable 'theme:bootstrap' --include-in-header /var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//RtmpU5a0OS/rmarkdown-straba062986a8c.html --mathjax --variable 'mathjax-url:https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' 
+/usr/local/bin/pandoc +RTS -K512m -RTS subsetCars.utf8.md --to html4 --from markdown+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash+smart --output /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpN6bh3i/mtcars20/inst/extdata/Logfiles/subsetCars.html --email-obfuscation none --self-contained --standalone --section-divs --template /Library/Frameworks/R.framework/Versions/3.5/Resources/library/rmarkdown/rmd/h/default.html --no-highlight --variable highlightjs=1 --variable 'theme:bootstrap' --include-in-header /var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//RtmpN6bh3i/rmarkdown-strb1f657abc5ec.html --mathjax --variable 'mathjax-url:https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' 
 
-Output created: /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpU5a0OS/mtcars20/inst/extdata/Logfiles/subsetCars.html
-INFO [2018-07-30 11:31:04] 1 required data objects created by subsetCars.Rmd
-INFO [2018-07-30 11:31:04] Saving to data
-INFO [2018-07-30 11:31:04] Copied documentation to /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpU5a0OS/mtcars20/R/mtcars20.R
+Output created: /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpN6bh3i/mtcars20/inst/extdata/Logfiles/subsetCars.html
+INFO [2018-07-30 11:55:31] 1 required data objects created by subsetCars.Rmd
+INFO [2018-07-30 11:55:31] Saving to data
+INFO [2018-07-30 11:55:31] Copied documentation to /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpN6bh3i/mtcars20/R/mtcars20.R
 ✔ Creating 'vignettes/'
 ✔ Creating 'inst/doc/'
-INFO [2018-07-30 11:31:04] Done
-INFO [2018-07-30 11:31:04] DataPackageR succeeded
-INFO [2018-07-30 11:31:04] Building documentation
+INFO [2018-07-30 11:55:31] Done
+INFO [2018-07-30 11:55:31] DataPackageR succeeded
+INFO [2018-07-30 11:55:31] Building documentation
 First time using roxygen2. Upgrading automatically...
-Updating roxygen version in /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpU5a0OS/mtcars20/DESCRIPTION
+Updating roxygen version in /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpN6bh3i/mtcars20/DESCRIPTION
 Writing NAMESPACE
 Loading mtcars20
 Writing mtcars20.Rd
 Writing cars_over_20.Rd
-INFO [2018-07-30 11:31:05] Building package
+INFO [2018-07-30 11:55:31] Building package
 '/Library/Frameworks/R.framework/Resources/bin/R' --no-site-file  \
   --no-environ --no-save --no-restore --quiet CMD build  \
-  '/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpU5a0OS/mtcars20'  \
+  '/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpN6bh3i/mtcars20'  \
   --no-resave-data --no-manual --no-build-vignettes 
 
 Reloading installed mtcars20
+[1] "/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpN6bh3i/mtcars20_1.0.tar.gz"
 ```
 
 
@@ -282,7 +283,7 @@ cars_over_20 # now we can use it.
 50    25   85
 ?cars_over_20 # See the documentation you wrote in data-raw/documentation.R.
   
-vignettes = vignette(package="mtcars20")
+vignettes = vignette(package = "mtcars20")
 vignettes$results
       Package   
 Topic "mtcars20"
@@ -338,7 +339,7 @@ configuration:
   - object1
   - object2
   render_root:
-    tmp: '154049'
+    tmp: '217026'
 ```
 
 `config` is a newly constructed yaml configuration object. It can be written to the package directory:
@@ -401,7 +402,7 @@ configuration:
   - object1
   - object2
   render_root:
-    tmp: '154049'
+    tmp: '217026'
 ```
 
 Note that the modified configuration needs to be written back to the package source directory in order for the 
