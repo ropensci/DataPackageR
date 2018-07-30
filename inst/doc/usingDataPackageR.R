@@ -32,7 +32,7 @@ DataPackageR::datapackage_skeleton(
 
 ## ----dirstructure,echo=FALSE---------------------------------------------
 library(data.tree)
-df = data.frame(pathString = file.path(
+df <- data.frame(pathString = file.path(
   "mtcars20",
   list.files(
   file.path(tempdir(), "mtcars20"),
@@ -43,7 +43,9 @@ df = data.frame(pathString = file.path(
 as.Node(df)
 
 ## ---- echo=FALSE---------------------------------------------------------
-cat(yaml::as.yaml(yaml::yaml.load_file(file.path(tempdir(),"mtcars20","datapackager.yml"))))
+cat(yaml::as.yaml(yaml::yaml.load_file(file.path(tempdir(),
+                                                 "mtcars20",
+                                                 "datapackager.yml"))))
 
 ## ----eval=TRUE-----------------------------------------------------------
 # Run the preprocessing code to build cars_over_20
@@ -51,7 +53,7 @@ cat(yaml::as.yaml(yaml::yaml.load_file(file.path(tempdir(),"mtcars20","datapacka
 DataPackageR:::package_build(file.path(tempdir(),"mtcars20"))
 
 ## ---- echo=FALSE---------------------------------------------------------
-df = data.frame(pathString = file.path(
+df <- data.frame(pathString = file.path(
   "mtcars20",
   list.files(
   file.path(tempdir(), "mtcars20"),
@@ -63,7 +65,8 @@ df = data.frame(pathString = file.path(
 
 ## ------------------------------------------------------------------------
 # Let's use the package we just created.
-install.packages(file.path(tempdir(),"mtcars20_1.0.tar.gz"), type = "source", repos = NULL)
+install.packages(file.path(tempdir(),"mtcars20_1.0.tar.gz"),
+                 type = "source", repos = NULL)
 if(!"package:mtcars20"%in%search())
   attachNamespace('mtcars20') #use library() in your code
 data("cars_over_20") # load the data
@@ -89,12 +92,12 @@ assert_data_version(data_package_name = "mtcars20",
 # assume I have file1.Rmd and file2.R located in /data-raw, 
 # and these create 'object1' and 'object2' respectively.
 
-config = construct_yml_config(code = c("file1.Rmd", "file2.R"),
+config <- construct_yml_config(code = c("file1.Rmd", "file2.R"),
                               data = c("object1", "object2"))
 cat(yaml::as.yaml(config))
 
 ## ------------------------------------------------------------------------
-path_to_package = tempdir() #e.g., if tempdir() was the root of our package.
+path_to_package <- tempdir() #e.g., if tempdir() was the root of our package.
 yml_write(config, path = path_to_package)
 
 ## ----echo=1:2------------------------------------------------------------

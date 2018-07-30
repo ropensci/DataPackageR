@@ -52,7 +52,8 @@ datapackage_skeleton <-
       #   code_files =
       #     character()
       # )
-      usethis::create_package(path = file.path(path,name), rstudio = FALSE, open = FALSE)
+      usethis::create_package(path = file.path(path,name), 
+                              rstudio = FALSE, open = FALSE)
     } else {
       flog.fatal("list argument is not used by datapackage.skeleton().")
     }

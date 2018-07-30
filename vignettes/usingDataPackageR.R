@@ -32,7 +32,7 @@ DataPackageR::datapackage_skeleton(
 
 ## ----dirstructure,echo=FALSE---------------------------------------------
 library(data.tree)
-df = data.frame(pathString = file.path(
+df <- data.frame(pathString = file.path(
   "mtcars20",
   list.files(
   file.path(tempdir(), "mtcars20"),
@@ -51,7 +51,7 @@ cat(yaml::as.yaml(yaml::yaml.load_file(file.path(tempdir(),"mtcars20","datapacka
 DataPackageR:::package_build(file.path(tempdir(),"mtcars20"))
 
 ## ---- echo=FALSE---------------------------------------------------------
-df = data.frame(pathString = file.path(
+df <- data.frame(pathString = file.path(
   "mtcars20",
   list.files(
   file.path(tempdir(), "mtcars20"),
@@ -71,7 +71,7 @@ data("cars_over_20") # load the data
 cars_over_20 # now we can use it.
 ?cars_over_20 # See the documentation you wrote in data-raw/documentation.R.
   
-vignettes = vignette(package = "mtcars20")
+vignettes <- vignette(package = "mtcars20")
 vignettes$results
 
 ## ------------------------------------------------------------------------
@@ -89,16 +89,16 @@ assert_data_version(data_package_name = "mtcars20",
 # assume I have file1.Rmd and file2.R located in /data-raw, 
 # and these create 'object1' and 'object2' respectively.
 
-config = construct_yml_config(code = c("file1.Rmd", "file2.R"),
+config <- construct_yml_config(code = c("file1.Rmd", "file2.R"),
                               data = c("object1", "object2"))
 cat(yaml::as.yaml(config))
 
 ## ------------------------------------------------------------------------
-path_to_package = tempdir() #e.g., if tempdir() was the root of our package.
+path_to_package <- tempdir() #e.g., if tempdir() was the root of our package.
 yml_write(config, path = path_to_package)
 
 ## ----echo=1:2------------------------------------------------------------
-config = yml_disable_compile(config,filenames = "file2.R")
+config <- yml_disable_compile(config,filenames = "file2.R")
 yml_write(config, path = path_to_package) # write modified yml to the package.
 cat(yaml::as.yaml(config))
 

@@ -79,7 +79,7 @@ The contents of `mtcars20` are:
 
 ```{r dirstructure,echo=FALSE}
 library(data.tree)
-df = data.frame(pathString = file.path(
+df <- data.frame(pathString = file.path(
   "mtcars20",
   list.files(
   file.path(tempdir(), "mtcars20"),
@@ -166,7 +166,7 @@ In this case we have a new package
 The pacakge source directory changes after the first build.
 
 ```{r, echo=FALSE}
-df = data.frame(pathString = file.path(
+df <- data.frame(pathString = file.path(
   "mtcars20",
   list.files(
   file.path(tempdir(), "mtcars20"),
@@ -211,7 +211,7 @@ data("cars_over_20") # load the data
 cars_over_20 # now we can use it.
 ?cars_over_20 # See the documentation you wrote in data-raw/documentation.R.
   
-vignettes = vignette(package = "mtcars20")
+vignettes <- vignette(package = "mtcars20")
 vignettes$results
 ```
 
@@ -249,7 +249,7 @@ You can migrate an old package by constructing such a config file using the `con
 # assume I have file1.Rmd and file2.R located in /data-raw, 
 # and these create 'object1' and 'object2' respectively.
 
-config = construct_yml_config(code = c("file1.Rmd", "file2.R"),
+config <- construct_yml_config(code = c("file1.Rmd", "file2.R"),
                               data = c("object1", "object2"))
 cat(yaml::as.yaml(config))
 ```
@@ -257,7 +257,7 @@ cat(yaml::as.yaml(config))
 `config` is a newly constructed yaml configuration object. It can be written to the package directory:
 
 ```{r}
-path_to_package = tempdir() #e.g., if tempdir() was the root of our package.
+path_to_package <- tempdir() #e.g., if tempdir() was the root of our package.
 yml_write(config, path = path_to_package)
 ```
 
@@ -300,7 +300,7 @@ We can also perform partial builds of a subset of files in a package by toggling
 This can be done with the following API:
 
 ```{r echo=1:2}
-config = yml_disable_compile(config,filenames = "file2.R")
+config <- yml_disable_compile(config,filenames = "file2.R")
 yml_write(config, path = path_to_package) # write modified yml to the package.
 cat(yaml::as.yaml(config))
 ```

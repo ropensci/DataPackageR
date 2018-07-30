@@ -41,7 +41,34 @@ test_that("package can be built from different locations", {
   on.exit(setwd(old))
   expect_equal(basename(package_build(".")), "subsetCars_1.0.tar.gz")
   suppressWarnings(expect_error(package_build("subsetCars")))
+
   unlink(file.path(tempdir(), "subsetCars"),
+         recursive = TRUE,
+         force = TRUE)
+})
+
+
+
+test_that("R file processing works", {
+  file <- system.file("extdata", "tests", "rfileTest.R",
+                      package = "DataPackageR")
+  datapackage_skeleton(
+    name = "rfiletest",
+    path = tempdir(),
+    code_files = c(file),
+    force = TRUE,
+    r_object_names = "data"
+  )
+  expect_equal(
+    basename(
+      package_build(
+        file.path(tempdir(), "rfiletest"))),
+    "rfiletest_1.0.tar.gz")
+  v <- vignette(package="rfiletest")
+  expect_equal(v$results[,"Item"],"rfileTest")
+  
+  remove.packages("rfiletest")  
+  unlink(file.path(tempdir(), "rfiletest"),
          recursive = TRUE,
          force = TRUE)
 })
@@ -375,6 +402,7 @@ test_that("auto bump version when data unchanged", {
   unlink(file.path(tempdir(), "subsetCars"),
          recursive = TRUE,
          force = TRUE)
+
 })
 
 
@@ -448,7 +476,9 @@ test_that("package built in different edge cases", {
   on.exit(setwd(old))
   expect_equal(basename(package_build(packageName = NULL)),
                "subsetCars_1.0.tar.gz")
-  expect_equal(yml_list_objects(file.path(tempdir(), "subsetCars")), "cars_over_20")
+  expect_equal(yml_list_objects(file.path(tempdir(), 
+                                          "subsetCars")), 
+               "cars_over_20")
   
   config <- yml_find(file.path(tempdir(), "subsetCars"))
   config[["configuration"]]$render_root <- ""
@@ -723,7 +753,9 @@ test_that("assert_data_version", {
   package_build(file.path(tempdir(), pname))
   
   devtools::load_all(file.path(tempdir(), pname))
-  suppressWarnings(expect_true(dataVersion(pkg = pname) == numeric_version("0.1.0")))
+  suppressWarnings(expect_true(
+    dataVersion(pkg = pname) == numeric_version("0.1.0")
+    ))
   expect_true(
     assert_data_version(
       data_package_name = pname,
