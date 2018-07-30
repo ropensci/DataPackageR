@@ -52,6 +52,9 @@ datapackage_skeleton <-
       #   code_files =
       #     character()
       # )
+      if (force) {
+        unlink(file.path(path,name),recursive = TRUE, force = TRUE)
+      }
       usethis::create_package(path = file.path(path,name), 
                               rstudio = FALSE, open = FALSE)
     } else {

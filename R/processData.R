@@ -491,6 +491,7 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
 
 
 .ppfiles_mkvignettes <- function(dir = NULL) {
+  cat("\n")
   usethis::proj_set(dir)
   pkg <- desc::desc(dir)
   pkg$set_dep("knitr", "Suggests")
