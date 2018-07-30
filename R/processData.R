@@ -263,9 +263,30 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
         "\n"
       ))
       # config file goes in the root render the r and rmd files
+      ## First we spin then render if it's an R file
+      flag <- FALSE
+      .isRfile <- function(f) {
+        grepl("\\.r$",tolower(f))
+      }
+      if (flag <- .isRfile(r_files[i])) {
+        knitr::spin(r_files[i], precious = TRUE,
+                    knit = FALSE)
+        r_files[i] <- gsub("\\.r","\\.Rmd",tolower(r_files[i]))
+        lines <- readLines(r_files[i])
+        lines <- c("---",
+              paste0("title: ",basename(r_files[i])),
+              paste0("author: ", Sys.info()["user"]),
+              paste0("date: ", Sys.Date()),
+              "---",
+              "",
+              lines)
+        con <- file(r_files[i])
+        writeLines(lines, con = con, sep = "\n")
+        close(con)
+      }
       rmarkdown::render(
         input = r_files[i], envir = dataenv,
-        output_dir = logpath, clean = FALSE, knit_root_dir = render_root
+        output_dir = logpath, clean = TRUE, knit_root_dir = render_root
       )
       # The created objects
       object_names <- ls(dataenv)
