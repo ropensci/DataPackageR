@@ -9,7 +9,7 @@
 #' @param log log level \code{INFO,WARN,DEBUG,FATAL}
 #' @param deps \code{logical} should we pass data objects into subsequent scripts? Default TRUE
 #' @importFrom roxygen2 roxygenise roxygenize
-#' @importFrom devtools build_vignettes build parse_deps
+#' @importFrom devtools build_vignettes build parse_deps reload
 #' @importFrom usethis use_build_ignore use_rstudio proj_set use_directory
 #' @importFrom rprojroot is_r_package
 #' @importFrom yaml read_yaml
@@ -88,6 +88,8 @@ package_build <- function(packageName = NULL,
     path = dirname(package_path),
     vignettes = vignettes
   )
+  # try to reload the package in the current session
+  devtools::reload(package_path)
 }
 
 #' These functions are no longer available.
