@@ -84,11 +84,12 @@ package_build <- function(packageName = NULL,
   )
 
   flog.info("Building package")
-  build(package_path,
+  location = build(package_path,
     path = dirname(package_path),
     vignettes = vignettes
   )
-  # try to reload the package in the current session
+  # try to install and then reload the package in the current session
+  install.packages(location,repos = NULL, type = "source")
   devtools::reload(package_path)
 }
 
