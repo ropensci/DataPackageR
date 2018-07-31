@@ -32,7 +32,7 @@
 #' yml <- yml_add_objects(yml,"data1")
 #' yml_list_objects(yml)
 #' yml <- yml_remove_objects(yml,"data1")
-#' yml <- yml_remove_files(yml,"foo.Rmd")
+#' xyml <- yml_remove_files(yml,"foo.Rmd")
 yml_find <- function(path) {
   path <- normalizePath(path, winslash = "/")
   config_yml <- is_r_package$find_file("datapackager.yml", path = path)
@@ -123,6 +123,7 @@ yml_list_objects <- function(config) {
     # assume config is a package root path
     config <- yml_find(config)
   }
+  cat("\n")
   cat(config[["configuration"]][["objects"]])
   invisible(config[["configuration"]][["objects"]])
 }
@@ -134,9 +135,8 @@ yml_list_files <- function(config) {
     # assume config is a package root path
     config <- yml_find(config)
   }
-  # cat(unlist(purrr::map(config[["configuration"]][["files"]], "name")))
+  cat("\n")
   cat(names(config[["configuration"]][["files"]]))
-  # invisible(unlist(purrr::map(config[["configuration"]][["files"]], "name")))
   invisible(names(config[["configuration"]][["files"]]))
 }
 
