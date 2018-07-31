@@ -8,6 +8,7 @@
 #' @param vignettes \code{logical} specify whether to build vignettes. Default FALSE.
 #' @param log log level \code{INFO,WARN,DEBUG,FATAL}
 #' @param deps \code{logical} should we pass data objects into subsequent scripts? Default TRUE
+#' @param install \code{logical} automatically install and load the package after building. (default TRUE)
 #' @importFrom roxygen2 roxygenise roxygenize
 #' @importFrom devtools build_vignettes build parse_deps reload
 #' @importFrom usethis use_build_ignore use_rstudio proj_set use_directory
@@ -35,7 +36,8 @@
 package_build <- function(packageName = NULL,
                           vignettes = FALSE,
                           log = INFO,
-                          deps = TRUE) {
+                          deps = TRUE,
+                          install = TRUE) {
   flog.threshold(log)
   flog.appender(appender.console())
   # requireNamespace("futile.logger")
@@ -89,8 +91,10 @@ package_build <- function(packageName = NULL,
     vignettes = vignettes
   )
   # try to install and then reload the package in the current session
-  install.packages(location,repos = NULL, type = "source")
-  devtools::reload(package_path)
+  if (install) {
+    install.packages(location,repos = NULL, type = "source")
+    devtools::reload(package_path)
+  }
   return(location)
 }
 

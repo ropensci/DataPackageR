@@ -5,7 +5,7 @@
 \title{Preprocess, document and build a data package}
 \usage{
 package_build(packageName = NULL, vignettes = FALSE, log = INFO,
-  deps = TRUE)
+  deps = TRUE, install = TRUE)
 }
 \arguments{
 \item{packageName}{\code{character} path to package source directory. Defaults to the current path when NULL.}
@@ -15,6 +15,8 @@ package_build(packageName = NULL, vignettes = FALSE, log = INFO,
 \item{log}{log level \code{INFO,WARN,DEBUG,FATAL}}
 
 \item{deps}{\code{logical} should we pass data objects into subsequent scripts? Default TRUE}
+
+\item{install}{\code{logical} automatically install and load the package after building. (default TRUE)}
 }
 \description{
 Combines the preprocessing, documentation, and build steps into one.
