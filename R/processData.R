@@ -661,3 +661,53 @@ project_data_path <- function( file = NULL ){
                                    "data",file),winslash = "/"))
   }
 }
+
+#'@name document
+#'@rdname document
+#'@title Build documentation for a data package using DataPackageR.
+#'@param path \code{character} the path to the data package source root.
+#'@param install \code{logical} install and reload the package. (default TRUE)
+#'@export
+#'@examples
+#' # A simple Rmd file that creates one data object
+#' # named "tbl".
+#' f <- tempdir()
+#' f <- file.path(f,"foo.Rmd")
+#' con <- file(f)
+#' writeLines("```{r}\n tbl = table(sample(1:10,1000,replace=TRUE)) \n```\n",con=con)
+#' close(con)
+#'
+#' # construct a data package skeleton named "MyDataPackage" and pass
+#' # in the Rmd file name with full path, and the name of the object(s) it
+#' # creates.
+#'
+#' pname <- basename(tempfile())
+#' datapackage_skeleton(name=pname,
+#'    path=tempdir(),
+#'    force = TRUE,
+#'    r_object_names = "tbl",
+#'    code_files = f)
+#'
+#' # call build_package to run the "foo.Rmd" processing and
+#' # build a data package.
+#' package_build(file.path(tempdir(), pname))
+#' document(path = file.path(tempdir(), pname))
+document <- function(path = ".", install = TRUE) {
+  usethis::proj_set(path = path)
+  path <- usethis::proj_get()
+  assert_that(file.exists(file.path(path,"data-raw","documentation.R")))
+  desc <- desc::desc(file.path(path,"DESCRIPTION"))
+  docfile <- paste0(desc$get("Package"),".R")
+  file.copy(from = file.path(path,"data-raw","documentation.R"),
+            to = file.path(path,"R",docfile),
+            overwrite = TRUE)
+  flog.info("Rebuilding data package documentation.")
+  roxygen2::roxygenise(package.dir = path)
+  location <- devtools::build(pkg = path, path = dirname(path), 
+                  vignettes = FALSE, quiet = TRUE)
+  if (install) {
+    install.packages(location, repos = NULL, type = "source", quiet = TRUE)
+    devtools::reload(path, quiet = TRUE)
+  }
+  return(TRUE)
+}

@@ -95,9 +95,23 @@ package_build <- function(packageName = NULL,
     install.packages(location,repos = NULL, type = "source")
     devtools::reload(package_path)
   }
+  .next_steps()
   return(location)
 }
 
+.next_steps <- function() {
+  cat(crayon::green(crayon::bold("Next Steps")),"\n")
+  cat(crayon::white(crayon::yellow(crayon::bold("1. Update your package documentation.")),"\n"))
+  cat(crayon::white("   - Edit the documentation.R file in the package source", crayon::green("data-raw") ,"subdirectory and update the roxygen markup."),"\n")
+  cat(crayon::white("   - Rebuild the package documentation with ", crayon::red("document()"),"."),"\n")
+  cat(crayon::white(crayon::yellow(crayon::bold("2. Add your package to source control.")),"\n"))
+  cat(crayon::white("   - Call ", crayon::red("git init .") ," in the package source root directory."),"\n")
+  cat(crayon::white("   - ", crayon::red("git add") ," the package files."),"\n")
+  cat(crayon::white("   - ", crayon::red("git commit") ," your new package."),"\n")
+  cat(crayon::white("   - Set up a github repository for your pacakge."),"\n")
+  cat(crayon::white("   - Add the github repository as a remote of your local package repository."),"\n")
+  cat(crayon::white("   - ", crayon::red("git push") ," your local repository to gitub."),"\n")
+}
 #' These functions are no longer available.
 #'
 #' @name keepDataObjects-defunct
