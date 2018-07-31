@@ -32,7 +32,7 @@
 #' yml <- yml_add_objects(yml,"data1")
 #' yml_list_objects(yml)
 #' yml <- yml_remove_objects(yml,"data1")
-#' xyml <- yml_remove_files(yml,"foo.Rmd")
+#' yml <- yml_remove_files(yml,"foo.Rmd")
 yml_find <- function(path) {
   path <- normalizePath(path, winslash = "/")
   config_yml <- is_r_package$find_file("datapackager.yml", path = path)

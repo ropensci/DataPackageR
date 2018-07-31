@@ -15,7 +15,7 @@
 #' @importFrom utils install.packages
 #' @importFrom yaml read_yaml
 #' @importFrom futile.logger flog.debug flog.info flog.warn flog.error flog.fatal flog.appender flog.threshold INFO appender.console appender.tee
-#' @importFrom knitr knit
+#' @importFrom knitr knit spin
 #' @export
 #' @examples
 #'
