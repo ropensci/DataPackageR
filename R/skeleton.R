@@ -15,26 +15,21 @@
 
 #' Create a Data Package skeleton for use with DataPackageR.
 #'
-#' Creates a package skeleton for use with preprpocessData. Creates the additional information needed for versioning
-#' datasets, namely the DataVersion string in DESCRIPTION, DATADIGEST, and the data-raw directory. Updates Read-and-delete-me
-#' to reflect the additional necessary steps.
-#' @name datapackage.skeleton
-#' @param name  see \code{\link[utils]{package.skeleton}}
+#' Creates a package skeleton directory structure for use with DataPackageR.
+#' Adds the DataVersion string to DESCRIPTION, creates the DATADIGEST file, and the data-raw directory.
+#' Updates the Read-and-delete-me file to reflect the additional necessary steps.
+#' @name datapackage_skeleton
+#' @param name  \code{character} name of the package to create.
 #' @rdname datapackage_skeleton
-#' @param list see A list of named R objects expected to exist in the environment. Not used here. See \code{code_files} argument instead.
-#' @param environment see \code{\link[utils]{package.skeleton}}. Not used here.
 #' @param path A \code{character} path where the pacakge is located. See \code{\link[utils]{package.skeleton}}
 #' @param force \code{logical} Force the package skeleton to be recreated even if it exists. see \code{\link[utils]{package.skeleton}}
 #' @param code_files Optional \code{character} vector of paths to Rmd files that process raw data
-#' into R objects. Treated differently than \code{code_files} in \code{\link[utils]{package.skeleton}}.
-#' Will always pass an empty \code{character()} vector to that function.
+#' into R objects. 
 #' @param r_object_names \code{vector} of quoted r object names , tables, etc. created when the files in \code{code_files} are run.
 #' @note renamed \code{datapackage.skeleton()} to \code{datapackage_skeleton()}.
 #' @export
 datapackage_skeleton <-
   function(name = NULL,
-             list = character(),
-             environment = new.env(),
              path = ".",
              force = FALSE,
              code_files = character(),
@@ -42,24 +37,12 @@ datapackage_skeleton <-
     if (is.null(name)) {
       stop("Must supply a package name", call. = FALSE)
     }
-    if (length(list) == 0) {
-      # don't pass on the code_files here, but use that argument to
-      # utils::package.skeleton(
-      #   name = name,
-      #   environment = environment,
-      #   path = path,
-      #   force = force,
-      #   code_files =
-      #     character()
-      # )
-      if (force) {
-        unlink(file.path(path,name),recursive = TRUE, force = TRUE)
-      }
-      usethis::create_package(path = file.path(path,name), 
-                              rstudio = FALSE, open = FALSE)
-    } else {
-      flog.fatal("list argument is not used by datapackage.skeleton().")
+    if (force) {
+      unlink(file.path(path,name),recursive = TRUE, force = TRUE)
     }
+    usethis::create_package(path = file.path(path,name), 
+                            rstudio = FALSE, open = FALSE)
+ 
     # create the rest of the necessary elements in the package
     package_path <- file.path(path, name)
     description <-
@@ -148,6 +131,9 @@ datapackage_skeleton <-
 
 
 #' @rdname datapackage_skeleton
+#' @name datapackage.skeleton
+#' @param list Not used.
+#' @param environment Not used.
 #' @aliases datapackage_skeleton
 #' @export
 #' @examples
@@ -172,8 +158,6 @@ datapackage.skeleton <- function(name = NULL,
   warning("Please use datapackage_skeleton() instead of datapackage.skeleton()")
   datapackage_skeleton(
     name = name,
-    list = list,
-    environment = environment,
     path = path,
     force = force,
     code_files = code_files,

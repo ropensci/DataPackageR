@@ -13,15 +13,4 @@ test_that("datapackage_skeleton errors with no name arg", {
       r_object_names = c("cars_over_20", "pressure")
     )
   )
-  datapackage_skeleton(
-    name = "subsetCars",
-    list = list(),
-    path = tempdir(),
-    code_files = c(file2),
-    force = TRUE,
-    r_object_names = c("cars_over_20")
-  )
-  unlink(file.path(tempdir(), "subsetCars"),
-         recursive = TRUE,
-         force = TRUE)
 })

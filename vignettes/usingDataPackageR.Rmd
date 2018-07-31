@@ -61,8 +61,7 @@ processing_code <-
               package = "DataPackageR")
 
 # Create the package framework.
-DataPackageR::datapackage_skeleton(
-  "mtcars20",
+DataPackageR::datapackage_skeleton(name = "mtcars20",
   force = TRUE,
   code_files = processing_code,
   r_object_names = "cars_over_20",
