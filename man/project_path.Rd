@@ -4,7 +4,10 @@
 \alias{project_path}
 \title{Get DataPackageR Project Root Path}
 \usage{
-project_path()
+project_path(file = NULL)
+}
+\arguments{
+\item{file}{\code{character} or \code{NULL} (default).}
 }
 \value{
 \code{character}
@@ -13,8 +16,10 @@ project_path()
 Get DataPackageR Project Root Path
 }
 \details{
-Returns the path to the data package project root.
+Returns the path to the data package project root, or 
+constructs a path to a file in the project root from the
+file argument.
 }
 \examples{
-project_path()
+project_path( file = "DESCRIPTION" )
 }

@@ -78,16 +78,16 @@ The contents of `mtcars20` are:
 ```
                 levelName
 1  mtcars20              
-2   ¦--DESCRIPTION       
-3   ¦--R                 
-4   ¦--Read-and-delete-me
-5   ¦--data              
-6   ¦--data-raw          
-7   ¦   °--subsetCars.Rmd
-8   ¦--datapackager.yml  
-9   ¦--inst              
-10  ¦   °--extdata       
-11  °--man               
+2   ¦--data              
+3   ¦--data-raw          
+4   ¦   °--subsetCars.Rmd
+5   ¦--datapackager.yml  
+6   ¦--DESCRIPTION       
+7   ¦--inst              
+8   ¦   °--extdata       
+9   ¦--man               
+10  ¦--R                 
+11  °--Read-and-delete-me
 ```
 
 You should fill out the `DESCRIPTION` file to describe your data package. 
@@ -109,7 +109,7 @@ configuration:
       enabled: yes
   objects: cars_over_20
   render_root:
-    tmp: '825477'
+    tmp: '987135'
 ```
 
 The two main pieces of information in the configuration are a list of the files to be processed and the data sets the package will store.
@@ -124,21 +124,28 @@ DataPackageR provides an API for modifying this file, so it does not need to be 
 
 Further information on the contents of the YAML configuration file, and the API are in the [YAML Configuration Details](YAML_CONFIG.md)
 
-### Where do I put raw data?
+### Where do I put my raw datasets?
 
 Raw data (provided the size is not prohibitive) can be placed in `inst/extdata`.
 
-In this example we are reading from `data(mtcars)` rather than from the file system.
+In this example we are reading the `mtcars` data set that is already in memory, rather than from the file system.
 
-#### An API to locate data sets within an R or Rmd file.
+#### An API to read raw data sets from within an R or Rmd procesing script.
 
-To locate the data to read from the filesystem:
+As stated in the README, in order for your processing scripts to be portable, you should not use abosolute paths to files. 
+DataPackageR provides an API to point to the data package root directory and the `inst/extdata` and `data` subdirectories.
+These are useful for constructing portable paths in your code to read files from these locations.
 
-- `DataPackageR::project_extdata_path()` to get the path to `inst/extdata` from inside an `Rmd` or `R` file. (e.g., /var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//Rtmp3Vrovn/mtcars20/inst/extdata)
+For example: to construct a path to a file named "mydata.csv" located in `inst/extdata` in your data package source tree:
 
-- `DataPackageR::project_path()`  to get the path to the datapackage root. (e.g., /var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//Rtmp3Vrovn/mtcars20)
+- use `DataPackageR::project_extdata_path("mydata.csv")` in your `R` or `Rmd` file. This would return: e.g., /var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//RtmpilrC9a/mtcars20/inst/extdata/mydata.csv
 
-Raw data stored externally can be retreived relative to these paths.
+Similarly: 
+
+- `DataPackageR::project_path()`  constructs a path to the data package root directory. (e.g., /var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//RtmpilrC9a/mtcars20)
+- `DataPackageR::project_data_path()` constructs a path to the data package `data` subdirectory. (e.g., /var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//RtmpilrC9a/mtcars20/data)
+
+Raw data sets that are stored externally (outside the data package source tree) can be constructed relative to the `project_path()`.
 
 
 ## Build the data package.
@@ -150,39 +157,61 @@ Once the skeleton framework is set up,
 # Run the preprocessing code to build cars_over_20
 # and reproducibly enclose it in a package.
 DataPackageR:::package_build(file.path(tempdir(),"mtcars20"))
-INFO [2018-07-31 10:03:20] Logging to /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmp3Vrovn/mtcars20/inst/extdata/Logfiles/processing.log
-INFO [2018-07-31 10:03:20] Processing data
-INFO [2018-07-31 10:03:20] Reading yaml configuration
-INFO [2018-07-31 10:03:20] Found /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmp3Vrovn/mtcars20/data-raw/subsetCars.Rmd
-INFO [2018-07-31 10:03:20] Processing 1 of 1: /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmp3Vrovn/mtcars20/data-raw/subsetCars.Rmd
-processing file: subsetCars.Rmd
-output file: subsetCars.knit.md
-/usr/local/bin/pandoc +RTS -K512m -RTS subsetCars.utf8.md --to html4 --from markdown+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash+smart --output /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmp3Vrovn/mtcars20/inst/extdata/Logfiles/subsetCars.html --email-obfuscation none --self-contained --standalone --section-divs --template /Library/Frameworks/R.framework/Versions/3.5/Resources/library/rmarkdown/rmd/h/default.html --no-highlight --variable highlightjs=1 --variable 'theme:bootstrap' --include-in-header /var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//Rtmp3Vrovn/rmarkdown-strf5ca334443f4.html --mathjax --variable 'mathjax-url:https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' 
+INFO [2018-07-31 11:29:11] Logging to /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpilrC9a/mtcars20/inst/extdata/Logfiles/processing.log
+INFO [2018-07-31 11:29:11] Processing data
+INFO [2018-07-31 11:29:11] Reading yaml configuration
+INFO [2018-07-31 11:29:11] Found /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpilrC9a/mtcars20/data-raw/subsetCars.Rmd
+INFO [2018-07-31 11:29:11] Processing 1 of 1: /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpilrC9a/mtcars20/data-raw/subsetCars.Rmd
 
-Output created: /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmp3Vrovn/mtcars20/inst/extdata/Logfiles/subsetCars.html
-INFO [2018-07-31 10:03:20] 1 required data objects created by subsetCars.Rmd
-INFO [2018-07-31 10:03:20] Saving to data
-INFO [2018-07-31 10:03:20] Copied documentation to /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmp3Vrovn/mtcars20/R/mtcars20.R
+
+processing file: subsetCars.Rmd
+  |                                                                         |                                                                 |   0%  |                                                                         |.........                                                        |  14%
+  ordinary text without R code
+
+  |                                                                         |...................                                              |  29%
+label: unnamed-chunk-11 (with options) 
+List of 1
+ $ include: logi FALSE
+
+  |                                                                         |............................                                     |  43%
+  ordinary text without R code
+
+  |                                                                         |.....................................                            |  57%
+label: cars
+  |                                                                         |..............................................                   |  71%
+  ordinary text without R code
+
+  |                                                                         |........................................................         |  86%
+label: unnamed-chunk-12
+  |                                                                         |.................................................................| 100%
+  ordinary text without R code
+output file: subsetCars.knit.md
+/usr/local/bin/pandoc +RTS -K512m -RTS subsetCars.utf8.md --to html4 --from markdown+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash+smart --output /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpilrC9a/mtcars20/inst/extdata/Logfiles/subsetCars.html --email-obfuscation none --self-contained --standalone --section-divs --template /Library/Frameworks/R.framework/Versions/3.5/Resources/library/rmarkdown/rmd/h/default.html --no-highlight --variable highlightjs=1 --variable 'theme:bootstrap' --include-in-header /var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//RtmpilrC9a/rmarkdown-str1228b6ea87d63.html --mathjax --variable 'mathjax-url:https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' 
+
+Output created: /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpilrC9a/mtcars20/inst/extdata/Logfiles/subsetCars.html
+INFO [2018-07-31 11:29:11] 1 required data objects created by subsetCars.Rmd
+INFO [2018-07-31 11:29:11] Saving to data
+INFO [2018-07-31 11:29:11] Copied documentation to /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpilrC9a/mtcars20/R/mtcars20.R
 
 ✔ Creating 'vignettes/'
 ✔ Creating 'inst/doc/'
-INFO [2018-07-31 10:03:20] Done
-INFO [2018-07-31 10:03:20] DataPackageR succeeded
-INFO [2018-07-31 10:03:20] Building documentation
+INFO [2018-07-31 11:29:11] Done
+INFO [2018-07-31 11:29:11] DataPackageR succeeded
+INFO [2018-07-31 11:29:11] Building documentation
 First time using roxygen2. Upgrading automatically...
-Updating roxygen version in /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmp3Vrovn/mtcars20/DESCRIPTION
+Updating roxygen version in /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpilrC9a/mtcars20/DESCRIPTION
 Writing NAMESPACE
 Loading mtcars20
 Writing mtcars20.Rd
 Writing cars_over_20.Rd
-INFO [2018-07-31 10:03:20] Building package
+INFO [2018-07-31 11:29:12] Building package
 '/Library/Frameworks/R.framework/Resources/bin/R' --no-site-file  \
   --no-environ --no-save --no-restore --quiet CMD build  \
-  '/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmp3Vrovn/mtcars20'  \
+  '/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpilrC9a/mtcars20'  \
   --no-resave-data --no-manual --no-build-vignettes 
 
 Reloading installed mtcars20
-[1] "/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmp3Vrovn/mtcars20_1.0.tar.gz"
+[1] "/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpilrC9a/mtcars20_1.0.tar.gz"
 ```
 
 
@@ -210,32 +239,31 @@ The pacakge source directory changes after the first build.
 ```
                          levelName
 1  mtcars20                       
-2   ¦--DATADIGEST                 
-3   ¦--DESCRIPTION                
-4   ¦--NAMESPACE                  
-5   ¦--R                          
-6   ¦   °--mtcars20.R             
-7   ¦--Read-and-delete-me         
-8   ¦--data                       
-9   ¦   °--cars_over_20.rda       
-10  ¦--data-raw                   
-11  ¦   ¦--documentation.R        
-12  ¦   ¦--subsetCars.R           
-13  ¦   °--subsetCars.Rmd         
-14  ¦--datapackager.yml           
-15  ¦--inst                       
-16  ¦   ¦--doc                    
-17  ¦   ¦   ¦--subsetCars.Rmd     
-18  ¦   ¦   °--subsetCars.html    
-19  ¦   °--extdata                
-20  ¦       °--Logfiles           
-21  ¦           ¦--processing.log 
-22  ¦           °--subsetCars.html
-23  ¦--man                        
-24  ¦   ¦--cars_over_20.Rd        
-25  ¦   °--mtcars20.Rd            
-26  °--vignettes                  
-27      °--subsetCars.Rmd         
+2   ¦--data                       
+3   ¦   °--cars_over_20.rda       
+4   ¦--data-raw                   
+5   ¦   ¦--documentation.R        
+6   ¦   °--subsetCars.Rmd         
+7   ¦--DATADIGEST                 
+8   ¦--datapackager.yml           
+9   ¦--DESCRIPTION                
+10  ¦--inst                       
+11  ¦   ¦--doc                    
+12  ¦   ¦   ¦--subsetCars.html    
+13  ¦   ¦   °--subsetCars.Rmd     
+14  ¦   °--extdata                
+15  ¦       °--Logfiles           
+16  ¦           ¦--processing.log 
+17  ¦           °--subsetCars.html
+18  ¦--man                        
+19  ¦   ¦--cars_over_20.Rd        
+20  ¦   °--mtcars20.Rd            
+21  ¦--NAMESPACE                  
+22  ¦--R                          
+23  ¦   °--mtcars20.R             
+24  ¦--Read-and-delete-me         
+25  °--vignettes                  
+26      °--subsetCars.Rmd         
 ```
 
 #### Update the autogenerated documentation. 
@@ -337,7 +365,7 @@ configuration:
   - object1
   - object2
   render_root:
-    tmp: '365864'
+    tmp: '741779'
 ```
 
 `config` is a newly constructed yaml configuration object. It can be written to the package directory:
@@ -372,11 +400,11 @@ To read a raw data set we can get the path to the package source directory using
 #### The new way
 
 ```r
-# DataPackageR::project_path() returns the path to the data package source directory.
-read.csv(file.path(
-    DataPackageR::project_path(), 
-    "inst/extdata",
-    "myfile.csv")
+# DataPackageR::project_extdata_path() returns the path to the data package inst/extdata subdirectory directory.
+# DataPackageR::project_path() returns the path to the data package root directory.
+# DataPackageR::project_data_path() returns the path to the data package data subdirectory directory.
+read.csv(
+    DataPackageR::project_extdata_path("myfile.csv")
     )
 ```
 
@@ -400,7 +428,7 @@ configuration:
   - object1
   - object2
   render_root:
-    tmp: '365864'
+    tmp: '741779'
 ```
 
 Note that the modified configuration needs to be written back to the package source directory in order for the 

@@ -198,19 +198,11 @@ processing_code <- system.file(
 # 2. Create the package framework.
 # We pass in the Rmd file in the `processing_code` variable and the names of the data objects it creates (called "cars_over_20")
 # The new package is called "mtcars20"
-DataPackageR::datapackage_skeleton(
+datapackage_skeleton(
   "mtcars20", force = TRUE, 
   code_files = processing_code, 
   r_object_names = "cars_over_20", 
   path = tempdir()) 
-#> Creating directories ...
-#> Creating DESCRIPTION ...
-#> Creating NAMESPACE ...
-#> Creating Read-and-delete-me ...
-#> Saving functions and data ...
-#> Making help files ...
-#> Done.
-#> Further steps are described in '/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//RtmpVZPMWH/mtcars20/Read-and-delete-me'.
 #> Adding DataVersion string to DESCRIPTION
 #> Creating data and data-raw directories
 #> configuring yaml file
@@ -218,20 +210,22 @@ DataPackageR::datapackage_skeleton(
 # 3. Run the preprocessing code to build the cars_over_20 data set 
 # and reproducibly enclose it in the mtcars20 package.
 # packageName is the full path to the package source directory created at step 2.
-DataPackageR:::package_build(packageName = file.path(tempdir(),"mtcars20"))
+package_build(packageName = file.path(tempdir(),"mtcars20"))
 #> 
 #> 
 #> processing file: subsetCars.Rmd
 #> output file: subsetCars.knit.md
 #> 
-#> Output created: /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpVZPMWH/mtcars20/inst/extdata/Logfiles/subsetCars.html
+#> Output created: /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmp2r1Bpg/mtcars20/inst/extdata/Logfiles/subsetCars.html
 #> First time using roxygen2. Upgrading automatically...
-#> Updating roxygen version in /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpVZPMWH/mtcars20/DESCRIPTION
+#> Updating roxygen version in /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmp2r1Bpg/mtcars20/DESCRIPTION
+#> Loading mtcars20
 #> '/Library/Frameworks/R.framework/Resources/bin/R' --no-site-file  \
 #>   --no-environ --no-save --no-restore --quiet CMD build  \
-#>   '/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpVZPMWH/mtcars20'  \
+#>   '/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmp2r1Bpg/mtcars20'  \
 #>   --no-resave-data --no-manual --no-build-vignettes
 #> 
+#> Reloading installed mtcars20
 
 # Let's use the package we just created.
 install.packages(file.path(tempdir(),"mtcars20_1.0.tar.gz"), type = "source", repos = NULL)
@@ -246,7 +240,7 @@ cars_over_20  # Now we can use it.
 cars_over_20
 
 # We can easily check the version of the data
-DataPackageR::data_version("mtcars20")
+data_version("mtcars20")
 
 # You can use an assert to check the data version in  reports and
 # analyses that use the packaged data.
@@ -255,22 +249,34 @@ assert_data_version(data_package_name = "mtcars20",
                     acceptable = "equal")
 ```
 
-### Reading external data
+### Reading external data from within R / Rmd processing scripts.
 
-In an Rmd file, external data (stored in `inst/extdata` at the data
-package source, or elsewhere) can be located relative to:
+When creating a data package, your processing scripts will need to read
+your raw data sets in order to process them. These data sets can be
+stored in `inst/extdata` of the data pacakge source tree, or elsewhere
+outside the package source tree. In order to have portable and
+reproducible code, you should not use absolute paths to the raw data.
+Instead, `DataPackageR` provides several APIs to access the data package
+project root directory, the `inst/extdata` subdirectory, and the `data`
+subdirectory.
 
 ``` r
 # This returns the datapackage source 
 # root directory. 
+# In an R or Rmd processing script this can be used to build a path to a directory that is exteral to the package, for 
+# example if we are dealing with very large data sets where data cannot be pacakged.
 DataPackageR::project_path()
 
-# This returns the datapackage  
+# This returns the   
 # inst/extdata directory. 
+# Raw data sets that are included in the package should be placed there.
+# They can be read from that location, which is returned by: 
 DataPackageR::project_extdata_path()
 
 # This returns the path to the datapackage  
-# data directory. 
+# data directory. This can be used to access 
+# stored data objects already created and saved in `data` from 
+# other processing scripts.
 DataPackageR::project_data_path()
 ```
 

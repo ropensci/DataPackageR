@@ -4,7 +4,10 @@
 \alias{project_data_path}
 \title{Get DataPackageR data path}
 \usage{
-project_data_path()
+project_data_path(file = NULL)
+}
+\arguments{
+\item{file}{\code{character} or \code{NULL} (default).}
 }
 \value{
 \code{character}
@@ -13,8 +16,10 @@ project_data_path()
 Get DataPackageR data path
 }
 \details{
-Returns the path to the datapackage data directory.
+Returns the path to the data package data subdirectory, or 
+constructs a path to a file in the data subdirectory from the
+file argument.
 }
 \examples{
-project_data_path()
+project_data_path( file = "data.rda" )
 }

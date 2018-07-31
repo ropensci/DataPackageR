@@ -22,8 +22,7 @@ processing_code <-
               package = "DataPackageR")
 
 # Create the package framework.
-DataPackageR::datapackage_skeleton(
-  "mtcars20",
+DataPackageR::datapackage_skeleton(name = "mtcars20",
   force = TRUE,
   code_files = processing_code,
   r_object_names = "cars_over_20",
@@ -43,9 +42,7 @@ df <- data.frame(pathString = file.path(
 as.Node(df)
 
 ## ---- echo=FALSE---------------------------------------------------------
-cat(yaml::as.yaml(yaml::yaml.load_file(file.path(tempdir(),
-                                                 "mtcars20",
-                                                 "datapackager.yml"))))
+cat(yaml::as.yaml(yaml::yaml.load_file(file.path(tempdir(),"mtcars20","datapackager.yml"))))
 
 ## ----eval=TRUE-----------------------------------------------------------
 # Run the preprocessing code to build cars_over_20
@@ -65,16 +62,15 @@ df <- data.frame(pathString = file.path(
 
 ## ------------------------------------------------------------------------
 # Let's use the package we just created.
-install.packages(file.path(tempdir(),"mtcars20_1.0.tar.gz"),
-                 type = "source", repos = NULL)
+install.packages(file.path(tempdir(),"mtcars20_1.0.tar.gz"), type = "source", repos = NULL)
 if(!"package:mtcars20"%in%search())
   attachNamespace('mtcars20') #use library() in your code
 data("cars_over_20") # load the data
 
 cars_over_20 # now we can use it.
 ?cars_over_20 # See the documentation you wrote in data-raw/documentation.R.
-
-vignettes = vignette(package="mtcars20")
+  
+vignettes <- vignette(package = "mtcars20")
 vignettes$results
 
 ## ------------------------------------------------------------------------
@@ -101,7 +97,7 @@ path_to_package <- tempdir() #e.g., if tempdir() was the root of our package.
 yml_write(config, path = path_to_package)
 
 ## ----echo=1:2------------------------------------------------------------
-config = yml_disable_compile(config,filenames = "file2.R")
+config <- yml_disable_compile(config,filenames = "file2.R")
 yml_write(config, path = path_to_package) # write modified yml to the package.
 cat(yaml::as.yaml(config))
 

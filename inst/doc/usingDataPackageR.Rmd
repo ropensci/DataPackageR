@@ -61,8 +61,7 @@ processing_code <-
               package = "DataPackageR")
 
 # Create the package framework.
-DataPackageR::datapackage_skeleton(
-  "mtcars20",
+DataPackageR::datapackage_skeleton(name = "mtcars20",
   force = TRUE,
   code_files = processing_code,
   r_object_names = "cars_over_20",
@@ -79,7 +78,7 @@ The contents of `mtcars20` are:
 
 ```{r dirstructure,echo=FALSE}
 library(data.tree)
-df = data.frame(pathString = file.path(
+df <- data.frame(pathString = file.path(
   "mtcars20",
   list.files(
   file.path(tempdir(), "mtcars20"),
@@ -117,21 +116,28 @@ DataPackageR provides an API for modifying this file, so it does not need to be 
 
 Further information on the contents of the YAML configuration file, and the API are in the [YAML Configuration Details](YAML_CONFIG.md)
 
-### Where do I put raw data?
+### Where do I put my raw datasets?
 
 Raw data (provided the size is not prohibitive) can be placed in `inst/extdata`.
 
-In this example we are reading from `data(mtcars)` rather than from the file system.
+In this example we are reading the `mtcars` data set that is already in memory, rather than from the file system.
 
-#### An API to locate data sets within an R or Rmd file.
+#### An API to read raw data sets from within an R or Rmd procesing script.
 
-To locate the data to read from the filesystem:
+As stated in the README, in order for your processing scripts to be portable, you should not use abosolute paths to files. 
+DataPackageR provides an API to point to the data package root directory and the `inst/extdata` and `data` subdirectories.
+These are useful for constructing portable paths in your code to read files from these locations.
 
-- `DataPackageR::project_extdata_path()` to get the path to `inst/extdata` from inside an `Rmd` or `R` file. (e.g., `r file.path(tempdir(),"mtcars20","inst","extdata")`)
+For example: to construct a path to a file named "mydata.csv" located in `inst/extdata` in your data package source tree:
 
-- `DataPackageR::project_path()`  to get the path to the datapackage root. (e.g., `r file.path(tempdir(),"mtcars20")`)
+- use `DataPackageR::project_extdata_path("mydata.csv")` in your `R` or `Rmd` file. This would return: e.g., `r file.path(tempdir(),"mtcars20","inst","extdata","mydata.csv")`
 
-Raw data stored externally can be retreived relative to these paths.
+Similarly: 
+
+- `DataPackageR::project_path()`  constructs a path to the data package root directory. (e.g., `r file.path(tempdir(),"mtcars20")`)
+- `DataPackageR::project_data_path()` constructs a path to the data package `data` subdirectory. (e.g., `r file.path(tempdir(),"mtcars20","data")`)
+
+Raw data sets that are stored externally (outside the data package source tree) can be constructed relative to the `project_path()`.
 
 
 ## Build the data package.
@@ -166,7 +172,7 @@ In this case we have a new package
 The pacakge source directory changes after the first build.
 
 ```{r, echo=FALSE}
-df = data.frame(pathString = file.path(
+df <- data.frame(pathString = file.path(
   "mtcars20",
   list.files(
   file.path(tempdir(), "mtcars20"),
@@ -210,8 +216,8 @@ data("cars_over_20") # load the data
 
 cars_over_20 # now we can use it.
 ?cars_over_20 # See the documentation you wrote in data-raw/documentation.R.
-
-vignettes = vignette(package="mtcars20")
+  
+vignettes <- vignette(package = "mtcars20")
 vignettes$results
 ```
 
@@ -249,7 +255,7 @@ You can migrate an old package by constructing such a config file using the `con
 # assume I have file1.Rmd and file2.R located in /data-raw, 
 # and these create 'object1' and 'object2' respectively.
 
-config = construct_yml_config(code = c("file1.Rmd", "file2.R"),
+config <- construct_yml_config(code = c("file1.Rmd", "file2.R"),
                               data = c("object1", "object2"))
 cat(yaml::as.yaml(config))
 ```
@@ -257,7 +263,7 @@ cat(yaml::as.yaml(config))
 `config` is a newly constructed yaml configuration object. It can be written to the package directory:
 
 ```{r}
-path_to_package = tempdir() #e.g., if tempdir() was the root of our package.
+path_to_package <- tempdir() #e.g., if tempdir() was the root of our package.
 yml_write(config, path = path_to_package)
 ```
 
@@ -285,11 +291,11 @@ To read a raw data set we can get the path to the package source directory using
 #### The new way
 
 ```r
-# DataPackageR::project_path() returns the path to the data package source directory.
-read.csv(file.path(
-    DataPackageR::project_path(), 
-    "inst/extdata",
-    "myfile.csv")
+# DataPackageR::project_extdata_path() returns the path to the data package inst/extdata subdirectory directory.
+# DataPackageR::project_path() returns the path to the data package root directory.
+# DataPackageR::project_data_path() returns the path to the data package data subdirectory directory.
+read.csv(
+    DataPackageR::project_extdata_path("myfile.csv")
     )
 ```
 
@@ -300,7 +306,7 @@ We can also perform partial builds of a subset of files in a package by toggling
 This can be done with the following API:
 
 ```{r echo=1:2}
-config = yml_disable_compile(config,filenames = "file2.R")
+config <- yml_disable_compile(config,filenames = "file2.R")
 yml_write(config, path = path_to_package) # write modified yml to the package.
 cat(yaml::as.yaml(config))
 ```

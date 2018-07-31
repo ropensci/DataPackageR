@@ -12,7 +12,7 @@
 
 <meta name="author" content="Greg Finak gfinak@fredhutch.org" />
 
-<meta name="date" content="2018-07-30" />
+<meta name="date" content="2018-07-31" />
 
 <title>The DataPackageR YAML configuration file.</title>
 
@@ -280,7 +280,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 <h1 class="title toc-ignore">The DataPackageR YAML configuration file.</h1>
 <h4 class="author"><em>Greg Finak <a href="mailto:gfinak@fredhutch.org">gfinak@fredhutch.org</a></em></h4>
-<h4 class="date"><em>2018-07-30</em></h4>
+<h4 class="date"><em>2018-07-31</em></h4>
 
 
 <div id="TOC">
@@ -309,7 +309,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
       enabled: yes
   objects: cars_over_20
   render_root:
-    tmp: '528791'</code></pre>
+    tmp: '138283'</code></pre>
 </div>
 <div id="yaml-config-file-properties." class="section level2">
 <h2>YAML config file properties.</h2>
@@ -371,7 +371,8 @@ The names of the data objects created by the processing files, to be stored in t
 <div id="example-2" class="section level5">
 <h5>Example</h5>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">  <span class="kw">yml_list_objects</span>(yml)</a></code></pre></div>
-<pre><code>cars_over_20</code></pre>
+<pre><code>
+cars_over_20</code></pre>
 </div>
 </div>
 <div id="yml_list_files" class="section level4">
@@ -380,7 +381,8 @@ The names of the data objects created by the processing files, to be stored in t
 <div id="example-3" class="section level5">
 <h5>Example</h5>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">  <span class="kw">yml_list_files</span>(yml)</a></code></pre></div>
-<pre><code>subsetCars.Rmd</code></pre>
+<pre><code>
+subsetCars.Rmd</code></pre>
 </div>
 </div>
 <div id="yml_disable_compile" class="section level4">
@@ -397,7 +399,7 @@ The names of the data objects created by the processing files, to be stored in t
       enabled: no
   objects: cars_over_20
   render_root:
-    tmp: '168147'</code></pre>
+    tmp: '739294'</code></pre>
 </div>
 </div>
 <div id="yml_enable_compile" class="section level4">
@@ -414,7 +416,7 @@ The names of the data objects created by the processing files, to be stored in t
       enabled: yes
   objects: cars_over_20
   render_root:
-    tmp: '168147'</code></pre>
+    tmp: '739294'</code></pre>
 </div>
 </div>
 <div id="yml_add_files" class="section level4">
@@ -433,7 +435,7 @@ The names of the data objects created by the processing files, to be stored in t
       enabled: yes
   objects: cars_over_20
   render_root:
-    tmp: '168147'</code></pre>
+    tmp: '739294'</code></pre>
 </div>
 </div>
 <div id="yml_add_objects" class="section level4">
@@ -454,7 +456,7 @@ The names of the data objects created by the processing files, to be stored in t
   - cars_over_20
   - another_object
   render_root:
-    tmp: '168147'</code></pre>
+    tmp: '739294'</code></pre>
 </div>
 </div>
 <div id="yml_remove_files" class="section level4">
@@ -473,7 +475,7 @@ The names of the data objects created by the processing files, to be stored in t
   - cars_over_20
   - another_object
   render_root:
-    tmp: '168147'</code></pre>
+    tmp: '739294'</code></pre>
 </div>
 </div>
 <div id="yml_remove_objects" class="section level4">
@@ -490,7 +492,7 @@ The names of the data objects created by the processing files, to be stored in t
       enabled: yes
   objects: cars_over_20
   render_root:
-    tmp: '168147'</code></pre>
+    tmp: '739294'</code></pre>
 </div>
 </div>
 <div id="yml_write" class="section level4">

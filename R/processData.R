@@ -115,8 +115,7 @@ NULL
 #' @importFrom utils getSrcref modifyList
 #' @importFrom usethis proj_set proj_get
 DataPackageR <- function(arg = NULL, deps = TRUE) {
-  requireNamespace("futile.logger")
-  requireNamespace("yaml")
+  # requireNamespace("futile.logger")
   pkg_dir <- arg
   pkg_dir <- normalizePath(pkg_dir, winslash = "/")
   usethis::proj_set(path = pkg_dir)
@@ -603,37 +602,55 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
 
 #' Get DataPackageR Project Root Path
 #'
-#' @details Returns the path to the data package project root.
+#' @details Returns the path to the data package project root, or 
+#' constructs a path to a file in the project root from the
+#' file argument.
 #' @return \code{character}
+#' @param file \code{character} or \code{NULL} (default). 
 #' @export
 #'
 #' @examples
-#' project_path()
-project_path <- function(){
-  usethis::proj_get()
+#' project_path( file = "DESCRIPTION" )
+project_path <- function(file = NULL){
+  if (is.null(file))
+    return(usethis::proj_get())
+  else
+    return(normalizePath(file.path(usethis::proj_get(),file),winslash = "/"))
 }
 
 
 #' Get DataPackageR extdata path
 #'
-#' @details Returns the path to the datapackage extdata directory.
+#' @details Returns the path to the data package extdata subdirectory, or 
+#' constructs a path to a file in the extdata subdirectory from the
+#' file argument.
 #' @return \code{character}
+#' @param file \code{character} or \code{NULL} (default). 
 #' @export
 #'
 #' @examples
-#' project_extdata_path()
-project_extdata_path <- function(){
-  file.path(usethis::proj_get(),"inst","extdata")
+#' project_extdata_path(file = "mydata.csv")
+project_extdata_path <- function( file = NULL ){
+  if (is.null(file))
+    return(file.path(usethis::proj_get(),"inst","extdata"))
+  else
+    return(normalizePath(file.path(usethis::proj_get(),"inst","extdata",file),winslash = "/"))
 }
 
 #' Get DataPackageR data path
 #'
-#' @details Returns the path to the datapackage data directory.
+#' @details Returns the path to the data package data subdirectory, or 
+#' constructs a path to a file in the data subdirectory from the
+#' file argument.
 #' @return \code{character}
+#' @param file \code{character} or \code{NULL} (default). 
 #' @export
 #'
 #' @examples
-#' project_data_path()
-project_data_path <- function(){
-  file.path(usethis::proj_get(),"data")
+#' project_data_path( file = "data.rda" )
+project_data_path <- function( file = NULL ){
+  if (is.null(file))
+    return(file.path(usethis::proj_get(),"data"))
+  else
+    return(normalizePath(file.path(usethis::proj_get(),"data",file),winslash = "/"))
 }

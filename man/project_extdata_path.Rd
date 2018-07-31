@@ -4,7 +4,10 @@
 \alias{project_extdata_path}
 \title{Get DataPackageR extdata path}
 \usage{
-project_extdata_path()
+project_extdata_path(file = NULL)
+}
+\arguments{
+\item{file}{\code{character} or \code{NULL} (default).}
 }
 \value{
 \code{character}
@@ -13,8 +16,10 @@ project_extdata_path()
 Get DataPackageR extdata path
 }
 \details{
-Returns the path to the datapackage extdata directory.
+Returns the path to the data package extdata subdirectory, or 
+constructs a path to a file in the extdata subdirectory from the
+file argument.
 }
 \examples{
-project_extdata_path()
+project_extdata_path(file = "mydata.csv")
 }

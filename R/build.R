@@ -38,8 +38,7 @@ package_build <- function(packageName = NULL,
                           deps = TRUE) {
   flog.threshold(log)
   flog.appender(appender.console())
-  requireNamespace("rprojroot")
-  requireNamespace("futile.logger")
+  # requireNamespace("futile.logger")
   if (is.null(packageName)) {
     packageName <- "."
     # use normalizePath
