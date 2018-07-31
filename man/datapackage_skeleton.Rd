@@ -6,7 +6,8 @@
 \title{Create a Data Package skeleton for use with DataPackageR.}
 \usage{
 datapackage_skeleton(name = NULL, path = ".", force = FALSE,
-  code_files = character(), r_object_names = character())
+  code_files = character(), r_object_names = character(),
+  raw_data_dir = character(), dependencies = character())
 
 datapackage.skeleton(name = NULL, list = character(),
   environment = .GlobalEnv, path = ".", force = FALSE,
@@ -23,6 +24,10 @@ datapackage.skeleton(name = NULL, list = character(),
 into R objects.}
 
 \item{r_object_names}{\code{vector} of quoted r object names , tables, etc. created when the files in \code{code_files} are run.}
+
+\item{raw_data_dir}{\code{character} pointing to a raw data directory. Will be moved with all its subdirectories to "inst/extdata"}
+
+\item{dependencies}{\code{vector} of \code{character}, paths to R files that will be moved to "data-raw" but not included in the yaml config file. e.g., dependency scripts.}
 
 \item{list}{Not used.}
 

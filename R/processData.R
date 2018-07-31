@@ -271,7 +271,8 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
         knitr::spin(r_files[i], precious = TRUE,
                     knit = FALSE)
         r_files[i] <- paste0(tools::file_path_sans_ext(r_files[i]),".Rmd")
-        assert_that(file.exists(r_files[i]), msg = paste0("File: ",r_files[i]," does not exist!"))
+        assert_that(file.exists(r_files[i]),
+                    msg = paste0("File: ",r_files[i]," does not exist!"))
         lines <- readLines(r_files[i])
         lines <- c("---",
               paste0("title: ",basename(r_files[i])),
@@ -631,10 +632,13 @@ project_path <- function(file = NULL){
 #' @examples
 #' project_extdata_path(file = "mydata.csv")
 project_extdata_path <- function( file = NULL ){
-  if (is.null(file))
+  if (is.null(file)){
     return(file.path(usethis::proj_get(),"inst","extdata"))
-  else
-    return(normalizePath(file.path(usethis::proj_get(),"inst","extdata",file),winslash = "/"))
+  } else {
+    return(normalizePath(
+      file.path(usethis::proj_get(),
+                                   "inst","extdata",file),winslash = "/"))
+  }
 }
 
 #' Get DataPackageR data path
@@ -649,8 +653,11 @@ project_extdata_path <- function( file = NULL ){
 #' @examples
 #' project_data_path( file = "data.rda" )
 project_data_path <- function( file = NULL ){
-  if (is.null(file))
+  if (is.null(file)) {
     return(file.path(usethis::proj_get(),"data"))
-  else
-    return(normalizePath(file.path(usethis::proj_get(),"data",file),winslash = "/"))
+  } else {
+    return(normalizePath(
+      file.path(usethis::proj_get(),
+                                   "data",file),winslash = "/"))
+  }
 }
