@@ -271,8 +271,7 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
       if (flag <- .isRfile(r_files[i])) {
         knitr::spin(r_files[i], precious = TRUE,
                     knit = FALSE)
-        r_files[i] <- gsub("\\.r$","\\.Rmd",tolower(r_files[i]))
-        message(list.files(dirname(r_files[i])))
+        r_files[i] <- paste0(tools:::file_path_sans_ext(r_files[i]),"\\.Rmd")
         assert_that(file.exists(r_files[i]), msg = paste0("File: ",r_files[i]," does not exist!"))
         lines <- readLines(r_files[i])
         lines <- c("---",
