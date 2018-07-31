@@ -271,8 +271,7 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
       if (flag <- .isRfile(r_files[i])) {
         knitr::spin(r_files[i], precious = TRUE,
                     knit = FALSE)
-        r_files[i] <- gsub("\\.r","\\.Rmd",tolower(r_files[i]))
-        cat(r_files[i])
+        r_files[i] <- gsub("\\.r$","\\.Rmd",tolower(r_files[i]))
         lines <- readLines(r_files[i])
         lines <- c("---",
               paste0("title: ",basename(r_files[i])),
