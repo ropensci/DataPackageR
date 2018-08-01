@@ -26,7 +26,9 @@ DataPackageR::datapackage_skeleton(name = "mtcars20",
   force = TRUE,
   code_files = processing_code,
   r_object_names = "cars_over_20",
-  path = tempdir()
+  path = tempdir() 
+  #dependencies argument is empty
+  #raw_data_dir argument is empty.
   ) 
 
 ## ----dirstructure,echo=FALSE---------------------------------------------
@@ -42,8 +44,7 @@ df <- data.frame(pathString = file.path(
 as.Node(df)
 
 ## ---- echo=FALSE---------------------------------------------------------
-cat(yaml::as.yaml(yaml::yaml.load_file(
-  file.path(tempdir(),"mtcars20","datapackager.yml"))))
+cat(yaml::as.yaml(yaml::yaml.load_file(file.path(tempdir(),"mtcars20","datapackager.yml"))))
 
 ## ----eval=TRUE-----------------------------------------------------------
 # Run the preprocessing code to build cars_over_20
@@ -61,11 +62,13 @@ df <- data.frame(pathString = file.path(
   ))
   as.Node(df)
 
+## ----rebuild_docs--------------------------------------------------------
+document(file.path(tempdir(),"mtcars20"))
+
 ## ------------------------------------------------------------------------
 # Let's use the package we just created.
-install.packages(file.path(tempdir(),"mtcars20_1.0.tar.gz"),
-                 type = "source", repos = NULL)
-if (!"package:mtcars20" %in% search())
+install.packages(file.path(tempdir(),"mtcars20_1.0.tar.gz"), type = "source", repos = NULL)
+if(!"package:mtcars20"%in%search())
   attachNamespace('mtcars20') #use library() in your code
 data("cars_over_20") # load the data
 
