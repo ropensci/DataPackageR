@@ -274,16 +274,19 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
         assert_that(file.exists(r_files[i]),
                     msg = paste0("File: ",r_files[i]," does not exist!"))
         lines <- readLines(r_files[i])
-        lines <- c("---",
+        # do we likely have a yaml header? If not, add one.
+        if (lines[1] != "---") {
+          lines <- c("---",
               paste0("title: ",basename(r_files[i])),
               paste0("author: ", Sys.info()["user"]),
               paste0("date: ", Sys.Date()),
               "---",
               "",
               lines)
-        con <- file(r_files[i])
-        writeLines(lines, con = con, sep = "\n")
-        close(con)
+          con <- file(r_files[i])
+          writeLines(lines, con = con, sep = "\n")
+          close(con)
+        }
       }
       rmarkdown::render(
         input = r_files[i], envir = dataenv,

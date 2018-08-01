@@ -144,6 +144,23 @@ Similarly:
 
 Raw data sets that are stored externally (outside the data package source tree) can be constructed relative to the `project_path()`.
 
+### YAML header metadata for R files and Rmd files.
+
+If your processing scripts are Rmd files, the usual yaml header for rmarkdown documents should be present.
+
+If you have Rmd files, you can still include a yaml header, but it should be commented with `#'` and it should be at the top of your R file. For example, a test R file in the DataPackageR package looks as follows:
+
+```
+#'---
+#'title: Sample report  from R script
+#'author: Greg Finak
+#'date: August 1, 2018
+#'---
+data <- runif(100)
+```
+
+This will be converted to an Rmd file with a proper yaml header, which will then be turned into a vignette and properly indexed in the built package.
+
 
 ## Build the data package.
 
