@@ -211,19 +211,23 @@ datapackage_skeleton(
 # 3. Run the preprocessing code to build the cars_over_20 data set 
 # and reproducibly enclose it in the mtcars20 package.
 # packageName is the full path to the package source directory created at step 2.
+# You'll be prompted for a text description (one line) of the changes you're making.
+# These will be added to the NEWS.md file along with the DataVersion in the package source directory.
+# If the build is run in non-interactive mode, the description will read
+# "Package built in non-interactive mode". You may update it later.
 package_build(packageName = file.path(tempdir(),"mtcars20"), install = TRUE)
 #> 
 #> 
 #> processing file: subsetCars.Rmd
 #> output file: subsetCars.knit.md
 #> 
-#> Output created: /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpFMT5xb/mtcars20/inst/extdata/Logfiles/subsetCars.html
+#> Output created: /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmpej6sQX/mtcars20/inst/extdata/Logfiles/subsetCars.html
 #> First time using roxygen2. Upgrading automatically...
-#> Updating roxygen version in /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpFMT5xb/mtcars20/DESCRIPTION
+#> Updating roxygen version in /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmpej6sQX/mtcars20/DESCRIPTION
 #> Loading mtcars20
 #> '/Library/Frameworks/R.framework/Resources/bin/R' --no-site-file  \
 #>   --no-environ --no-save --no-restore --quiet CMD build  \
-#>   '/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpFMT5xb/mtcars20'  \
+#>   '/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmpej6sQX/mtcars20'  \
 #>   --no-resave-data --no-manual --no-build-vignettes
 #> 
 #> Reloading installed mtcars20
