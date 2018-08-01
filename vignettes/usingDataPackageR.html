@@ -373,16 +373,16 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <p>The contents of <code>mtcars20</code> are:</p>
 <pre><code>                levelName
 1  mtcars20              
-2   ¦--data              
-3   ¦--data-raw          
-4   ¦   °--subsetCars.Rmd
-5   ¦--datapackager.yml  
-6   ¦--DESCRIPTION       
-7   ¦--inst              
-8   ¦   °--extdata       
-9   ¦--man               
-10  ¦--R                 
-11  °--Read-and-delete-me</code></pre>
+2   ¦--DESCRIPTION       
+3   ¦--R                 
+4   ¦--Read-and-delete-me
+5   ¦--data              
+6   ¦--data-raw          
+7   ¦   °--subsetCars.Rmd
+8   ¦--datapackager.yml  
+9   ¦--inst              
+10  ¦   °--extdata       
+11  °--man               </code></pre>
 <p>You should fill out the <code>DESCRIPTION</code> file to describe your data package. It contains a new <code>DataVersion</code> string that will be automatically incremented when the data package is built <em>if the packaged data has changed</em>.</p>
 <p>The user-provided code files reside in <code>data-raw</code>. They are executed during the data package build process.</p>
 </div>
@@ -396,7 +396,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
       enabled: yes
   objects: cars_over_20
   render_root:
-    tmp: '445902'</code></pre>
+    tmp: '132097'</code></pre>
 <p>The two main pieces of information in the configuration are a list of the files to be processed and the data sets the package will store.</p>
 <p>This example packages an R data set named <code>cars_over_20</code> (the name was passed in to <code>datapackage_skeleton()</code>). It is created by the <code>subsetCars.Rmd</code> file.</p>
 <p>The objects must be listed in the yaml configuration file. <code>datapackage_skeleton()</code> ensures this is done for you automatically.</p>
@@ -414,12 +414,12 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <p>As stated in the README, in order for your processing scripts to be portable, you should not use abosolute paths to files. DataPackageR provides an API to point to the data package root directory and the <code>inst/extdata</code> and <code>data</code> subdirectories. These are useful for constructing portable paths in your code to read files from these locations.</p>
 <p>For example: to construct a path to a file named “mydata.csv” located in <code>inst/extdata</code> in your data package source tree:</p>
 <ul>
-<li>use <code>DataPackageR::project_extdata_path(&quot;mydata.csv&quot;)</code> in your <code>R</code> or <code>Rmd</code> file. This would return: e.g., /var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//RtmpHrauiV/mtcars20/inst/extdata/mydata.csv</li>
+<li>use <code>DataPackageR::project_extdata_path(&quot;mydata.csv&quot;)</code> in your <code>R</code> or <code>Rmd</code> file. This would return: e.g., /var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//Rtmpu5EXeX/mtcars20/inst/extdata/mydata.csv</li>
 </ul>
 <p>Similarly:</p>
 <ul>
-<li><code>DataPackageR::project_path()</code> constructs a path to the data package root directory. (e.g., /var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//RtmpHrauiV/mtcars20)</li>
-<li><code>DataPackageR::project_data_path()</code> constructs a path to the data package <code>data</code> subdirectory. (e.g., /var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//RtmpHrauiV/mtcars20/data)</li>
+<li><code>DataPackageR::project_path()</code> constructs a path to the data package root directory. (e.g., /var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//Rtmpu5EXeX/mtcars20)</li>
+<li><code>DataPackageR::project_data_path()</code> constructs a path to the data package <code>data</code> subdirectory. (e.g., /var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//Rtmpu5EXeX/mtcars20/data)</li>
 </ul>
 <p>Raw data sets that are stored externally (outside the data package source tree) can be constructed relative to the <code>project_path()</code>.</p>
 </div>
@@ -433,7 +433,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 #'date: August 1, 2018
 #'---
 data &lt;- runif(100)</code></pre>
-<p>This will be converted to an Rmd file with a proper yaml header, which will then be turned into a vignette and properly indexed in the built package.</p>
+<p>This will be converted to an Rmd file with a proper yaml header, which will then be turned into a vignette and indexed in the built package.</p>
 </div>
 </div>
 <div id="build-the-data-package." class="section level2">
@@ -442,332 +442,52 @@ data &lt;- runif(100)</code></pre>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="co"># Run the preprocessing code to build cars_over_20</span></a>
 <a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co"># and reproducibly enclose it in a package.</span></a>
 <a class="sourceLine" id="cb5-3" data-line-number="3">DataPackageR<span class="op">:::</span><span class="kw">package_build</span>(<span class="kw">file.path</span>(<span class="kw">tempdir</span>(),<span class="st">&quot;mtcars20&quot;</span>))</a>
-<a class="sourceLine" id="cb5-4" data-line-number="4">debugging <span class="cf">in</span><span class="op">:</span><span class="st"> </span><span class="kw">DataPackageR</span>(<span class="dt">arg =</span> package_path, <span class="dt">deps =</span> deps)</a>
-<a class="sourceLine" id="cb5-5" data-line-number="5">debug at <span class="op">/</span>Users<span class="op">/</span>gfinak<span class="op">/</span>Documents<span class="op">/</span>Projects<span class="op">/</span>DataPackageR<span class="op">/</span>R<span class="op">/</span>processData.R<span class="co">#117: {</span></a>
-<a class="sourceLine" id="cb5-6" data-line-number="6">    pkg_dir &lt;-<span class="st"> </span>arg</a>
-<a class="sourceLine" id="cb5-7" data-line-number="7">    pkg_dir &lt;-<span class="st"> </span><span class="kw">normalizePath</span>(pkg_dir, <span class="dt">winslash =</span> <span class="st">&quot;/&quot;</span>)</a>
-<a class="sourceLine" id="cb5-8" data-line-number="8">    usethis<span class="op">::</span><span class="kw">proj_set</span>(<span class="dt">path =</span> pkg_dir)</a>
-<a class="sourceLine" id="cb5-9" data-line-number="9">    raw_data_dir &lt;-<span class="st"> &quot;data-raw&quot;</span></a>
-<a class="sourceLine" id="cb5-10" data-line-number="10">    target &lt;-<span class="st"> </span><span class="kw">normalizePath</span>(<span class="kw">file.path</span>(pkg_dir, raw_data_dir), </a>
-<a class="sourceLine" id="cb5-11" data-line-number="11">        <span class="dt">winslash =</span> <span class="st">&quot;/&quot;</span>)</a>
-<a class="sourceLine" id="cb5-12" data-line-number="12">    raw_data_dir &lt;-<span class="st"> </span>target</a>
-<a class="sourceLine" id="cb5-13" data-line-number="13">    <span class="cf">if</span> (<span class="op">!</span><span class="kw">file.exists</span>(target)) {</a>
-<a class="sourceLine" id="cb5-14" data-line-number="14">        <span class="kw">flog.fatal</span>(<span class="kw">paste0</span>(<span class="st">&quot;Directory &quot;</span>, target, <span class="st">&quot; doesn't exist.&quot;</span>))</a>
-<a class="sourceLine" id="cb5-15" data-line-number="15">        {</a>
-<a class="sourceLine" id="cb5-16" data-line-number="16">            <span class="kw">stop</span>(<span class="st">&quot;exiting&quot;</span>, <span class="dt">call. =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb5-17" data-line-number="17">        }</a>
-<a class="sourceLine" id="cb5-18" data-line-number="18">    }</a>
-<a class="sourceLine" id="cb5-19" data-line-number="19">    <span class="cf">else</span> {</a>
-<a class="sourceLine" id="cb5-20" data-line-number="20">        logpath &lt;-<span class="st"> </span><span class="kw">normalizePath</span>(<span class="kw">file.path</span>(pkg_dir, <span class="st">&quot;inst/extdata&quot;</span>), </a>
-<a class="sourceLine" id="cb5-21" data-line-number="21">            <span class="dt">winslash =</span> <span class="st">&quot;/&quot;</span>)</a>
-<a class="sourceLine" id="cb5-22" data-line-number="22">        logpath &lt;-<span class="st"> </span><span class="kw">file.path</span>(logpath, <span class="st">&quot;Logfiles&quot;</span>)</a>
-<a class="sourceLine" id="cb5-23" data-line-number="23">        <span class="kw">dir.create</span>(logpath, <span class="dt">recursive =</span> <span class="ot">TRUE</span>, <span class="dt">showWarnings =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb5-24" data-line-number="24">        LOGFILE &lt;-<span class="st"> </span><span class="kw">file.path</span>(logpath, <span class="st">&quot;processing.log&quot;</span>)</a>
-<a class="sourceLine" id="cb5-25" data-line-number="25">        <span class="kw">flog.appender</span>(<span class="kw">appender.tee</span>(LOGFILE))</a>
-<a class="sourceLine" id="cb5-26" data-line-number="26">        <span class="kw">flog.info</span>(<span class="kw">paste0</span>(<span class="st">&quot;Logging to &quot;</span>, LOGFILE))</a>
-<a class="sourceLine" id="cb5-27" data-line-number="27">        testme &lt;-<span class="st"> </span><span class="kw">file.path</span>(pkg_dir, <span class="kw">c</span>(<span class="st">&quot;R&quot;</span>, <span class="st">&quot;inst&quot;</span>, <span class="st">&quot;data&quot;</span>, <span class="st">&quot;data-raw&quot;</span>))</a>
-<a class="sourceLine" id="cb5-28" data-line-number="28">        <span class="cf">if</span> (<span class="op">!</span><span class="kw">all</span>(utils<span class="op">::</span><span class="kw">file_test</span>(testme, <span class="dt">op =</span> <span class="st">&quot;-d&quot;</span>))) {</a>
-<a class="sourceLine" id="cb5-29" data-line-number="29">            <span class="kw">flog.fatal</span>(<span class="kw">paste0</span>(<span class="st">&quot;You need a valid package data strucutre.&quot;</span>, </a>
-<a class="sourceLine" id="cb5-30" data-line-number="30">                <span class="st">&quot; Missing ./R ./inst ./data or&quot;</span>, <span class="st">&quot;./data-raw subdirectories.&quot;</span>))</a>
-<a class="sourceLine" id="cb5-31" data-line-number="31">            {</a>
-<a class="sourceLine" id="cb5-32" data-line-number="32">                <span class="kw">stop</span>(<span class="st">&quot;exiting&quot;</span>, <span class="dt">call. =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb5-33" data-line-number="33">            }</a>
-<a class="sourceLine" id="cb5-34" data-line-number="34">        }</a>
-<a class="sourceLine" id="cb5-35" data-line-number="35">        <span class="kw">flog.info</span>(<span class="st">&quot;Processing data&quot;</span>)</a>
-<a class="sourceLine" id="cb5-36" data-line-number="36">        ymlfile &lt;-<span class="st"> </span><span class="kw">dir</span>(<span class="dt">path =</span> pkg_dir, <span class="dt">pattern =</span> <span class="st">&quot;^datapackager.yml$&quot;</span>, </a>
-<a class="sourceLine" id="cb5-37" data-line-number="37">            <span class="dt">full.names =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb5-38" data-line-number="38">        <span class="cf">if</span> (<span class="kw">length</span>(ymlfile) <span class="op">==</span><span class="st"> </span><span class="dv">0</span>) {</a>
-<a class="sourceLine" id="cb5-39" data-line-number="39">            <span class="kw">flog.fatal</span>(<span class="kw">paste0</span>(<span class="st">&quot;Yaml configuration file not found at &quot;</span>, </a>
-<a class="sourceLine" id="cb5-40" data-line-number="40">                pkg_dir))</a>
-<a class="sourceLine" id="cb5-41" data-line-number="41">            {</a>
-<a class="sourceLine" id="cb5-42" data-line-number="42">                <span class="kw">stop</span>(<span class="st">&quot;exiting&quot;</span>, <span class="dt">call. =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb5-43" data-line-number="43">            }</a>
-<a class="sourceLine" id="cb5-44" data-line-number="44">        }</a>
-<a class="sourceLine" id="cb5-45" data-line-number="45">        ymlconf &lt;-<span class="st"> </span><span class="kw">read_yaml</span>(ymlfile)</a>
-<a class="sourceLine" id="cb5-46" data-line-number="46">        <span class="cf">if</span> (<span class="op">!</span><span class="st">&quot;configuration&quot;</span> <span class="op">%in%</span><span class="st"> </span><span class="kw">names</span>(ymlconf)) {</a>
-<a class="sourceLine" id="cb5-47" data-line-number="47">            <span class="kw">flog.fatal</span>(<span class="st">&quot;YAML is missing 'configuration:' entry&quot;</span>)</a>
-<a class="sourceLine" id="cb5-48" data-line-number="48">            {</a>
-<a class="sourceLine" id="cb5-49" data-line-number="49">                <span class="kw">stop</span>(<span class="st">&quot;exiting&quot;</span>, <span class="dt">call. =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb5-50" data-line-number="50">            }</a>
-<a class="sourceLine" id="cb5-51" data-line-number="51">        }</a>
-<a class="sourceLine" id="cb5-52" data-line-number="52">        <span class="cf">if</span> (<span class="op">!</span><span class="kw">all</span>(<span class="kw">c</span>(<span class="st">&quot;files&quot;</span>, <span class="st">&quot;objects&quot;</span>) <span class="op">%in%</span><span class="st"> </span>purrr<span class="op">::</span><span class="kw">map</span>(ymlconf, </a>
-<a class="sourceLine" id="cb5-53" data-line-number="53">            names)[[<span class="st">&quot;configuration&quot;</span>]])) {</a>
-<a class="sourceLine" id="cb5-54" data-line-number="54">            <span class="kw">flog.fatal</span>(<span class="st">&quot;YAML is missing files: and objects: entries&quot;</span>)</a>
-<a class="sourceLine" id="cb5-55" data-line-number="55">            {</a>
-<a class="sourceLine" id="cb5-56" data-line-number="56">                <span class="kw">stop</span>(<span class="st">&quot;exiting&quot;</span>, <span class="dt">call. =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb5-57" data-line-number="57">            }</a>
-<a class="sourceLine" id="cb5-58" data-line-number="58">        }</a>
-<a class="sourceLine" id="cb5-59" data-line-number="59">        <span class="kw">flog.info</span>(<span class="st">&quot;Reading yaml configuration&quot;</span>)</a>
-<a class="sourceLine" id="cb5-60" data-line-number="60">        <span class="kw">assert_that</span>(<span class="st">&quot;configuration&quot;</span> <span class="op">%in%</span><span class="st"> </span><span class="kw">names</span>(ymlconf))</a>
-<a class="sourceLine" id="cb5-61" data-line-number="61">        <span class="kw">assert_that</span>(<span class="st">&quot;files&quot;</span> <span class="op">%in%</span><span class="st"> </span><span class="kw">names</span>(ymlconf[[<span class="st">&quot;configuration&quot;</span>]]))</a>
-<a class="sourceLine" id="cb5-62" data-line-number="62">        <span class="kw">assert_that</span>(<span class="op">!</span><span class="kw">is.null</span>(<span class="kw">names</span>(ymlconf[[<span class="st">&quot;configuration&quot;</span>]][[<span class="st">&quot;files&quot;</span>]])))</a>
-<a class="sourceLine" id="cb5-63" data-line-number="63">        r_files &lt;-<span class="st"> </span><span class="kw">unique</span>(<span class="kw">names</span>(<span class="kw">Filter</span>(<span class="dt">x =</span> ymlconf[[<span class="st">&quot;configuration&quot;</span>]][[<span class="st">&quot;files&quot;</span>]], </a>
-<a class="sourceLine" id="cb5-64" data-line-number="64">            <span class="dt">f =</span> <span class="cf">function</span>(x) x<span class="op">$</span>enabled)))</a>
-<a class="sourceLine" id="cb5-65" data-line-number="65">        <span class="cf">if</span> (<span class="kw">length</span>(r_files) <span class="op">==</span><span class="st"> </span><span class="dv">0</span>) {</a>
-<a class="sourceLine" id="cb5-66" data-line-number="66">            <span class="kw">flog.fatal</span>(<span class="st">&quot;No files enabled for processing!&quot;</span>)</a>
-<a class="sourceLine" id="cb5-67" data-line-number="67">            {</a>
-<a class="sourceLine" id="cb5-68" data-line-number="68">                <span class="kw">stop</span>(<span class="st">&quot;error&quot;</span>, <span class="dt">call. =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb5-69" data-line-number="69">            }</a>
-<a class="sourceLine" id="cb5-70" data-line-number="70">        }</a>
-<a class="sourceLine" id="cb5-71" data-line-number="71">        objects_to_keep &lt;-<span class="st"> </span>purrr<span class="op">::</span><span class="kw">map</span>(ymlconf, <span class="st">&quot;objects&quot;</span>)[[<span class="st">&quot;configuration&quot;</span>]]</a>
-<a class="sourceLine" id="cb5-72" data-line-number="72">        render_root &lt;-<span class="st"> </span><span class="kw">.get_render_root</span>(ymlconf)</a>
-<a class="sourceLine" id="cb5-73" data-line-number="73">        <span class="cf">if</span> (<span class="op">!</span><span class="kw">.validate_render_root</span>(render_root)) {</a>
-<a class="sourceLine" id="cb5-74" data-line-number="74">            <span class="kw">flog.fatal</span>(<span class="kw">paste0</span>(<span class="st">&quot;Can't create, or render_root = &quot;</span>, </a>
-<a class="sourceLine" id="cb5-75" data-line-number="75">                render_root, <span class="st">&quot; doesn't exist&quot;</span>))</a>
-<a class="sourceLine" id="cb5-76" data-line-number="76">            <span class="kw">stop</span>(<span class="st">&quot;error&quot;</span>, <span class="dt">call. =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb5-77" data-line-number="77">        }</a>
-<a class="sourceLine" id="cb5-78" data-line-number="78">        <span class="cf">else</span> {</a>
-<a class="sourceLine" id="cb5-79" data-line-number="79">            render_root &lt;-<span class="st"> </span><span class="kw">normalizePath</span>(render_root, <span class="dt">winslash =</span> <span class="st">&quot;/&quot;</span>)</a>
-<a class="sourceLine" id="cb5-80" data-line-number="80">        }</a>
-<a class="sourceLine" id="cb5-81" data-line-number="81">        r_files &lt;-<span class="st"> </span><span class="kw">file.path</span>(raw_data_dir, r_files)</a>
-<a class="sourceLine" id="cb5-82" data-line-number="82">        <span class="cf">if</span> (<span class="kw">all</span>(<span class="op">!</span><span class="kw">file.exists</span>(r_files))) {</a>
-<a class="sourceLine" id="cb5-83" data-line-number="83">            <span class="kw">flog.fatal</span>(<span class="kw">paste0</span>(<span class="st">&quot;Can't find any R or Rmd files.&quot;</span>))</a>
-<a class="sourceLine" id="cb5-84" data-line-number="84">            <span class="kw">flog.fatal</span>(<span class="kw">paste0</span>(<span class="st">&quot;     Cant' find file: &quot;</span>, r_files[<span class="op">!</span><span class="kw">file.exists</span>(r_files)]))</a>
-<a class="sourceLine" id="cb5-85" data-line-number="85">            <span class="kw">stop</span>(<span class="st">&quot;error&quot;</span>, <span class="dt">call. =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb5-86" data-line-number="86">        }</a>
-<a class="sourceLine" id="cb5-87" data-line-number="87">        <span class="kw">flog.info</span>(<span class="kw">paste0</span>(<span class="st">&quot;Found &quot;</span>, r_files))</a>
-<a class="sourceLine" id="cb5-88" data-line-number="88">        old_data_digest &lt;-<span class="st"> </span><span class="kw">.parse_data_digest</span>(<span class="dt">pkg_dir =</span> pkg_dir)</a>
-<a class="sourceLine" id="cb5-89" data-line-number="89">        description_file &lt;-<span class="st"> </span><span class="kw">normalizePath</span>(<span class="kw">file.path</span>(pkg_dir, </a>
-<a class="sourceLine" id="cb5-90" data-line-number="90">            <span class="st">&quot;DESCRIPTION&quot;</span>), <span class="dt">winslash =</span> <span class="st">&quot;/&quot;</span>)</a>
-<a class="sourceLine" id="cb5-91" data-line-number="91">        pkg_description &lt;-<span class="st"> </span><span class="kw">try</span>(<span class="kw">read.description</span>(<span class="dt">file =</span> description_file), </a>
-<a class="sourceLine" id="cb5-92" data-line-number="92">            <span class="dt">silent =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb5-93" data-line-number="93">        <span class="cf">if</span> (<span class="kw">length</span>(objects_to_keep) <span class="op">==</span><span class="st"> </span><span class="dv">0</span>) {</a>
-<a class="sourceLine" id="cb5-94" data-line-number="94">            <span class="kw">flog.fatal</span>(<span class="st">&quot;You must specify at least one data object.&quot;</span>)</a>
-<a class="sourceLine" id="cb5-95" data-line-number="95">            {</a>
-<a class="sourceLine" id="cb5-96" data-line-number="96">                <span class="kw">stop</span>(<span class="st">&quot;exiting&quot;</span>, <span class="dt">call. =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb5-97" data-line-number="97">            }</a>
-<a class="sourceLine" id="cb5-98" data-line-number="98">        }</a>
-<a class="sourceLine" id="cb5-99" data-line-number="99">        do_documentation &lt;-<span class="st"> </span><span class="ot">FALSE</span></a>
-<a class="sourceLine" id="cb5-100" data-line-number="100">        can_write &lt;-<span class="st"> </span><span class="ot">FALSE</span></a>
-<a class="sourceLine" id="cb5-101" data-line-number="101">        ENVS &lt;-<span class="st"> </span><span class="kw">new.env</span>(<span class="dt">hash =</span> <span class="ot">TRUE</span>, <span class="dt">parent =</span> .GlobalEnv)</a>
-<a class="sourceLine" id="cb5-102" data-line-number="102">        <span class="cf">for</span> (i <span class="cf">in</span> <span class="kw">seq_along</span>(r_files)) {</a>
-<a class="sourceLine" id="cb5-103" data-line-number="103">            dataenv &lt;-<span class="st"> </span><span class="kw">new.env</span>(<span class="dt">hash =</span> <span class="ot">TRUE</span>, <span class="dt">parent =</span> .GlobalEnv)</a>
-<a class="sourceLine" id="cb5-104" data-line-number="104">            <span class="cf">if</span> (deps) </a>
-<a class="sourceLine" id="cb5-105" data-line-number="105">                <span class="kw">assign</span>(<span class="dt">x =</span> <span class="st">&quot;ENVS&quot;</span>, <span class="dt">value =</span> ENVS, dataenv)</a>
-<a class="sourceLine" id="cb5-106" data-line-number="106">            <span class="kw">flog.info</span>(<span class="kw">paste0</span>(<span class="st">&quot;Processing &quot;</span>, i, <span class="st">&quot; of &quot;</span>, <span class="kw">length</span>(r_files), </a>
-<a class="sourceLine" id="cb5-107" data-line-number="107">                <span class="st">&quot;: &quot;</span>, r_files[i], <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>))</a>
-<a class="sourceLine" id="cb5-108" data-line-number="108">            flag &lt;-<span class="st"> </span><span class="ot">FALSE</span></a>
-<a class="sourceLine" id="cb5-109" data-line-number="109">            .isRfile &lt;-<span class="st"> </span><span class="cf">function</span>(f) {</a>
-<a class="sourceLine" id="cb5-110" data-line-number="110">                <span class="kw">grepl</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">.r$&quot;</span>, <span class="kw">tolower</span>(f))</a>
-<a class="sourceLine" id="cb5-111" data-line-number="111">            }</a>
-<a class="sourceLine" id="cb5-112" data-line-number="112">            <span class="cf">if</span> (flag &lt;-<span class="st"> </span><span class="kw">.isRfile</span>(r_files[i])) {</a>
-<a class="sourceLine" id="cb5-113" data-line-number="113">                knitr<span class="op">::</span><span class="kw">spin</span>(r_files[i], <span class="dt">precious =</span> <span class="ot">TRUE</span>, <span class="dt">knit =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb5-114" data-line-number="114">                r_files[i] &lt;-<span class="st"> </span><span class="kw">paste0</span>(tools<span class="op">::</span><span class="kw">file_path_sans_ext</span>(r_files[i]), </a>
-<a class="sourceLine" id="cb5-115" data-line-number="115">                  <span class="st">&quot;.Rmd&quot;</span>)</a>
-<a class="sourceLine" id="cb5-116" data-line-number="116">                <span class="kw">assert_that</span>(<span class="kw">file.exists</span>(r_files[i]), <span class="dt">msg =</span> <span class="kw">paste0</span>(<span class="st">&quot;File: &quot;</span>, </a>
-<a class="sourceLine" id="cb5-117" data-line-number="117">                  r_files[i], <span class="st">&quot; does not exist!&quot;</span>))</a>
-<a class="sourceLine" id="cb5-118" data-line-number="118">                lines &lt;-<span class="st"> </span><span class="kw">readLines</span>(r_files[i])</a>
-<a class="sourceLine" id="cb5-119" data-line-number="119">                lines &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;---&quot;</span>, <span class="kw">paste0</span>(<span class="st">&quot;title: &quot;</span>, <span class="kw">basename</span>(r_files[i])), </a>
-<a class="sourceLine" id="cb5-120" data-line-number="120">                  <span class="kw">paste0</span>(<span class="st">&quot;author: &quot;</span>, <span class="kw">Sys.info</span>()[<span class="st">&quot;user&quot;</span>]), <span class="kw">paste0</span>(<span class="st">&quot;date: &quot;</span>, </a>
-<a class="sourceLine" id="cb5-121" data-line-number="121">                    <span class="kw">Sys.Date</span>()), <span class="st">&quot;---&quot;</span>, <span class="st">&quot;&quot;</span>, lines)</a>
-<a class="sourceLine" id="cb5-122" data-line-number="122">                con &lt;-<span class="st"> </span><span class="kw">file</span>(r_files[i])</a>
-<a class="sourceLine" id="cb5-123" data-line-number="123">                <span class="kw">writeLines</span>(lines, <span class="dt">con =</span> con, <span class="dt">sep =</span> <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)</a>
-<a class="sourceLine" id="cb5-124" data-line-number="124">                <span class="kw">close</span>(con)</a>
-<a class="sourceLine" id="cb5-125" data-line-number="125">            }</a>
-<a class="sourceLine" id="cb5-126" data-line-number="126">            rmarkdown<span class="op">::</span><span class="kw">render</span>(<span class="dt">input =</span> r_files[i], <span class="dt">envir =</span> dataenv, </a>
-<a class="sourceLine" id="cb5-127" data-line-number="127">                <span class="dt">output_dir =</span> logpath, <span class="dt">clean =</span> <span class="ot">TRUE</span>, <span class="dt">knit_root_dir =</span> render_root)</a>
-<a class="sourceLine" id="cb5-128" data-line-number="128">            object_names &lt;-<span class="st"> </span><span class="kw">ls</span>(dataenv)</a>
-<a class="sourceLine" id="cb5-129" data-line-number="129">            <span class="kw">flog.info</span>(<span class="kw">paste0</span>(<span class="kw">sum</span>(objects_to_keep <span class="op">%in%</span><span class="st"> </span>object_names), </a>
-<a class="sourceLine" id="cb5-130" data-line-number="130">                <span class="st">&quot; required data objects created by &quot;</span>, <span class="kw">basename</span>(r_files[i])))</a>
-<a class="sourceLine" id="cb5-131" data-line-number="131">            <span class="cf">if</span> (<span class="kw">sum</span>(objects_to_keep <span class="op">%in%</span><span class="st"> </span>object_names) <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>) {</a>
-<a class="sourceLine" id="cb5-132" data-line-number="132">                <span class="cf">for</span> (o <span class="cf">in</span> objects_to_keep[objects_to_keep <span class="op">%in%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb5-133" data-line-number="133"><span class="st">                  </span>object_names]) {</a>
-<a class="sourceLine" id="cb5-134" data-line-number="134">                  <span class="kw">assign</span>(o, <span class="kw">get</span>(o, dataenv), ENVS)</a>
-<a class="sourceLine" id="cb5-135" data-line-number="135">                }</a>
-<a class="sourceLine" id="cb5-136" data-line-number="136">            }</a>
-<a class="sourceLine" id="cb5-137" data-line-number="137">        }</a>
-<a class="sourceLine" id="cb5-138" data-line-number="138">        dataenv &lt;-<span class="st"> </span>ENVS</a>
-<a class="sourceLine" id="cb5-139" data-line-number="139">        new_data_digest &lt;-<span class="st"> </span><span class="kw">.digest_data_env</span>(<span class="kw">ls</span>(ENVS), dataenv, </a>
-<a class="sourceLine" id="cb5-140" data-line-number="140">            pkg_description)</a>
-<a class="sourceLine" id="cb5-141" data-line-number="141">        <span class="cf">if</span> (<span class="op">!</span><span class="kw">is.null</span>(old_data_digest)) {</a>
-<a class="sourceLine" id="cb5-142" data-line-number="142">            string_check &lt;-<span class="st"> </span><span class="kw">.check_dataversion_string</span>(old_data_digest, </a>
-<a class="sourceLine" id="cb5-143" data-line-number="143">                new_data_digest)</a>
-<a class="sourceLine" id="cb5-144" data-line-number="144">            can_write &lt;-<span class="st"> </span><span class="ot">FALSE</span></a>
-<a class="sourceLine" id="cb5-145" data-line-number="145">            <span class="kw">stopifnot</span>(<span class="op">!</span>((<span class="op">!</span><span class="kw">.compare_digests</span>(old_data_digest, new_data_digest)) <span class="op">&amp;</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb5-146" data-line-number="146"><span class="st">                </span>string_check<span class="op">$</span>isgreater))</a>
-<a class="sourceLine" id="cb5-147" data-line-number="147">            <span class="cf">if</span> (<span class="kw">.compare_digests</span>(old_data_digest, new_data_digest) <span class="op">&amp;</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb5-148" data-line-number="148"><span class="st">                </span>string_check<span class="op">$</span>isequal) {</a>
-<a class="sourceLine" id="cb5-149" data-line-number="149">                can_write &lt;-<span class="st"> </span><span class="ot">TRUE</span></a>
-<a class="sourceLine" id="cb5-150" data-line-number="150">                <span class="kw">flog.info</span>(<span class="kw">paste0</span>(<span class="st">&quot;Processed data sets match &quot;</span>, </a>
-<a class="sourceLine" id="cb5-151" data-line-number="151">                  <span class="st">&quot;existing data sets at version &quot;</span>, new_data_digest[[<span class="st">&quot;DataVersion&quot;</span>]]))</a>
-<a class="sourceLine" id="cb5-152" data-line-number="152">            }</a>
-<a class="sourceLine" id="cb5-153" data-line-number="153">            <span class="cf">else</span> <span class="cf">if</span> ((<span class="op">!</span><span class="kw">.compare_digests</span>(old_data_digest, new_data_digest)) <span class="op">&amp;</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb5-154" data-line-number="154"><span class="st">                </span>string_check<span class="op">$</span>isequal) {</a>
-<a class="sourceLine" id="cb5-155" data-line-number="155">                updated_version &lt;-<span class="st"> </span><span class="kw">.increment_data_version</span>(pkg_description, </a>
-<a class="sourceLine" id="cb5-156" data-line-number="156">                  new_data_digest)</a>
-<a class="sourceLine" id="cb5-157" data-line-number="157">                <span class="kw">.update_news_md</span>(updated_version<span class="op">$</span>new_data_digest[[<span class="st">&quot;DataVersion&quot;</span>]])</a>
-<a class="sourceLine" id="cb5-158" data-line-number="158">                pkg_description &lt;-<span class="st"> </span>updated_version<span class="op">$</span>pkg_description</a>
-<a class="sourceLine" id="cb5-159" data-line-number="159">                new_data_digest &lt;-<span class="st"> </span>updated_version<span class="op">$</span>new_data_digest</a>
-<a class="sourceLine" id="cb5-160" data-line-number="160">                can_write &lt;-<span class="st"> </span><span class="ot">TRUE</span></a>
-<a class="sourceLine" id="cb5-161" data-line-number="161">                <span class="kw">flog.info</span>(<span class="kw">paste0</span>(<span class="st">&quot;Data has been updated and DataVersion &quot;</span>, </a>
-<a class="sourceLine" id="cb5-162" data-line-number="162">                  <span class="st">&quot;string incremented automatically to &quot;</span>, new_data_digest[[<span class="st">&quot;DataVersion&quot;</span>]]))</a>
-<a class="sourceLine" id="cb5-163" data-line-number="163">            }</a>
-<a class="sourceLine" id="cb5-164" data-line-number="164">            <span class="cf">else</span> <span class="cf">if</span> (<span class="kw">.compare_digests</span>(old_data_digest, new_data_digest) <span class="op">&amp;</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb5-165" data-line-number="165"><span class="st">                </span>string_check<span class="op">$</span>isgreater) {</a>
-<a class="sourceLine" id="cb5-166" data-line-number="166">                can_write &lt;-<span class="st"> </span><span class="ot">TRUE</span></a>
-<a class="sourceLine" id="cb5-167" data-line-number="167">                <span class="kw">flog.info</span>(<span class="kw">paste0</span>(<span class="st">&quot;Data hasn't changed but the &quot;</span>, </a>
-<a class="sourceLine" id="cb5-168" data-line-number="168">                  <span class="st">&quot;DataVersion has been bumped.&quot;</span>))</a>
-<a class="sourceLine" id="cb5-169" data-line-number="169">            }</a>
-<a class="sourceLine" id="cb5-170" data-line-number="170">            <span class="cf">else</span> <span class="cf">if</span> (string_check<span class="op">$</span>isless <span class="op">&amp;</span><span class="st"> </span><span class="kw">.compare_digests</span>(old_data_digest, </a>
-<a class="sourceLine" id="cb5-171" data-line-number="171">                new_data_digest)) {</a>
-<a class="sourceLine" id="cb5-172" data-line-number="172">                <span class="kw">flog.info</span>(<span class="kw">paste0</span>(<span class="st">&quot;New DataVersion is less than &quot;</span>, </a>
-<a class="sourceLine" id="cb5-173" data-line-number="173">                  <span class="st">&quot;old but data are unchanged&quot;</span>))</a>
-<a class="sourceLine" id="cb5-174" data-line-number="174">                new_data_digest &lt;-<span class="st"> </span>old_data_digest</a>
-<a class="sourceLine" id="cb5-175" data-line-number="175">                pkg_description[[<span class="st">&quot;DataVersion&quot;</span>]] &lt;-<span class="st"> </span>new_data_digest[[<span class="st">&quot;DataVersion&quot;</span>]]</a>
-<a class="sourceLine" id="cb5-176" data-line-number="176">                can_write &lt;-<span class="st"> </span><span class="ot">TRUE</span></a>
-<a class="sourceLine" id="cb5-177" data-line-number="177">            }</a>
-<a class="sourceLine" id="cb5-178" data-line-number="178">            <span class="cf">else</span> <span class="cf">if</span> (string_check<span class="op">$</span>isless <span class="op">&amp;</span><span class="st"> </span><span class="op">!</span><span class="kw">.compare_digests</span>(old_data_digest, </a>
-<a class="sourceLine" id="cb5-179" data-line-number="179">                new_data_digest)) {</a>
-<a class="sourceLine" id="cb5-180" data-line-number="180">                updated_version &lt;-<span class="st"> </span><span class="kw">.increment_data_version</span>(pkg_description, </a>
-<a class="sourceLine" id="cb5-181" data-line-number="181">                  new_data_digest)</a>
-<a class="sourceLine" id="cb5-182" data-line-number="182">                <span class="kw">.update_news_md</span>(updated_version<span class="op">$</span>new_data_digest[[<span class="st">&quot;DataVersion&quot;</span>]])</a>
-<a class="sourceLine" id="cb5-183" data-line-number="183">                pkg_description &lt;-<span class="st"> </span>updated_version<span class="op">$</span>pkg_description</a>
-<a class="sourceLine" id="cb5-184" data-line-number="184">                new_data_digest &lt;-<span class="st"> </span>updated_version<span class="op">$</span>new_data_digest</a>
-<a class="sourceLine" id="cb5-185" data-line-number="185">                can_write &lt;-<span class="st"> </span><span class="ot">TRUE</span></a>
-<a class="sourceLine" id="cb5-186" data-line-number="186">            }</a>
-<a class="sourceLine" id="cb5-187" data-line-number="187">            <span class="cf">if</span> (can_write) {</a>
-<a class="sourceLine" id="cb5-188" data-line-number="188">                <span class="kw">.save_data</span>(new_data_digest, pkg_description, </a>
-<a class="sourceLine" id="cb5-189" data-line-number="189">                  <span class="kw">ls</span>(dataenv), dataenv, <span class="dt">old_data_digest =</span> old_data_digest, </a>
-<a class="sourceLine" id="cb5-190" data-line-number="190">                  <span class="dt">pkg_path =</span> pkg_dir)</a>
-<a class="sourceLine" id="cb5-191" data-line-number="191">                do_documentation &lt;-<span class="st"> </span><span class="ot">TRUE</span></a>
-<a class="sourceLine" id="cb5-192" data-line-number="192">            }</a>
-<a class="sourceLine" id="cb5-193" data-line-number="193">        }</a>
-<a class="sourceLine" id="cb5-194" data-line-number="194">        <span class="cf">else</span> {</a>
-<a class="sourceLine" id="cb5-195" data-line-number="195">            <span class="kw">.update_news_md</span>(new_data_digest[[<span class="st">&quot;DataVersion&quot;</span>]])</a>
-<a class="sourceLine" id="cb5-196" data-line-number="196">            <span class="kw">.save_data</span>(new_data_digest, pkg_description, <span class="kw">ls</span>(dataenv), </a>
-<a class="sourceLine" id="cb5-197" data-line-number="197">                dataenv, <span class="dt">old_data_digest =</span> <span class="ot">NULL</span>, <span class="dt">pkg_path =</span> pkg_dir)</a>
-<a class="sourceLine" id="cb5-198" data-line-number="198">            do_documentation &lt;-<span class="st"> </span><span class="ot">TRUE</span></a>
-<a class="sourceLine" id="cb5-199" data-line-number="199">        }</a>
-<a class="sourceLine" id="cb5-200" data-line-number="200">        <span class="cf">if</span> (do_documentation) {</a>
-<a class="sourceLine" id="cb5-201" data-line-number="201">            <span class="cf">if</span> (<span class="op">!</span><span class="kw">file.exists</span>(<span class="kw">file.path</span>(target, <span class="st">&quot;documentation.R&quot;</span>))) {</a>
-<a class="sourceLine" id="cb5-202" data-line-number="202">                <span class="kw">.doc_autogen</span>(<span class="kw">basename</span>(pkg_dir), <span class="dt">ds2kp =</span> <span class="kw">ls</span>(dataenv), </a>
-<a class="sourceLine" id="cb5-203" data-line-number="203">                  <span class="dt">env =</span> dataenv, <span class="dt">path =</span> target)</a>
-<a class="sourceLine" id="cb5-204" data-line-number="204">            }</a>
-<a class="sourceLine" id="cb5-205" data-line-number="205">            doc_parsed &lt;-<span class="st"> </span><span class="kw">.doc_parse</span>(<span class="kw">file.path</span>(target, <span class="st">&quot;documentation.R&quot;</span>))</a>
-<a class="sourceLine" id="cb5-206" data-line-number="206">            .identify_missing_docs &lt;-<span class="st"> </span><span class="cf">function</span>(<span class="dt">environment =</span> <span class="ot">NULL</span>, </a>
-<a class="sourceLine" id="cb5-207" data-line-number="207">                <span class="dt">description =</span> <span class="ot">NULL</span>, <span class="dt">docs =</span> <span class="ot">NULL</span>) {</a>
-<a class="sourceLine" id="cb5-208" data-line-number="208">                <span class="kw">setdiff</span>(<span class="kw">ls</span>(environment), <span class="kw">setdiff</span>(<span class="kw">names</span>(docs), </a>
-<a class="sourceLine" id="cb5-209" data-line-number="209">                  description[[<span class="st">&quot;Package&quot;</span>]]))</a>
-<a class="sourceLine" id="cb5-210" data-line-number="210">            }</a>
-<a class="sourceLine" id="cb5-211" data-line-number="211">            missing_doc_for_autodoc &lt;-<span class="st"> </span><span class="kw">.identify_missing_docs</span>(dataenv, </a>
-<a class="sourceLine" id="cb5-212" data-line-number="212">                pkg_description, doc_parsed)</a>
-<a class="sourceLine" id="cb5-213" data-line-number="213">            <span class="cf">if</span> (<span class="kw">length</span>(missing_doc_for_autodoc) <span class="op">!=</span><span class="st"> </span><span class="dv">0</span>) {</a>
-<a class="sourceLine" id="cb5-214" data-line-number="214">                tmptarget &lt;-<span class="st"> </span><span class="kw">tempdir</span>()</a>
-<a class="sourceLine" id="cb5-215" data-line-number="215">                <span class="kw">file.info</span>(<span class="st">&quot;Writing missing docs.&quot;</span>)</a>
-<a class="sourceLine" id="cb5-216" data-line-number="216">                <span class="kw">.doc_autogen</span>(<span class="kw">basename</span>(pkg_dir), <span class="dt">ds2kp =</span> missing_doc_for_autodoc, </a>
-<a class="sourceLine" id="cb5-217" data-line-number="217">                  <span class="dt">env =</span> dataenv, <span class="dt">path =</span> tmptarget, <span class="dt">name =</span> <span class="st">&quot;missing_doc.R&quot;</span>)</a>
-<a class="sourceLine" id="cb5-218" data-line-number="218">                missing_doc &lt;-<span class="st"> </span><span class="kw">.doc_parse</span>(<span class="kw">file.path</span>(tmptarget, </a>
-<a class="sourceLine" id="cb5-219" data-line-number="219">                  <span class="st">&quot;missing_doc.R&quot;</span>))</a>
-<a class="sourceLine" id="cb5-220" data-line-number="220">                doc_parsed &lt;-<span class="st"> </span><span class="kw">.doc_merge</span>(<span class="dt">old =</span> doc_parsed, <span class="dt">new =</span> missing_doc)</a>
-<a class="sourceLine" id="cb5-221" data-line-number="221">                <span class="kw">file.info</span>(<span class="st">&quot;Writing merged docs.&quot;</span>)</a>
-<a class="sourceLine" id="cb5-222" data-line-number="222">                docfile &lt;-<span class="st"> </span><span class="kw">file</span>(<span class="kw">file.path</span>(target, <span class="kw">paste0</span>(<span class="st">&quot;documentation&quot;</span>, </a>
-<a class="sourceLine" id="cb5-223" data-line-number="223">                  <span class="st">&quot;.R&quot;</span>)), <span class="dt">open =</span> <span class="st">&quot;w&quot;</span>)</a>
-<a class="sourceLine" id="cb5-224" data-line-number="224">                <span class="cf">for</span> (i <span class="cf">in</span> <span class="kw">seq_along</span>(doc_parsed)) {</a>
-<a class="sourceLine" id="cb5-225" data-line-number="225">                  <span class="kw">writeLines</span>(<span class="dt">text =</span> doc_parsed[[i]], <span class="dt">con =</span> docfile)</a>
-<a class="sourceLine" id="cb5-226" data-line-number="226">                }</a>
-<a class="sourceLine" id="cb5-227" data-line-number="227">            }</a>
-<a class="sourceLine" id="cb5-228" data-line-number="228">            save_docs &lt;-<span class="st"> </span><span class="kw">do.call</span>(c, doc_parsed)</a>
-<a class="sourceLine" id="cb5-229" data-line-number="229">            docfile &lt;-<span class="st"> </span><span class="kw">file</span>(<span class="kw">file.path</span>(pkg_dir, <span class="st">&quot;R&quot;</span>, <span class="dt">pattern =</span> <span class="kw">paste0</span>(pkg_description<span class="op">$</span>Package, </a>
-<a class="sourceLine" id="cb5-230" data-line-number="230">                <span class="st">&quot;.R&quot;</span>)), <span class="dt">open =</span> <span class="st">&quot;w&quot;</span>)</a>
-<a class="sourceLine" id="cb5-231" data-line-number="231">            <span class="cf">for</span> (i <span class="cf">in</span> <span class="kw">seq_along</span>(save_docs)) {</a>
-<a class="sourceLine" id="cb5-232" data-line-number="232">                <span class="kw">writeLines</span>(<span class="dt">text =</span> save_docs[[i]], <span class="dt">con =</span> docfile)</a>
-<a class="sourceLine" id="cb5-233" data-line-number="233">            }</a>
-<a class="sourceLine" id="cb5-234" data-line-number="234">            <span class="kw">close</span>(docfile)</a>
-<a class="sourceLine" id="cb5-235" data-line-number="235">            <span class="kw">flog.info</span>(<span class="kw">paste0</span>(<span class="st">&quot;Copied documentation to &quot;</span>, <span class="kw">file.path</span>(pkg_dir, </a>
-<a class="sourceLine" id="cb5-236" data-line-number="236">                <span class="st">&quot;R&quot;</span>, <span class="kw">paste0</span>(pkg_description<span class="op">$</span>Package, <span class="st">&quot;.R&quot;</span>))))</a>
-<a class="sourceLine" id="cb5-237" data-line-number="237">            can_write &lt;-<span class="st"> </span><span class="ot">TRUE</span></a>
-<a class="sourceLine" id="cb5-238" data-line-number="238">        }</a>
-<a class="sourceLine" id="cb5-239" data-line-number="239">        <span class="kw">eval</span>(<span class="dt">expr =</span> <span class="kw">expression</span>(<span class="kw">rm</span>(<span class="dt">list =</span> <span class="kw">ls</span>())), <span class="dt">envir =</span> dataenv)</a>
-<a class="sourceLine" id="cb5-240" data-line-number="240">        <span class="kw">.ppfiles_mkvignettes</span>(<span class="dt">dir =</span> pkg_dir)</a>
-<a class="sourceLine" id="cb5-241" data-line-number="241">    }</a>
-<a class="sourceLine" id="cb5-242" data-line-number="242">    <span class="kw">flog.info</span>(<span class="st">&quot;Done&quot;</span>)</a>
-<a class="sourceLine" id="cb5-243" data-line-number="243">    <span class="kw">return</span>(can_write)</a>
-<a class="sourceLine" id="cb5-244" data-line-number="244"><span class="er">}</span></a>
-<a class="sourceLine" id="cb5-245" data-line-number="245">INFO [<span class="dv">2018-08-01</span> <span class="dv">11</span><span class="op">:</span><span class="dv">19</span><span class="op">:</span><span class="dv">51</span>] Logging to <span class="op">/</span>private<span class="op">/</span>var<span class="op">/</span>folders<span class="op">/</span>jh<span class="op">/</span>x0h3v3pd4dd497g3gtzsm8500000gn<span class="op">/</span>T<span class="op">/</span>RtmpHrauiV<span class="op">/</span>mtcars20<span class="op">/</span>inst<span class="op">/</span>extdata<span class="op">/</span>Logfiles<span class="op">/</span>processing.log</a>
-<a class="sourceLine" id="cb5-246" data-line-number="246">INFO [<span class="dv">2018-08-01</span> <span class="dv">11</span><span class="op">:</span><span class="dv">19</span><span class="op">:</span><span class="dv">51</span>] Processing data</a>
-<a class="sourceLine" id="cb5-247" data-line-number="247">INFO [<span class="dv">2018-08-01</span> <span class="dv">11</span><span class="op">:</span><span class="dv">19</span><span class="op">:</span><span class="dv">51</span>] Reading yaml configuration</a>
-<a class="sourceLine" id="cb5-248" data-line-number="248">INFO [<span class="dv">2018-08-01</span> <span class="dv">11</span><span class="op">:</span><span class="dv">19</span><span class="op">:</span><span class="dv">51</span>] Found <span class="op">/</span>private<span class="op">/</span>var<span class="op">/</span>folders<span class="op">/</span>jh<span class="op">/</span>x0h3v3pd4dd497g3gtzsm8500000gn<span class="op">/</span>T<span class="op">/</span>RtmpHrauiV<span class="op">/</span>mtcars20<span class="op">/</span>data<span class="op">-</span>raw<span class="op">/</span>subsetCars.Rmd</a>
-<a class="sourceLine" id="cb5-249" data-line-number="249">INFO [<span class="dv">2018-08-01</span> <span class="dv">11</span><span class="op">:</span><span class="dv">19</span><span class="op">:</span><span class="dv">51</span>] Processing <span class="dv">1</span> of <span class="dv">1</span><span class="op">:</span><span class="st"> </span><span class="er">/</span>private<span class="op">/</span>var<span class="op">/</span>folders<span class="op">/</span>jh<span class="op">/</span>x0h3v3pd4dd497g3gtzsm8500000gn<span class="op">/</span>T<span class="op">/</span>RtmpHrauiV<span class="op">/</span>mtcars20<span class="op">/</span>data<span class="op">-</span>raw<span class="op">/</span>subsetCars.Rmd</a>
-<a class="sourceLine" id="cb5-250" data-line-number="250"></a>
-<a class="sourceLine" id="cb5-251" data-line-number="251"></a>
-<a class="sourceLine" id="cb5-252" data-line-number="252">processing file<span class="op">:</span><span class="st"> </span>subsetCars.Rmd</a>
-<a class="sourceLine" id="cb5-253" data-line-number="253"></a>
-<a class="sourceLine" id="cb5-254" data-line-number="254">  <span class="op">|</span><span class="st">                                                                       </span></a>
-<a class="sourceLine" id="cb5-255" data-line-number="255"><span class="st">  </span><span class="er">|</span><span class="st">                                                                 </span><span class="er">|</span><span class="st">   </span><span class="dv">0</span>%</a>
-<a class="sourceLine" id="cb5-256" data-line-number="256">  <span class="op">|</span><span class="st">                                                                       </span></a>
-<a class="sourceLine" id="cb5-257" data-line-number="257"><span class="st">  </span><span class="er">|</span>.........                                                        <span class="op">|</span><span class="st">  </span><span class="dv">14</span>%</a>
-<a class="sourceLine" id="cb5-258" data-line-number="258">  ordinary text without R code</a>
-<a class="sourceLine" id="cb5-259" data-line-number="259"></a>
-<a class="sourceLine" id="cb5-260" data-line-number="260"></a>
-<a class="sourceLine" id="cb5-261" data-line-number="261">  <span class="op">|</span><span class="st">                                                                       </span></a>
-<a class="sourceLine" id="cb5-262" data-line-number="262"><span class="st">  </span><span class="er">|</span>...................                                              <span class="op">|</span><span class="st">  </span><span class="dv">29</span>%</a>
-<a class="sourceLine" id="cb5-263" data-line-number="263">label<span class="op">:</span><span class="st"> </span>unnamed<span class="op">-</span>chunk<span class="dv">-11</span> (with options) </a>
-<a class="sourceLine" id="cb5-264" data-line-number="264">List of <span class="dv">1</span></a>
-<a class="sourceLine" id="cb5-265" data-line-number="265"> <span class="op">$</span><span class="st"> </span>include<span class="op">:</span><span class="st"> </span>logi <span class="ot">FALSE</span></a>
-<a class="sourceLine" id="cb5-266" data-line-number="266"></a>
-<a class="sourceLine" id="cb5-267" data-line-number="267"></a>
-<a class="sourceLine" id="cb5-268" data-line-number="268">  <span class="op">|</span><span class="st">                                                                       </span></a>
-<a class="sourceLine" id="cb5-269" data-line-number="269"><span class="st">  </span><span class="er">|</span>............................                                     <span class="op">|</span><span class="st">  </span><span class="dv">43</span>%</a>
-<a class="sourceLine" id="cb5-270" data-line-number="270">  ordinary text without R code</a>
-<a class="sourceLine" id="cb5-271" data-line-number="271"></a>
-<a class="sourceLine" id="cb5-272" data-line-number="272"></a>
-<a class="sourceLine" id="cb5-273" data-line-number="273">  <span class="op">|</span><span class="st">                                                                       </span></a>
-<a class="sourceLine" id="cb5-274" data-line-number="274"><span class="st">  </span><span class="er">|</span>.....................................                            <span class="op">|</span><span class="st">  </span><span class="dv">57</span>%</a>
-<a class="sourceLine" id="cb5-275" data-line-number="275">label<span class="op">:</span><span class="st"> </span>cars</a>
-<a class="sourceLine" id="cb5-276" data-line-number="276"></a>
-<a class="sourceLine" id="cb5-277" data-line-number="277">  <span class="op">|</span><span class="st">                                                                       </span></a>
-<a class="sourceLine" id="cb5-278" data-line-number="278"><span class="st">  </span><span class="er">|</span>..............................................                   <span class="op">|</span><span class="st">  </span><span class="dv">71</span>%</a>
-<a class="sourceLine" id="cb5-279" data-line-number="279">  ordinary text without R code</a>
-<a class="sourceLine" id="cb5-280" data-line-number="280"></a>
-<a class="sourceLine" id="cb5-281" data-line-number="281"></a>
-<a class="sourceLine" id="cb5-282" data-line-number="282">  <span class="op">|</span><span class="st">                                                                       </span></a>
-<a class="sourceLine" id="cb5-283" data-line-number="283"><span class="st">  </span><span class="er">|</span>........................................................         <span class="op">|</span><span class="st">  </span><span class="dv">86</span>%</a>
-<a class="sourceLine" id="cb5-284" data-line-number="284">label<span class="op">:</span><span class="st"> </span>unnamed<span class="op">-</span>chunk<span class="dv">-12</span></a>
-<a class="sourceLine" id="cb5-285" data-line-number="285"></a>
-<a class="sourceLine" id="cb5-286" data-line-number="286">  <span class="op">|</span><span class="st">                                                                       </span></a>
-<a class="sourceLine" id="cb5-287" data-line-number="287"><span class="st">  </span><span class="er">|</span>.................................................................<span class="op">|</span><span class="st"> </span><span class="dv">100</span>%</a>
-<a class="sourceLine" id="cb5-288" data-line-number="288">  ordinary text without R code</a>
-<a class="sourceLine" id="cb5-289" data-line-number="289">output file<span class="op">:</span><span class="st"> </span>subsetCars.knit.md</a>
-<a class="sourceLine" id="cb5-290" data-line-number="290"><span class="op">/</span>usr<span class="op">/</span>local<span class="op">/</span>bin<span class="op">/</span>pandoc <span class="op">+</span>RTS <span class="op">-</span>K512m <span class="op">-</span>RTS subsetCars.utf8.md <span class="op">--</span>to html4 <span class="op">--</span>from markdown<span class="op">+</span>autolink_bare_uris<span class="op">+</span>ascii_identifiers<span class="op">+</span>tex_math_single_backslash<span class="op">+</span>smart <span class="op">--</span>output <span class="op">/</span>private<span class="op">/</span>var<span class="op">/</span>folders<span class="op">/</span>jh<span class="op">/</span>x0h3v3pd4dd497g3gtzsm8500000gn<span class="op">/</span>T<span class="op">/</span>RtmpHrauiV<span class="op">/</span>mtcars20<span class="op">/</span>inst<span class="op">/</span>extdata<span class="op">/</span>Logfiles<span class="op">/</span>subsetCars.html <span class="op">--</span>email<span class="op">-</span>obfuscation none <span class="op">--</span>self<span class="op">-</span>contained <span class="op">--</span>standalone <span class="op">--</span>section<span class="op">-</span>divs <span class="op">--</span>template <span class="op">/</span>Library<span class="op">/</span>Frameworks<span class="op">/</span>R.framework<span class="op">/</span>Versions<span class="op">/</span><span class="fl">3.5</span><span class="op">/</span>Resources<span class="op">/</span>library<span class="op">/</span>rmarkdown<span class="op">/</span>rmd<span class="op">/</span>h<span class="op">/</span>default.html <span class="op">--</span>no<span class="op">-</span>highlight <span class="op">--</span>variable highlightjs=<span class="dv">1</span> <span class="op">--</span>variable <span class="st">'theme:bootstrap'</span> <span class="op">--</span>include<span class="op">-</span><span class="cf">in</span><span class="op">-</span>header <span class="op">/</span>var<span class="op">/</span>folders<span class="op">/</span>jh<span class="op">/</span>x0h3v3pd4dd497g3gtzsm8500000gn<span class="op">/</span>T<span class="op">/</span><span class="er">/</span>RtmpHrauiV<span class="op">/</span>rmarkdown<span class="op">-</span>str14e3f42f0272c.html <span class="op">--</span>mathjax <span class="op">--</span>variable <span class="st">'mathjax-url:https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'</span> </a>
-<a class="sourceLine" id="cb5-291" data-line-number="291"></a>
-<a class="sourceLine" id="cb5-292" data-line-number="292">Output created<span class="op">:</span><span class="st"> </span><span class="er">/</span>private<span class="op">/</span>var<span class="op">/</span>folders<span class="op">/</span>jh<span class="op">/</span>x0h3v3pd4dd497g3gtzsm8500000gn<span class="op">/</span>T<span class="op">/</span>RtmpHrauiV<span class="op">/</span>mtcars20<span class="op">/</span>inst<span class="op">/</span>extdata<span class="op">/</span>Logfiles<span class="op">/</span>subsetCars.html</a>
-<a class="sourceLine" id="cb5-293" data-line-number="293">INFO [<span class="dv">2018-08-01</span> <span class="dv">11</span><span class="op">:</span><span class="dv">19</span><span class="op">:</span><span class="dv">52</span>] <span class="dv">1</span> required data objects created by subsetCars.Rmd</a>
-<a class="sourceLine" id="cb5-294" data-line-number="294">INFO [<span class="dv">2018-08-01</span> <span class="dv">11</span><span class="op">:</span><span class="dv">19</span><span class="op">:</span><span class="dv">52</span>] NEWS.md file not found, creating<span class="op">!</span></a>
-<a class="sourceLine" id="cb5-295" data-line-number="295">Enter a text description of the changes <span class="cf">for</span> the NEWS file.</a>
-<a class="sourceLine" id="cb5-296" data-line-number="296">INFO [<span class="dv">2018-08-01</span> <span class="dv">11</span><span class="op">:</span><span class="dv">19</span><span class="op">:</span><span class="dv">57</span>] Saving to data</a>
-<a class="sourceLine" id="cb5-297" data-line-number="297">INFO [<span class="dv">2018-08-01</span> <span class="dv">11</span><span class="op">:</span><span class="dv">19</span><span class="op">:</span><span class="dv">57</span>] Copied documentation to <span class="op">/</span>private<span class="op">/</span>var<span class="op">/</span>folders<span class="op">/</span>jh<span class="op">/</span>x0h3v3pd4dd497g3gtzsm8500000gn<span class="op">/</span>T<span class="op">/</span>RtmpHrauiV<span class="op">/</span>mtcars20<span class="op">/</span>R<span class="op">/</span>mtcars20.R</a>
-<a class="sourceLine" id="cb5-298" data-line-number="298"></a>
-<a class="sourceLine" id="cb5-299" data-line-number="299">✔ Creating <span class="st">'vignettes/'</span></a>
-<a class="sourceLine" id="cb5-300" data-line-number="300">✔ Creating <span class="st">'inst/doc/'</span></a>
-<a class="sourceLine" id="cb5-301" data-line-number="301">INFO [<span class="dv">2018-08-01</span> <span class="dv">11</span><span class="op">:</span><span class="dv">19</span><span class="op">:</span><span class="dv">57</span>] Done</a>
-<a class="sourceLine" id="cb5-302" data-line-number="302">exiting from<span class="op">:</span><span class="st"> </span><span class="kw">DataPackageR</span>(<span class="dt">arg =</span> package_path, <span class="dt">deps =</span> deps)</a>
-<a class="sourceLine" id="cb5-303" data-line-number="303">INFO [<span class="dv">2018-08-01</span> <span class="dv">11</span><span class="op">:</span><span class="dv">19</span><span class="op">:</span><span class="dv">57</span>] DataPackageR succeeded</a>
-<a class="sourceLine" id="cb5-304" data-line-number="304">INFO [<span class="dv">2018-08-01</span> <span class="dv">11</span><span class="op">:</span><span class="dv">19</span><span class="op">:</span><span class="dv">57</span>] Building documentation</a>
-<a class="sourceLine" id="cb5-305" data-line-number="305">First time using roxygen2. Upgrading automatically...</a>
-<a class="sourceLine" id="cb5-306" data-line-number="306">Updating roxygen version <span class="cf">in</span> <span class="op">/</span>private<span class="op">/</span>var<span class="op">/</span>folders<span class="op">/</span>jh<span class="op">/</span>x0h3v3pd4dd497g3gtzsm8500000gn<span class="op">/</span>T<span class="op">/</span>RtmpHrauiV<span class="op">/</span>mtcars20<span class="op">/</span>DESCRIPTION</a>
-<a class="sourceLine" id="cb5-307" data-line-number="307">Writing NAMESPACE</a>
-<a class="sourceLine" id="cb5-308" data-line-number="308">Loading mtcars20</a>
-<a class="sourceLine" id="cb5-309" data-line-number="309">Writing mtcars20.Rd</a>
-<a class="sourceLine" id="cb5-310" data-line-number="310">Writing cars_over_<span class="fl">20.</span>Rd</a>
-<a class="sourceLine" id="cb5-311" data-line-number="311">INFO [<span class="dv">2018-08-01</span> <span class="dv">11</span><span class="op">:</span><span class="dv">19</span><span class="op">:</span><span class="dv">58</span>] Building package</a>
-<a class="sourceLine" id="cb5-312" data-line-number="312"><span class="st">'/Library/Frameworks/R.framework/Resources/bin/R'</span> <span class="op">--</span>no<span class="op">-</span>site<span class="op">-</span>file  \</a>
-<a class="sourceLine" id="cb5-313" data-line-number="313">  <span class="op">--</span>no<span class="op">-</span>environ <span class="op">--</span>no<span class="op">-</span>save <span class="op">--</span>no<span class="op">-</span>restore <span class="op">--</span>quiet CMD build  \</a>
-<a class="sourceLine" id="cb5-314" data-line-number="314">  <span class="st">'/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpHrauiV/mtcars20'</span>  \</a>
-<a class="sourceLine" id="cb5-315" data-line-number="315">  <span class="op">--</span>no<span class="op">-</span>resave<span class="op">-</span>data <span class="op">--</span>no<span class="op">-</span>manual <span class="op">--</span>no<span class="op">-</span>build<span class="op">-</span>vignettes </a>
-<a class="sourceLine" id="cb5-316" data-line-number="316"></a>
-<a class="sourceLine" id="cb5-317" data-line-number="317">Reloading installed mtcars20</a>
-<a class="sourceLine" id="cb5-318" data-line-number="318">Next Steps </a>
-<a class="sourceLine" id="cb5-319" data-line-number="319"><span class="fl">1.</span> Update your package documentation. </a>
-<a class="sourceLine" id="cb5-320" data-line-number="320">   <span class="op">-</span><span class="st"> </span>Edit the documentation.R file <span class="cf">in</span> the package source data<span class="op">-</span>raw subdirectory and update the roxygen markup. </a>
-<a class="sourceLine" id="cb5-321" data-line-number="321">   <span class="op">-</span><span class="st"> </span>Rebuild the package documentation with  <span class="kw">document</span>() . </a>
-<a class="sourceLine" id="cb5-322" data-line-number="322"><span class="fl">2.</span> Add your package to source control. </a>
-<a class="sourceLine" id="cb5-323" data-line-number="323">   <span class="op">-</span><span class="st"> </span>Call  git init .  <span class="cf">in</span> the package source root directory. </a>
-<a class="sourceLine" id="cb5-324" data-line-number="324">   <span class="op">-</span><span class="st">  </span>git add  the package files. </a>
-<a class="sourceLine" id="cb5-325" data-line-number="325">   <span class="op">-</span><span class="st">  </span>git commit  your new package. </a>
-<a class="sourceLine" id="cb5-326" data-line-number="326">   <span class="op">-</span><span class="st"> </span>Set up a github repository <span class="cf">for</span> your pacakge. </a>
-<a class="sourceLine" id="cb5-327" data-line-number="327">   <span class="op">-</span><span class="st"> </span>Add the github repository as a remote of your local package repository. </a>
-<a class="sourceLine" id="cb5-328" data-line-number="328">   <span class="op">-</span><span class="st">  </span>git push  your local repository to gitub. </a>
-<a class="sourceLine" id="cb5-329" data-line-number="329">[<span class="dv">1</span>] <span class="st">&quot;/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpHrauiV/mtcars20_1.0.tar.gz&quot;</span></a></code></pre></div>
+<a class="sourceLine" id="cb5-4" data-line-number="4">INFO [<span class="dv">2018-08-01</span> <span class="dv">11</span><span class="op">:</span><span class="dv">55</span><span class="op">:</span><span class="dv">05</span>] Logging to <span class="op">/</span>private<span class="op">/</span>var<span class="op">/</span>folders<span class="op">/</span>jh<span class="op">/</span>x0h3v3pd4dd497g3gtzsm8500000gn<span class="op">/</span>T<span class="op">/</span>Rtmpu5EXeX<span class="op">/</span>mtcars20<span class="op">/</span>inst<span class="op">/</span>extdata<span class="op">/</span>Logfiles<span class="op">/</span>processing.log</a>
+<a class="sourceLine" id="cb5-5" data-line-number="5">INFO [<span class="dv">2018-08-01</span> <span class="dv">11</span><span class="op">:</span><span class="dv">55</span><span class="op">:</span><span class="dv">05</span>] Processing data</a>
+<a class="sourceLine" id="cb5-6" data-line-number="6">INFO [<span class="dv">2018-08-01</span> <span class="dv">11</span><span class="op">:</span><span class="dv">55</span><span class="op">:</span><span class="dv">05</span>] Reading yaml configuration</a>
+<a class="sourceLine" id="cb5-7" data-line-number="7">INFO [<span class="dv">2018-08-01</span> <span class="dv">11</span><span class="op">:</span><span class="dv">55</span><span class="op">:</span><span class="dv">05</span>] Found <span class="op">/</span>private<span class="op">/</span>var<span class="op">/</span>folders<span class="op">/</span>jh<span class="op">/</span>x0h3v3pd4dd497g3gtzsm8500000gn<span class="op">/</span>T<span class="op">/</span>Rtmpu5EXeX<span class="op">/</span>mtcars20<span class="op">/</span>data<span class="op">-</span>raw<span class="op">/</span>subsetCars.Rmd</a>
+<a class="sourceLine" id="cb5-8" data-line-number="8">INFO [<span class="dv">2018-08-01</span> <span class="dv">11</span><span class="op">:</span><span class="dv">55</span><span class="op">:</span><span class="dv">05</span>] Processing <span class="dv">1</span> of <span class="dv">1</span><span class="op">:</span><span class="st"> </span><span class="er">/</span>private<span class="op">/</span>var<span class="op">/</span>folders<span class="op">/</span>jh<span class="op">/</span>x0h3v3pd4dd497g3gtzsm8500000gn<span class="op">/</span>T<span class="op">/</span>Rtmpu5EXeX<span class="op">/</span>mtcars20<span class="op">/</span>data<span class="op">-</span>raw<span class="op">/</span>subsetCars.Rmd</a>
+<a class="sourceLine" id="cb5-9" data-line-number="9">processing file<span class="op">:</span><span class="st"> </span>subsetCars.Rmd</a>
+<a class="sourceLine" id="cb5-10" data-line-number="10">output file<span class="op">:</span><span class="st"> </span>subsetCars.knit.md</a>
+<a class="sourceLine" id="cb5-11" data-line-number="11"><span class="op">/</span>usr<span class="op">/</span>local<span class="op">/</span>bin<span class="op">/</span>pandoc <span class="op">+</span>RTS <span class="op">-</span>K512m <span class="op">-</span>RTS subsetCars.utf8.md <span class="op">--</span>to html4 <span class="op">--</span>from markdown<span class="op">+</span>autolink_bare_uris<span class="op">+</span>ascii_identifiers<span class="op">+</span>tex_math_single_backslash<span class="op">+</span>smart <span class="op">--</span>output <span class="op">/</span>private<span class="op">/</span>var<span class="op">/</span>folders<span class="op">/</span>jh<span class="op">/</span>x0h3v3pd4dd497g3gtzsm8500000gn<span class="op">/</span>T<span class="op">/</span>Rtmpu5EXeX<span class="op">/</span>mtcars20<span class="op">/</span>inst<span class="op">/</span>extdata<span class="op">/</span>Logfiles<span class="op">/</span>subsetCars.html <span class="op">--</span>email<span class="op">-</span>obfuscation none <span class="op">--</span>self<span class="op">-</span>contained <span class="op">--</span>standalone <span class="op">--</span>section<span class="op">-</span>divs <span class="op">--</span>template <span class="op">/</span>Library<span class="op">/</span>Frameworks<span class="op">/</span>R.framework<span class="op">/</span>Versions<span class="op">/</span><span class="fl">3.5</span><span class="op">/</span>Resources<span class="op">/</span>library<span class="op">/</span>rmarkdown<span class="op">/</span>rmd<span class="op">/</span>h<span class="op">/</span>default.html <span class="op">--</span>no<span class="op">-</span>highlight <span class="op">--</span>variable highlightjs=<span class="dv">1</span> <span class="op">--</span>variable <span class="st">'theme:bootstrap'</span> <span class="op">--</span>include<span class="op">-</span><span class="cf">in</span><span class="op">-</span>header <span class="op">/</span>var<span class="op">/</span>folders<span class="op">/</span>jh<span class="op">/</span>x0h3v3pd4dd497g3gtzsm8500000gn<span class="op">/</span>T<span class="op">/</span><span class="er">/</span>Rtmpu5EXeX<span class="op">/</span>rmarkdown<span class="op">-</span>str15eaf4caee58a.html <span class="op">--</span>mathjax <span class="op">--</span>variable <span class="st">'mathjax-url:https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'</span> </a>
+<a class="sourceLine" id="cb5-12" data-line-number="12"></a>
+<a class="sourceLine" id="cb5-13" data-line-number="13">Output created<span class="op">:</span><span class="st"> </span><span class="er">/</span>private<span class="op">/</span>var<span class="op">/</span>folders<span class="op">/</span>jh<span class="op">/</span>x0h3v3pd4dd497g3gtzsm8500000gn<span class="op">/</span>T<span class="op">/</span>Rtmpu5EXeX<span class="op">/</span>mtcars20<span class="op">/</span>inst<span class="op">/</span>extdata<span class="op">/</span>Logfiles<span class="op">/</span>subsetCars.html</a>
+<a class="sourceLine" id="cb5-14" data-line-number="14">INFO [<span class="dv">2018-08-01</span> <span class="dv">11</span><span class="op">:</span><span class="dv">55</span><span class="op">:</span><span class="dv">05</span>] <span class="dv">1</span> required data objects created by subsetCars.Rmd</a>
+<a class="sourceLine" id="cb5-15" data-line-number="15">INFO [<span class="dv">2018-08-01</span> <span class="dv">11</span><span class="op">:</span><span class="dv">55</span><span class="op">:</span><span class="dv">05</span>] NEWS.md file not found, creating<span class="op">!</span></a>
+<a class="sourceLine" id="cb5-16" data-line-number="16">Enter a text description of the changes <span class="cf">for</span> the NEWS file.</a>
+<a class="sourceLine" id="cb5-17" data-line-number="17">INFO [<span class="dv">2018-08-01</span> <span class="dv">11</span><span class="op">:</span><span class="dv">55</span><span class="op">:</span><span class="dv">05</span>] Saving to data</a>
+<a class="sourceLine" id="cb5-18" data-line-number="18">INFO [<span class="dv">2018-08-01</span> <span class="dv">11</span><span class="op">:</span><span class="dv">55</span><span class="op">:</span><span class="dv">05</span>] Copied documentation to <span class="op">/</span>private<span class="op">/</span>var<span class="op">/</span>folders<span class="op">/</span>jh<span class="op">/</span>x0h3v3pd4dd497g3gtzsm8500000gn<span class="op">/</span>T<span class="op">/</span>Rtmpu5EXeX<span class="op">/</span>mtcars20<span class="op">/</span>R<span class="op">/</span>mtcars20.R</a>
+<a class="sourceLine" id="cb5-19" data-line-number="19"></a>
+<a class="sourceLine" id="cb5-20" data-line-number="20">✔ Creating <span class="st">'vignettes/'</span></a>
+<a class="sourceLine" id="cb5-21" data-line-number="21">✔ Creating <span class="st">'inst/doc/'</span></a>
+<a class="sourceLine" id="cb5-22" data-line-number="22">INFO [<span class="dv">2018-08-01</span> <span class="dv">11</span><span class="op">:</span><span class="dv">55</span><span class="op">:</span><span class="dv">05</span>] Done</a>
+<a class="sourceLine" id="cb5-23" data-line-number="23">INFO [<span class="dv">2018-08-01</span> <span class="dv">11</span><span class="op">:</span><span class="dv">55</span><span class="op">:</span><span class="dv">05</span>] DataPackageR succeeded</a>
+<a class="sourceLine" id="cb5-24" data-line-number="24">INFO [<span class="dv">2018-08-01</span> <span class="dv">11</span><span class="op">:</span><span class="dv">55</span><span class="op">:</span><span class="dv">05</span>] Building documentation</a>
+<a class="sourceLine" id="cb5-25" data-line-number="25">First time using roxygen2. Upgrading automatically...</a>
+<a class="sourceLine" id="cb5-26" data-line-number="26">Updating roxygen version <span class="cf">in</span> <span class="op">/</span>private<span class="op">/</span>var<span class="op">/</span>folders<span class="op">/</span>jh<span class="op">/</span>x0h3v3pd4dd497g3gtzsm8500000gn<span class="op">/</span>T<span class="op">/</span>Rtmpu5EXeX<span class="op">/</span>mtcars20<span class="op">/</span>DESCRIPTION</a>
+<a class="sourceLine" id="cb5-27" data-line-number="27">Writing NAMESPACE</a>
+<a class="sourceLine" id="cb5-28" data-line-number="28">Loading mtcars20</a>
+<a class="sourceLine" id="cb5-29" data-line-number="29">Writing mtcars20.Rd</a>
+<a class="sourceLine" id="cb5-30" data-line-number="30">Writing cars_over_<span class="fl">20.</span>Rd</a>
+<a class="sourceLine" id="cb5-31" data-line-number="31">INFO [<span class="dv">2018-08-01</span> <span class="dv">11</span><span class="op">:</span><span class="dv">55</span><span class="op">:</span><span class="dv">05</span>] Building package</a>
+<a class="sourceLine" id="cb5-32" data-line-number="32"><span class="st">'/Library/Frameworks/R.framework/Resources/bin/R'</span> <span class="op">--</span>no<span class="op">-</span>site<span class="op">-</span>file  \</a>
+<a class="sourceLine" id="cb5-33" data-line-number="33">  <span class="op">--</span>no<span class="op">-</span>environ <span class="op">--</span>no<span class="op">-</span>save <span class="op">--</span>no<span class="op">-</span>restore <span class="op">--</span>quiet CMD build  \</a>
+<a class="sourceLine" id="cb5-34" data-line-number="34">  <span class="st">'/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmpu5EXeX/mtcars20'</span>  \</a>
+<a class="sourceLine" id="cb5-35" data-line-number="35">  <span class="op">--</span>no<span class="op">-</span>resave<span class="op">-</span>data <span class="op">--</span>no<span class="op">-</span>manual <span class="op">--</span>no<span class="op">-</span>build<span class="op">-</span>vignettes </a>
+<a class="sourceLine" id="cb5-36" data-line-number="36"></a>
+<a class="sourceLine" id="cb5-37" data-line-number="37">Reloading installed mtcars20</a>
+<a class="sourceLine" id="cb5-38" data-line-number="38">Next Steps </a>
+<a class="sourceLine" id="cb5-39" data-line-number="39"><span class="fl">1.</span> Update your package documentation. </a>
+<a class="sourceLine" id="cb5-40" data-line-number="40">   <span class="op">-</span><span class="st"> </span>Edit the documentation.R file <span class="cf">in</span> the package source data<span class="op">-</span>raw subdirectory and update the roxygen markup. </a>
+<a class="sourceLine" id="cb5-41" data-line-number="41">   <span class="op">-</span><span class="st"> </span>Rebuild the package documentation with  <span class="kw">document</span>() . </a>
+<a class="sourceLine" id="cb5-42" data-line-number="42"><span class="fl">2.</span> Add your package to source control. </a>
+<a class="sourceLine" id="cb5-43" data-line-number="43">   <span class="op">-</span><span class="st"> </span>Call  git init .  <span class="cf">in</span> the package source root directory. </a>
+<a class="sourceLine" id="cb5-44" data-line-number="44">   <span class="op">-</span><span class="st">  </span>git add  the package files. </a>
+<a class="sourceLine" id="cb5-45" data-line-number="45">   <span class="op">-</span><span class="st">  </span>git commit  your new package. </a>
+<a class="sourceLine" id="cb5-46" data-line-number="46">   <span class="op">-</span><span class="st"> </span>Set up a github repository <span class="cf">for</span> your pacakge. </a>
+<a class="sourceLine" id="cb5-47" data-line-number="47">   <span class="op">-</span><span class="st"> </span>Add the github repository as a remote of your local package repository. </a>
+<a class="sourceLine" id="cb5-48" data-line-number="48">   <span class="op">-</span><span class="st">  </span>git push  your local repository to gitub. </a>
+<a class="sourceLine" id="cb5-49" data-line-number="49">[<span class="dv">1</span>] <span class="st">&quot;/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmpu5EXeX/mtcars20_1.0.tar.gz&quot;</span></a></code></pre></div>
 <div id="documenting-your-data-set-changes-in-news.md" class="section level3">
 <h3>Documenting your data set changes in NEWS.md</h3>
 <p>When you build a package in interactive mode, you will be prompted to input text describing the changes to your data package (one line).</p>
@@ -794,32 +514,33 @@ A description of your changes to the package
 <p>The pacakge source directory changes after the first build.</p>
 <pre><code>                         levelName
 1  mtcars20                       
-2   ¦--data                       
-3   ¦   °--cars_over_20.rda       
-4   ¦--data-raw                   
-5   ¦   ¦--documentation.R        
-6   ¦   °--subsetCars.Rmd         
-7   ¦--DATADIGEST                 
-8   ¦--datapackager.yml           
-9   ¦--DESCRIPTION                
-10  ¦--inst                       
-11  ¦   ¦--doc                    
-12  ¦   ¦   ¦--subsetCars.html    
-13  ¦   ¦   °--subsetCars.Rmd     
-14  ¦   °--extdata                
-15  ¦       °--Logfiles           
-16  ¦           ¦--processing.log 
-17  ¦           °--subsetCars.html
-18  ¦--man                        
-19  ¦   ¦--cars_over_20.Rd        
-20  ¦   °--mtcars20.Rd            
-21  ¦--NAMESPACE                  
-22  ¦--NEWS.md                    
-23  ¦--R                          
-24  ¦   °--mtcars20.R             
-25  ¦--Read-and-delete-me         
-26  °--vignettes                  
-27      °--subsetCars.Rmd         </code></pre>
+2   ¦--DATADIGEST                 
+3   ¦--DESCRIPTION                
+4   ¦--NAMESPACE                  
+5   ¦--NEWS.md                    
+6   ¦--R                          
+7   ¦   °--mtcars20.R             
+8   ¦--Read-and-delete-me         
+9   ¦--data                       
+10  ¦   °--cars_over_20.rda       
+11  ¦--data-raw                   
+12  ¦   ¦--documentation.R        
+13  ¦   ¦--subsetCars.R           
+14  ¦   °--subsetCars.Rmd         
+15  ¦--datapackager.yml           
+16  ¦--inst                       
+17  ¦   ¦--doc                    
+18  ¦   ¦   ¦--subsetCars.Rmd     
+19  ¦   ¦   °--subsetCars.html    
+20  ¦   °--extdata                
+21  ¦       °--Logfiles           
+22  ¦           ¦--processing.log 
+23  ¦           °--subsetCars.html
+24  ¦--man                        
+25  ¦   ¦--cars_over_20.Rd        
+26  ¦   °--mtcars20.Rd            
+27  °--vignettes                  
+28      °--subsetCars.Rmd         </code></pre>
 </div>
 <div id="update-the-autogenerated-documentation." class="section level3">
 <h3>Update the autogenerated documentation.</h3>
@@ -828,7 +549,7 @@ A description of your changes to the package
 <p>The autogenerated documentation source is in the <code>documentation.R</code> file in <code>data-raw</code>.</p>
 <p>You should update this file to properly document your objects. Then rebuild the documentation:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw">document</span>(<span class="kw">file.path</span>(<span class="kw">tempdir</span>(),<span class="st">&quot;mtcars20&quot;</span>))</a>
-<a class="sourceLine" id="cb8-2" data-line-number="2">INFO [<span class="dv">2018-08-01</span> <span class="dv">11</span><span class="op">:</span><span class="dv">20</span><span class="op">:</span><span class="dv">00</span>] Rebuilding data package documentation.</a>
+<a class="sourceLine" id="cb8-2" data-line-number="2">INFO [<span class="dv">2018-08-01</span> <span class="dv">11</span><span class="op">:</span><span class="dv">55</span><span class="op">:</span><span class="dv">07</span>] Rebuilding data package documentation.</a>
 <a class="sourceLine" id="cb8-3" data-line-number="3">Loading mtcars20</a>
 <a class="sourceLine" id="cb8-4" data-line-number="4">[<span class="dv">1</span>] <span class="ot">TRUE</span></a></code></pre></div>
 <p>This is done without reprocessing the data.</p>
@@ -907,7 +628,7 @@ A description of your changes to the package
 <a class="sourceLine" id="cb11-10" data-line-number="10"><span class="st">  </span><span class="op">-</span><span class="st"> </span>object1</a>
 <a class="sourceLine" id="cb11-11" data-line-number="11">  <span class="op">-</span><span class="st"> </span>object2</a>
 <a class="sourceLine" id="cb11-12" data-line-number="12">  render_root<span class="op">:</span></a>
-<a class="sourceLine" id="cb11-13" data-line-number="13"><span class="st">    </span>tmp<span class="op">:</span><span class="st"> '560209'</span></a></code></pre></div>
+<a class="sourceLine" id="cb11-13" data-line-number="13"><span class="st">    </span>tmp<span class="op">:</span><span class="st"> '13431'</span></a></code></pre></div>
 <p><code>config</code> is a newly constructed yaml configuration object. It can be written to the package directory:</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">path_to_package &lt;-<span class="st"> </span><span class="kw">tempdir</span>() <span class="co">#e.g., if tempdir() was the root of our package.</span></a>
 <a class="sourceLine" id="cb12-2" data-line-number="2"><span class="kw">yml_write</span>(config, <span class="dt">path =</span> path_to_package)</a></code></pre></div>
@@ -951,7 +672,7 @@ A description of your changes to the package
 <a class="sourceLine" id="cb15-10" data-line-number="10"><span class="st">  </span><span class="op">-</span><span class="st"> </span>object1</a>
 <a class="sourceLine" id="cb15-11" data-line-number="11">  <span class="op">-</span><span class="st"> </span>object2</a>
 <a class="sourceLine" id="cb15-12" data-line-number="12">  render_root<span class="op">:</span></a>
-<a class="sourceLine" id="cb15-13" data-line-number="13"><span class="st">    </span>tmp<span class="op">:</span><span class="st"> '560209'</span></a></code></pre></div>
+<a class="sourceLine" id="cb15-13" data-line-number="13"><span class="st">    </span>tmp<span class="op">:</span><span class="st"> '13431'</span></a></code></pre></div>
 <p>Note that the modified configuration needs to be written back to the package source directory in order for the changes to take effect.</p>
 <p>The consequence of toggling a file to <code>enable: no</code> is that it will be skipped when the package is rebuilt, but the data will still be retained in the package, and the documentation will not be altered.</p>
 <p>This is useful in situations where we have multiple data sets, and want to re-run one script to update a specific data set, but not the other scripts because they may be too time consuming, for example.</p>

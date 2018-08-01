@@ -82,16 +82,16 @@ The contents of `mtcars20` are:
 ```
                 levelName
 1  mtcars20              
-2   ¦--data              
-3   ¦--data-raw          
-4   ¦   °--subsetCars.Rmd
-5   ¦--datapackager.yml  
-6   ¦--DESCRIPTION       
-7   ¦--inst              
-8   ¦   °--extdata       
-9   ¦--man               
-10  ¦--R                 
-11  °--Read-and-delete-me
+2   ¦--DESCRIPTION       
+3   ¦--R                 
+4   ¦--Read-and-delete-me
+5   ¦--data              
+6   ¦--data-raw          
+7   ¦   °--subsetCars.Rmd
+8   ¦--datapackager.yml  
+9   ¦--inst              
+10  ¦   °--extdata       
+11  °--man               
 ```
 
 You should fill out the `DESCRIPTION` file to describe your data package. 
@@ -113,7 +113,7 @@ configuration:
       enabled: yes
   objects: cars_over_20
   render_root:
-    tmp: '445902'
+    tmp: '132097'
 ```
 
 The two main pieces of information in the configuration are a list of the files to be processed and the data sets the package will store.
@@ -144,12 +144,12 @@ These are useful for constructing portable paths in your code to read files from
 
 For example: to construct a path to a file named "mydata.csv" located in `inst/extdata` in your data package source tree:
 
-- use `DataPackageR::project_extdata_path("mydata.csv")` in your `R` or `Rmd` file. This would return: e.g., /var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//RtmpHrauiV/mtcars20/inst/extdata/mydata.csv
+- use `DataPackageR::project_extdata_path("mydata.csv")` in your `R` or `Rmd` file. This would return: e.g., /var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//Rtmpu5EXeX/mtcars20/inst/extdata/mydata.csv
 
 Similarly: 
 
-- `DataPackageR::project_path()`  constructs a path to the data package root directory. (e.g., /var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//RtmpHrauiV/mtcars20)
-- `DataPackageR::project_data_path()` constructs a path to the data package `data` subdirectory. (e.g., /var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//RtmpHrauiV/mtcars20/data)
+- `DataPackageR::project_path()`  constructs a path to the data package root directory. (e.g., /var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//Rtmpu5EXeX/mtcars20)
+- `DataPackageR::project_data_path()` constructs a path to the data package `data` subdirectory. (e.g., /var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//Rtmpu5EXeX/mtcars20/data)
 
 Raw data sets that are stored externally (outside the data package source tree) can be constructed relative to the `project_path()`.
 
@@ -168,7 +168,7 @@ If you have Rmd files, you can still include a yaml header, but it should be com
 data <- runif(100)
 ```
 
-This will be converted to an Rmd file with a proper yaml header, which will then be turned into a vignette and properly indexed in the built package.
+This will be converted to an Rmd file with a proper yaml header, which will then be turned into a vignette and indexed in the built package.
 
 
 ## Build the data package.
@@ -180,301 +180,37 @@ Once the skeleton framework is set up,
 # Run the preprocessing code to build cars_over_20
 # and reproducibly enclose it in a package.
 DataPackageR:::package_build(file.path(tempdir(),"mtcars20"))
-debugging in: DataPackageR(arg = package_path, deps = deps)
-debug at /Users/gfinak/Documents/Projects/DataPackageR/R/processData.R#117: {
-    pkg_dir <- arg
-    pkg_dir <- normalizePath(pkg_dir, winslash = "/")
-    usethis::proj_set(path = pkg_dir)
-    raw_data_dir <- "data-raw"
-    target <- normalizePath(file.path(pkg_dir, raw_data_dir), 
-        winslash = "/")
-    raw_data_dir <- target
-    if (!file.exists(target)) {
-        flog.fatal(paste0("Directory ", target, " doesn't exist."))
-        {
-            stop("exiting", call. = FALSE)
-        }
-    }
-    else {
-        logpath <- normalizePath(file.path(pkg_dir, "inst/extdata"), 
-            winslash = "/")
-        logpath <- file.path(logpath, "Logfiles")
-        dir.create(logpath, recursive = TRUE, showWarnings = FALSE)
-        LOGFILE <- file.path(logpath, "processing.log")
-        flog.appender(appender.tee(LOGFILE))
-        flog.info(paste0("Logging to ", LOGFILE))
-        testme <- file.path(pkg_dir, c("R", "inst", "data", "data-raw"))
-        if (!all(utils::file_test(testme, op = "-d"))) {
-            flog.fatal(paste0("You need a valid package data strucutre.", 
-                " Missing ./R ./inst ./data or", "./data-raw subdirectories."))
-            {
-                stop("exiting", call. = FALSE)
-            }
-        }
-        flog.info("Processing data")
-        ymlfile <- dir(path = pkg_dir, pattern = "^datapackager.yml$", 
-            full.names = TRUE)
-        if (length(ymlfile) == 0) {
-            flog.fatal(paste0("Yaml configuration file not found at ", 
-                pkg_dir))
-            {
-                stop("exiting", call. = FALSE)
-            }
-        }
-        ymlconf <- read_yaml(ymlfile)
-        if (!"configuration" %in% names(ymlconf)) {
-            flog.fatal("YAML is missing 'configuration:' entry")
-            {
-                stop("exiting", call. = FALSE)
-            }
-        }
-        if (!all(c("files", "objects") %in% purrr::map(ymlconf, 
-            names)[["configuration"]])) {
-            flog.fatal("YAML is missing files: and objects: entries")
-            {
-                stop("exiting", call. = FALSE)
-            }
-        }
-        flog.info("Reading yaml configuration")
-        assert_that("configuration" %in% names(ymlconf))
-        assert_that("files" %in% names(ymlconf[["configuration"]]))
-        assert_that(!is.null(names(ymlconf[["configuration"]][["files"]])))
-        r_files <- unique(names(Filter(x = ymlconf[["configuration"]][["files"]], 
-            f = function(x) x$enabled)))
-        if (length(r_files) == 0) {
-            flog.fatal("No files enabled for processing!")
-            {
-                stop("error", call. = FALSE)
-            }
-        }
-        objects_to_keep <- purrr::map(ymlconf, "objects")[["configuration"]]
-        render_root <- .get_render_root(ymlconf)
-        if (!.validate_render_root(render_root)) {
-            flog.fatal(paste0("Can't create, or render_root = ", 
-                render_root, " doesn't exist"))
-            stop("error", call. = FALSE)
-        }
-        else {
-            render_root <- normalizePath(render_root, winslash = "/")
-        }
-        r_files <- file.path(raw_data_dir, r_files)
-        if (all(!file.exists(r_files))) {
-            flog.fatal(paste0("Can't find any R or Rmd files."))
-            flog.fatal(paste0("     Cant' find file: ", r_files[!file.exists(r_files)]))
-            stop("error", call. = FALSE)
-        }
-        flog.info(paste0("Found ", r_files))
-        old_data_digest <- .parse_data_digest(pkg_dir = pkg_dir)
-        description_file <- normalizePath(file.path(pkg_dir, 
-            "DESCRIPTION"), winslash = "/")
-        pkg_description <- try(read.description(file = description_file), 
-            silent = TRUE)
-        if (length(objects_to_keep) == 0) {
-            flog.fatal("You must specify at least one data object.")
-            {
-                stop("exiting", call. = FALSE)
-            }
-        }
-        do_documentation <- FALSE
-        can_write <- FALSE
-        ENVS <- new.env(hash = TRUE, parent = .GlobalEnv)
-        for (i in seq_along(r_files)) {
-            dataenv <- new.env(hash = TRUE, parent = .GlobalEnv)
-            if (deps) 
-                assign(x = "ENVS", value = ENVS, dataenv)
-            flog.info(paste0("Processing ", i, " of ", length(r_files), 
-                ": ", r_files[i], "\n"))
-            flag <- FALSE
-            .isRfile <- function(f) {
-                grepl("\\.r$", tolower(f))
-            }
-            if (flag <- .isRfile(r_files[i])) {
-                knitr::spin(r_files[i], precious = TRUE, knit = FALSE)
-                r_files[i] <- paste0(tools::file_path_sans_ext(r_files[i]), 
-                  ".Rmd")
-                assert_that(file.exists(r_files[i]), msg = paste0("File: ", 
-                  r_files[i], " does not exist!"))
-                lines <- readLines(r_files[i])
-                lines <- c("---", paste0("title: ", basename(r_files[i])), 
-                  paste0("author: ", Sys.info()["user"]), paste0("date: ", 
-                    Sys.Date()), "---", "", lines)
-                con <- file(r_files[i])
-                writeLines(lines, con = con, sep = "\n")
-                close(con)
-            }
-            rmarkdown::render(input = r_files[i], envir = dataenv, 
-                output_dir = logpath, clean = TRUE, knit_root_dir = render_root)
-            object_names <- ls(dataenv)
-            flog.info(paste0(sum(objects_to_keep %in% object_names), 
-                " required data objects created by ", basename(r_files[i])))
-            if (sum(objects_to_keep %in% object_names) > 0) {
-                for (o in objects_to_keep[objects_to_keep %in% 
-                  object_names]) {
-                  assign(o, get(o, dataenv), ENVS)
-                }
-            }
-        }
-        dataenv <- ENVS
-        new_data_digest <- .digest_data_env(ls(ENVS), dataenv, 
-            pkg_description)
-        if (!is.null(old_data_digest)) {
-            string_check <- .check_dataversion_string(old_data_digest, 
-                new_data_digest)
-            can_write <- FALSE
-            stopifnot(!((!.compare_digests(old_data_digest, new_data_digest)) & 
-                string_check$isgreater))
-            if (.compare_digests(old_data_digest, new_data_digest) & 
-                string_check$isequal) {
-                can_write <- TRUE
-                flog.info(paste0("Processed data sets match ", 
-                  "existing data sets at version ", new_data_digest[["DataVersion"]]))
-            }
-            else if ((!.compare_digests(old_data_digest, new_data_digest)) & 
-                string_check$isequal) {
-                updated_version <- .increment_data_version(pkg_description, 
-                  new_data_digest)
-                .update_news_md(updated_version$new_data_digest[["DataVersion"]])
-                pkg_description <- updated_version$pkg_description
-                new_data_digest <- updated_version$new_data_digest
-                can_write <- TRUE
-                flog.info(paste0("Data has been updated and DataVersion ", 
-                  "string incremented automatically to ", new_data_digest[["DataVersion"]]))
-            }
-            else if (.compare_digests(old_data_digest, new_data_digest) & 
-                string_check$isgreater) {
-                can_write <- TRUE
-                flog.info(paste0("Data hasn't changed but the ", 
-                  "DataVersion has been bumped."))
-            }
-            else if (string_check$isless & .compare_digests(old_data_digest, 
-                new_data_digest)) {
-                flog.info(paste0("New DataVersion is less than ", 
-                  "old but data are unchanged"))
-                new_data_digest <- old_data_digest
-                pkg_description[["DataVersion"]] <- new_data_digest[["DataVersion"]]
-                can_write <- TRUE
-            }
-            else if (string_check$isless & !.compare_digests(old_data_digest, 
-                new_data_digest)) {
-                updated_version <- .increment_data_version(pkg_description, 
-                  new_data_digest)
-                .update_news_md(updated_version$new_data_digest[["DataVersion"]])
-                pkg_description <- updated_version$pkg_description
-                new_data_digest <- updated_version$new_data_digest
-                can_write <- TRUE
-            }
-            if (can_write) {
-                .save_data(new_data_digest, pkg_description, 
-                  ls(dataenv), dataenv, old_data_digest = old_data_digest, 
-                  pkg_path = pkg_dir)
-                do_documentation <- TRUE
-            }
-        }
-        else {
-            .update_news_md(new_data_digest[["DataVersion"]])
-            .save_data(new_data_digest, pkg_description, ls(dataenv), 
-                dataenv, old_data_digest = NULL, pkg_path = pkg_dir)
-            do_documentation <- TRUE
-        }
-        if (do_documentation) {
-            if (!file.exists(file.path(target, "documentation.R"))) {
-                .doc_autogen(basename(pkg_dir), ds2kp = ls(dataenv), 
-                  env = dataenv, path = target)
-            }
-            doc_parsed <- .doc_parse(file.path(target, "documentation.R"))
-            .identify_missing_docs <- function(environment = NULL, 
-                description = NULL, docs = NULL) {
-                setdiff(ls(environment), setdiff(names(docs), 
-                  description[["Package"]]))
-            }
-            missing_doc_for_autodoc <- .identify_missing_docs(dataenv, 
-                pkg_description, doc_parsed)
-            if (length(missing_doc_for_autodoc) != 0) {
-                tmptarget <- tempdir()
-                file.info("Writing missing docs.")
-                .doc_autogen(basename(pkg_dir), ds2kp = missing_doc_for_autodoc, 
-                  env = dataenv, path = tmptarget, name = "missing_doc.R")
-                missing_doc <- .doc_parse(file.path(tmptarget, 
-                  "missing_doc.R"))
-                doc_parsed <- .doc_merge(old = doc_parsed, new = missing_doc)
-                file.info("Writing merged docs.")
-                docfile <- file(file.path(target, paste0("documentation", 
-                  ".R")), open = "w")
-                for (i in seq_along(doc_parsed)) {
-                  writeLines(text = doc_parsed[[i]], con = docfile)
-                }
-            }
-            save_docs <- do.call(c, doc_parsed)
-            docfile <- file(file.path(pkg_dir, "R", pattern = paste0(pkg_description$Package, 
-                ".R")), open = "w")
-            for (i in seq_along(save_docs)) {
-                writeLines(text = save_docs[[i]], con = docfile)
-            }
-            close(docfile)
-            flog.info(paste0("Copied documentation to ", file.path(pkg_dir, 
-                "R", paste0(pkg_description$Package, ".R"))))
-            can_write <- TRUE
-        }
-        eval(expr = expression(rm(list = ls())), envir = dataenv)
-        .ppfiles_mkvignettes(dir = pkg_dir)
-    }
-    flog.info("Done")
-    return(can_write)
-}
-INFO [2018-08-01 11:19:51] Logging to /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpHrauiV/mtcars20/inst/extdata/Logfiles/processing.log
-INFO [2018-08-01 11:19:51] Processing data
-INFO [2018-08-01 11:19:51] Reading yaml configuration
-INFO [2018-08-01 11:19:51] Found /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpHrauiV/mtcars20/data-raw/subsetCars.Rmd
-INFO [2018-08-01 11:19:51] Processing 1 of 1: /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpHrauiV/mtcars20/data-raw/subsetCars.Rmd
-
-
+INFO [2018-08-01 11:55:05] Logging to /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmpu5EXeX/mtcars20/inst/extdata/Logfiles/processing.log
+INFO [2018-08-01 11:55:05] Processing data
+INFO [2018-08-01 11:55:05] Reading yaml configuration
+INFO [2018-08-01 11:55:05] Found /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmpu5EXeX/mtcars20/data-raw/subsetCars.Rmd
+INFO [2018-08-01 11:55:05] Processing 1 of 1: /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmpu5EXeX/mtcars20/data-raw/subsetCars.Rmd
 processing file: subsetCars.Rmd
-  |                                                                         |                                                                 |   0%  |                                                                         |.........                                                        |  14%
-  ordinary text without R code
-
-  |                                                                         |...................                                              |  29%
-label: unnamed-chunk-11 (with options) 
-List of 1
- $ include: logi FALSE
-
-  |                                                                         |............................                                     |  43%
-  ordinary text without R code
-
-  |                                                                         |.....................................                            |  57%
-label: cars
-  |                                                                         |..............................................                   |  71%
-  ordinary text without R code
-
-  |                                                                         |........................................................         |  86%
-label: unnamed-chunk-12
-  |                                                                         |.................................................................| 100%
-  ordinary text without R code
 output file: subsetCars.knit.md
-/usr/local/bin/pandoc +RTS -K512m -RTS subsetCars.utf8.md --to html4 --from markdown+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash+smart --output /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpHrauiV/mtcars20/inst/extdata/Logfiles/subsetCars.html --email-obfuscation none --self-contained --standalone --section-divs --template /Library/Frameworks/R.framework/Versions/3.5/Resources/library/rmarkdown/rmd/h/default.html --no-highlight --variable highlightjs=1 --variable 'theme:bootstrap' --include-in-header /var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//RtmpHrauiV/rmarkdown-str14e3f42f0272c.html --mathjax --variable 'mathjax-url:https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' 
+/usr/local/bin/pandoc +RTS -K512m -RTS subsetCars.utf8.md --to html4 --from markdown+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash+smart --output /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmpu5EXeX/mtcars20/inst/extdata/Logfiles/subsetCars.html --email-obfuscation none --self-contained --standalone --section-divs --template /Library/Frameworks/R.framework/Versions/3.5/Resources/library/rmarkdown/rmd/h/default.html --no-highlight --variable highlightjs=1 --variable 'theme:bootstrap' --include-in-header /var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//Rtmpu5EXeX/rmarkdown-str15eaf4caee58a.html --mathjax --variable 'mathjax-url:https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' 
 
-Output created: /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpHrauiV/mtcars20/inst/extdata/Logfiles/subsetCars.html
-INFO [2018-08-01 11:19:52] 1 required data objects created by subsetCars.Rmd
-INFO [2018-08-01 11:19:52] NEWS.md file not found, creating!
+Output created: /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmpu5EXeX/mtcars20/inst/extdata/Logfiles/subsetCars.html
+INFO [2018-08-01 11:55:05] 1 required data objects created by subsetCars.Rmd
+INFO [2018-08-01 11:55:05] NEWS.md file not found, creating!
 Enter a text description of the changes for the NEWS file.
-INFO [2018-08-01 11:19:57] Saving to data
-INFO [2018-08-01 11:19:57] Copied documentation to /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpHrauiV/mtcars20/R/mtcars20.R
+INFO [2018-08-01 11:55:05] Saving to data
+INFO [2018-08-01 11:55:05] Copied documentation to /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmpu5EXeX/mtcars20/R/mtcars20.R
 
 ✔ Creating 'vignettes/'
 ✔ Creating 'inst/doc/'
-INFO [2018-08-01 11:19:57] Done
-exiting from: DataPackageR(arg = package_path, deps = deps)
-INFO [2018-08-01 11:19:57] DataPackageR succeeded
-INFO [2018-08-01 11:19:57] Building documentation
+INFO [2018-08-01 11:55:05] Done
+INFO [2018-08-01 11:55:05] DataPackageR succeeded
+INFO [2018-08-01 11:55:05] Building documentation
 First time using roxygen2. Upgrading automatically...
-Updating roxygen version in /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpHrauiV/mtcars20/DESCRIPTION
+Updating roxygen version in /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmpu5EXeX/mtcars20/DESCRIPTION
 Writing NAMESPACE
 Loading mtcars20
 Writing mtcars20.Rd
 Writing cars_over_20.Rd
-INFO [2018-08-01 11:19:58] Building package
+INFO [2018-08-01 11:55:05] Building package
 '/Library/Frameworks/R.framework/Resources/bin/R' --no-site-file  \
   --no-environ --no-save --no-restore --quiet CMD build  \
-  '/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpHrauiV/mtcars20'  \
+  '/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmpu5EXeX/mtcars20'  \
   --no-resave-data --no-manual --no-build-vignettes 
 
 Reloading installed mtcars20
@@ -489,7 +225,7 @@ Next Steps
    - Set up a github repository for your pacakge. 
    - Add the github repository as a remote of your local package repository. 
    -  git push  your local repository to gitub. 
-[1] "/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpHrauiV/mtcars20_1.0.tar.gz"
+[1] "/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmpu5EXeX/mtcars20_1.0.tar.gz"
 ```
 
 ### Documenting your data set changes in NEWS.md
@@ -532,32 +268,33 @@ The pacakge source directory changes after the first build.
 ```
                          levelName
 1  mtcars20                       
-2   ¦--data                       
-3   ¦   °--cars_over_20.rda       
-4   ¦--data-raw                   
-5   ¦   ¦--documentation.R        
-6   ¦   °--subsetCars.Rmd         
-7   ¦--DATADIGEST                 
-8   ¦--datapackager.yml           
-9   ¦--DESCRIPTION                
-10  ¦--inst                       
-11  ¦   ¦--doc                    
-12  ¦   ¦   ¦--subsetCars.html    
-13  ¦   ¦   °--subsetCars.Rmd     
-14  ¦   °--extdata                
-15  ¦       °--Logfiles           
-16  ¦           ¦--processing.log 
-17  ¦           °--subsetCars.html
-18  ¦--man                        
-19  ¦   ¦--cars_over_20.Rd        
-20  ¦   °--mtcars20.Rd            
-21  ¦--NAMESPACE                  
-22  ¦--NEWS.md                    
-23  ¦--R                          
-24  ¦   °--mtcars20.R             
-25  ¦--Read-and-delete-me         
-26  °--vignettes                  
-27      °--subsetCars.Rmd         
+2   ¦--DATADIGEST                 
+3   ¦--DESCRIPTION                
+4   ¦--NAMESPACE                  
+5   ¦--NEWS.md                    
+6   ¦--R                          
+7   ¦   °--mtcars20.R             
+8   ¦--Read-and-delete-me         
+9   ¦--data                       
+10  ¦   °--cars_over_20.rda       
+11  ¦--data-raw                   
+12  ¦   ¦--documentation.R        
+13  ¦   ¦--subsetCars.R           
+14  ¦   °--subsetCars.Rmd         
+15  ¦--datapackager.yml           
+16  ¦--inst                       
+17  ¦   ¦--doc                    
+18  ¦   ¦   ¦--subsetCars.Rmd     
+19  ¦   ¦   °--subsetCars.html    
+20  ¦   °--extdata                
+21  ¦       °--Logfiles           
+22  ¦           ¦--processing.log 
+23  ¦           °--subsetCars.html
+24  ¦--man                        
+25  ¦   ¦--cars_over_20.Rd        
+26  ¦   °--mtcars20.Rd            
+27  °--vignettes                  
+28      °--subsetCars.Rmd         
 ```
 
 ### Update the autogenerated documentation. 
@@ -573,7 +310,7 @@ You should update this file to properly document your objects. Then rebuild the 
 
 ```r
 document(file.path(tempdir(),"mtcars20"))
-INFO [2018-08-01 11:20:00] Rebuilding data package documentation.
+INFO [2018-08-01 11:55:07] Rebuilding data package documentation.
 Loading mtcars20
 [1] TRUE
 ```
@@ -673,7 +410,7 @@ configuration:
   - object1
   - object2
   render_root:
-    tmp: '560209'
+    tmp: '13431'
 ```
 
 `config` is a newly constructed yaml configuration object. It can be written to the package directory:
@@ -736,7 +473,7 @@ configuration:
   - object1
   - object2
   render_root:
-    tmp: '560209'
+    tmp: '13431'
 ```
 
 Note that the modified configuration needs to be written back to the package source directory in order for the 
