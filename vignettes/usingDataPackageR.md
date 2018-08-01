@@ -35,7 +35,8 @@ The user needs to provide:
 
 - R or Rmd code files that do data processing.
 - A list of R object names created by those code files.
-
+- Optionally a path to a directory of raw data (will be copied into the package).
+- Optionally a list of additional code files that may be dependencies of your R scripts. 
 
 
 
@@ -60,7 +61,9 @@ DataPackageR::datapackage_skeleton(name = "mtcars20",
   force = TRUE,
   code_files = processing_code,
   r_object_names = "cars_over_20",
-  path = tempdir()
+  path = tempdir() 
+  #dependencies argument is empty
+  #raw_data_dir argument is empty.
   ) 
 Adding DataVersion string to DESCRIPTION
 Creating data and data-raw directories
@@ -110,7 +113,7 @@ configuration:
       enabled: yes
   objects: cars_over_20
   render_root:
-    tmp: '3720'
+    tmp: '787563'
 ```
 
 The two main pieces of information in the configuration are a list of the files to be processed and the data sets the package will store.
@@ -160,11 +163,11 @@ Once the skeleton framework is set up,
 # Run the preprocessing code to build cars_over_20
 # and reproducibly enclose it in a package.
 DataPackageR:::package_build(file.path(tempdir(),"mtcars20"))
-INFO [2018-08-01 10:49:23] Logging to /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpKYGfGp/mtcars20/inst/extdata/Logfiles/processing.log
-INFO [2018-08-01 10:49:23] Processing data
-INFO [2018-08-01 10:49:23] Reading yaml configuration
-INFO [2018-08-01 10:49:23] Found /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpKYGfGp/mtcars20/data-raw/subsetCars.Rmd
-INFO [2018-08-01 10:49:23] Processing 1 of 1: /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpKYGfGp/mtcars20/data-raw/subsetCars.Rmd
+INFO [2018-08-01 10:57:51] Logging to /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpKYGfGp/mtcars20/inst/extdata/Logfiles/processing.log
+INFO [2018-08-01 10:57:51] Processing data
+INFO [2018-08-01 10:57:51] Reading yaml configuration
+INFO [2018-08-01 10:57:51] Found /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpKYGfGp/mtcars20/data-raw/subsetCars.Rmd
+INFO [2018-08-01 10:57:51] Processing 1 of 1: /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpKYGfGp/mtcars20/data-raw/subsetCars.Rmd
 
 
 processing file: subsetCars.Rmd
@@ -189,27 +192,27 @@ label: unnamed-chunk-12
   |                                                                         |.................................................................| 100%
   ordinary text without R code
 output file: subsetCars.knit.md
-/usr/local/bin/pandoc +RTS -K512m -RTS subsetCars.utf8.md --to html4 --from markdown+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash+smart --output /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpKYGfGp/mtcars20/inst/extdata/Logfiles/subsetCars.html --email-obfuscation none --self-contained --standalone --section-divs --template /Library/Frameworks/R.framework/Versions/3.5/Resources/library/rmarkdown/rmd/h/default.html --no-highlight --variable highlightjs=1 --variable 'theme:bootstrap' --include-in-header /var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//RtmpKYGfGp/rmarkdown-str1464e7ede05da.html --mathjax --variable 'mathjax-url:https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' 
+/usr/local/bin/pandoc +RTS -K512m -RTS subsetCars.utf8.md --to html4 --from markdown+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash+smart --output /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpKYGfGp/mtcars20/inst/extdata/Logfiles/subsetCars.html --email-obfuscation none --self-contained --standalone --section-divs --template /Library/Frameworks/R.framework/Versions/3.5/Resources/library/rmarkdown/rmd/h/default.html --no-highlight --variable highlightjs=1 --variable 'theme:bootstrap' --include-in-header /var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//RtmpKYGfGp/rmarkdown-str1464e709802b4.html --mathjax --variable 'mathjax-url:https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' 
 
 Output created: /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpKYGfGp/mtcars20/inst/extdata/Logfiles/subsetCars.html
-INFO [2018-08-01 10:49:23] 1 required data objects created by subsetCars.Rmd
-INFO [2018-08-01 10:49:23] NEWS.md file not found, creating!
+INFO [2018-08-01 10:57:51] 1 required data objects created by subsetCars.Rmd
+INFO [2018-08-01 10:57:51] NEWS.md file not found, creating!
 Enter a text description of the changes for the NEWS file.
-INFO [2018-08-01 10:49:30] Saving to data
-INFO [2018-08-01 10:49:30] Copied documentation to /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpKYGfGp/mtcars20/R/mtcars20.R
+INFO [2018-08-01 10:58:08] Saving to data
+INFO [2018-08-01 10:58:08] Copied documentation to /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpKYGfGp/mtcars20/R/mtcars20.R
 
 ✔ Creating 'vignettes/'
 ✔ Creating 'inst/doc/'
-INFO [2018-08-01 10:49:30] Done
-INFO [2018-08-01 10:49:30] DataPackageR succeeded
-INFO [2018-08-01 10:49:30] Building documentation
+INFO [2018-08-01 10:58:08] Done
+INFO [2018-08-01 10:58:08] DataPackageR succeeded
+INFO [2018-08-01 10:58:08] Building documentation
 First time using roxygen2. Upgrading automatically...
 Updating roxygen version in /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpKYGfGp/mtcars20/DESCRIPTION
 Writing NAMESPACE
 Loading mtcars20
 Writing mtcars20.Rd
 Writing cars_over_20.Rd
-INFO [2018-08-01 10:49:31] Building package
+INFO [2018-08-01 10:58:08] Building package
 '/Library/Frameworks/R.framework/Resources/bin/R' --no-site-file  \
   --no-environ --no-save --no-restore --quiet CMD build  \
   '/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpKYGfGp/mtcars20'  \
@@ -311,7 +314,7 @@ You should update this file to properly document your objects. Then rebuild the 
 
 ```r
 document(file.path(tempdir(),"mtcars20"))
-INFO [2018-08-01 10:49:32] Rebuilding data package documentation.
+INFO [2018-08-01 10:58:09] Rebuilding data package documentation.
 Loading mtcars20
 [1] TRUE
 ```
@@ -411,7 +414,7 @@ configuration:
   - object1
   - object2
   render_root:
-    tmp: '251376'
+    tmp: '256621'
 ```
 
 `config` is a newly constructed yaml configuration object. It can be written to the package directory:
@@ -474,7 +477,7 @@ configuration:
   - object1
   - object2
   render_root:
-    tmp: '251376'
+    tmp: '256621'
 ```
 
 Note that the modified configuration needs to be written back to the package source directory in order for the 

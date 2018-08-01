@@ -41,7 +41,8 @@ The user needs to provide:
 
 - R or Rmd code files that do data processing.
 - A list of R object names created by those code files.
-
+- Optionally a path to a directory of raw data (will be copied into the package).
+- Optionally a list of additional code files that may be dependencies of your R scripts. 
 
 
 ```{r minimal_example, results='hide'}
@@ -65,7 +66,9 @@ DataPackageR::datapackage_skeleton(name = "mtcars20",
   force = TRUE,
   code_files = processing_code,
   r_object_names = "cars_over_20",
-  path = tempdir()
+  path = tempdir() 
+  #dependencies argument is empty
+  #raw_data_dir argument is empty.
   ) 
 ```
 
