@@ -159,7 +159,7 @@ If you have Rmd files, you can still include a yaml header, but it should be com
 data <- runif(100)
 ```
 
-This will be converted to an Rmd file with a proper yaml header, which will then be turned into a vignette and properly indexed in the built package.
+This will be converted to an Rmd file with a proper yaml header, which will then be turned into a vignette and indexed in the built package.
 
 
 ## Build the data package.
