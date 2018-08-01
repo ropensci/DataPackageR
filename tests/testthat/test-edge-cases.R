@@ -86,9 +86,9 @@ test_that("package built in different edge cases", {
   
   yml <- DataPackageR:::construct_yml_config("foo.Rmd")
   expect_true(yml_enable_compile(yml,
-                                 "foo.Rmd")[["configuration"]][["files"]][["foo.Rmd"]][["enabled"]])
+                                 "foo.Rmd")[["configuration"]][["files"]][["foo.Rmd"]][["enabled"]]) #nolint
   expect_false(yml_disable_compile(yml,
-                                   "foo.Rmd")[["configuration"]][["files"]][["foo.Rmd"]][["enabled"]])
+                  "foo.Rmd")[["configuration"]][["files"]][["foo.Rmd"]][["enabled"]]) #nolint
   expect_error(yml_write("/"))
   expect_equal(
     DataPackageR:::.combine_digests(
@@ -168,27 +168,17 @@ test_that("package built in different edge cases", {
   yml <- DataPackageR:::construct_yml_config("foo.Rmd", "foobar")
   expect_equal(length(names(yml[["configuration"]][["files"]])), 1)
   expect_equal(length(names(yml_remove_files(yml,
-                                             "foo.Rmd")[["configuration"]][["files"]])), 0)
+                 "foo.Rmd")[["configuration"]][["files"]])), 0)
   expect_error(DataPackageR::construct_yml_config("foo.Rmd",
                                                   render_root = "foobar"))
   expect_error(DataPackageR:::datapackage_skeleton(
     name = "foo",
-    path = tempdir(),
-    list = list()
+    path = tempdir()
   ))
   unlink(normalizePath(file.path(tempdir(),
                                  "foo"), winslash = "/"),
          recursive = TRUE,
          force = TRUE)
-  expect_error(
-    DataPackageR:::datapackage_skeleton(
-      name = "foo",
-      path = tempdir(),
-      r_object_names = "bar",
-      list = list(a = "b")
-    )
-  )
-  unlink("foo", recursive = TRUE, force = TRUE)
   expect_error(DataPackageR:::read_pkg_description("foo"))
   unlink(file.path(tempdir(), "foo"),
          force = TRUE,

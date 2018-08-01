@@ -336,6 +336,7 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
           pkg_description,
           new_data_digest
         )
+        .update_news_md(updated_version$new_data_digest[["DataVersion"]])
         pkg_description <- updated_version$pkg_description
         new_data_digest <- updated_version$new_data_digest
         can_write <- TRUE
@@ -377,6 +378,7 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
           pkg_description,
           new_data_digest
         )
+        .update_news_md(updated_version$new_data_digest[["DataVersion"]])
         pkg_description <- updated_version$pkg_description
         new_data_digest <- updated_version$new_data_digest
         can_write <- TRUE
@@ -392,6 +394,7 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
         do_documentation <- TRUE
       }
     } else {
+      .update_news_md(new_data_digest[["DataVersion"]])
       .save_data(new_data_digest,
         pkg_description,
         ls(dataenv),

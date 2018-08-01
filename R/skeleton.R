@@ -99,8 +99,9 @@ datapackage_skeleton <-
         if (length(x) != 0) {
           .codefile_validate(x)
           # copy them over
-          obj = match.arg(obj, c("code","dependencies"))
-          message(paste0(crayon::bold("Moving ",obj," into "), crayon::green("data-raw")))
+          obj <- match.arg(obj, c("code","dependencies"))
+          message(paste0(crayon::bold("Moving ",obj," into "),
+                         crayon::green("data-raw")))
           # purrr::map(x, function(y)
           for (y in x)
             file.copy(y, file.path(package_path, "data-raw"), overwrite = TRUE)
@@ -110,7 +111,8 @@ datapackage_skeleton <-
       .copy_data_to_inst_extdata <- function(x){
         if (length(x) != 0) {
           # copy them over
-          cat(crayon::bold("Moving raw data into"), crayon::green("inst/extdata"))
+          cat(crayon::bold("Moving raw data into"), 
+              crayon::green("inst/extdata"))
           file.copy(x, file.path(package_path, "inst/extdata"),
                     recursive = TRUE, overwrite = TRUE)
         }
