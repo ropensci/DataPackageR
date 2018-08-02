@@ -1,7 +1,8 @@
 context("build documentation")
 test_that("documentation is built via document()", {
   file <- system.file("extdata", "tests", "subsetCars.Rmd",
-                      package = "DataPackageR")
+    package = "DataPackageR"
+  )
   datapackage_skeleton(
     name = "subsetCars",
     path = tempdir(),
@@ -9,13 +10,23 @@ test_that("documentation is built via document()", {
     force = TRUE,
     r_object_names = "cars_over_20"
   )
-      package_build(
-        file.path(tempdir(), "subsetCars"))
-  expect_true(document(file.path(tempdir(),"subsetCars")))
-  docfile <- readLines(file.path(tempdir(),"subsetCars","data-raw","documentation.R"))
-  connection = file(file.path(tempdir(),"subsetCars","data-raw","documentation.R"), open = "w+")
-  writeLines(text = 
-  c(docfile,"
+  package_build(
+    file.path(tempdir(), "subsetCars")
+  )
+  expect_true(document(file.path(tempdir(), "subsetCars")))
+  docfile <- readLines(file.path(
+    tempdir(),
+    "subsetCars", "data-raw", "documentation.R"
+  ))
+  connection <- file(file.path(
+    tempdir(),
+    "subsetCars", "data-raw", "documentation.R"
+  ),
+  open = "w+"
+  )
+  writeLines(
+    text =
+      c(docfile, "
   #' Use roxygen to document a package.
   #'
   #' This is dummy documentation used to test markdown documentation
@@ -28,14 +39,18 @@ test_that("documentation is built via document()", {
   #' @md
   NULL
   "),
-  con = connection
+    con = connection
   )
   flush(connection)
   close(connection)
-  expect_output(document(file.path(tempdir(),"subsetCars")), "Writing testmarkdownroxygen.Rd")
+  expect_output(
+    document(file.path(tempdir(), "subsetCars")),
+    "Writing testmarkdownroxygen.Rd"
+  )
   v <- vignette(package = "subsetCars")
-  expect_equal(v$results[,"Item"],"subsetCars")
+  expect_equal(v$results[, "Item"], "subsetCars")
   unlink(file.path(tempdir(), "subsetCars"),
-         recursive = TRUE,
-         force = TRUE)
+    recursive = TRUE,
+    force = TRUE
+  )
 })

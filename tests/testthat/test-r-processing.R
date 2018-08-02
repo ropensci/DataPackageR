@@ -1,7 +1,8 @@
 context("R file script processing to vignette")
 test_that("R file processing works and creates vignettes", {
   file <- system.file("extdata", "tests", "rfileTest.R",
-                      package = "DataPackageR")
+    package = "DataPackageR"
+  )
   datapackage_skeleton(
     name = "rfiletest",
     path = tempdir(),
@@ -12,17 +13,22 @@ test_that("R file processing works and creates vignettes", {
   expect_equal(
     basename(
       package_build(
-        file.path(tempdir(), "rfiletest"))),
-    "rfiletest_1.0.tar.gz")
+        file.path(tempdir(), "rfiletest")
+      )
+    ),
+    "rfiletest_1.0.tar.gz"
+  )
   v <- vignette(package = "rfiletest")
-  expect_equal(v$results[,"Item"],"rfileTest")
-  
+  expect_equal(v$results[, "Item"], "rfileTest")
+
   unlink(file.path(tempdir(), "rfiletest"),
-         recursive = TRUE,
-         force = TRUE)
-  
+    recursive = TRUE,
+    force = TRUE
+  )
+
   file <- system.file("extdata", "tests", "rfileTest_noheader.R",
-                      package = "DataPackageR")
+    package = "DataPackageR"
+  )
   datapackage_skeleton(
     name = "rfiletest",
     path = tempdir(),
@@ -33,12 +39,15 @@ test_that("R file processing works and creates vignettes", {
   expect_equal(
     basename(
       package_build(
-        file.path(tempdir(), "rfiletest"))),
-    "rfiletest_1.0.tar.gz")
-  v <- vignette(package="rfiletest")
-  expect_equal(v$results[,"Item"],"rfileTest_noheader")
+        file.path(tempdir(), "rfiletest")
+      )
+    ),
+    "rfiletest_1.0.tar.gz"
+  )
+  v <- vignette(package = "rfiletest")
+  expect_equal(v$results[, "Item"], "rfileTest_noheader")
   unlink(file.path(tempdir(), "rfiletest"),
-         recursive = TRUE,
-         force = TRUE)
-  
+    recursive = TRUE,
+    force = TRUE
+  )
 })

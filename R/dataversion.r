@@ -31,17 +31,21 @@
 #'    data_version(pname)
 data_version <- function(pkg, lib.loc = NULL) {
   res <- suppressWarnings(utils::packageDescription(pkg,
-                                                    lib.loc = lib.loc,
-                                                    fields = "DataVersion"))
+    lib.loc = lib.loc,
+    fields = "DataVersion"
+  ))
   if (!is.na(res)) {
     package_version(res)
   } else {
     stop(gettextf(
-      paste0("package %s not found ",
-             "or has no DataVersion string"),
+      paste0(
+        "package %s not found ",
+        "or has no DataVersion string"
+      ),
       sQuote(pkg)
     ),
-    domain = NA)
+    domain = NA
+    )
   }
 }
 
@@ -105,25 +109,27 @@ dataVersion <- function(pkg, lib.loc = NULL) {
 #' assert_data_version(data_package_name = pname,version_string = "0.1.0",acceptable = "equal")
 assert_data_version <-
   function(data_package_name = NULL,
-           version_string = NULL,
-           acceptable = "equal") {
+             version_string = NULL,
+             acceptable = "equal") {
     acceptable <- match.arg(acceptable, c("equal", "equal_or_greater"))
     pkg_version <- data_version(pkg = data_package_name)
     required_version <- as.numeric_version(version_string)
     base <-
-      max(10, max(.find_base(pkg_version), 
-                  .find_base(required_version))) + 1
+      max(10, max(
+        .find_base(pkg_version),
+        .find_base(required_version)
+      )) + 1
     if ((acceptable == "equal_or_greater") &
-        (
-          .mk_version_numeric(pkg_version, base = base) >= 
+      (
+        .mk_version_numeric(pkg_version, base = base) >=
           .mk_version_numeric(required_version, base = base)
-        )) {
+      )) {
       invisible(TRUE)
     } else if ((acceptable == "equal") &
-               (
-                 .mk_version_numeric(pkg_version, base = base) == 
-                 .mk_version_numeric(required_version, base = base)
-               )) {
+      (
+        .mk_version_numeric(pkg_version, base = base) ==
+          .mk_version_numeric(required_version, base = base)
+      )) {
       invisible(TRUE)
     } else {
       stop(
@@ -142,14 +148,16 @@ assert_data_version <-
   }
 
 .find_base <- function(v) {
-  max(as.numeric(v[1, 1]), 
-      as.numeric(v[1, 2]), 
-      as.numeric(v[1, 3]))
+  max(
+    as.numeric(v[1, 1]),
+    as.numeric(v[1, 2]),
+    as.numeric(v[1, 3])
+  )
 }
 
 .mk_version_numeric <- function(x, base = 10) {
-  as.numeric(x[1, 1]) * base ^ 2 + 
-    as.numeric(x[1, 2]) * base ^ 1 + 
-    as.numeric(x[1, 3]) * base ^
-    0
+  as.numeric(x[1, 1]) * base^2 +
+    as.numeric(x[1, 2]) * base^1 +
+    as.numeric(x[1, 3]) * base^
+      0
 }

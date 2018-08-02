@@ -16,7 +16,7 @@ project_extdata_path(file = NULL)
 Get DataPackageR extdata path
 }
 \details{
-Returns the path to the data package extdata subdirectory, or 
+Returns the path to the data package extdata subdirectory, or
 constructs a path to a file in the extdata subdirectory from the
 file argument.
 }

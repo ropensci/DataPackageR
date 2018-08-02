@@ -194,7 +194,7 @@ yml_write <- function(config, path = NULL) {
 }
 
 
-.create_tmpdir_render_root <- function(sub=NULL) {
+.create_tmpdir_render_root <- function(sub = NULL) {
   if (is.null(sub)) {
     sub <- as.character(as.integer(stats::runif(1) * 1000000))
   }

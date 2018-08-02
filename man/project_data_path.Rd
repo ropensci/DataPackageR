@@ -16,7 +16,7 @@ project_data_path(file = NULL)
 Get DataPackageR data path
 }
 \details{
-Returns the path to the data package data subdirectory, or 
+Returns the path to the data package data subdirectory, or
 constructs a path to a file in the data subdirectory from the
 file argument.
 }

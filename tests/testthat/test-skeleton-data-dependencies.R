@@ -1,11 +1,14 @@
 context("skeleton")
 test_that("data, code, and dependencies are moved into place by skeleton", {
   file <- system.file("extdata", "tests", "extra.rmd",
-                      package = "DataPackageR")
-  ancillary <- system.file("extdata","tests","rfileTest.R",
-                           package = "DataPackageR")
+    package = "DataPackageR"
+  )
+  ancillary <- system.file("extdata", "tests", "rfileTest.R",
+    package = "DataPackageR"
+  )
   raw_data <- system.file("extdata", "tests", "raw_data",
-                      package = "DataPackageR")
+    package = "DataPackageR"
+  )
   expect_null(
     datapackage_skeleton(
       name = "datatest",
@@ -26,19 +29,10 @@ test_that("data, code, and dependencies are moved into place by skeleton", {
           "inst",
           "extdata",
           "raw_data",
-          "testdata.csv"),
-        winslash = "/")
+          "testdata.csv"
+        ),
+        winslash = "/"
       )
-    )
-  expect_true(
-    file.exists(
-      normalizePath(
-        file.path(
-          tempdir(),
-          "datatest",
-          "data-raw",
-          "extra.rmd"),
-        winslash = "/")
     )
   )
   expect_true(
@@ -48,11 +42,27 @@ test_that("data, code, and dependencies are moved into place by skeleton", {
           tempdir(),
           "datatest",
           "data-raw",
-          "rfileTest.R"),
-        winslash = "/")
+          "extra.rmd"
+        ),
+        winslash = "/"
+      )
+    )
+  )
+  expect_true(
+    file.exists(
+      normalizePath(
+        file.path(
+          tempdir(),
+          "datatest",
+          "data-raw",
+          "rfileTest.R"
+        ),
+        winslash = "/"
+      )
     )
   )
   unlink(file.path(tempdir(), "datatest"),
-         recursive = TRUE,
-         force = TRUE)
+    recursive = TRUE,
+    force = TRUE
+  )
 })

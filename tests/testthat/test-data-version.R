@@ -5,7 +5,8 @@ test_that("assert_data_version", {
   f <- file.path(f, "foo.Rmd")
   con <- file(f)
   writeLines("```{r}\n tbl = table(sample(1:10,1000,replace=TRUE)) \n```\n",
-             con = con)
+    con = con
+  )
   close(con)
   pname <- basename(tempfile())
   suppressWarnings(datapackage.skeleton(
@@ -16,7 +17,7 @@ test_that("assert_data_version", {
     code_files = f
   ))
   package_build(file.path(tempdir(), pname))
-  
+
   devtools::load_all(file.path(tempdir(), pname))
   suppressWarnings(expect_true(
     dataVersion(pkg = pname) == numeric_version("0.1.0")

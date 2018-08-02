@@ -92,7 +92,7 @@ package_build <- function(packageName = NULL,
   )
   # try to install and then reload the package in the current session
   if (install) {
-    install.packages(location,repos = NULL, type = "source")
+    install.packages(location, repos = NULL, type = "source")
     devtools::reload(package_path)
   }
   .next_steps()
@@ -100,17 +100,17 @@ package_build <- function(packageName = NULL,
 }
 
 .next_steps <- function() {
-  cat(crayon::green(crayon::bold("Next Steps")),"\n") #nolint
-  cat(crayon::white(crayon::yellow(crayon::bold("1. Update your package documentation.")),"\n")) #nolint
-  cat(crayon::white("   - Edit the documentation.R file in the package source", crayon::green("data-raw") ,"subdirectory and update the roxygen markup."),"\n") #nolint
-  cat(crayon::white("   - Rebuild the package documentation with ", crayon::red("document()"),"."),"\n") #nolint
-  cat(crayon::white(crayon::yellow(crayon::bold("2. Add your package to source control.")),"\n")) #nolint
-  cat(crayon::white("   - Call ", crayon::red("git init .") ," in the package source root directory."),"\n") #nolint
-  cat(crayon::white("   - ", crayon::red("git add") ," the package files."),"\n") #nolint
-  cat(crayon::white("   - ", crayon::red("git commit") ," your new package."),"\n") #nolint
-  cat(crayon::white("   - Set up a github repository for your pacakge."),"\n") #nolint
-  cat(crayon::white("   - Add the github repository as a remote of your local package repository."),"\n") #nolint
-  cat(crayon::white("   - ", crayon::red("git push") ," your local repository to gitub."),"\n") #nolint
+  cat(crayon::green(crayon::bold("Next Steps")), "\n") # nolint
+  cat(crayon::white(crayon::yellow(crayon::bold("1. Update your package documentation.")), "\n")) # nolint
+  cat(crayon::white("   - Edit the documentation.R file in the package source", crayon::green("data-raw"), "subdirectory and update the roxygen markup."), "\n") # nolint
+  cat(crayon::white("   - Rebuild the package documentation with ", crayon::red("document()"), "."), "\n") # nolint
+  cat(crayon::white(crayon::yellow(crayon::bold("2. Add your package to source control.")), "\n")) # nolint
+  cat(crayon::white("   - Call ", crayon::red("git init ."), " in the package source root directory."), "\n") # nolint
+  cat(crayon::white("   - ", crayon::red("git add"), " the package files."), "\n") # nolint
+  cat(crayon::white("   - ", crayon::red("git commit"), " your new package."), "\n") # nolint
+  cat(crayon::white("   - Set up a github repository for your pacakge."), "\n") # nolint
+  cat(crayon::white("   - Add the github repository as a remote of your local package repository."), "\n") # nolint
+  cat(crayon::white("   - ", crayon::red("git push"), " your local repository to gitub."), "\n") # nolint
 }
 #' These functions are no longer available.
 #'

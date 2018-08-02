@@ -2,9 +2,11 @@
 context("version string bump")
 test_that("manual bump version when data unchanged", {
   file <- system.file("extdata", "tests", "subsetCars.Rmd",
-                      package = "DataPackageR")
+    package = "DataPackageR"
+  )
   file2 <- system.file("extdata", "tests", "extra.rmd",
-                       package = "DataPackageR")
+    package = "DataPackageR"
+  )
   expect_null(
     datapackage_skeleton(
       name = "subsetCars",
@@ -20,6 +22,7 @@ test_that("manual bump version when data unchanged", {
   pkg$write()
   package_build(file.path(tempdir(), "subsetCars"))
   unlink(file.path(tempdir(), "subsetCars"),
-         recursive = TRUE,
-         force = TRUE)
+    recursive = TRUE,
+    force = TRUE
+  )
 })

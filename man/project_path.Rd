@@ -16,7 +16,7 @@ project_path(file = NULL)
 Get DataPackageR Project Root Path
 }
 \details{
-Returns the path to the data package project root, or 
+Returns the path to the data package project root, or
 constructs a path to a file in the project root from the
 file argument.
 }

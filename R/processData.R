@@ -108,7 +108,7 @@ NULL
 #' Meant to be called before R CMD build.
 #' @name DataPackageR
 #' @param arg \code{character} name of the package to build.
-#' @param deps \code{logical} should scripts pass data objects to each other (default=TRUE) 
+#' @param deps \code{logical} should scripts pass data objects to each other (default=TRUE)
 #' @return logical TRUE if succesful, FALSE, if not.
 #' @importFrom desc desc
 #' @importFrom rmarkdown render
@@ -132,7 +132,7 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
       stop("exiting", call. = FALSE)
     }
   } else {
-    logpath <- 
+    logpath <-
       normalizePath(
         file.path(pkg_dir, "inst/extdata"),
         winslash = "/"
@@ -234,7 +234,7 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
     )
     # The test for a valid DESCRIPTION here is no longer needed since
     # we use proj_set().
-    
+
     # check that we have at least one file
     # This is caught elsewhere
 
@@ -254,8 +254,9 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
       dataenv <- new.env(hash = TRUE, parent = .GlobalEnv)
       # assign ENVS into dataenv.
       # provide functions in the package to read from it (if deps = TRUE)
-      if(deps)
+      if (deps) {
         assign(x = "ENVS", value = ENVS, dataenv)
+      }
       flog.info(paste0(
         "Processing ", i, " of ",
         length(r_files), ": ", r_files[i],
@@ -265,24 +266,29 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
       ## First we spin then render if it's an R file
       flag <- FALSE
       .isRfile <- function(f) {
-        grepl("\\.r$",tolower(f))
+        grepl("\\.r$", tolower(f))
       }
       if (flag <- .isRfile(r_files[i])) {
-        knitr::spin(r_files[i], precious = TRUE,
-                    knit = FALSE)
-        r_files[i] <- paste0(tools::file_path_sans_ext(r_files[i]),".Rmd")
+        knitr::spin(r_files[i],
+          precious = TRUE,
+          knit = FALSE
+        )
+        r_files[i] <- paste0(tools::file_path_sans_ext(r_files[i]), ".Rmd")
         assert_that(file.exists(r_files[i]),
-                    msg = paste0("File: ",r_files[i]," does not exist!"))
+          msg = paste0("File: ", r_files[i], " does not exist!")
+        )
         lines <- readLines(r_files[i])
         # do we likely have a yaml header? If not, add one.
         if (lines[1] != "---") {
-          lines <- c("---",
-              paste0("title: ",basename(r_files[i])),
-              paste0("author: ", Sys.info()["user"]),
-              paste0("date: ", Sys.Date()),
-              "---",
-              "",
-              lines)
+          lines <- c(
+            "---",
+            paste0("title: ", basename(r_files[i])),
+            paste0("author: ", Sys.info()["user"]),
+            paste0("date: ", Sys.Date()),
+            "---",
+            "",
+            lines
+          )
           con <- file(r_files[i])
           writeLines(lines, con = con, sep = "\n")
           close(con)
@@ -609,72 +615,81 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
 
 #' Get DataPackageR Project Root Path
 #'
-#' @details Returns the path to the data package project root, or 
+#' @details Returns the path to the data package project root, or
 #' constructs a path to a file in the project root from the
 #' file argument.
 #' @return \code{character}
-#' @param file \code{character} or \code{NULL} (default). 
+#' @param file \code{character} or \code{NULL} (default).
 #' @export
 #'
 #' @examples
 #' project_path( file = "DESCRIPTION" )
-project_path <- function(file = NULL){
-  if (is.null(file))
+project_path <- function(file = NULL) {
+  if (is.null(file)) {
     return(usethis::proj_get())
-  else
-    return(normalizePath(file.path(usethis::proj_get(),file),winslash = "/"))
+  } else {
+    return(normalizePath(file.path(usethis::proj_get(), file), winslash = "/"))
+  }
 }
 
 
 #' Get DataPackageR extdata path
 #'
-#' @details Returns the path to the data package extdata subdirectory, or 
+#' @details Returns the path to the data package extdata subdirectory, or
 #' constructs a path to a file in the extdata subdirectory from the
 #' file argument.
 #' @return \code{character}
-#' @param file \code{character} or \code{NULL} (default). 
+#' @param file \code{character} or \code{NULL} (default).
 #' @export
 #'
 #' @examples
 #' project_extdata_path(file = "mydata.csv")
-project_extdata_path <- function( file = NULL ){
-  if (is.null(file)){
-    return(file.path(usethis::proj_get(),"inst","extdata"))
+project_extdata_path <- function(file = NULL) {
+  if (is.null(file)) {
+    return(file.path(usethis::proj_get(), "inst", "extdata"))
   } else {
     return(normalizePath(
-      file.path(usethis::proj_get(),
-                                   "inst","extdata",file),winslash = "/"))
+      file.path(
+        usethis::proj_get(),
+        "inst", "extdata", file
+      ),
+      winslash = "/"
+    ))
   }
 }
 
 #' Get DataPackageR data path
 #'
-#' @details Returns the path to the data package data subdirectory, or 
+#' @details Returns the path to the data package data subdirectory, or
 #' constructs a path to a file in the data subdirectory from the
 #' file argument.
 #' @return \code{character}
-#' @param file \code{character} or \code{NULL} (default). 
+#' @param file \code{character} or \code{NULL} (default).
 #' @export
 #'
 #' @examples
 #' project_data_path( file = "data.rda" )
-project_data_path <- function( file = NULL ){
+project_data_path <- function(file = NULL) {
   if (is.null(file)) {
-    return(file.path(usethis::proj_get(),"data"))
+    return(file.path(usethis::proj_get(), "data"))
   } else {
     return(normalizePath(
-      file.path(usethis::proj_get(),
-                                   "data",file),winslash = "/"))
+      file.path(
+        usethis::proj_get(),
+        "data", file
+      ),
+      winslash = "/"
+    ))
   }
 }
 
-#'@name document
-#'@rdname document
-#'@title Build documentation for a data package using DataPackageR.
-#'@param path \code{character} the path to the data package source root.
-#'@param install \code{logical} install and reload the package. (default TRUE)
-#'@export
-#'@examples
+#' @name document
+#' @rdname document
+#' @title Build documentation for a data package using DataPackageR.
+#' @param path \code{character} the path to the data package source root.
+#' @param install \code{logical} install and reload the package. (default TRUE)
+#' @export
+#' @examples
 #' # A simple Rmd file that creates one data object
 #' # named "tbl".
 #' f <- tempdir()
@@ -701,16 +716,20 @@ project_data_path <- function( file = NULL ){
 document <- function(path = ".", install = TRUE) {
   usethis::proj_set(path = path)
   path <- usethis::proj_get()
-  assert_that(file.exists(file.path(path,"data-raw","documentation.R")))
-  desc <- desc::desc(file.path(path,"DESCRIPTION"))
-  docfile <- paste0(desc$get("Package"),".R")
-  file.copy(from = file.path(path,"data-raw","documentation.R"),
-            to = file.path(path,"R",docfile),
-            overwrite = TRUE)
+  assert_that(file.exists(file.path(path, "data-raw", "documentation.R")))
+  desc <- desc::desc(file.path(path, "DESCRIPTION"))
+  docfile <- paste0(desc$get("Package"), ".R")
+  file.copy(
+    from = file.path(path, "data-raw", "documentation.R"),
+    to = file.path(path, "R", docfile),
+    overwrite = TRUE
+  )
   flog.info("Rebuilding data package documentation.")
-  devtools::document(pkg =  path)
-  location <- devtools::build(pkg = path, path = dirname(path), 
-                  vignettes = FALSE, quiet = TRUE)
+  devtools::document(pkg = path)
+  location <- devtools::build(
+    pkg = path, path = dirname(path),
+    vignettes = FALSE, quiet = TRUE
+  )
   if (install) {
     install.packages(location, repos = NULL, type = "source", quiet = TRUE)
     devtools::reload(path, quiet = TRUE)
