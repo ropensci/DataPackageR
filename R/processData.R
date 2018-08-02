@@ -708,7 +708,7 @@ document <- function(path = ".", install = TRUE) {
             to = file.path(path,"R",docfile),
             overwrite = TRUE)
   flog.info("Rebuilding data package documentation.")
-  roxygen2::roxygenise(package.dir = path)
+  devtools::document(pkg =  path)
   location <- devtools::build(pkg = path, path = dirname(path), 
                   vignettes = FALSE, quiet = TRUE)
   if (install) {

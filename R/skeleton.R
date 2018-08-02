@@ -55,6 +55,7 @@ datapackage_skeleton <-
     description$set("DataVersion" = "0.1.0")
     description$set("Version" = "1.0")
     description$set("Package" = name)
+    description$set("Roxygen" = "list(markdown = TRUE)")
     message("Adding DataVersion string to DESCRIPTION")
 
     description$write()
