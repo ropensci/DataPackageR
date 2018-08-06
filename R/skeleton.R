@@ -58,13 +58,14 @@ datapackage_skeleton <-
     description$set("Version" = "1.0")
     description$set("Package" = name)
     description$set("Roxygen" = "list(markdown = TRUE)")
-    message("Adding DataVersion string to DESCRIPTION")
-
     description$write()
-    message("Creating data and data-raw directories")
+    .done("Added DataVersion string to DESCRIPTION")
+    
     usethis::use_directory("data-raw")
     usethis::use_directory("data")
     usethis::use_directory("inst/extdata")
+    .done("Created data and data-raw directories")
+    
     con <-
       file(file.path(package_path, "Read-and-delete-me"), open = "w")
     writeLines(
@@ -95,7 +96,6 @@ datapackage_skeleton <-
     close(con)
 
     if (length(r_object_names) != 0) {
-      message("configuring yaml file")
       # Rather than copy, read in, modify (as needed), and write.
       # process the string
       .copy_files_to_data_raw <- function(x, obj = c("code", "dependencies")) {
@@ -103,26 +103,20 @@ datapackage_skeleton <-
           .codefile_validate(x)
           # copy them over
           obj <- match.arg(obj, c("code", "dependencies"))
-          message(paste0(
-            crayon::bold("Moving ", obj, " into "),
-            crayon::green("data-raw")
-          ))
-          # purrr::map(x, function(y)
-          for (y in x)
+          for (y in x){
             file.copy(y, file.path(package_path, "data-raw"), overwrite = TRUE)
+            .done("Copied ",obj," into data-raw")
+          }
         }
       }
 
       .copy_data_to_inst_extdata <- function(x) {
         if (length(x) != 0) {
           # copy them over
-          cat(
-            crayon::bold("Moving raw data into"),
-            crayon::green("inst/extdata")
-          )
           file.copy(x, file.path(package_path, "inst/extdata"),
             recursive = TRUE, overwrite = TRUE
           )
+          .done("Moved data into inst/extdata")
         }
       }
       .copy_files_to_data_raw(code_files, obj = "code")
@@ -131,6 +125,7 @@ datapackage_skeleton <-
 
       yml <- construct_yml_config(code = code_files, data = r_object_names)
       yaml::write_yaml(yml, file = file.path(package_path, "datapackager.yml"))
+      .done("configured yaml file")
     } else {
       stop("No r_object_names specified to move into the datapackage.")
     }
@@ -194,4 +189,20 @@ datapackage.skeleton <- function(name = NULL,
     code_files = code_files,
     r_object_names = r_object_names
   )
+}
+
+.done <- function (...) 
+{
+  .bullet(paste0(...), bullet = crayon::green("\u2714"))
+}
+
+.bullet <- function (lines, bullet) 
+{
+  lines <- paste0(bullet, " ", lines)
+  .cat_line(lines)
+}
+
+.cat_line <- function (...) 
+{
+  cat(..., "\n", sep = "")
 }
