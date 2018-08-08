@@ -15,6 +15,7 @@ Status](https://ci.appveyor.com/api/projects/status/5y004036wg2rh2dx?svg=true)](
 [![Project Status: Active – The project has reached a stable, usable
 state and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+[![](https://badges.ropensci.org/230_status.svg)](https://github.com/ropensci/onboarding/issues/230)
 [![DOI](https://zenodo.org/badge/29267435.svg)](https://doi.org/10.5281/zenodo.1292095)
 
   - [yaml configuration guide](vignettes/YAML_CONFIG.md)
@@ -221,13 +222,13 @@ package_build(packageName = file.path(tempdir(),"mtcars20"), install = TRUE)
 #> processing file: subsetCars.Rmd
 #> output file: subsetCars.knit.md
 #> 
-#> Output created: /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmp14Y8hW/mtcars20/inst/extdata/Logfiles/subsetCars.html
+#> Output created: /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpjuIgBP/mtcars20/inst/extdata/Logfiles/subsetCars.html
 #> First time using roxygen2. Upgrading automatically...
-#> Updating roxygen version in /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmp14Y8hW/mtcars20/DESCRIPTION
+#> Updating roxygen version in /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpjuIgBP/mtcars20/DESCRIPTION
 #> Loading mtcars20
 #> '/Library/Frameworks/R.framework/Resources/bin/R' --no-site-file  \
 #>   --no-environ --no-save --no-restore --quiet CMD build  \
-#>   '/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmp14Y8hW/mtcars20'  \
+#>   '/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpjuIgBP/mtcars20'  \
 #>   --no-resave-data --no-manual --no-build-vignettes
 #> 
 #> Reloading installed mtcars20

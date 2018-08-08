@@ -25,6 +25,7 @@ DataPackageR is used to reproducibly process raw data into packaged, analysis-re
  [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/5y004036wg2rh2dx?svg=true
 )](https://ci.appveyor.com/project/gfinak/DataPackageR)
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+[![](https://badges.ropensci.org/230_status.svg)](https://github.com/ropensci/onboarding/issues/230)
 [![DOI](https://zenodo.org/badge/29267435.svg)](https://doi.org/10.5281/zenodo.1292095)
 
 - [yaml configuration guide](vignettes/YAML_CONFIG.md)
