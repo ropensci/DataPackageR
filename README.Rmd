@@ -20,9 +20,9 @@ knitr::opts_chunk$set(
 
 DataPackageR is used to reproducibly process raw data into packaged, analysis-ready data sets.
 
-[![Build Status](https://travis-ci.org/RGLab/DataPackageR.svg?branch=master)](https://travis-ci.org/RGLab/DataPackageR)
- [![Coverage status](https://codecov.io/gh/RGLab/DataPackageR/branch/master/graph/badge.svg)](https://codecov.io/github/RGLab/DataPackageR?branch=master)
- [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/RGLab/DataPackageR?branch=master&svg=true)](https://ci.appveyor.com/project/RGLab/DataPackageR)
+[![Build Status](https://travis-ci.org/ropensci/DataPackageR.svg?branch=master)](https://travis-ci.org/ropensci/DataPackageR)
+ [![Coverage status](https://codecov.io/gh/ropensci/DataPackageR/branch/master/graph/badge.svg)](https://codecov.io/github/ropensci/DataPackageR?branch=master)
+ [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/ropensci/DataPackageR?branch=master&svg=true)](https://ci.appveyor.com/project/RGLab/DataPackageR)
 [![DOI](https://zenodo.org/badge/29267435.svg)](https://doi.org/10.5281/zenodo.1292095)
 
 - [yaml configuration guide](vignettes/YAML_CONFIG.md)
