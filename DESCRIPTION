@@ -3,7 +3,9 @@ Type: Package
 Title: Construct Reproducible Analytic Data Sets as R Packages
 Authors@R:
     c(person(given = "Greg Finak", role=c("aut","cre","cph"), email="gfinak@fredhutch.org"),
-      person(given = "Paul Obrecht", role=c("ctb")))
+      person(given = "Paul Obrecht", role=c("ctb")),
+      person("Kara", "Woo", role = "rev",
+      comment = "Kara reviewed the package for ropensci, see <https://github.com/ropensci/onboarding/issues/230>"))
 Version: 0.15
 Description: Construct reproducible analytic data sets as R packages. 
 License: MIT + file LICENSE
