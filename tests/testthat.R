@@ -1,4 +1,5 @@
 library(testthat)
 library(DataPackageR)
-
+options("DataPackageR_interact" = FALSE)
 test_check("DataPackageR")
+options("DataPackageR_interact" = interactive())

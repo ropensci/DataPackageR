@@ -1,5 +1,6 @@
 
-# function .dog_generate() automates the creation of a basic roxygen template for the package and each object in objects_to_keep
+
+# function .doc_autogen() automates the creation of a basic roxygen template for the package and each object in objects_to_keep
 # arguments are pname and ds2kp, normally defined in datasets.R
 # pname is name of package, ds2kp is list of objects to save in data package
 .doc_autogen <- function(pname, ds2kp, env, path, name = "documentation.R") {
@@ -92,3 +93,4 @@
   }
   close(con)
 }
+
