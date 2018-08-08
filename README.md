@@ -11,7 +11,7 @@ Status](https://travis-ci.org/ropensci/DataPackageR.svg?branch=master)](https://
 [![Coverage
 status](https://codecov.io/gh/ropensci/DataPackageR/branch/master/graph/badge.svg)](https://codecov.io/github/ropensci/DataPackageR?branch=master)
 [![AppVeyor Build
-Status](https://ci.appveyor.com/api/projects/status/github/ropensci/DataPackageR?branch=master&svg=true)](https://ci.appveyor.com/project/gfinak/DataPackageR)
+Status](https://ci.appveyor.com/api/projects/status/5y004036wg2rh2dx?svg=true)](https://ci.appveyor.com/project/gfinak/DataPackageR)
 [![Project Status: Active – The project has reached a stable, usable
 state and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
@@ -221,13 +221,13 @@ package_build(packageName = file.path(tempdir(),"mtcars20"), install = TRUE)
 #> processing file: subsetCars.Rmd
 #> output file: subsetCars.knit.md
 #> 
-#> Output created: /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpGhQpfY/mtcars20/inst/extdata/Logfiles/subsetCars.html
+#> Output created: /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpYY2Dgt/mtcars20/inst/extdata/Logfiles/subsetCars.html
 #> First time using roxygen2. Upgrading automatically...
-#> Updating roxygen version in /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpGhQpfY/mtcars20/DESCRIPTION
+#> Updating roxygen version in /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpYY2Dgt/mtcars20/DESCRIPTION
 #> Loading mtcars20
 #> '/Library/Frameworks/R.framework/Resources/bin/R' --no-site-file  \
 #>   --no-environ --no-save --no-restore --quiet CMD build  \
-#>   '/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpGhQpfY/mtcars20'  \
+#>   '/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpYY2Dgt/mtcars20'  \
 #>   --no-resave-data --no-manual --no-build-vignettes
 #> 
 #> Reloading installed mtcars20
