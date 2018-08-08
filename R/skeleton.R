@@ -101,7 +101,7 @@ datapackage_skeleton <-
     )
     close(con)
 
-    if (length(r_object_names) != 0) {
+    
       # Rather than copy, read in, modify (as needed), and write.
       # process the string
       .copy_files_to_data_raw <- function(x, obj = c("code", "dependencies")) {
@@ -132,9 +132,7 @@ datapackage_skeleton <-
       yml <- construct_yml_config(code = code_files, data = r_object_names)
       yaml::write_yaml(yml, file = file.path(package_path, "datapackager.yml"))
       .done("configured yaml file")
-    } else {
-      stop("No r_object_names specified to move into the datapackage.")
-    }
+    
 
     oldrdfiles <-
       list.files(
