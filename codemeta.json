@@ -20,27 +20,27 @@
   "runtimePlatform": "R version 3.5.0 (2018-04-23)",
   "author": [
     {
-      "@type": "Organization",
+      "@type": "Person",
       "name": "Greg Finak",
       "email": "gfinak@fredhutch.org"
     }
   ],
   "contributor": [
     {
-      "@type": "Organization",
+      "@type": "Person",
       "name": "Paul Obrecht"
     }
   ],
   "copyrightHolder": [
     {
-      "@type": "Organization",
+      "@type": "Person",
       "name": "Greg Finak",
       "email": "gfinak@fredhutch.org"
     }
   ],
   "maintainer": [
     {
-      "@type": "Organization",
+      "@type": "Person",
       "name": "Greg Finak",
       "email": "gfinak@fredhutch.org"
     }
@@ -268,7 +268,7 @@
   ],
   "releaseNotes": "https://github.com/ropensci/DataPackageR/blob/master/NEWS.md",
   "readme": "https://github.com/ropensci/DataPackageR/blob/master/README.md",
-  "fileSize": "303.265KB",
+  "fileSize": "303.414KB",
   "contIntegration": [
     "https://travis-ci.org/ropensci/DataPackageR",
     "https://codecov.io/github/ropensci/DataPackageR?branch=master",
