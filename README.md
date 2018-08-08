@@ -158,7 +158,8 @@ complementary problems:
     
     A document from ropensci describing using an R package as a research
     compendium. Based on ideas originally introduced by Robert Gentleman
-    and Duncan Temple Lang (Gentleman and Lang (2004))
+    and Duncan Temple Lang (Gentleman and Lang
+    (2004)<!--@Gentleman2004-oj-->)
 
   - **template** [github repo](https://github.com/ropensci/rrrpkg)
     
@@ -203,10 +204,6 @@ datapackage_skeleton(
   code_files = processing_code, 
   r_object_names = "cars_over_20", 
   path = tempdir()) 
-#> Adding DataVersion string to DESCRIPTION
-#> Creating data and data-raw directories
-#> configuring yaml file
-#> Moving  code  into data-raw
 
 # 3. Run the preprocessing code to build the cars_over_20 data set 
 # and reproducibly enclose it in the mtcars20 package.
@@ -221,13 +218,13 @@ package_build(packageName = file.path(tempdir(),"mtcars20"), install = TRUE)
 #> processing file: subsetCars.Rmd
 #> output file: subsetCars.knit.md
 #> 
-#> Output created: /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmpej6sQX/mtcars20/inst/extdata/Logfiles/subsetCars.html
+#> Output created: /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmp859r2r/mtcars20/inst/extdata/Logfiles/subsetCars.html
 #> First time using roxygen2. Upgrading automatically...
-#> Updating roxygen version in /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmpej6sQX/mtcars20/DESCRIPTION
+#> Updating roxygen version in /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmp859r2r/mtcars20/DESCRIPTION
 #> Loading mtcars20
 #> '/Library/Frameworks/R.framework/Resources/bin/R' --no-site-file  \
 #>   --no-environ --no-save --no-restore --quiet CMD build  \
-#>   '/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmpej6sQX/mtcars20'  \
+#>   '/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmp859r2r/mtcars20'  \
 #>   --no-resave-data --no-manual --no-build-vignettes
 #> 
 #> Reloading installed mtcars20
@@ -237,6 +234,7 @@ package_build(packageName = file.path(tempdir(),"mtcars20"), install = TRUE)
 
 # 4. Rebuild the documentation.
 document(file.path(tempdir(),"mtcars20"), install = TRUE)
+#> Updating mtcars20 documentation
 #> Loading mtcars20
 
 # Let's use the package we just created.
@@ -294,9 +292,9 @@ DataPackageR::project_data_path()
 
 ## Preprint and publication. <a id = "publication"></a>
 
-The publication describing the package, Finak et al. (2018), is now
-available at [Gates Open
-Research](https://gatesopenresearch.org/articles/2-31/v1) .
+The publication describing the package, (Finak *et* *al.,*
+2018)<!--@10.12688/gatesopenres.12832.2-->, is now available at [Gates
+Open Research](https://gatesopenresearch.org/articles/2-31/v1) .
 
 The preprint is on [biorxiv](https://doi.org/10.1101/342907).
 
@@ -306,25 +304,11 @@ Please note that this project is released with a [Contributor Code of
 Conduct](CODE_OF_CONDUCT.md). By participating in this project you agree
 to abide by its terms.
 
-# References
-
-<div id="refs" class="references">
-
-<div id="ref-Finak2018-tu">
-
-Finak, Greg, Bryan Mayer, William Fulp, Paul Obrecht, Alicia Sato, Eva
-Chung, Drienna Holman, and Raphael Gottardo. 2018. “DataPackageR:
-Reproducible Data Preprocessing, Standardization and Sharing Using
-R/Bioconductor for Collaborative Data Analysis.” *bioRxiv*.
-
-</div>
-
-<div id="ref-Gentleman2004-oj">
+### References
 
 Gentleman, Robert, and Duncan Temple Lang. 2004. “Statistical Analyses
-and Reproducible Research.” *Bioconductor Project Working Papers*,
-Bioconductor project working papers,. bepress.
+and Reproducible Research.” Bioconductor Project Working Papers,
+Bioconductor project working papers,.
+bepress.
 
-</div>
-
-</div>
+[![ropensci\_footer](https://ropensci.org/public_images/ropensci_footer.png)](https://ropensci.org)
