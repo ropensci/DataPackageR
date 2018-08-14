@@ -1,5 +1,5 @@
 ## Test environments
-* local OS X install, R 3.5.0
+* local OS X install (x86_64-apple-darwin16.7.0), R 3.6.0  (2018-08-14 r75143)
 * ubuntu  14.04.05 LTS (on travis-ci) R 3.5.0
 * ubuntu  14.04.05 LTS (on travis-ci) R Under development (unstable) (2018-08-08 r75087)
 * Windows Server 2012 R2 x64 (build 9600) (under Appveyor) R 3.5.1 Patched (2018-08-06 r75070)
