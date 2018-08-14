@@ -2,7 +2,7 @@
 % Please edit documentation in R/build.R
 \name{package_build}
 \alias{package_build}
-\title{Preprocess, document and build a data package}
+\title{Pre-process, document and build a data package}
 \usage{
 package_build(packageName = NULL, vignettes = FALSE, log = INFO,
   deps = TRUE, install = TRUE)

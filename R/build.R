@@ -1,6 +1,6 @@
 
 
-#' Preprocess, document and build a data package
+#' Pre-process, document and build a data package
 #'
 #' Combines the preprocessing, documentation, and build steps into one.
 #'

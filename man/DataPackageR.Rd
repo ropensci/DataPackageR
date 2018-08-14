@@ -12,7 +12,7 @@ DataPackageR(arg = NULL, deps = TRUE)
 \item{deps}{\code{logical} should scripts pass data objects to each other (default=TRUE)}
 }
 \value{
-logical TRUE if succesful, FALSE, if not.
+logical TRUE if successful, FALSE, if not.
 }
 \description{
 Assumes .R files in 'data-raw' generate rda files to be stored in 'data'.

@@ -21,7 +21,7 @@
 #' @name datapackage_skeleton
 #' @param name  \code{character} name of the package to create.
 #' @rdname datapackage_skeleton
-#' @param path A \code{character} path where the pacakge is located. See \code{\link[utils]{package.skeleton}}
+#' @param path A \code{character} path where the package is located. See \code{\link[utils]{package.skeleton}}
 #' @param force \code{logical} Force the package skeleton to be recreated even if it exists. see \code{\link[utils]{package.skeleton}}
 #' @param code_files Optional \code{character} vector of paths to Rmd files that process raw data
 #' into R objects.

@@ -3,7 +3,7 @@
 
 #' Get the DataVersion for a package
 #'
-#' Retreives the DataVersion of a package if available
+#' Retrieves the DataVersion of a package if available
 #' @param pkg \code{character} the package name
 #' @param lib.loc \code{character} path to library location.
 #' @seealso \code{\link[utils]{packageVersion}}

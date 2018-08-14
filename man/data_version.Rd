@@ -15,7 +15,7 @@ dataVersion(pkg, lib.loc = NULL)
 \item{lib.loc}{\code{character} path to library location.}
 }
 \description{
-Retreives the DataVersion of a package if available
+Retrieves the DataVersion of a package if available
 }
 \note{
 \code{dataVersion()} has been renamed to \code{data_version()}

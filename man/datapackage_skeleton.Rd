@@ -16,7 +16,7 @@ datapackage.skeleton(name = NULL, list = character(),
 \arguments{
 \item{name}{\code{character} name of the package to create.}
 
-\item{path}{A \code{character} path where the pacakge is located. See \code{\link[utils]{package.skeleton}}}
+\item{path}{A \code{character} path where the package is located. See \code{\link[utils]{package.skeleton}}}
 
 \item{force}{\code{logical} Force the package skeleton to be recreated even if it exists. see \code{\link[utils]{package.skeleton}}}
 
