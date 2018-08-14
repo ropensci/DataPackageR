@@ -16,6 +16,14 @@ Maintainer: 'Greg Finak <gfinak@fredhutch.org>'
 
 New submission
 
+Possibly mis-spelled words in DESCRIPTION:
+  CMD (15:41)
+  github (22:25)
+  reproducibility (23:29)
+
+The above is a false positive.
+
+
 ## Downstream dependencies
 
 The package has no reverse dependencies.

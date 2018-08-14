@@ -13,7 +13,7 @@ Description: This package helps construct R data packages in a
   reproducible manner. Potentially time consuming processing of 
   raw data sets into analysis ready data sets is done in a reproducible 
   manner and decoupled from the usual R CMD build process so that
-  data sets can be processed into R objects in the data pacakge and 
+  data sets can be processed into R objects in the data package and 
   the data package can then be shared, built, and installed by others
   without the need to repeat computationally costly data processing.
   The package maintains data provenance by turning the data processing

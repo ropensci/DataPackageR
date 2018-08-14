@@ -5,7 +5,7 @@
   ],
   "@type": "SoftwareSourceCode",
   "identifier": "DataPackageR",
-  "description": "This package helps construct R data packages in a \n  reproducible manner. Potentially time consuming processing of \n  raw data sets into analysis ready data sets is done in a reproducible \n  manner and decoupled from the usual R CMD build process so that\n  data sets can be processed into R objects in the data pacakge and \n  the data package can then be shared, built, and installed by others\n  without the need to repeat computationally costly data processing.\n  The package maintains data provenance by turning the data processing\n  scripts into package vignettes, as well as enforcing documentation \n  and version checking of included data objects. Data packages can be\n  version controlled in github, and used to share data for manuscripts,\n  collaboration and general reproducibility.",
+  "description": "This package helps construct R data packages in a \n  reproducible manner. Potentially time consuming processing of \n  raw data sets into analysis ready data sets is done in a reproducible \n  manner and decoupled from the usual R CMD build process so that\n  data sets can be processed into R objects in the data package and \n  the data package can then be shared, built, and installed by others\n  without the need to repeat computationally costly data processing.\n  The package maintains data provenance by turning the data processing\n  scripts into package vignettes, as well as enforcing documentation \n  and version checking of included data objects. Data packages can be\n  version controlled in github, and used to share data for manuscripts,\n  collaboration and general reproducibility.",
   "name": "DataPackageR: Construct Reproducible Analytic Data Sets as R Packages",
   "codeRepository": "https://github.com/ropensci/DataPackageR",
   "issueTracker": "https://github.com/ropensci/DataPackageR/issues",
@@ -268,7 +268,7 @@
   ],
   "releaseNotes": "https://github.com/ropensci/DataPackageR/blob/master/NEWS.md",
   "readme": "https://github.com/ropensci/DataPackageR/blob/master/README.md",
-  "fileSize": "303.517KB",
+  "fileSize": "303.512KB",
   "contIntegration": [
     "https://travis-ci.org/ropensci/DataPackageR",
     "https://codecov.io/github/ropensci/DataPackageR?branch=master",
