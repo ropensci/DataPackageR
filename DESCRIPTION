@@ -8,8 +8,19 @@ Authors@R:
       comment = "Kara reviewed the package for ropensci, see <https://github.com/ropensci/onboarding/issues/230>"),
       person("William", "Landau", role = "rev",
       comment = "William reviewed the package for ropensci, see <https://github.com/ropensci/onboarding/issues/230>"))
-Version: 0.15
-Description: Construct reproducible analytic data sets as R packages. 
+Version: 0.15.0
+Description: This package helps construct R data packages in a 
+  reproducible manner. Potentially time consuming processing of 
+  raw data sets into analysis ready data sets is done in a reproducible 
+  manner and decoupled from the usual R CMD build process so that
+  data sets can be processed into R objects in the data pacakge and 
+  the data package can then be shared, built, and installed by others
+  without the need to repeat computationally costly data processing.
+  The package maintains data provenance by turning the data processing
+  scripts into package vignettes, as well as enforcing documentation 
+  and version checking of included data objects. Data packages can be
+  version controlled in github, and used to share data for manuscripts,
+  collaboration and general reproducibility.
 License: MIT + file LICENSE
 Depends: R (>= 3.5.0)
 Imports:
@@ -35,5 +46,5 @@ Suggests:
     testthat,
     covr,
     data.tree,
-URL: https://github.com/RGLab/DataPackageR
-BugReports: https://github.com/RGLab/DataPackageR/issues
+URL: https://github.com/ropensci/DataPackageR
+BugReports: https://github.com/ropensci/DataPackageR/issues
