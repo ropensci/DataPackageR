@@ -6,3 +6,4 @@ preprocessData.Rproj
 DataPackageR.Rproj
 codecov.yml
 .travis.yml
+/revdep/.cache.rds

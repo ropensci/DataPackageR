@@ -8,7 +8,8 @@ README.html
 ^\.travis\.yml$
 ^CODE_OF_CONDUCT\.md$
 ^appveyor\.yml$
-NEWS.md
 bibliography.bib
 ^codemeta\.json$
 ^\.github$
+cran-comments.md
+^revdep$

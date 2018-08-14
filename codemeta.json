@@ -7,10 +7,10 @@
   "identifier": "DataPackageR",
   "description": "Construct reproducible analytic data sets as R packages. ",
   "name": "DataPackageR: Construct Reproducible Analytic Data Sets as R Packages",
-  "codeRepository": "https://github.com/RGLab/DataPackageR",
-  "issueTracker": "https://github.com/RGLab/DataPackageR/issues",
+  "codeRepository": "https://github.com/ropensci/DataPackageR",
+  "issueTracker": "https://github.com/ropensci/DataPackageR/issues",
   "license": "https://spdx.org/licenses/MIT",
-  "version": "0.15",
+  "version": "0.15.0",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
@@ -20,27 +20,27 @@
   "runtimePlatform": "R version 3.5.0 (2018-04-23)",
   "author": [
     {
-      "@type": "Person",
+      "@type": "Organization",
       "name": "Greg Finak",
       "email": "gfinak@fredhutch.org"
     }
   ],
   "contributor": [
     {
-      "@type": "Person",
+      "@type": "Organization",
       "name": "Paul Obrecht"
     }
   ],
   "copyrightHolder": [
     {
-      "@type": "Person",
+      "@type": "Organization",
       "name": "Greg Finak",
       "email": "gfinak@fredhutch.org"
     }
   ],
   "maintainer": [
     {
-      "@type": "Person",
+      "@type": "Organization",
       "name": "Greg Finak",
       "email": "gfinak@fredhutch.org"
     }
@@ -268,10 +268,16 @@
   ],
   "releaseNotes": "https://github.com/ropensci/DataPackageR/blob/master/NEWS.md",
   "readme": "https://github.com/ropensci/DataPackageR/blob/master/README.md",
-  "fileSize": "303.414KB",
+  "fileSize": "303.269KB",
   "contIntegration": [
     "https://travis-ci.org/ropensci/DataPackageR",
     "https://codecov.io/github/ropensci/DataPackageR?branch=master",
     "https://ci.appveyor.com/project/RGLab/DataPackageR"
-  ]
+  ],
+  "developmentStatus": "https://www.repostatus.org/#active",
+  "review": {
+    "@type": "Review",
+    "url": "https://github.com/ropensci/onboarding/issues/230",
+    "provider": "http://ropensci.org"
+  }
 }

@@ -8,7 +8,7 @@ Authors@R:
       comment = "Kara reviewed the package for ropensci, see <https://github.com/ropensci/onboarding/issues/230>"),
       person("William", "Landau", role = "rev",
       comment = "William reviewed the package for ropensci, see <https://github.com/ropensci/onboarding/issues/230>"))
-Version: 0.15
+Version: 0.15.0
 Description: Construct reproducible analytic data sets as R packages. 
 License: MIT + file LICENSE
 Depends: R (>= 3.5.0)
@@ -35,5 +35,5 @@ Suggests:
     testthat,
     covr,
     data.tree,
-URL: https://github.com/RGLab/DataPackageR
-BugReports: https://github.com/RGLab/DataPackageR/issues
+URL: https://github.com/ropensci/DataPackageR
+BugReports: https://github.com/ropensci/DataPackageR/issues
