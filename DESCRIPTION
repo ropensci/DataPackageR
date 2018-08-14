@@ -45,6 +45,6 @@ Encoding: UTF-8
 Suggests:
     testthat,
     covr,
-    data.tree,
+    data.tree
 URL: https://github.com/ropensci/DataPackageR
 BugReports: https://github.com/ropensci/DataPackageR/issues
