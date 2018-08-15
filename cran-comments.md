@@ -1,3 +1,9 @@
+## Resubmission
+This is a resubmission. In this version I have:
+
+* Changed the package description so that it does not start with the package name, "This package", or other. It now begins: "A framework for ...", as seen in other packages.
+
+
 ## Test environments
 * local OS X install (x86_64-apple-darwin16.7.0), R 3.6.0  (2018-08-14 r75143)
 * ubuntu  14.04.05 LTS (on travis-ci) R 3.5.0

@@ -8,8 +8,8 @@ Authors@R:
       comment = "Kara reviewed the package for ropensci, see <https://github.com/ropensci/onboarding/issues/230>"),
       person("William", "Landau", role = "rev",
       comment = "William reviewed the package for ropensci, see <https://github.com/ropensci/onboarding/issues/230>"))
-Version: 0.15.0
-Description: This package helps construct R data packages in a 
+Version: 0.15.1
+Description: A framework to help construct R data packages in a 
   reproducible manner. Potentially time consuming processing of 
   raw data sets into analysis ready data sets is done in a reproducible 
   manner and decoupled from the usual R CMD build process so that
