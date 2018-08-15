@@ -20,7 +20,7 @@ Build documentation for a data package using DataPackageR.
 f <- tempdir()
 f <- file.path(f,"foo.Rmd")
 con <- file(f)
-writeLines("```{r}\\n tbl = table(sample(1:10,1000,replace=TRUE)) \\n```\\n",con=con)
+writeLines("```{r}\\n tbl = table(sample(1:10,100,replace=TRUE)) \\n```\\n",con=con)
 close(con)
 
 # construct a data package skeleton named "MyDataPackage" and pass
@@ -36,6 +36,6 @@ datapackage_skeleton(name=pname,
 
 # call build_package to run the "foo.Rmd" processing and
 # build a data package.
-package_build(file.path(tempdir(), pname))
-document(path = file.path(tempdir(), pname))
+package_build(file.path(tempdir(), pname), install = FALSE)
+document(path = file.path(tempdir(), pname), install=FALSE)
 }
