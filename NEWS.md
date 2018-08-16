@@ -1,3 +1,9 @@
+# DataPackageR 0.15.1.9000
+* Development version
+
+# DataPackageR 0.15.1
+- Fix CRAN notes.
+
 # DataPackageR 0.15.0
 - Prepare for CRAN submission.
 

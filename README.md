@@ -4,8 +4,10 @@
 # DataPackageR
 
 DataPackageR is used to reproducibly process raw data into packaged,
-analysis-ready data sets.
+analysis-ready data
+sets.
 
+[![CRAN](https://www.r-pkg.org/badges/version/DataPackageR)](https://cran.r-project.org/web/packages/DataPackageR/index.html)
 [![Build
 Status](https://travis-ci.org/ropensci/DataPackageR.svg?branch=master)](https://travis-ci.org/ropensci/DataPackageR)
 [![Coverage
@@ -222,13 +224,13 @@ package_build(packageName = file.path(tempdir(),"mtcars20"), install = TRUE)
 #> processing file: subsetCars.Rmd
 #> output file: subsetCars.knit.md
 #> 
-#> Output created: /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpjuIgBP/mtcars20/inst/extdata/Logfiles/subsetCars.html
+#> Output created: /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmppnRs3E/mtcars20/inst/extdata/Logfiles/subsetCars.html
 #> First time using roxygen2. Upgrading automatically...
-#> Updating roxygen version in /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpjuIgBP/mtcars20/DESCRIPTION
+#> Updating roxygen version in /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmppnRs3E/mtcars20/DESCRIPTION
 #> Loading mtcars20
 #> '/Library/Frameworks/R.framework/Resources/bin/R' --no-site-file  \
 #>   --no-environ --no-save --no-restore --quiet CMD build  \
-#>   '/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpjuIgBP/mtcars20'  \
+#>   '/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmppnRs3E/mtcars20'  \
 #>   --no-resave-data --no-manual --no-build-vignettes
 #> 
 #> Reloading installed mtcars20

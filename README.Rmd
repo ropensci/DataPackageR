@@ -20,6 +20,7 @@ knitr::opts_chunk$set(
 
 DataPackageR is used to reproducibly process raw data into packaged, analysis-ready data sets.
 
+[![CRAN](https://www.r-pkg.org/badges/version/DataPackageR)](https://cran.r-project.org/web/packages/DataPackageR/index.html)
 [![Build Status](https://travis-ci.org/ropensci/DataPackageR.svg?branch=master)](https://travis-ci.org/ropensci/DataPackageR)
  [![Coverage status](https://codecov.io/gh/ropensci/DataPackageR/branch/master/graph/badge.svg)](https://codecov.io/github/ropensci/DataPackageR?branch=master)
  [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/5y004036wg2rh2dx?svg=true
