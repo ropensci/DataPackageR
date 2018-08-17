@@ -10,14 +10,14 @@
   "codeRepository": "https://github.com/ropensci/DataPackageR",
   "issueTracker": "https://github.com/ropensci/DataPackageR/issues",
   "license": "https://spdx.org/licenses/MIT",
-  "version": "0.15.1.9000",
+  "version": "0.15.2",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
-    "version": "3.6.0",
+    "version": "3.5.0",
     "url": "https://r-project.org"
   },
-  "runtimePlatform": "R Under development (unstable) (2018-08-14 r75143)",
+  "runtimePlatform": "R version 3.5.0 (2018-04-23)",
   "author": [
     {
       "@type": "Organization",
@@ -264,11 +264,15 @@
         "url": "https://cran.r-project.org"
       },
       "sameAs": "https://CRAN.R-project.org/package=crayon"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "https://sysreqs.r-hub.io/get/pandoc"
     }
   ],
   "releaseNotes": "https://github.com/ropensci/DataPackageR/blob/master/NEWS.md",
   "readme": "https://github.com/ropensci/DataPackageR/blob/master/README.md",
-  "fileSize": "303.562KB",
+  "fileSize": "304.415KB",
   "contIntegration": [
     "https://travis-ci.org/ropensci/DataPackageR",
     "https://codecov.io/github/ropensci/DataPackageR?branch=master",

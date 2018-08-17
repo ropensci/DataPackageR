@@ -1,14 +1,22 @@
-.prompt_user_for_change_description <- function(interact = getOption("DataPackageR_interact",interactive())) {
-  cat(crayon::cyan("Enter a text description of the changes for the NEWS file.\n")) # nolint
-  change_description <- ifelse(interactive() & interact, readline(prompt = "+ "),
-    "Package built in non-interactive mode"
-  )
-  return(change_description)
-}
+.prompt_user_for_change_description <-
+  function(interact = getOption("DataPackageR_interact",
+                                interactive())) {
+    cat(crayon::cyan("Enter a text description of the changes for the NEWS file.\n")) # nolint
+    change_description <-
+      ifelse(
+        interactive() & interact,
+        readline(prompt = "+ "),
+        "Package built in non-interactive mode"
+      )
+    return(change_description)
+  }
 
-.update_news_md <- function(version = "Version Not Provided", interact = getOption("DataPackageR_interact",interactive())) {
+.update_news_md <- function(version = "Version Not Provided",
+                            interact = getOption("DataPackageR_interact",
+                                                 interactive())) {
   news_file <- .newsfile()
-  change_description <- .prompt_user_for_change_description(interact = interact)
+  change_description <-
+    .prompt_user_for_change_description(interact = interact)
   news_con <- file(news_file, open = "r+")
   news_file_data <- readLines(news_con)
   writeLines(
@@ -17,17 +25,14 @@
     sep = "\n"
   )
   writeLines("=======================",
-    con = news_con,
-    sep = "\n"
-  )
+             con = news_con,
+             sep = "\n")
   writeLines(c(change_description, ""),
-    con = news_con,
-    sep = "\n"
-  )
+             con = news_con,
+             sep = "\n")
   writeLines(news_file_data,
-    con = news_con,
-    sep = "\n"
-  )
+             con = news_con,
+             sep = "\n")
   flush(news_con)
   close(news_con)
 }

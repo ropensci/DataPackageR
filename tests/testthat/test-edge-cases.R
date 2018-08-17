@@ -11,8 +11,8 @@ test_that("package built in different edge cases", {
     r_object_names = "cars_over_20"
   )
   expect_error(package_build(packageName = NULL))
-  old <- setwd(file.path(tempdir(), "subsetCars"))
-  on.exit(setwd(old))
+  old <- setwd(file.path(tempdir(), "subsetCars")) #nolint
+  on.exit(setwd(old)) #nolint
   expect_equal(
     basename(package_build(packageName = NULL)),
     "subsetCars_1.0.tar.gz"
@@ -219,13 +219,13 @@ test_that("package built in different edge cases", {
     name = "foo",
     path = tempdir()
   ))
-  unlink(normalizePath(file.path(
+  suppressWarnings(unlink(normalizePath(file.path(
     tempdir(),
     "foo"
   ), winslash = "/"),
   recursive = TRUE,
   force = TRUE
-  )
+  ))
   expect_error(DataPackageR:::read_pkg_description("foo"))
   unlink(file.path(tempdir(), "foo"),
     force = TRUE,
@@ -233,7 +233,10 @@ test_that("package built in different edge cases", {
   )
   package.skeleton(path = tempdir(), "foo")
   dir.create(file.path(tempdir(), "foo", "data-raw"))
-  suppressWarnings(expect_error(DataPackageR:::DataPackageR(file.path(tempdir(), "foo"))))
+  suppressWarnings(
+    expect_error(
+      DataPackageR:::DataPackageR(file.path(tempdir(),
+                                            "foo"))))
   yml <- DataPackageR:::construct_yml_config("foo")
   yml_write(yml, path = file.path(tempdir(), "foo"))
   expect_error(DataPackageR:::DataPackageR(file.path(tempdir(), "foo")))

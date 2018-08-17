@@ -1,8 +1,13 @@
-## Resubmission
-This is a resubmission. In this version I have:
+## Patch
+This is a patch release to fix check errors on:
 
-* Changed the package description so that it does not start with the package name, "This package", or other. It now begins: "A framework for ...", as seen in other packages.
-* Made the example for "document" run shorter.
+* r-devel-windows-ix86+x86_64
+* r-patched-solaris-x86
+
+The errors were related to a missing pandoc installation, and in this version I have:
+* added pandoc to the SystemRequirements in the DESCRIPTION.
+
+Note: I did not get these errors on R-devel via winbuilde below.
 
 ## Test environments
 * local OS X install (x86_64-apple-darwin16.7.0), R 3.6.0  (2018-08-14 r75143)
@@ -18,17 +23,17 @@ There were no ERRORs or WARNINGs
 There was 1 NOTE:
 
 * checking CRAN incoming feasibility ... NOTE
-Maintainer: 'Greg Finak <gfinak@fredhutch.org>'
+Maintainer: ‘Greg Finak <gfinak@fredhutch.org>’
 
-New submission
+Days since last update: 1
 
-Possibly mis-spelled words in DESCRIPTION:
-  CMD (15:41)
-  github (22:25)
-  reproducibility (23:29)
+Found the following (possibly) invalid URLs:
+  URL: https://doi.org/10.5281/zenodo.1292095
+    From: README.md
+    Status: 404
+    Message: Not Found
 
-The above is a false positive.
-
+- The zenodo site was down at the time of package testing. 
 
 ## Downstream dependencies
 

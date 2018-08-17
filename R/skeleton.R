@@ -42,11 +42,11 @@ datapackage_skeleton <-
     if (is.null(name)) {
       stop("Must supply a package name", call. = FALSE)
     }
-    if(length(r_object_names)==0){
+    if (length(r_object_names) == 0) {
       stop("You must specify r_object_names", call. = FALSE)
     }
-    if(length(code_files)==0){
-      stop("You must specify code_files", call. = FALSE) 
+    if (length(code_files) == 0) {
+      stop("You must specify code_files", call. = FALSE)
     }
     if (force) {
       unlink(file.path(path, name), recursive = TRUE, force = TRUE)
@@ -66,12 +66,12 @@ datapackage_skeleton <-
     description$set("Roxygen" = "list(markdown = TRUE)")
     description$write()
     .done("Added DataVersion string to DESCRIPTION")
-    
+
     usethis::use_directory("data-raw")
     usethis::use_directory("data")
     usethis::use_directory("inst/extdata")
     .done("Created data and data-raw directories")
-    
+
     con <-
       file(file.path(package_path, "Read-and-delete-me"), open = "w")
     writeLines(
@@ -101,38 +101,38 @@ datapackage_skeleton <-
     )
     close(con)
 
-    
-      # Rather than copy, read in, modify (as needed), and write.
-      # process the string
-      .copy_files_to_data_raw <- function(x, obj = c("code", "dependencies")) {
-        if (length(x) != 0) {
-          .codefile_validate(x)
-          # copy them over
-          obj <- match.arg(obj, c("code", "dependencies"))
-          for (y in x){
-            file.copy(y, file.path(package_path, "data-raw"), overwrite = TRUE)
-            .done("Copied ",obj," into data-raw")
-          }
+
+    # Rather than copy, read in, modify (as needed), and write.
+    # process the string
+    .copy_files_to_data_raw <- function(x, obj = c("code", "dependencies")) {
+      if (length(x) != 0) {
+        .codefile_validate(x)
+        # copy them over
+        obj <- match.arg(obj, c("code", "dependencies"))
+        for (y in x) {
+          file.copy(y, file.path(package_path, "data-raw"), overwrite = TRUE)
+          .done("Copied ", obj, " into data-raw")
         }
       }
+    }
 
-      .copy_data_to_inst_extdata <- function(x) {
-        if (length(x) != 0) {
-          # copy them over
-          file.copy(x, file.path(package_path, "inst/extdata"),
-            recursive = TRUE, overwrite = TRUE
-          )
-          .done("Moved data into inst/extdata")
-        }
+    .copy_data_to_inst_extdata <- function(x) {
+      if (length(x) != 0) {
+        # copy them over
+        file.copy(x, file.path(package_path, "inst/extdata"),
+          recursive = TRUE, overwrite = TRUE
+        )
+        .done("Moved data into inst/extdata")
       }
-      .copy_files_to_data_raw(code_files, obj = "code")
-      .copy_files_to_data_raw(dependencies, obj = "dependencies")
-      .copy_data_to_inst_extdata(raw_data_dir)
+    }
+    .copy_files_to_data_raw(code_files, obj = "code")
+    .copy_files_to_data_raw(dependencies, obj = "dependencies")
+    .copy_data_to_inst_extdata(raw_data_dir)
 
-      yml <- construct_yml_config(code = code_files, data = r_object_names)
-      yaml::write_yaml(yml, file = file.path(package_path, "datapackager.yml"))
-      .done("configured yaml file")
-    
+    yml <- construct_yml_config(code = code_files, data = r_object_names)
+    yaml::write_yaml(yml, file = file.path(package_path, "datapackager.yml"))
+    .done("configured yaml file")
+
 
     oldrdfiles <-
       list.files(
@@ -195,18 +195,15 @@ datapackage.skeleton <- function(name = NULL,
   )
 }
 
-.done <- function (...) 
-{
+.done <- function(...) {
   .bullet(paste0(...), bullet = crayon::green("\u2714"))
 }
 
-.bullet <- function (lines, bullet) 
-{
+.bullet <- function(lines, bullet) {
   lines <- paste0(bullet, " ", lines)
   .cat_line(lines)
 }
 
-.cat_line <- function (...) 
-{
+.cat_line <- function(...) {
   cat(..., "\n", sep = "")
 }
