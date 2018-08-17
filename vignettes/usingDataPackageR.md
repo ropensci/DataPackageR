@@ -1,7 +1,7 @@
 ---
 title: "Using DataPackageR"
 author: "Greg Finak <gfinak@fredhutch.org>"
-date: "2018-08-01"
+date: "2018-08-17"
 output: 
   rmarkdown::html_vignette:
     keep_md: TRUE
@@ -65,10 +65,6 @@ DataPackageR::datapackage_skeleton(name = "mtcars20",
   #dependencies argument is empty
   #raw_data_dir argument is empty.
   ) 
-Adding DataVersion string to DESCRIPTION
-Creating data and data-raw directories
-configuring yaml file
-Moving  code  into data-raw
 ```
 
 ### What's in the package skeleton structure?
@@ -82,16 +78,16 @@ The contents of `mtcars20` are:
 ```
                 levelName
 1  mtcars20              
-2   ¦--DESCRIPTION       
-3   ¦--R                 
-4   ¦--Read-and-delete-me
-5   ¦--data              
-6   ¦--data-raw          
-7   ¦   °--subsetCars.Rmd
-8   ¦--datapackager.yml  
-9   ¦--inst              
-10  ¦   °--extdata       
-11  °--man               
+2   ¦--data              
+3   ¦--data-raw          
+4   ¦   °--subsetCars.Rmd
+5   ¦--datapackager.yml  
+6   ¦--DESCRIPTION       
+7   ¦--inst              
+8   ¦   °--extdata       
+9   ¦--man               
+10  ¦--R                 
+11  °--Read-and-delete-me
 ```
 
 You should fill out the `DESCRIPTION` file to describe your data package. 
@@ -99,7 +95,7 @@ It contains a new `DataVersion` string that will be automatically incremented wh
 
 The user-provided code files reside in `data-raw`. They are executed during the data package build process.
 
-### A few words abou the YAML config file
+### A few words about the YAML config file
 
 A `datapackager.yml` file is used to configure and control the build process.
 
@@ -113,7 +109,7 @@ configuration:
       enabled: yes
   objects: cars_over_20
   render_root:
-    tmp: '132097'
+    tmp: '886128'
 ```
 
 The two main pieces of information in the configuration are a list of the files to be processed and the data sets the package will store.
@@ -138,18 +134,18 @@ In this example we are reading the `mtcars` data set that is already in memory, 
 
 ### An API to read raw data sets from within an R or Rmd procesing script.
 
-As stated in the README, in order for your processing scripts to be portable, you should not use abosolute paths to files. 
+As stated in the README, in order for your processing scripts to be portable, you should not use absolute paths to files. 
 DataPackageR provides an API to point to the data package root directory and the `inst/extdata` and `data` subdirectories.
 These are useful for constructing portable paths in your code to read files from these locations.
 
 For example: to construct a path to a file named "mydata.csv" located in `inst/extdata` in your data package source tree:
 
-- use `DataPackageR::project_extdata_path("mydata.csv")` in your `R` or `Rmd` file. This would return: e.g., /var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//Rtmpu5EXeX/mtcars20/inst/extdata/mydata.csv
+- use `DataPackageR::project_extdata_path("mydata.csv")` in your `R` or `Rmd` file. This would return: e.g., /var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//RtmpmQdQzz/mtcars20/inst/extdata/mydata.csv
 
 Similarly: 
 
-- `DataPackageR::project_path()`  constructs a path to the data package root directory. (e.g., /var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//Rtmpu5EXeX/mtcars20)
-- `DataPackageR::project_data_path()` constructs a path to the data package `data` subdirectory. (e.g., /var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//Rtmpu5EXeX/mtcars20/data)
+- `DataPackageR::project_path()`  constructs a path to the data package root directory. (e.g., /var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//RtmpmQdQzz/mtcars20)
+- `DataPackageR::project_data_path()` constructs a path to the data package `data` subdirectory. (e.g., /var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//RtmpmQdQzz/mtcars20/data)
 
 Raw data sets that are stored externally (outside the data package source tree) can be constructed relative to the `project_path()`.
 
@@ -180,37 +176,61 @@ Once the skeleton framework is set up,
 # Run the preprocessing code to build cars_over_20
 # and reproducibly enclose it in a package.
 DataPackageR:::package_build(file.path(tempdir(),"mtcars20"))
-INFO [2018-08-01 11:55:05] Logging to /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmpu5EXeX/mtcars20/inst/extdata/Logfiles/processing.log
-INFO [2018-08-01 11:55:05] Processing data
-INFO [2018-08-01 11:55:05] Reading yaml configuration
-INFO [2018-08-01 11:55:05] Found /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmpu5EXeX/mtcars20/data-raw/subsetCars.Rmd
-INFO [2018-08-01 11:55:05] Processing 1 of 1: /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmpu5EXeX/mtcars20/data-raw/subsetCars.Rmd
+✔ Setting active project to '/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpmQdQzz/mtcars20'
+INFO [2018-08-17 11:51:16] Logging to /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpmQdQzz/mtcars20/inst/extdata/Logfiles/processing.log
+INFO [2018-08-17 11:51:16] Processing data
+INFO [2018-08-17 11:51:16] Reading yaml configuration
+INFO [2018-08-17 11:51:16] Found /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpmQdQzz/mtcars20/data-raw/subsetCars.Rmd
+INFO [2018-08-17 11:51:16] Processing 1 of 1: /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpmQdQzz/mtcars20/data-raw/subsetCars.Rmd
+
+
 processing file: subsetCars.Rmd
+  |                                                                         |                                                                 |   0%  |                                                                         |.........                                                        |  14%
+  ordinary text without R code
+
+  |                                                                         |...................                                              |  29%
+label: unnamed-chunk-11 (with options) 
+List of 1
+ $ include: logi FALSE
+
+  |                                                                         |............................                                     |  43%
+  ordinary text without R code
+
+  |                                                                         |.....................................                            |  57%
+label: cars
+  |                                                                         |..............................................                   |  71%
+  ordinary text without R code
+
+  |                                                                         |........................................................         |  86%
+label: unnamed-chunk-12
+  |                                                                         |.................................................................| 100%
+  ordinary text without R code
 output file: subsetCars.knit.md
-/usr/local/bin/pandoc +RTS -K512m -RTS subsetCars.utf8.md --to html4 --from markdown+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash+smart --output /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmpu5EXeX/mtcars20/inst/extdata/Logfiles/subsetCars.html --email-obfuscation none --self-contained --standalone --section-divs --template /Library/Frameworks/R.framework/Versions/3.5/Resources/library/rmarkdown/rmd/h/default.html --no-highlight --variable highlightjs=1 --variable 'theme:bootstrap' --include-in-header /var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//Rtmpu5EXeX/rmarkdown-str15eaf4caee58a.html --mathjax --variable 'mathjax-url:https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' 
+/usr/local/bin/pandoc +RTS -K512m -RTS subsetCars.utf8.md --to html4 --from markdown+autolink_bare_uris+ascii_identifiers+tex_math_single_backslash+smart --output /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpmQdQzz/mtcars20/inst/extdata/Logfiles/subsetCars.html --email-obfuscation none --self-contained --standalone --section-divs --template /Library/Frameworks/R.framework/Versions/3.5/Resources/library/rmarkdown/rmd/h/default.html --no-highlight --variable highlightjs=1 --variable 'theme:bootstrap' --include-in-header /var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//RtmpmQdQzz/rmarkdown-str1433a376bebc6.html --mathjax --variable 'mathjax-url:https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' 
 
-Output created: /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmpu5EXeX/mtcars20/inst/extdata/Logfiles/subsetCars.html
-INFO [2018-08-01 11:55:05] 1 required data objects created by subsetCars.Rmd
-INFO [2018-08-01 11:55:05] NEWS.md file not found, creating!
+Output created: /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpmQdQzz/mtcars20/inst/extdata/Logfiles/subsetCars.html
+INFO [2018-08-17 11:51:17] 1 required data objects created by subsetCars.Rmd
+INFO [2018-08-17 11:51:17] NEWS.md file not found, creating!
 Enter a text description of the changes for the NEWS file.
-INFO [2018-08-01 11:55:05] Saving to data
-INFO [2018-08-01 11:55:05] Copied documentation to /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmpu5EXeX/mtcars20/R/mtcars20.R
+INFO [2018-08-17 11:51:18] Saving to data
+INFO [2018-08-17 11:51:18] Copied documentation to /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpmQdQzz/mtcars20/R/mtcars20.R
 
+✔ Setting active project to '/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpmQdQzz/mtcars20'
 ✔ Creating 'vignettes/'
 ✔ Creating 'inst/doc/'
-INFO [2018-08-01 11:55:05] Done
-INFO [2018-08-01 11:55:05] DataPackageR succeeded
-INFO [2018-08-01 11:55:05] Building documentation
+INFO [2018-08-17 11:51:18] Done
+INFO [2018-08-17 11:51:18] DataPackageR succeeded
+INFO [2018-08-17 11:51:18] Building documentation
 First time using roxygen2. Upgrading automatically...
-Updating roxygen version in /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmpu5EXeX/mtcars20/DESCRIPTION
+Updating roxygen version in /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpmQdQzz/mtcars20/DESCRIPTION
 Writing NAMESPACE
 Loading mtcars20
 Writing mtcars20.Rd
 Writing cars_over_20.Rd
-INFO [2018-08-01 11:55:05] Building package
+INFO [2018-08-17 11:51:19] Building package
 '/Library/Frameworks/R.framework/Resources/bin/R' --no-site-file  \
   --no-environ --no-save --no-restore --quiet CMD build  \
-  '/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmpu5EXeX/mtcars20'  \
+  '/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpmQdQzz/mtcars20'  \
   --no-resave-data --no-manual --no-build-vignettes 
 
 Reloading installed mtcars20
@@ -225,7 +245,7 @@ Next Steps
    - Set up a github repository for your pacakge. 
    - Add the github repository as a remote of your local package repository. 
    -  git push  your local repository to gitub. 
-[1] "/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmpu5EXeX/mtcars20_1.0.tar.gz"
+[1] "/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpmQdQzz/mtcars20_1.0.tar.gz"
 ```
 
 ### Documenting your data set changes in NEWS.md
@@ -250,7 +270,7 @@ If the processing script is time consuming or the data set is particularly large
 
 ### A log of the build process
 
-DataPackageR uses the `futile.logger` pagckage to log progress. 
+DataPackageR uses the `futile.logger` package to log progress. 
 
 If there are errors in the processing, the script will notify you via logging to console and to  `/private/tmp/Test/inst/extdata/Logfiles/processing.log`. Errors should be corrected and the build repeated.
 
@@ -268,33 +288,32 @@ The pacakge source directory changes after the first build.
 ```
                          levelName
 1  mtcars20                       
-2   ¦--DATADIGEST                 
-3   ¦--DESCRIPTION                
-4   ¦--NAMESPACE                  
-5   ¦--NEWS.md                    
-6   ¦--R                          
-7   ¦   °--mtcars20.R             
-8   ¦--Read-and-delete-me         
-9   ¦--data                       
-10  ¦   °--cars_over_20.rda       
-11  ¦--data-raw                   
-12  ¦   ¦--documentation.R        
-13  ¦   ¦--subsetCars.R           
-14  ¦   °--subsetCars.Rmd         
-15  ¦--datapackager.yml           
-16  ¦--inst                       
-17  ¦   ¦--doc                    
-18  ¦   ¦   ¦--subsetCars.Rmd     
-19  ¦   ¦   °--subsetCars.html    
-20  ¦   °--extdata                
-21  ¦       °--Logfiles           
-22  ¦           ¦--processing.log 
-23  ¦           °--subsetCars.html
-24  ¦--man                        
-25  ¦   ¦--cars_over_20.Rd        
-26  ¦   °--mtcars20.Rd            
-27  °--vignettes                  
-28      °--subsetCars.Rmd         
+2   ¦--data                       
+3   ¦   °--cars_over_20.rda       
+4   ¦--data-raw                   
+5   ¦   ¦--documentation.R        
+6   ¦   °--subsetCars.Rmd         
+7   ¦--DATADIGEST                 
+8   ¦--datapackager.yml           
+9   ¦--DESCRIPTION                
+10  ¦--inst                       
+11  ¦   ¦--doc                    
+12  ¦   ¦   ¦--subsetCars.html    
+13  ¦   ¦   °--subsetCars.Rmd     
+14  ¦   °--extdata                
+15  ¦       °--Logfiles           
+16  ¦           ¦--processing.log 
+17  ¦           °--subsetCars.html
+18  ¦--man                        
+19  ¦   ¦--cars_over_20.Rd        
+20  ¦   °--mtcars20.Rd            
+21  ¦--NAMESPACE                  
+22  ¦--NEWS.md                    
+23  ¦--R                          
+24  ¦   °--mtcars20.R             
+25  ¦--Read-and-delete-me         
+26  °--vignettes                  
+27      °--subsetCars.Rmd         
 ```
 
 ### Update the autogenerated documentation. 
@@ -310,7 +329,9 @@ You should update this file to properly document your objects. Then rebuild the 
 
 ```r
 document(file.path(tempdir(),"mtcars20"))
-INFO [2018-08-01 11:55:07] Rebuilding data package documentation.
+✔ Setting active project to '/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpmQdQzz/mtcars20'
+INFO [2018-08-17 11:51:21] Rebuilding data package documentation.
+Updating mtcars20 documentation
 Loading mtcars20
 [1] TRUE
 ```
@@ -367,7 +388,7 @@ Topic "subsetCars" "A Test Document for DataPackageR (source, html)"
 
 ### Using the DataVersion
 
-Your downstream data analysis can depend on a specific version of the data in your data package by tesing the DataVersion string in the DESCRIPTION file. 
+Your downstream data analysis can depend on a specific version of the data in your data package by testing the DataVersion string in the DESCRIPTION file. 
 
 We provide an API for this:
 
@@ -410,7 +431,7 @@ configuration:
   - object1
   - object2
   render_root:
-    tmp: '13431'
+    tmp: '515827'
 ```
 
 `config` is a newly constructed yaml configuration object. It can be written to the package directory:
@@ -473,7 +494,7 @@ configuration:
   - object1
   - object2
   render_root:
-    tmp: '13431'
+    tmp: '515827'
 ```
 
 Note that the modified configuration needs to be written back to the package source directory in order for the 
@@ -562,13 +583,13 @@ Package: mtcars20
 Version: 1.0
 Title: What the Package Does (One Line, Title Case)
 Description: What the package does (one paragraph).
-Authors@R: person("First", "Last", email = "first.last@example.com", role = c("aut", "cre"))
-License: What license is it under?
+Authors@R: person("First", "Last", , "first.last@example.com", c("aut", "cre"))
+License: What license it uses
 Encoding: UTF-8
 LazyData: true
-ByteCompile: true
 DataVersion: 0.1.0
-Date: 2018-08-01
+Roxygen: list(markdown = TRUE)
+Date: 2018-08-17
 Suggests: 
     knitr,
     rmarkdown

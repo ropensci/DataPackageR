@@ -97,7 +97,7 @@ It contains a new `DataVersion` string that will be automatically incremented wh
 
 The user-provided code files reside in `data-raw`. They are executed during the data package build process.
 
-### A few words abou the YAML config file
+### A few words about the YAML config file
 
 A `datapackager.yml` file is used to configure and control the build process.
 
@@ -129,7 +129,7 @@ In this example we are reading the `mtcars` data set that is already in memory, 
 
 ### An API to read raw data sets from within an R or Rmd procesing script.
 
-As stated in the README, in order for your processing scripts to be portable, you should not use abosolute paths to files. 
+As stated in the README, in order for your processing scripts to be portable, you should not use absolute paths to files. 
 DataPackageR provides an API to point to the data package root directory and the `inst/extdata` and `data` subdirectories.
 These are useful for constructing portable paths in your code to read files from these locations.
 
@@ -194,7 +194,7 @@ If the processing script is time consuming or the data set is particularly large
 
 ### A log of the build process
 
-DataPackageR uses the `futile.logger` pagckage to log progress. 
+DataPackageR uses the `futile.logger` package to log progress. 
 
 If there are errors in the processing, the script will notify you via logging to console and to  `/private/tmp/Test/inst/extdata/Logfiles/processing.log`. Errors should be corrected and the build repeated.
 
@@ -271,7 +271,7 @@ vignettes$results
 
 ### Using the DataVersion
 
-Your downstream data analysis can depend on a specific version of the data in your data package by tesing the DataVersion string in the DESCRIPTION file. 
+Your downstream data analysis can depend on a specific version of the data in your data package by testing the DataVersion string in the DESCRIPTION file. 
 
 We provide an API for this:
 
