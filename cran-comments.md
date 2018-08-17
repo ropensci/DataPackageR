@@ -7,7 +7,7 @@ This is a patch release to fix check errors on:
 The errors were related to a missing pandoc installation, and in this version I have:
 * added pandoc to the SystemRequirements in the DESCRIPTION.
 
-Note: I did not get these errors on R-devel via winbuilde below.
+Note: I did not get these errors on R-devel via winbuilder below.
 
 ## Test environments
 * local OS X install (x86_64-apple-darwin16.7.0), R 3.6.0  (2018-08-14 r75143)
