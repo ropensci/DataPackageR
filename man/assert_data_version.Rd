@@ -38,7 +38,7 @@ datapackage_skeleton(name = pname,
    force = TRUE,
    r_object_names = "tbl",
    code_files = f)
-package_build(file.path(tempdir(),pname))
+package_build(file.path(tempdir(),pname), install = FALSE)
 
 devtools::load_all(file.path(tempdir(),pname))
 

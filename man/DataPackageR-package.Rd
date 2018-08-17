@@ -65,7 +65,7 @@ datapackage_skeleton(name=pname,
 
 # call build_package to run the "foo.Rmd" processing and
 # build a data package.
-package_build(file.path(tempdir(), pname))
+package_build(file.path(tempdir(), pname), install = FALSE)
 
 # "install" the data package
 devtools::load_all(file.path(tempdir(), pname))
