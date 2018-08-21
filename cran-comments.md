@@ -1,16 +1,18 @@
-## Patch
-This is a patch release to fix check errors on:
+## Patch 0.15.3
+This is another patch release to fix continued check errors on:
 
-* r-devel-windows-ix86+x86_64
+* r-release-osx-x86_64
 * r-patched-solaris-x86
+* r-oldrel-osx-x86_64
 
-The errors were related to a missing pandoc installation, and in this version I have:
-* added pandoc to the SystemRequirements in the DESCRIPTION.
+Although pandoc is listed in the SytemRequirements, the check still throws errors. To address these I have:
+* Made tests and examples conditional on the presence of pandoc using rmarkdown::pandoc_available().
+* Tested the package in a simulated environment where pandoc is missing, ensuring it correctly detects a missing pandoc installation.
 
-Note: I did not get these errors on R-devel via winbuilder below.
 
 ## Test environments
 * local OS X install (x86_64-apple-darwin16.7.0), R 3.6.0  (2018-08-14 r75143)
+* local OS X install (x86_64-apple-darwin16.7.0), R 3.5.1  (2018-08-14 r75143) with pandoc missing.
 * ubuntu  14.04.05 LTS (on travis-ci) R 3.5.0
 * ubuntu  14.04.05 LTS (on travis-ci) R Under development (unstable) (2018-08-08 r75087)
 * Windows Server 2012 R2 x64 (build 9600) (under Appveyor) R 3.5.1 Patched (2018-08-06 r75070)
@@ -21,20 +23,18 @@ Note: I did not get these errors on R-devel via winbuilder below.
 
 There were no ERRORs or WARNINGs 
 
-There was 1 NOTE:
+There was 1 NOTE when pandoc was present:
 
-* checking CRAN incoming feasibility ... NOTE
+NOTE
 Maintainer: ‘Greg Finak <gfinak@fredhutch.org>’
 
-Days since last update: 1
+Days since last update: 4
 
-Found the following (possibly) invalid URLs:
-  URL: https://doi.org/10.5281/zenodo.1292095
-    From: README.md
-    Status: 404
-    Message: Not Found
+There were 2 NOTEs when pandoc was absent, the one above and :
 
-- The zenodo site is down at the time of package testing. 
+NOTE:
+Files ‘README.md’ or ‘NEWS.md’ cannot be checked without ‘pandoc’ being installed.
+
 
 ## Downstream dependencies
 

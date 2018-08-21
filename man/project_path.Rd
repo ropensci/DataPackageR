@@ -21,5 +21,7 @@ constructs a path to a file in the project root from the
 file argument.
 }
 \examples{
+if(rmarkdown::pandoc_available()){
 project_path( file = "DESCRIPTION" )
+}
 }

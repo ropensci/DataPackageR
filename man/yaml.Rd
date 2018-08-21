@@ -52,6 +52,7 @@ Edit a yaml configuration file via an API.
 Add, remove files and objects, enable or disable parsing of specific files,  list objects or files in a yaml config, or write a config back to a package.
 }
 \examples{
+if(rmarkdown::pandoc_available()){
 f <- tempdir()
 f <- file.path(f,"foo.Rmd")
 con <- file(f)
@@ -75,4 +76,5 @@ yml <- yml_add_objects(yml,"data1")
 yml_list_objects(yml)
 yml <- yml_remove_objects(yml,"data1")
 yml <- yml_remove_files(yml,"foo.Rmd")
+}
 }

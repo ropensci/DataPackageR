@@ -39,6 +39,7 @@
 #' @examples
 #' # A simple Rmd file that creates one data object
 #' # named "tbl".
+#' if(rmarkdown::pandoc_available()){
 #' f <- tempdir()
 #' f <- file.path(f,"foo.Rmd")
 #' con <- file(f)
@@ -77,6 +78,7 @@
 #' readLines(list.files(pattern="R", path = file.path(tempdir(),pname,"R"), full = TRUE))
 #' # view the documentation with
 #' ?tbl
+#' }
 #' @docType package
 #' @name DataPackageR-package
 NULL
@@ -627,7 +629,9 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
 #' @export
 #'
 #' @examples
+#' if(rmarkdown::pandoc_available()){
 #' project_path( file = "DESCRIPTION" )
+#' }
 project_path <- function(file = NULL) {
   if (is.null(file)) {
     return(usethis::proj_get())
@@ -647,7 +651,9 @@ project_path <- function(file = NULL) {
 #' @export
 #'
 #' @examples
+#' if(rmarkdown::pandoc_available()){
 #' project_extdata_path(file = "mydata.csv")
+#' }
 project_extdata_path <- function(file = NULL) {
   if (is.null(file)) {
     return(file.path(usethis::proj_get(), "inst", "extdata"))
@@ -672,7 +678,9 @@ project_extdata_path <- function(file = NULL) {
 #' @export
 #'
 #' @examples
+#' if(rmarkdown::pandoc_available()){
 #' project_data_path( file = "data.rda" )
+#' }
 project_data_path <- function(file = NULL) {
   if (is.null(file)) {
     return(file.path(usethis::proj_get(), "data"))
@@ -696,6 +704,7 @@ project_data_path <- function(file = NULL) {
 #' @examples
 #' # A simple Rmd file that creates one data object
 #' # named "tbl".
+#' if(rmarkdown::pandoc_available()){
 #' f <- tempdir()
 #' f <- file.path(f,"foo.Rmd")
 #' con <- file(f)
@@ -717,6 +726,7 @@ project_data_path <- function(file = NULL) {
 #' # build a data package.
 #' package_build(file.path(tempdir(), pname), install = FALSE)
 #' document(path = file.path(tempdir(), pname), install=FALSE)
+#' }
 document <- function(path = ".", install = TRUE) {
   usethis::proj_set(path = path)
   path <- usethis::proj_get()

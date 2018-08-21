@@ -167,6 +167,7 @@ datapackage_skeleton <-
 #' @aliases datapackage_skeleton
 #' @export
 #' @examples
+#' if(rmarkdown::pandoc_available()){
 #' f <- tempdir()
 #' f <- file.path(f,"foo.Rmd")
 #' con <- file(f)
@@ -178,6 +179,7 @@ datapackage_skeleton <-
 #'    force = TRUE,
 #'    r_object_names = "tbl",
 #'    code_files = f)
+#'    }
 datapackage.skeleton <- function(name = NULL,
                                  list = character(),
                                  environment = .GlobalEnv,

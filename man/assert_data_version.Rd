@@ -26,7 +26,7 @@ Tests the DataVersion string in \code{data_package_name} against \code{version_s
 Tests "data_package_name version equal version_string" or "data_package_name version equal_or_greater version_string".
 }
 \examples{
-
+if(rmarkdown::pandoc_available()){
 f <- tempdir()
 f <- file.path(f, "foo.Rmd")
 con <- file(f)
@@ -43,4 +43,5 @@ package_build(file.path(tempdir(),pname), install = FALSE)
 devtools::load_all(file.path(tempdir(),pname))
 
 assert_data_version(data_package_name = pname,version_string = "0.1.0",acceptable = "equal")
+}
 }

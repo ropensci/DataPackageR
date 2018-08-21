@@ -21,5 +21,7 @@ constructs a path to a file in the extdata subdirectory from the
 file argument.
 }
 \examples{
+if(rmarkdown::pandoc_available()){
 project_extdata_path(file = "mydata.csv")
+}
 }

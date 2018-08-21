@@ -1,3 +1,6 @@
+# DataPackageR 0.15.3
+* conditional tests when pandoc is missing
+
 # DataPackageR 0.15.2
 * Add  pandoc to SystemRequirements
 * Add use_raw_dataset() method (and tests) to add data sets to inst/extdata. interactively. (ropensci/DataPackager/issues/44)

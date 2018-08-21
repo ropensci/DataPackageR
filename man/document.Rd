@@ -17,6 +17,7 @@ Build documentation for a data package using DataPackageR.
 \examples{
 # A simple Rmd file that creates one data object
 # named "tbl".
+if(rmarkdown::pandoc_available()){
 f <- tempdir()
 f <- file.path(f,"foo.Rmd")
 con <- file(f)
@@ -38,4 +39,5 @@ datapackage_skeleton(name=pname,
 # build a data package.
 package_build(file.path(tempdir(), pname), install = FALSE)
 document(path = file.path(tempdir(), pname), install=FALSE)
+}
 }

@@ -10,6 +10,7 @@
 #' @export
 #'
 #' @examples
+#' if(rmarkdown::pandoc_available()){
 #' f <- tempdir()
 #' f <- file.path(f,"foo.Rmd")
 #' con <- file(f)
@@ -33,6 +34,7 @@
 #' yml_list_objects(yml)
 #' yml <- yml_remove_objects(yml,"data1")
 #' yml <- yml_remove_files(yml,"foo.Rmd")
+#' }
 yml_find <- function(path) {
   path <- normalizePath(path, winslash = "/")
   config_yml <- is_r_package$find_file("datapackager.yml", path = path)

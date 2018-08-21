@@ -21,5 +21,7 @@ constructs a path to a file in the data subdirectory from the
 file argument.
 }
 \examples{
+if(rmarkdown::pandoc_available()){
 project_data_path( file = "data.rda" )
+}
 }

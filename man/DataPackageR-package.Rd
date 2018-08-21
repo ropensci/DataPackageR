@@ -46,6 +46,7 @@ Calling \code{build_package()} sets the build process in motion.
 \examples{
 # A simple Rmd file that creates one data object
 # named "tbl".
+if(rmarkdown::pandoc_available()){
 f <- tempdir()
 f <- file.path(f,"foo.Rmd")
 con <- file(f)
@@ -84,4 +85,5 @@ list.files(pattern="R", path = file.path(tempdir(), pname,"R"), full = TRUE)
 readLines(list.files(pattern="R", path = file.path(tempdir(),pname,"R"), full = TRUE))
 # view the documentation with
 ?tbl
+}
 }

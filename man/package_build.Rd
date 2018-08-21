@@ -22,7 +22,7 @@ package_build(packageName = NULL, vignettes = FALSE, log = INFO,
 Combines the preprocessing, documentation, and build steps into one.
 }
 \examples{
-
+if(rmarkdown::pandoc_available()){
 f <- tempdir()
 f <- file.path(f,"foo.Rmd")
 con <- file(f)
@@ -36,4 +36,5 @@ datapackage_skeleton(name=pname,
    code_files = f)
 
 package_build(file.path(tempdir(),pname))
+}
 }

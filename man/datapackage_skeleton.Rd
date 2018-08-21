@@ -42,6 +42,7 @@ Updates the Read-and-delete-me file to reflect the additional necessary steps.
 renamed \code{datapackage.skeleton()} to \code{datapackage_skeleton()}.
 }
 \examples{
+if(rmarkdown::pandoc_available()){
 f <- tempdir()
 f <- file.path(f,"foo.Rmd")
 con <- file(f)
@@ -53,4 +54,5 @@ datapackage_skeleton(name = pname,
    force = TRUE,
    r_object_names = "tbl",
    code_files = f)
+   }
 }

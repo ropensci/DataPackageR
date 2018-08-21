@@ -16,3 +16,19 @@ invisibly returns TRUE for success. Stops on failure.
 The file or directory specified by \code{path} will be moved into
 the data-raw directory.
 }
+\examples{
+if(rmarkdown::pandoc_available()){
+myfile <- tempfile()
+file <- system.file("extdata", "tests", "extra.rmd",
+                     package = "DataPackageR")
+raw_data <- system.file("extdata", "tests", "raw_data",
+                        package = "DataPackageR")
+datapackage_skeleton(
+  name = "datatest",
+  path = tempdir(),
+  code_files = file,
+  force = TRUE,
+  r_object_names = "data")
+use_raw_dataset(raw_data)
+}
+}

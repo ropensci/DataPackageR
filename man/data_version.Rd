@@ -21,7 +21,7 @@ Retrieves the DataVersion of a package if available
 \code{dataVersion()} has been renamed to \code{data_version()}
 }
 \examples{
-
+if(rmarkdown::pandoc_available()){
 f <- tempdir()
 f <- file.path(f,"foo.Rmd")
 con <- file(f)
@@ -38,6 +38,7 @@ datapackage_skeleton(name = pname,
 
    devtools::load_all(file.path(tempdir(),pname))
    data_version(pname)
+}
 }
 \seealso{
 \code{\link[utils]{packageVersion}}

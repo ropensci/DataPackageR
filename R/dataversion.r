@@ -12,7 +12,7 @@
 #' @importFrom utils capture.output file_test package.skeleton packageDescription
 #' @export
 #' @examples
-#'
+#'if(rmarkdown::pandoc_available()){
 #' f <- tempdir()
 #' f <- file.path(f,"foo.Rmd")
 #' con <- file(f)
@@ -29,6 +29,7 @@
 #'
 #'    devtools::load_all(file.path(tempdir(),pname))
 #'    data_version(pname)
+#'}
 data_version <- function(pkg, lib.loc = NULL) {
   res <- suppressWarnings(utils::packageDescription(pkg,
     lib.loc = lib.loc,
@@ -90,7 +91,7 @@ dataVersion <- function(pkg, lib.loc = NULL) {
 #' Tests "data_package_name version equal version_string" or "data_package_name version equal_or_greater version_string".
 #' @export
 #' @examples
-#'
+#' if(rmarkdown::pandoc_available()){
 #' f <- tempdir()
 #' f <- file.path(f, "foo.Rmd")
 #' con <- file(f)
@@ -107,6 +108,7 @@ dataVersion <- function(pkg, lib.loc = NULL) {
 #' devtools::load_all(file.path(tempdir(),pname))
 #'
 #' assert_data_version(data_package_name = pname,version_string = "0.1.0",acceptable = "equal")
+#' }
 assert_data_version <-
   function(data_package_name = NULL,
              version_string = NULL,

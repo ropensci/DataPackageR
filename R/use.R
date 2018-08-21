@@ -11,7 +11,7 @@
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' if(rmarkdown::pandoc_available()){
 #' myfile <- tempfile()
 #' file <- system.file("extdata", "tests", "extra.rmd",
 #'                      package = "DataPackageR")
@@ -24,6 +24,7 @@
 #'   force = TRUE,
 #'   r_object_names = "data")
 #' use_raw_dataset(raw_data)
+#' }
 use_raw_dataset <- function(path = NULL) {
   if (is.null(path)) {
     stop("You must provide a full path to a file or directory.")

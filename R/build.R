@@ -13,13 +13,14 @@
 #' @importFrom devtools build_vignettes build parse_deps reload
 #' @importFrom usethis use_build_ignore use_rstudio proj_set use_directory
 #' @importFrom rprojroot is_r_package
+#' @importFrom rmarkdown pandoc_available
 #' @importFrom utils install.packages
 #' @importFrom yaml read_yaml
 #' @importFrom futile.logger flog.debug flog.info flog.warn flog.error flog.fatal flog.appender flog.threshold INFO appender.console appender.tee
 #' @importFrom knitr knit spin
 #' @export
 #' @examples
-#'
+#'if(rmarkdown::pandoc_available()){
 #' f <- tempdir()
 #' f <- file.path(f,"foo.Rmd")
 #' con <- file(f)
@@ -33,6 +34,7 @@
 #'    code_files = f)
 #'
 #' package_build(file.path(tempdir(),pname))
+#' }
 package_build <- function(packageName = NULL,
                           vignettes = FALSE,
                           log = INFO,

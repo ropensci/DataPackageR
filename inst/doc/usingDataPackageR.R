@@ -5,7 +5,7 @@ knitr::opts_chunk$set(
   eval = TRUE
 )
 
-## ----minimal_example, results='hide'-------------------------------------
+## ----minimal_example, results='hide', eval = rmarkdown::pandoc_available()----
 library(DataPackageR)
 
 # Let's reproducibly package up
@@ -31,7 +31,7 @@ DataPackageR::datapackage_skeleton(name = "mtcars20",
   #raw_data_dir argument is empty.
   ) 
 
-## ----dirstructure,echo=FALSE---------------------------------------------
+## ----dirstructure,echo=FALSE, eval = rmarkdown::pandoc_available()-------
 library(data.tree)
 df <- data.frame(pathString = file.path(
   "mtcars20",
@@ -43,15 +43,15 @@ df <- data.frame(pathString = file.path(
   ))
 as.Node(df)
 
-## ---- echo=FALSE---------------------------------------------------------
+## ---- echo=FALSE, eval = rmarkdown::pandoc_available()-------------------
 cat(yaml::as.yaml(yaml::yaml.load_file(file.path(tempdir(),"mtcars20","datapackager.yml"))))
 
-## ----eval=TRUE-----------------------------------------------------------
+## ---- eval = rmarkdown::pandoc_available()-------------------------------
 # Run the preprocessing code to build cars_over_20
 # and reproducibly enclose it in a package.
 DataPackageR:::package_build(file.path(tempdir(),"mtcars20"))
 
-## ---- echo=FALSE---------------------------------------------------------
+## ---- echo=FALSE, eval = rmarkdown::pandoc_available()-------------------
 df <- data.frame(pathString = file.path(
   "mtcars20",
   list.files(
@@ -62,10 +62,10 @@ df <- data.frame(pathString = file.path(
   ))
   as.Node(df)
 
-## ----rebuild_docs--------------------------------------------------------
+## ----rebuild_docs, eval = rmarkdown::pandoc_available()------------------
 document(file.path(tempdir(),"mtcars20"))
 
-## ------------------------------------------------------------------------
+## ---- eval = rmarkdown::pandoc_available()-------------------------------
 # Let's use the package we just created.
 install.packages(file.path(tempdir(),"mtcars20_1.0.tar.gz"), type = "source", repos = NULL)
 if(!"package:mtcars20"%in%search())
@@ -78,7 +78,7 @@ cars_over_20 # now we can use it.
 vignettes <- vignette(package = "mtcars20")
 vignettes$results
 
-## ------------------------------------------------------------------------
+## ---- eval = rmarkdown::pandoc_available()-------------------------------
 # We can easily check the version of the data
 DataPackageR::data_version("mtcars20")
 
@@ -89,7 +89,7 @@ assert_data_version(data_package_name = "mtcars20",
                     acceptable = "equal")  #If this fails, execution stops
                                            #and provides an informative error.
 
-## ----construct_config, echo=1:2------------------------------------------
+## ----construct_config, echo=1:2, eval = rmarkdown::pandoc_available()----
 # assume I have file1.Rmd and file2.R located in /data-raw, 
 # and these create 'object1' and 'object2' respectively.
 
@@ -97,18 +97,18 @@ config <- construct_yml_config(code = c("file1.Rmd", "file2.R"),
                               data = c("object1", "object2"))
 cat(yaml::as.yaml(config))
 
-## ------------------------------------------------------------------------
+## ---- eval = rmarkdown::pandoc_available()-------------------------------
 path_to_package <- tempdir() #e.g., if tempdir() was the root of our package.
 yml_write(config, path = path_to_package)
 
-## ----echo=1:2------------------------------------------------------------
+## ----echo=1:2, eval = rmarkdown::pandoc_available()----------------------
 config <- yml_disable_compile(config,filenames = "file2.R")
 yml_write(config, path = path_to_package) # write modified yml to the package.
 cat(yaml::as.yaml(config))
 
-## ---- echo=FALSE---------------------------------------------------------
+## ---- echo=FALSE, eval = rmarkdown::pandoc_available()-------------------
 cat(readLines(file.path(tempdir(),"mtcars20","DATADIGEST")),sep="\n")
 
-## ----echo=FALSE----------------------------------------------------------
+## ----echo=FALSE, eval = rmarkdown::pandoc_available()--------------------
 cat(readLines(file.path(tempdir(),"mtcars20","DESCRIPTION")),sep="\n")
 
