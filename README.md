@@ -24,8 +24,8 @@ developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.re
   - [a more detailed technical vignette](vignettes/usingDataPackageR.md)
 
 > **Important Note**: [datapack](https://github.com/ropensci/datapack)
-> is a *different pacakge* that is used to “load data from common
-> repositories such as DataONE into the R environment”.
+> is a *different pacakge* that is used to “create, send and load data
+> from common repositories such as DataONE into the R environment”.
 
 > **This package** is for processing raw data into tidy data sets and
 > bundling them into R packages.
@@ -231,13 +231,13 @@ package_build(packageName = file.path(tempdir(),"mtcars20"), install = TRUE)
 #> processing file: subsetCars.Rmd
 #> output file: subsetCars.knit.md
 #> 
-#> Output created: /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpD8kIcj/mtcars20/inst/extdata/Logfiles/subsetCars.html
+#> Output created: /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpCWGngm/mtcars20/inst/extdata/Logfiles/subsetCars.html
 #> First time using roxygen2. Upgrading automatically...
-#> Updating roxygen version in /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpD8kIcj/mtcars20/DESCRIPTION
+#> Updating roxygen version in /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpCWGngm/mtcars20/DESCRIPTION
 #> Loading mtcars20
 #> '/Library/Frameworks/R.framework/Resources/bin/R' --no-site-file  \
 #>   --no-environ --no-save --no-restore --quiet CMD build  \
-#>   '/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpD8kIcj/mtcars20'  \
+#>   '/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpCWGngm/mtcars20'  \
 #>   --no-resave-data --no-manual --no-build-vignettes
 #> 
 #> Reloading installed mtcars20

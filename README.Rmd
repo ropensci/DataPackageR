@@ -32,7 +32,7 @@ DataPackageR is used to reproducibly process raw data into packaged, analysis-re
 - [yaml configuration guide](vignettes/YAML_CONFIG.md)
 - [a more detailed technical vignette](vignettes/usingDataPackageR.md)
 
-> **Important Note**: [datapack](https://github.com/ropensci/datapack) is a *different pacakge* that is used to "load data from common repositories such as DataONE into the R environment".
+> **Important Note**: [datapack](https://github.com/ropensci/datapack) is a *different pacakge* that is used to "create, send and load data from common repositories such as DataONE into the R environment".
 
 > **This package** is for processing raw data into tidy data sets and bundling them into R packages.
 
