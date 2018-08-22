@@ -215,7 +215,7 @@ test_that("package built in different edge cases", {
   expect_error(DataPackageR::construct_yml_config("foo.Rmd",
     render_root = "foobar"
   ))
-  expect_error(DataPackageR:::datapackage_skeleton(
+  expect_null(DataPackageR:::datapackage_skeleton(
     name = "foo",
     path = tempdir()
   ))

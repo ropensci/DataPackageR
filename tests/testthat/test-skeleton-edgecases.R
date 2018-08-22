@@ -23,7 +23,7 @@ test_that("datapackage_skeleton errors with no name arg", {
       force = TRUE
     )
   )
-  expect_error(
+  expect_null(
     datapackage_skeleton(
       name = "mtcars20",
       path = tempdir(),

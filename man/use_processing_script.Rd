@@ -31,8 +31,8 @@ datapackage_skeleton(
   code_files = file,
   force = TRUE,
   r_object_names = "data")
-use_processing_script(file = "newScript.Rmd", 
-    title = "Processing a new dataset", 
+use_processing_script(file = "newScript.Rmd",
+    title = "Processing a new dataset",
     author = "Y.N. Here.")
 }
 }
