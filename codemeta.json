@@ -284,7 +284,7 @@
   ],
   "releaseNotes": "https://github.com/ropensci/DataPackageR/blob/master/NEWS.md",
   "readme": "https://github.com/ropensci/DataPackageR/blob/master/README.md",
-  "fileSize": "302.116KB",
+  "fileSize": "305.174KB",
   "contIntegration": [
     "https://travis-ci.org/ropensci/DataPackageR",
     "https://codecov.io/github/ropensci/DataPackageR?branch=master",
@@ -303,5 +303,10 @@
     "url": "https://cran.r-project.org"
   },
   "relatedLink": "https://CRAN.R-project.org/package=DataPackageR",
-  "keywords": ["r", "r-package", "reproducibility", "rstats"]
+  "keywords": [
+    "r",
+    "r-package",
+    "reproducibility",
+    "rstats"
+  ]
 }

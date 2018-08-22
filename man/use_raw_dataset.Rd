@@ -2,7 +2,7 @@
 % Please edit documentation in R/use.R
 \name{use_raw_dataset}
 \alias{use_raw_dataset}
-\title{Add a raw data set to data-raw}
+\title{Add a raw data set to inst/extdata}
 \usage{
 use_raw_dataset(path = NULL)
 }
@@ -14,7 +14,7 @@ invisibly returns TRUE for success. Stops on failure.
 }
 \description{
 The file or directory specified by \code{path} will be moved into
-the data-raw directory.
+the inst/extdata directory.
 }
 \examples{
 if(rmarkdown::pandoc_available()){
