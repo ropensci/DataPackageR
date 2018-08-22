@@ -26,8 +26,8 @@ test_that("package can be built from different locations", {
   )
 
   old <-
-    setwd(file.path(tempdir(), "subsetCars")) #nolint
-  on.exit(setwd(old)) #nolint
+    setwd(file.path(tempdir(), "subsetCars")) # nolint
+  on.exit(setwd(old)) # nolint
   expect_equal(basename(package_build(".")), "subsetCars_1.0.tar.gz")
   suppressWarnings(expect_error(package_build("subsetCars")))
 

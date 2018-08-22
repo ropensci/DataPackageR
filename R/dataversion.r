@@ -12,7 +12,7 @@
 #' @importFrom utils capture.output file_test package.skeleton packageDescription
 #' @export
 #' @examples
-#'if(rmarkdown::pandoc_available()){
+#' if(rmarkdown::pandoc_available()){
 #' f <- tempdir()
 #' f <- file.path(f,"foo.Rmd")
 #' con <- file(f)
@@ -29,7 +29,7 @@
 #'
 #'    devtools::load_all(file.path(tempdir(),pname))
 #'    data_version(pname)
-#'}
+#' }
 data_version <- function(pkg, lib.loc = NULL) {
   res <- suppressWarnings(utils::packageDescription(pkg,
     lib.loc = lib.loc,

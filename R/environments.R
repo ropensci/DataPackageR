@@ -11,7 +11,7 @@
 #' @return An R object.
 #' @export
 #' @examples
-#'if(rmarkdown::pandoc_available()){
+#' if(rmarkdown::pandoc_available()){
 #' ENVS <- new.env() # ENVS would be in the environment
 #'                  # where the data processing is run. It is
 #'                  # handled automatically by the package.
@@ -21,7 +21,7 @@
 #'                                     # DataPackageR to access the object named "find_me" created
 #'                                     # by a previous script. "find_me" would also need to
 #'                                     # appear in the objects property of config.yml
-#'}
+#' }
 datapackager_object_read <- function(name) {
   get(name, get("ENVS", parent.frame()))
 }

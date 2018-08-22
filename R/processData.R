@@ -348,7 +348,8 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
           new_data_digest
         )
         .update_news_md(updated_version$new_data_digest[["DataVersion"]],
-          interact = getOption("DataPackageR_interact", interactive()))
+          interact = getOption("DataPackageR_interact", interactive())
+        )
         pkg_description <- updated_version$pkg_description
         new_data_digest <- updated_version$new_data_digest
         can_write <- TRUE
@@ -391,7 +392,8 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
           new_data_digest
         )
         .update_news_md(updated_version$new_data_digest[["DataVersion"]],
-          interact = getOption("DataPackageR_interact", interactive()))
+          interact = getOption("DataPackageR_interact", interactive())
+        )
         pkg_description <- updated_version$pkg_description
         new_data_digest <- updated_version$new_data_digest
         can_write <- TRUE
@@ -408,8 +410,11 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
       }
     } else {
       .update_news_md(new_data_digest[["DataVersion"]],
-        interact = getOption("DataPackageR_interact",
-                             interactive()))
+        interact = getOption(
+          "DataPackageR_interact",
+          interactive()
+        )
+      )
       .save_data(new_data_digest,
         pkg_description,
         ls(dataenv),

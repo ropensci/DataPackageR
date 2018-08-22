@@ -62,7 +62,7 @@ use_raw_dataset <- function(path = NULL) {
 #' @param file \code{character} path to an existing file or name of a new R or Rmd file to create.
 #' @param title \code{character} title of the processing script for the yaml header. Used only if file is being created.
 #' @param author \code{character} author name for the yaml header. Used only if the file is being created.
-#' 
+#'
 #' @return invisibly returns TRUE for success. Stops on failure.
 #' @importFrom usethis proj_get proj_set create_package use_data_raw
 #' @importFrom utils file_test packageVersion
@@ -79,8 +79,8 @@ use_raw_dataset <- function(path = NULL) {
 #'   code_files = file,
 #'   force = TRUE,
 #'   r_object_names = "data")
-#' use_processing_script(file = "newScript.Rmd", 
-#'     title = "Processing a new dataset", 
+#' use_processing_script(file = "newScript.Rmd",
+#'     title = "Processing a new dataset",
 #'     author = "Y.N. Here.")
 #' }
 use_processing_script <- function(file = NULL, title = NULL, author = NULL) {
@@ -93,9 +93,9 @@ use_processing_script <- function(file = NULL, title = NULL, author = NULL) {
   }
   raw_file <- suppressWarnings(normalizePath(file))
   if (utils::file_test("-f", raw_file)) {
-    #test if it's an R or Rmd file.
-    if (!(grepl("\\.rmd$",tolower(raw_file)) | 
-          grepl("\\.r$",tolower(raw_file)))) {
+    # test if it's an R or Rmd file.
+    if (!(grepl("\\.rmd$", tolower(raw_file)) |
+      grepl("\\.r$", tolower(raw_file)))) {
       stop("file must be an .R or .Rmd.")
     }
     file.copy(
@@ -103,38 +103,38 @@ use_processing_script <- function(file = NULL, title = NULL, author = NULL) {
       to = file.path(proj_path, "data-raw"),
       overwrite = TRUE
     )
-    #add it to the yaml
+    # add it to the yaml
     yml <- yml_find(path = proj_path)
     yml <- yml_add_files(yml, basename(raw_file))
     yml_write(yml)
-    
+
     invisible(TRUE)
   } else if (utils::file_test("-d", raw_file)) {
     stop("path argument must be a path to a file, not a directory.")
-  } else if ((!grepl("/",raw_file) & 
-              !grepl("^\\.",raw_file)) & 
-             (grepl("\\.r$",tolower(raw_file)) | 
-              grepl("\\.rmd$",tolower(raw_file)))) {
+  } else if ((!grepl("/", raw_file) &
+    !grepl("^\\.", raw_file)) &
+    (grepl("\\.r$", tolower(raw_file)) |
+      grepl("\\.rmd$", tolower(raw_file)))) {
     # we have a valid file name and should create it.
-    file.create(file.path(proj_path, "data-raw",basename(raw_file)))
-    .update_header(file.path(proj_path,"data-raw",basename(raw_file)), title = title, author = author)
-    #add it to the yaml.
+    file.create(file.path(proj_path, "data-raw", basename(raw_file)))
+    .update_header(file.path(proj_path, "data-raw", basename(raw_file)), title = title, author = author)
+    # add it to the yaml.
     yml <- yml_find(path = proj_path)
     yml <- yml_add_files(yml, basename(raw_file))
     yml_write(yml)
-    
+
     invisible(TRUE)
-  } else  {
-    stop("path argument must be a path to an existing file or a new file name, cannot begin with a dot '.' and must end in R or Rmd (case insensitive).")#nolint
+  } else {
+    stop("path argument must be a path to an existing file or a new file name, cannot begin with a dot '.' and must end in R or Rmd (case insensitive).") # nolint
   }
 }
 
 
 
 #' Add a data object to a data package.
-#' 
-#' The data object will be added to the yml configuration file. 
-#' @param object_name Name of the data object. Should be created by a processing script in data-raw. \code{character} vector of length 1. 
+#'
+#' The data object will be added to the yml configuration file.
+#' @param object_name Name of the data object. Should be created by a processing script in data-raw. \code{character} vector of length 1.
 #'
 #' @return invisibly returns TRUE for success.
 #' @export
@@ -152,10 +152,10 @@ use_processing_script <- function(file = NULL, title = NULL, author = NULL) {
 #'   r_object_names = "data")
 #' use_data_object(object_name = "newobject")
 #' }
-#' 
+#'
 use_data_object <- function(object_name = NULL) {
   if (is.null(object_name)) {
-    stop(paste0(object_name," cannot be NULL."))
+    stop(paste0(object_name, " cannot be NULL."))
   } else {
     proj_path <- usethis::proj_get()
     yml <- yml_find(path = proj_path)
@@ -171,14 +171,13 @@ use_data_object <- function(object_name = NULL) {
                            author = NULL) {
   file_contents <- readLines(file)
   if (grepl("\\.r$", tolower(file))) {
-    #get the front matter as comments.
+    # get the front matter as comments.
     partitioned_file <- .partition_r_front_matter(file_contents)
-    
   } else {
     partitioned_file <- .partition_rmd_front_matter(file_contents)
   }
   if (!is.null(partitioned_file$front_matter)) {
-    front_matter <- .parse_yaml_front_matter(gsub("#'\\s*","",partitioned_file$front_matter))
+    front_matter <- .parse_yaml_front_matter(gsub("#'\\s*", "", partitioned_file$front_matter))
   } else {
     front_matter <- list()
   }
@@ -194,34 +193,40 @@ use_data_object <- function(object_name = NULL) {
     front_matter <-
       ifelse(
         grepl("\\.r$", tolower(file)),
-        gsub("#' $", "",
-             gsub("\n", "\n#' ",
-                  paste0("#' ", front_matter))),
-        front_matter)
-    
-    #open the file for writing.
-    connection <- file(file,open = "w+")
-    #write the header
-    writeLines(ifelse(grepl("\\.r$",tolower(file)),"#' ---","---"), con = connection)
+        gsub(
+          "#' $", "",
+          gsub(
+            "\n", "\n#' ",
+            paste0("#' ", front_matter)
+          )
+        ),
+        front_matter
+      )
+
+    # open the file for writing.
+    connection <- file(file, open = "w+")
+    # write the header
+    writeLines(ifelse(grepl("\\.r$", tolower(file)), "#' ---", "---"), con = connection)
     writeLines(front_matter, con = connection, sep = "")
-    writeLines(ifelse(grepl("\\.r$",tolower(file)),"#' ---","---"),con = connection)
-    #write the body
-    if(!is.null(partitioned_file$body)){
+    writeLines(ifelse(grepl("\\.r$", tolower(file)), "#' ---", "---"), con = connection)
+    # write the body
+    if (!is.null(partitioned_file$body)) {
       writeLines(partitioned_file$body, con = connection)
     }
-    #close the file
+    # close the file
     close(connection)
   }
 }
 
-.partition_r_front_matter <- function(input_lines) 
-{
+.partition_r_front_matter <- function(input_lines) {
   validate_front_matter <- function(delimiters) {
-    if (length(delimiters) >= 2 && (delimiters[2] - delimiters[1] > 
-                                    1) && grepl("^#'\\s*---\\s*$", input_lines[delimiters[1]])) {
-      if (delimiters[1] == 1) 
+    if (length(delimiters) >= 2 && (delimiters[2] - delimiters[1] >
+      1) && grepl("^#'\\s*---\\s*$", input_lines[delimiters[1]])) {
+      if (delimiters[1] == 1) {
         TRUE
-      else .is_blank(input_lines[1:delimiters[1] - 1])
+      } else {
+        .is_blank(input_lines[1:delimiters[1] - 1])
+      }
     }
     else {
       FALSE
@@ -231,11 +236,13 @@ use_data_object <- function(object_name = NULL) {
   if (validate_front_matter(delimiters)) {
     front_matter <- input_lines[(delimiters[1]):(delimiters[2])]
     input_body <- c()
-    if (delimiters[1] > 1) 
-      input_body <- c(input_body, input_lines[1:delimiters[1] - 
-                                                1])
-    if (delimiters[2] < length(input_lines)) 
+    if (delimiters[1] > 1) {
+      input_body <- c(input_body, input_lines[1:delimiters[1] -
+        1])
+    }
+    if (delimiters[2] < length(input_lines)) {
       input_body <- c(input_body, input_lines[-(1:delimiters[2])])
+    }
     list(front_matter = front_matter, body = input_body)
   }
   else {
@@ -244,14 +251,15 @@ use_data_object <- function(object_name = NULL) {
 }
 
 
-.partition_rmd_front_matter <- function(input_lines) 
-{
+.partition_rmd_front_matter <- function(input_lines) {
   validate_front_matter <- function(delimiters) {
-    if (length(delimiters) >= 2 && (delimiters[2] - delimiters[1] > 
-                                    1) && grepl("^---\\s*$", input_lines[delimiters[1]])) {
-      if (delimiters[1] == 1) 
+    if (length(delimiters) >= 2 && (delimiters[2] - delimiters[1] >
+      1) && grepl("^---\\s*$", input_lines[delimiters[1]])) {
+      if (delimiters[1] == 1) {
         TRUE
-      else .is_blank(input_lines[1:delimiters[1] - 1])
+      } else {
+        .is_blank(input_lines[1:delimiters[1] - 1])
+      }
     }
     else {
       FALSE
@@ -261,11 +269,13 @@ use_data_object <- function(object_name = NULL) {
   if (validate_front_matter(delimiters)) {
     front_matter <- input_lines[(delimiters[1]):(delimiters[2])]
     input_body <- c()
-    if (delimiters[1] > 1) 
-      input_body <- c(input_body, input_lines[1:delimiters[1] - 
-                                                1])
-    if (delimiters[2] < length(input_lines)) 
+    if (delimiters[1] > 1) {
+      input_body <- c(input_body, input_lines[1:delimiters[1] -
+        1])
+    }
+    if (delimiters[2] < length(input_lines)) {
       input_body <- c(input_body, input_lines[-(1:delimiters[2])])
+    }
     list(front_matter = front_matter, body = input_body)
   }
   else {
@@ -274,35 +284,36 @@ use_data_object <- function(object_name = NULL) {
 }
 
 
-.parse_yaml_front_matter <- function(front_matter) 
-{
-    if (length(front_matter) > 2) {
-      front_matter <- front_matter[2:(length(front_matter) - 
-                                        1)]
-      front_matter <- paste(front_matter, collapse = "\n")
-      .validate_front_matter(front_matter)
-      parsed_yaml <- .yaml_load_utf8(front_matter)
-      if (is.list(parsed_yaml)) 
-        parsed_yaml
-      else list()
+.parse_yaml_front_matter <- function(front_matter) {
+  if (length(front_matter) > 2) {
+    front_matter <- front_matter[2:(length(front_matter) -
+      1)]
+    front_matter <- paste(front_matter, collapse = "\n")
+    .validate_front_matter(front_matter)
+    parsed_yaml <- .yaml_load_utf8(front_matter)
+    if (is.list(parsed_yaml)) {
+      parsed_yaml
+    } else {
+      list()
     }
-    else list()
+  }
+  else {
+    list()
+  }
 }
 
-.validate_front_matter <- function(front_matter) 
-{
+.validate_front_matter <- function(front_matter) {
   front_matter <- .trim_trailing_ws(front_matter)
-  if (grepl(":$", front_matter)) 
+  if (grepl(":$", front_matter)) {
     stop("Invalid YAML front matter (ends with ':')", call. = FALSE)
+  }
 }
 
-.trim_trailing_ws <- function(x) 
-{
+.trim_trailing_ws <- function(x) {
   sub("\\s+$", "", x)
 }
 
-.yaml_load_utf8 <- function(string, ...) 
-{
+.yaml_load_utf8 <- function(string, ...) {
   string <- paste(string, collapse = "\n")
   if (packageVersion("yaml") >= "2.1.14") {
     yaml::yaml.load(string, ...)
@@ -312,14 +323,14 @@ use_data_object <- function(object_name = NULL) {
   }
 }
 
-.mark_utf8 <- function(x) 
-{
+.mark_utf8 <- function(x) {
   if (is.character(x)) {
     Encoding(x) <- "UTF-8"
     return(x)
   }
-  if (!is.list(x)) 
+  if (!is.list(x)) {
     return(x)
+  }
   attrs <- attributes(x)
   res <- lapply(x, .mark_utf8)
   attributes(res) <- attrs
@@ -327,9 +338,10 @@ use_data_object <- function(object_name = NULL) {
   res
 }
 
-.is_blank <- function(x) 
-{
-  if (length(x)) 
+.is_blank <- function(x) {
+  if (length(x)) {
     all(grepl("^\\s*$", x))
-  else TRUE
+  } else {
+    TRUE
+  }
 }

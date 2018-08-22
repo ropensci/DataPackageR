@@ -20,7 +20,7 @@
 #' @importFrom knitr knit spin
 #' @export
 #' @examples
-#'if(rmarkdown::pandoc_available()){
+#' if(rmarkdown::pandoc_available()){
 #' f <- tempdir()
 #' f <- file.path(f,"foo.Rmd")
 #' con <- file(f)

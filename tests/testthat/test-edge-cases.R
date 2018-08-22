@@ -11,8 +11,8 @@ test_that("package built in different edge cases", {
     r_object_names = "cars_over_20"
   )
   expect_error(package_build(packageName = NULL))
-  old <- setwd(file.path(tempdir(), "subsetCars")) #nolint
-  on.exit(setwd(old)) #nolint
+  old <- setwd(file.path(tempdir(), "subsetCars")) # nolint
+  on.exit(setwd(old)) # nolint
   expect_equal(
     basename(package_build(packageName = NULL)),
     "subsetCars_1.0.tar.gz"
@@ -235,8 +235,12 @@ test_that("package built in different edge cases", {
   dir.create(file.path(tempdir(), "foo", "data-raw"))
   suppressWarnings(
     expect_error(
-      DataPackageR:::DataPackageR(file.path(tempdir(),
-                                            "foo"))))
+      DataPackageR:::DataPackageR(file.path(
+        tempdir(),
+        "foo"
+      ))
+    )
+  )
   yml <- DataPackageR:::construct_yml_config("foo")
   yml_write(yml, path = file.path(tempdir(), "foo"))
   expect_error(DataPackageR:::DataPackageR(file.path(tempdir(), "foo")))
