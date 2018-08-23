@@ -28,7 +28,7 @@ There was 1 NOTE when pandoc was present:
 NOTE
 Maintainer: ‘Greg Finak <gfinak@fredhutch.org>’
 
-Days since last update: 4
+Days since last update: 5
 
 There were 2 NOTEs when pandoc was absent, the one above and :
 
