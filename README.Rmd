@@ -5,7 +5,6 @@ editor_options:
   chunk_output_type: inline
 ---
 
-<!-- README.md is generated from README.Rmd. Please edit that file -->
 
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(

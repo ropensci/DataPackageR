@@ -11,12 +11,14 @@
   newv <- lapply(newv, as.numeric)[[1]]
   if (any(is.na(oldv)) | any(is.na(newv))) {
     options(warn = oldwarn)
-    flog.fatal(paste0(
+    .multilog_fatal(paste0(
       "Invalid DataVersion string found ",
       old_data_digest[["DataVersion"]],
       " and ", new_data_digest[["DataVersion"]]
     ))
-    # stop("exiting", call. = FALSE)
+    {
+      stop("exiting", call. = FALSE)
+    }
   }
   greater <- apply(t(cbind(oldv, newv)), 2, function(x) x[2] > x[1])
   equal <- apply(t(cbind(oldv, newv)), 2, function(x) x[2] == x[1])
@@ -35,7 +37,7 @@
   if (valid) {
     for (i in names(new_digest)[-1L]) {
       if (new_digest[[i]] != old_digest[[i]]) {
-        flog.warn(paste0(i, " has changed."))
+        .multilog_warn(paste0(i, " has changed."))
         valid <- FALSE
       }
     }
@@ -52,12 +54,12 @@
       # some new elements exist
       valid <- FALSE
       for (i in difference) {
-        flog.debug(paste0(i, " added."))
+        .multilog_debug(paste0(i, " added."))
       }
     }
     for (i in intersection) {
       if (new_digest[[i]] != old_digest[[i]]) {
-        flog.debug(paste0(i, " changed"))
+        .multilog_debug(paste0(i, " changed"))
         # some new elements are not the same
         valid <- FALSE
       }
@@ -88,11 +90,13 @@
 
 .digest_data_env <- function(object_names, dataenv, pkg_description) {
   if (is.null(pkg_description[["DataVersion"]])) {
-    flog.fatal(paste0(
+    .multilog_fatal(paste0(
       "DESCRIPTION file must have a DataVersion",
       " line. i.e. DataVersion: 0.2.0"
     ))
-    # stop("exiting", call. = FALSE)
+     {
+       stop("exiting", call. = FALSE)
+    }
   }
   new_data_digest <- list()
   new_data_digest[["DataVersion"]] <- pkg_description[["DataVersion"]]

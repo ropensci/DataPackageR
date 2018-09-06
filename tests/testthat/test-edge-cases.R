@@ -165,7 +165,9 @@ test_that("package built in different edge cases", {
   package.skeleton("foo", path = tempdir())
 
   library(futile.logger)
-  flog.appender(appender.console())
+  DataPackageR:::.multilog_setup("/tmp/test.log")
+  DataPackageR:::.multilog_thresold(INFO,TRACE)
+  
   suppressWarnings(expect_false({
     DataPackageR:::.compare_digests(
       list(

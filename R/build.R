@@ -16,7 +16,7 @@
 #' @importFrom rmarkdown pandoc_available
 #' @importFrom utils install.packages
 #' @importFrom yaml read_yaml
-#' @importFrom futile.logger flog.debug flog.info flog.warn flog.error flog.fatal flog.appender flog.threshold INFO appender.console appender.tee
+#' @importFrom futile.logger flog.logger flog.trace appender.file flog.debug flog.info flog.warn flog.error flog.fatal flog.appender flog.threshold INFO TRACE appender.console appender.tee
 #' @importFrom knitr knit spin
 #' @export
 #' @examples
@@ -40,8 +40,8 @@ package_build <- function(packageName = NULL,
                           log = INFO,
                           deps = TRUE,
                           install = TRUE) {
-  flog.threshold(log)
-  flog.appender(appender.console())
+  .multilog_setup(LOGFILE = NULL)
+  # flog.appender(appender.console())
   # requireNamespace("futile.logger")
   if (is.null(packageName)) {
     packageName <- "."
@@ -50,13 +50,13 @@ package_build <- function(packageName = NULL,
     packageName <- basename(package_path)
     # Is this a package root?
     if (!is_r_package$find_file() == package_path) {
-      flog.fatal(paste0(package_path, " is not an R package root directory"))
+      flog.fatal(paste0(package_path, " is not an R package root directory"), name = "console")
       stop("exiting", call. = FALSE)
     }
   } else {
     package_path <- normalizePath(packageName, winslash = "/")
     if (!file.exists(package_path)) {
-      flog.fatal(paste0("Non existent package ", packageName))
+      flog.fatal(paste0("Non existent package ", packageName), name = "console")
       stop("exiting", call. = FALSE)
     }
     packageName <- basename(package_path)
@@ -71,7 +71,7 @@ package_build <- function(packageName = NULL,
       package_path,
       " is not a valid R package directory beneath ",
       getwd()
-    ))
+    ), name = "console")
     stop("exiting", call. = FALSE)
   }
 
@@ -79,15 +79,15 @@ package_build <- function(packageName = NULL,
   success <-
     DataPackageR(arg = package_path, deps = deps)
   ifelse(success,
-    flog.info("DataPackageR succeeded"),
-    flog.warn("DataPackageR failed")
+    .multilog_trace("DataPackageR succeeded"),
+    .multilog_warn("DataPackageR failed")
   )
-  flog.info("Building documentation")
+  .multilog_trace("Building documentation")
   roxygen2::roxygenise(package_path,
     clean = TRUE
   )
 
-  flog.info("Building package")
+  .multilog_trace("Building package")
   location <- build(package_path,
     path = dirname(package_path),
     vignettes = vignettes

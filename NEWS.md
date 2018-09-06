@@ -1,3 +1,7 @@
+# DataPackageR 0.15.3.9000
+* Reduce the console output from logging. (ropensci/DataPackageR/issues/50)
+* Create a new logger that logs at different thresholds to console and to file (ropensci/DataPackageR/issues/50)
+
 # DataPackageR 0.15.3
 * conditional tests when pandoc is missing (ropensci/DataPackager/issues/46)
 * add use_data_object and use_processing_script (ropensci/DataPackager/issues/44)

@@ -47,10 +47,10 @@
 .newsfile <- function() {
   newsfile <- file.path(usethis::proj_get(), "NEWS.md")
   if (!file.exists(newsfile)) {
-    flog.info("NEWS.md file not found, creating!")
+    .multilog_trace("NEWS.md file not found, creating!")
     con <- file(newsfile, open = "w+", blocking = FALSE)
   } else {
-    flog.info("NEWS.md file found, updating!")
+    .multilog_trace("NEWS.md file found, updating!")
     con <- file(newsfile, open = "r+", blocking = FALSE)
   }
   close(con)
