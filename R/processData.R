@@ -120,6 +120,7 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
   # requireNamespace("futile.logger")
   pkg_dir <- arg
   pkg_dir <- normalizePath(pkg_dir, winslash = "/")
+  cat("\n")
   usethis::proj_set(path = pkg_dir)
   raw_data_dir <- "data-raw"
   target <- normalizePath(file.path(pkg_dir, raw_data_dir), winslash = "/")
@@ -298,7 +299,8 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
       }
       rmarkdown::render(
         input = r_files[i], envir = dataenv,
-        output_dir = logpath, clean = TRUE, knit_root_dir = render_root
+        output_dir = logpath, clean = TRUE, knit_root_dir = render_root,
+        quiet = TRUE
       )
       # The created objects
       object_names <- ls(dataenv)
@@ -307,6 +309,15 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
         " required data objects created by ",
         basename(r_files[i])
       ))
+      .done(paste0(sum(objects_to_keep %in% object_names),
+             " data objects created by ",
+             basename(r_files[i])))
+      if (sum(objects_to_keep %in% object_names) > 0) {
+            .bullet(
+              paste0(objects_to_keep[which(objects_to_keep %in% object_names)],"\n"), 
+              crayon::red("\u2022"))
+      }
+            
       if (sum(objects_to_keep %in% object_names) > 0) {
         for (o in objects_to_keep[objects_to_keep %in% object_names]) {
           assign(o, get(o, dataenv), ENVS)
@@ -733,6 +744,7 @@ project_data_path <- function(file = NULL) {
 #' document(path = file.path(tempdir(), pname), install=FALSE)
 #' }
 document <- function(path = ".", install = TRUE) {
+  cat("\n")
   usethis::proj_set(path = path)
   path <- usethis::proj_get()
   assert_that(file.exists(file.path(path, "data-raw", "documentation.R")))

@@ -39,7 +39,7 @@ package_build <- function(packageName = NULL,
                           vignettes = FALSE,
                           log = INFO,
                           deps = TRUE,
-                          install = TRUE) {
+                          install = FALSE) {
   .multilog_setup(LOGFILE = NULL)
   # flog.appender(appender.console())
   # requireNamespace("futile.logger")

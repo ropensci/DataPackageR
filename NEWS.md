@@ -1,6 +1,8 @@
 # DataPackageR 0.15.3.9000
 * Reduce the console output from logging. (ropensci/DataPackageR/issues/50)
 * Create a new logger that logs at different thresholds to console and to file (ropensci/DataPackageR/issues/50)
+* Default on build is not to install.
+* Nicer message of what data sets are created (ropensci/DataPackageR/issues/51)
 
 # DataPackageR 0.15.3
 * conditional tests when pandoc is missing (ropensci/DataPackager/issues/46)
