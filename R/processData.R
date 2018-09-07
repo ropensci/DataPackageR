@@ -389,9 +389,13 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
           pkg_description,
           new_data_digest
         )
+        #TODO what objects have changed?
+        changed_objects <- .qualify_changes(new_data_digest,old_data_digest)
+        
         .update_news_md(updated_version$new_data_digest[["DataVersion"]],
           interact = getOption("DataPackageR_interact", interactive())
         )
+        .update_news_changed_objects(changed_objects)
         pkg_description <- updated_version$pkg_description
         new_data_digest <- updated_version$new_data_digest
         can_write <- TRUE
@@ -433,9 +437,13 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
           pkg_description,
           new_data_digest
         )
+        # TODO what objects have changed?
+        changed_objects <- .qualify_changes(new_data_digest,old_data_digest)
         .update_news_md(updated_version$new_data_digest[["DataVersion"]],
           interact = getOption("DataPackageR_interact", interactive())
         )
+        .update_news_changed_objects(changed_objects)
+        
         pkg_description <- updated_version$pkg_description
         new_data_digest <- updated_version$new_data_digest
         can_write <- TRUE

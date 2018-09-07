@@ -26,6 +26,7 @@ test_that("data changes but version out of sync", {
   pkg$set("DataVersion", "0.0.0")
   pkg$write()
   package_build(file.path(tempdir(), "subsetCars"))
+  expect_equal(grep("Changed: cars_over_20",readLines(file.path(tempdir(), "subsetCars","NEWS.md"))),4)
   unlink(file.path(tempdir(), "subsetCars"),
     recursive = TRUE,
     force = TRUE
