@@ -89,7 +89,7 @@ assert_data_version(data_package_name = "mtcars20",
                     acceptable = "equal")  #If this fails, execution stops
                                            #and provides an informative error.
 
-## ----construct_config, echo=1:2, eval = rmarkdown::pandoc_available()----
+## ----construct_config, eval = rmarkdown::pandoc_available()--------------
 # assume I have file1.Rmd and file2.R located in /data-raw, 
 # and these create 'object1' and 'object2' respectively.
 

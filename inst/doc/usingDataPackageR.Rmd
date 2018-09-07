@@ -298,7 +298,7 @@ The build process is now controlled via a `datapackager.yml` configuration file 
 
 You can migrate an old package by constructing such a config file using the `construct_yml_config()` API.
 
-```{r  construct_config, echo=1:2, eval = rmarkdown::pandoc_available()}
+```{r  construct_config, eval = rmarkdown::pandoc_available()}
 # assume I have file1.Rmd and file2.R located in /data-raw, 
 # and these create 'object1' and 'object2' respectively.
 

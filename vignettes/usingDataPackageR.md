@@ -109,7 +109,7 @@ configuration:
       enabled: yes
   objects: cars_over_20
   render_root:
-    tmp: '434259'
+    tmp: '704183'
 ```
 
 The two main pieces of information in the configuration are a list of the files to be processed and the data sets the package will store.
@@ -140,12 +140,12 @@ These are useful for constructing portable paths in your code to read files from
 
 For example: to construct a path to a file named "mydata.csv" located in `inst/extdata` in your data package source tree:
 
-- use `DataPackageR::project_extdata_path("mydata.csv")` in your `R` or `Rmd` file. This would return: e.g., /var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//Rtmpoe8B8t/mtcars20/inst/extdata/mydata.csv
+- use `DataPackageR::project_extdata_path("mydata.csv")` in your `R` or `Rmd` file. This would return: e.g., /var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//RtmpRwP4Ud/mtcars20/inst/extdata/mydata.csv
 
 Similarly: 
 
-- `DataPackageR::project_path()`  constructs a path to the data package root directory. (e.g., /var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//Rtmpoe8B8t/mtcars20)
-- `DataPackageR::project_data_path()` constructs a path to the data package `data` subdirectory. (e.g., /var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//Rtmpoe8B8t/mtcars20/data)
+- `DataPackageR::project_path()`  constructs a path to the data package root directory. (e.g., /var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//RtmpRwP4Ud/mtcars20)
+- `DataPackageR::project_data_path()` constructs a path to the data package `data` subdirectory. (e.g., /var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//RtmpRwP4Ud/mtcars20/data)
 
 Raw data sets that are stored externally (outside the data package source tree) can be constructed relative to the `project_path()`.
 
@@ -177,7 +177,7 @@ Once the skeleton framework is set up,
 # and reproducibly enclose it in a package.
 DataPackageR:::package_build(file.path(tempdir(),"mtcars20"))
 
-✔ Setting active project to '/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmpoe8B8t/mtcars20'
+✔ Setting active project to '/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpRwP4Ud/mtcars20'
 ✔ 1 data set(s) created by subsetCars.Rmd
 • cars_over_20
 ☘ Built  all datasets!
@@ -186,14 +186,14 @@ Enter a text description of the changes for the NEWS.md file.
 ✔ Creating 'vignettes/'
 ✔ Creating 'inst/doc/'
 First time using roxygen2. Upgrading automatically...
-Updating roxygen version in /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmpoe8B8t/mtcars20/DESCRIPTION
+Updating roxygen version in /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpRwP4Ud/mtcars20/DESCRIPTION
 Writing NAMESPACE
 Loading mtcars20
 Writing mtcars20.Rd
 Writing cars_over_20.Rd
 '/Library/Frameworks/R.framework/Resources/bin/R' --no-site-file  \
   --no-environ --no-save --no-restore --quiet CMD build  \
-  '/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmpoe8B8t/mtcars20'  \
+  '/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpRwP4Ud/mtcars20'  \
   --no-resave-data --no-manual --no-build-vignettes 
 
 Next Steps 
@@ -207,7 +207,7 @@ Next Steps
    - Set up a github repository for your pacakge. 
    - Add the github repository as a remote of your local package repository. 
    -  git push  your local repository to gitub. 
-[1] "/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmpoe8B8t/mtcars20_1.0.tar.gz"
+[1] "/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpRwP4Ud/mtcars20_1.0.tar.gz"
 ```
 
 ### Documenting your data set changes in NEWS.md
@@ -292,7 +292,7 @@ You should update this file to properly document your objects. Then rebuild the 
 ```r
 document(file.path(tempdir(),"mtcars20"))
 
-✔ Setting active project to '/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmpoe8B8t/mtcars20'
+✔ Setting active project to '/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpRwP4Ud/mtcars20'
 Updating mtcars20 documentation
 Loading mtcars20
 [1] TRUE
@@ -383,6 +383,10 @@ You can migrate an old package by constructing such a config file using the `con
 ```r
 # assume I have file1.Rmd and file2.R located in /data-raw, 
 # and these create 'object1' and 'object2' respectively.
+
+config <- construct_yml_config(code = c("file1.Rmd", "file2.R"),
+                              data = c("object1", "object2"))
+cat(yaml::as.yaml(config))
 configuration:
   files:
     file1.Rmd:
@@ -393,7 +397,7 @@ configuration:
   - object1
   - object2
   render_root:
-    tmp: '141064'
+    tmp: '464979'
 ```
 
 `config` is a newly constructed yaml configuration object. It can be written to the package directory:
@@ -456,7 +460,7 @@ configuration:
   - object1
   - object2
   render_root:
-    tmp: '141064'
+    tmp: '464979'
 ```
 
 Note that the modified configuration needs to be written back to the package source directory in order for the 
