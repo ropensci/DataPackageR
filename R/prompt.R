@@ -3,7 +3,11 @@
                "DataPackageR_interact",
                interactive()
              )) {
-    cat(crayon::cyan("Enter a text description of the changes for the NEWS file.\n")) # nolint
+    if (interactive()) {
+      cat(crayon::cyan("Enter a text description of the changes for the NEWS.md file.\n")) # nolint
+    }else{
+      cat(crayon::cyan("Non-interactive NEWS.md file update.\n"))
+    }
     change_description <-
       ifelse(
         interactive() & interact,
@@ -82,6 +86,7 @@
   
   .write_changes <- function(string, news_con, what = NULL) {
     if (length(string) != 0) {
+      cat(crayon::cyan(paste0("* ",what,": ",string,"\n")))
        writeLines(text = paste0("* ",what,": ", string),
                   con = news_con,
                   sep = "\n")
