@@ -4,7 +4,8 @@
 \alias{use_processing_script}
 \title{Add a processing script to a data package.}
 \usage{
-use_processing_script(file = NULL, title = NULL, author = NULL)
+use_processing_script(file = NULL, title = NULL, author = NULL,
+  overwrite = FALSE)
 }
 \arguments{
 \item{file}{\code{character} path to an existing file or name of a new R or Rmd file to create.}
@@ -12,6 +13,8 @@ use_processing_script(file = NULL, title = NULL, author = NULL)
 \item{title}{\code{character} title of the processing script for the yaml header. Used only if file is being created.}
 
 \item{author}{\code{character} author name for the yaml header. Used only if the file is being created.}
+
+\item{overwrite}{\code{logical} default FALSE. Overwrite existing file of the same name.}
 }
 \value{
 invisibly returns TRUE for success. Stops on failure.
@@ -19,6 +22,7 @@ invisibly returns TRUE for success. Stops on failure.
 \description{
 The Rmd or R file or directory specified by \code{file} will be moved into
 the data-raw directory. It will also be added to the yml configuration file.
+Any existing file by that name will be overwritten when overwrite is set to TRUE
 }
 \examples{
 if(rmarkdown::pandoc_available()){

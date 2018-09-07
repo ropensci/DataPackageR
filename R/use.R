@@ -58,10 +58,12 @@ use_raw_dataset <- function(path = NULL) {
 #'
 #' The Rmd or R file or directory specified by \code{file} will be moved into
 #' the data-raw directory. It will also be added to the yml configuration file.
+#' Any existing file by that name will be overwritten when overwrite is set to TRUE 
 #'
 #' @param file \code{character} path to an existing file or name of a new R or Rmd file to create.
 #' @param title \code{character} title of the processing script for the yaml header. Used only if file is being created.
 #' @param author \code{character} author name for the yaml header. Used only if the file is being created.
+#' @param overwrite \code{logical} default FALSE. Overwrite existing file of the same name.
 #'
 #' @return invisibly returns TRUE for success. Stops on failure.
 #' @importFrom usethis proj_get proj_set create_package use_data_raw
@@ -83,13 +85,21 @@ use_raw_dataset <- function(path = NULL) {
 #'     title = "Processing a new dataset",
 #'     author = "Y.N. Here.")
 #' }
-use_processing_script <- function(file = NULL, title = NULL, author = NULL) {
+use_processing_script <- function(file = NULL, title = NULL, author = NULL, overwrite = FALSE) {
   if (is.null(file)) {
     stop("You must provide a full path to a file.")
   }
   proj_path <- usethis::proj_get()
   if (!utils::file_test("-d", file.path(proj_path, "data-raw"))) {
     stop(paste0("data-raw doesn't exist in ", proj_path), call. = FALSE)
+  }
+  #check if the given file or directory already exists
+  if (utils::file_test("-f",file.path(proj_path,"data-raw",file))|utils::file_test("-d",file.path(proj_path,"data-raw",file))) { #nolint
+    if(overwrite){
+      .bullet(paste0("Courtesy warning: ", basename(file), " exists in ",crayon::blue("'data-raw'"),", and ",crayon::red("WILL")," be overwritten."),bullet = crayon::red("\u2622")) #nolint
+    } else {
+      .bullet(paste0("Courtesy warning: ", basename(file), " exists in ",crayon::blue("'data-raw'"),", and ",crayon::red("WILL NOT")," be overwritten."),bullet = crayon::red("\u2622")) #nolint
+    }
   }
   raw_file <- suppressWarnings(normalizePath(file))
   
@@ -99,11 +109,10 @@ use_processing_script <- function(file = NULL, title = NULL, author = NULL) {
       grepl("\\.r$", tolower(raw_file)))) {
       stop("file must be an .R or .Rmd.")
     }
-    .bullet(paste0("Courtesy warning: if ", basename(raw_file), " existed in ",crayon::blue("'data-raw'"),", it is silently overwritten."),bullet = crayon::red("\u2622"))
     file.copy(
       from = raw_file,
       to = file.path(proj_path, "data-raw"),
-      overwrite = TRUE
+      overwrite = overwrite
     )
     # add it to the yaml
     yml <- yml_find(path = proj_path)
@@ -118,7 +127,6 @@ use_processing_script <- function(file = NULL, title = NULL, author = NULL) {
     (grepl("\\.r$", tolower(raw_file)) |
       grepl("\\.rmd$", tolower(raw_file)))) {
     # we have a valid file name and should create it.
-    .bullet(paste0("Courtesy warning: if ", basename(raw_file), " existed in ",crayon::blue("'data-raw'"),", it is silently overwritten."),bullet = crayon::red("\u2622"))
     file.create(file.path(proj_path, "data-raw", basename(raw_file)))
     .update_header(file.path(proj_path,
                              "data-raw",

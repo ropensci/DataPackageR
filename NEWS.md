@@ -7,7 +7,7 @@
 * Write deleted, changed, and added data objects to the NEWS file automatically.
 * Fix the documentation for datapackager_object_read() and "Migrating old packages".
 * code argument no longer required for construct_yml_config
-* Notify user that use_processing_script will silently overwrite existing files.
+* Add option to overwrite (or not) via use_processing_script. Provide warning.
 
 # DataPackageR 0.15.3
 * conditional tests when pandoc is missing (ropensci/DataPackager/issues/46)

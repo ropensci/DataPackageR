@@ -67,6 +67,7 @@ test_that("use_processing_script works as expected", {
     )
   )
   expect_true(use_processing_script("newScript.Rmd"))
+  expect_true(use_processing_script("newScript.Rmd", overwrite = TRUE))
   expect_true(use_processing_script("newScript.Rmd", title = "foo"))
   expect_true(use_processing_script("newScript.Rmd", 
                                     title = "foo", author = "bar"))
