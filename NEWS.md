@@ -5,6 +5,7 @@
 * Hide console output from Rmd render.
 * Nicer messages describing data sets that are created (ropensci/DataPackageR/issues/51)
 * Write deleted, changed, and added data objects to the NEWS file automatically.
+* Fix the documentation for datapackager_object_read()
 
 # DataPackageR 0.15.3
 * conditional tests when pandoc is missing (ropensci/DataPackager/issues/46)
