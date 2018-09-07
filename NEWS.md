@@ -6,6 +6,8 @@
 * Nicer messages describing data sets that are created (ropensci/DataPackageR/issues/51)
 * Write deleted, changed, and added data objects to the NEWS file automatically.
 * Fix the documentation for datapackager_object_read() and "Migrating old packages".
+* code argument no longer required for construct_yml_config
+* Notify user that use_processing_script will silently overwrite existing files.
 
 # DataPackageR 0.15.3
 * conditional tests when pandoc is missing (ropensci/DataPackager/issues/46)

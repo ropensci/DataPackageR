@@ -231,13 +231,15 @@ yml_write <- function(config, path = NULL) {
 #' yml_write(conf,path=tmp)
 #' @export
 construct_yml_config <- function(code = NULL, data = NULL, render_root = NULL) {
-  code <- basename(code)
+  if (!is.null(code)) {
+    code <- basename(code)
+  }
   files <- vector(length = length(code), mode = "list")
   names(files) <- code
   for (i in code) {
-    # files[[i]]$name <- i
     files[[i]]$enabled <- TRUE
   }
+  
   # create render root at a temporary directory.
   # this will be stored in the yaml. What if we restart?
   # see processData - it gets validated and created if not existing.

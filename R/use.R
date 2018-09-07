@@ -92,12 +92,14 @@ use_processing_script <- function(file = NULL, title = NULL, author = NULL) {
     stop(paste0("data-raw doesn't exist in ", proj_path), call. = FALSE)
   }
   raw_file <- suppressWarnings(normalizePath(file))
+  
   if (utils::file_test("-f", raw_file)) {
     # test if it's an R or Rmd file.
     if (!(grepl("\\.rmd$", tolower(raw_file)) |
       grepl("\\.r$", tolower(raw_file)))) {
       stop("file must be an .R or .Rmd.")
     }
+    .bullet(paste0("Courtesy warning: if ", basename(raw_file), " existed in ",crayon::blue("'data-raw'"),", it is silently overwritten."),bullet = crayon::red("\u2622"))
     file.copy(
       from = raw_file,
       to = file.path(proj_path, "data-raw"),
@@ -116,6 +118,7 @@ use_processing_script <- function(file = NULL, title = NULL, author = NULL) {
     (grepl("\\.r$", tolower(raw_file)) |
       grepl("\\.rmd$", tolower(raw_file)))) {
     # we have a valid file name and should create it.
+    .bullet(paste0("Courtesy warning: if ", basename(raw_file), " existed in ",crayon::blue("'data-raw'"),", it is silently overwritten."),bullet = crayon::red("\u2622"))
     file.create(file.path(proj_path, "data-raw", basename(raw_file)))
     .update_header(file.path(proj_path,
                              "data-raw",
