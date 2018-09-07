@@ -1,7 +1,8 @@
 ## ---- echo = FALSE, results = 'hide'-------------------------------------
 library(DataPackageR)
 library(yaml)
-yml <- DataPackageR::construct_yml_config(code = "subsetCars.Rmd", data = "cars_over_20")
+yml <- DataPackageR::construct_yml_config(code = "subsetCars.Rmd",
+                                          data = "cars_over_20")
 
 ## ---- echo = FALSE, comment=""-------------------------------------------
 cat(yaml::as.yaml(yml))

@@ -29,11 +29,15 @@
 }
 .multilog_setup <- function(LOGFILE = NULL) {
   if (!is.null(LOGFILE)) {
-    flog.logger(name = "logfile", 
-                appender = appender.file(LOGFILE),
-                threshold = TRACE)
+    flog.logger(
+      name = "logfile",
+      appender = appender.file(LOGFILE),
+      threshold = TRACE
+    )
   }
-  flog.logger(name = "console", 
-              appender = appender.console(),
-              threshold = INFO)
+  flog.logger(
+    name = "console",
+    appender = appender.console(),
+    threshold = INFO
+  )
 }

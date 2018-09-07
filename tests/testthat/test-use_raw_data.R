@@ -68,12 +68,14 @@ test_that("use_processing_script works as expected", {
   )
   expect_true(use_processing_script("newScript.Rmd"))
   expect_true(use_processing_script("newScript.Rmd", title = "foo"))
-  expect_true(use_processing_script("newScript.Rmd", title = "foo", author = "bar"))
+  expect_true(use_processing_script("newScript.Rmd", 
+                                    title = "foo", author = "bar"))
   expect_true(use_processing_script("newScript.Rmd", author = "bar"))
 
   expect_true(use_processing_script("newScript.R"))
   expect_true(use_processing_script("newScript.R", title = "foo"))
-  expect_true(use_processing_script("newScript.R", title = "foo", author = "bar"))
+  expect_true(use_processing_script("newScript.R", 
+                                    title = "foo", author = "bar"))
   expect_true(use_processing_script("newScript.R", author = "bar"))
   expect_equal(readLines(
     file.path(tempdir(), "subsetCars20", "data-raw", "newScript.Rmd")
@@ -133,7 +135,9 @@ test_that(".update_header", {
   )
 
   con <- file(file.path(tempdir(), "foo.Rmd"), open = "wt")
-  writeLines(text = c("---", "title: My Title", "author: My Name", "---"), con = con)
+  writeLines(text = 
+               c("---", "title: My Title", "author: My Name", "---"), 
+             con = con)
   close(con)
   DataPackageR:::.update_header(
     file = file.path(tempdir(), "foo.Rmd"),
@@ -275,8 +279,10 @@ test_that(".parse_yaml_front_matter", {
   test_string5 <-
     c(" ", "---", " input: in", " output: out", "---\n")
   test_string6 <- c("---", "input: in ", "output: out", "test:")
-  expect_null(DataPackageR:::.validate_front_matter(paste0(test_string1, collapse = "\n")))
-  expect_error(DataPackageR:::.validate_front_matter(paste0(test_string6, collapse = "\n")))
+  expect_null(DataPackageR:::.validate_front_matter(
+    paste0(test_string1, collapse = "\n")))
+  expect_error(DataPackageR:::.validate_front_matter(
+    paste0(test_string6, collapse = "\n")))
 
   expect_equal(
     (DataPackageR:::.parse_yaml_front_matter(test_string1)),

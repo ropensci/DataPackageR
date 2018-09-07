@@ -13,7 +13,7 @@ test_that("R file processing works and creates vignettes", {
   expect_equal(
     basename(
       package_build(
-        file.path(tempdir(), "rfiletest"), 
+        file.path(tempdir(), "rfiletest"),
         install = TRUE
       )
     ),
@@ -21,7 +21,7 @@ test_that("R file processing works and creates vignettes", {
   )
   v <- vignette(package = "rfiletest")
   expect_equal(v$results[, "Item"], "rfileTest")
-  
+
   unlink(file.path(tempdir(), "rfiletest"),
     recursive = TRUE,
     force = TRUE

@@ -16,9 +16,6 @@
       old_data_digest[["DataVersion"]],
       " and ", new_data_digest[["DataVersion"]]
     ))
-    {
-      stop("exiting", call. = FALSE)
-    }
   }
   greater <- apply(t(cbind(oldv, newv)), 2, function(x) x[2] > x[1])
   equal <- apply(t(cbind(oldv, newv)), 2, function(x) x[2] == x[1])
@@ -94,9 +91,6 @@
       "DESCRIPTION file must have a DataVersion",
       " line. i.e. DataVersion: 0.2.0"
     ))
-     {
-       stop("exiting", call. = FALSE)
-    }
   }
   new_data_digest <- list()
   new_data_digest[["DataVersion"]] <- pkg_description[["DataVersion"]]

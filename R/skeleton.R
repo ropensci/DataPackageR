@@ -42,12 +42,12 @@ datapackage_skeleton <-
     if (is.null(name)) {
       stop("Must supply a package name", call. = FALSE)
     }
-    #if (length(r_object_names) == 0) {
+    # if (length(r_object_names) == 0) {
     #  stop("You must specify r_object_names", call. = FALSE)
-    #}
-    #if (length(code_files) == 0) {
+    # }
+    # if (length(code_files) == 0) {
     #  stop("You must specify code_files", call. = FALSE)
-    #}
+    # }
     if (force) {
       unlink(file.path(path, name), recursive = TRUE, force = TRUE)
     }
@@ -65,12 +65,12 @@ datapackage_skeleton <-
     description$set("Package" = name)
     description$set("Roxygen" = "list(markdown = TRUE)")
     description$write()
-    .done("Added DataVersion string to DESCRIPTION")
+    .done(paste0("Added DataVersion string to ", crayon::blue("'DESCRIPTION'")))
 
     usethis::use_directory("data-raw")
     usethis::use_directory("data")
     usethis::use_directory("inst/extdata")
-    .done("Created data and data-raw directories")
+    # .done("Created data and data-raw directories")
 
     con <-
       file(file.path(package_path, "Read-and-delete-me"), open = "w")
@@ -111,7 +111,8 @@ datapackage_skeleton <-
         obj <- match.arg(obj, c("code", "dependencies"))
         for (y in x) {
           file.copy(y, file.path(package_path, "data-raw"), overwrite = TRUE)
-          .done("Copied ", obj, " into data-raw")
+          .done(paste0("Copied ", basename(y),
+                       " into ", crayon::blue("'data-raw'")))
         }
       }
     }
@@ -122,7 +123,7 @@ datapackage_skeleton <-
         file.copy(x, file.path(package_path, "inst/extdata"),
           recursive = TRUE, overwrite = TRUE
         )
-        .done("Moved data into inst/extdata")
+        .done(paste0("Moved data into ", crayon::blue("'inst/extdata'")))
       }
     }
     .copy_files_to_data_raw(code_files, obj = "code")
@@ -131,7 +132,7 @@ datapackage_skeleton <-
 
     yml <- construct_yml_config(code = code_files, data = r_object_names)
     yaml::write_yaml(yml, file = file.path(package_path, "datapackager.yml"))
-    .done("configured yaml file")
+    .done(paste0("configured ", crayon::blue("'datapackager.yml'"), " file"))
 
 
     oldrdfiles <-

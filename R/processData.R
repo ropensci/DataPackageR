@@ -253,6 +253,9 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
     can_write <- FALSE
     # environment for the data
     ENVS <- new.env(hash = TRUE, parent = .GlobalEnv)
+    object_tally <- 0
+    already_built <- NULL
+    building <- NULL
     for (i in seq_along(r_files)) {
       dataenv <- new.env(hash = TRUE, parent = .GlobalEnv)
       # assign ENVS into dataenv.
@@ -303,21 +306,49 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
         quiet = TRUE
       )
       # The created objects
-      object_names <- ls(dataenv)
+      object_names <- setdiff(ls(dataenv),
+                              c("ENVS", already_built)) # ENVS is removed
+      object_tally <- object_tally | objects_to_keep %in% object_names
+      already_built <- unique(c(already_built,
+                                objects_to_keep[objects_to_keep %in% object_names]))
       .multilog_trace(paste0(
         sum(objects_to_keep %in% object_names),
-        " required data objects created by ",
+        " data set(s) created by ",
         basename(r_files[i])
       ))
-      .done(paste0(sum(objects_to_keep %in% object_names),
-             " data objects created by ",
-             basename(r_files[i])))
+      .done(paste0(
+        sum(objects_to_keep %in% object_names),
+        " data set(s) created by ",
+        basename(r_files[i])
+      ))
       if (sum(objects_to_keep %in% object_names) > 0) {
-            .bullet(
-              paste0(objects_to_keep[which(objects_to_keep %in% object_names)],"\n"), 
-              crayon::red("\u2022"))
+        .add_newlines_to_vector <- function(x) {
+          x <- paste0(x, sep = "\n")
+          x[length(x)] <- gsub("\n", "", x[length(x)])
+          x
+        }
+        .bullet(
+          .add_newlines_to_vector(
+            objects_to_keep[which(objects_to_keep %in% object_names)]),
+          crayon::red("\u2022")
+        )
       }
-            
+      .bullet(
+        paste0(
+          "Built ",
+          ifelse(
+            sum(object_tally) == length(object_tally),
+            " all datasets!",
+            paste0(sum(object_tally), " of ",
+                   length(object_tally), " data sets.")
+          )
+        ),
+        ifelse(
+          sum(object_tally) == length(object_tally),
+          crayon::green("\u2618"),
+          crayon::green("\u2605")
+        )
+      )
       if (sum(objects_to_keep %in% object_names) > 0) {
         for (o in objects_to_keep[objects_to_keep %in% object_names]) {
           assign(o, get(o, dataenv), ENVS)
@@ -527,8 +558,9 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
 
 .ppfiles_mkvignettes <- function(dir = NULL) {
   cat("\n")
-  if (proj_get() != dir)
+  if (proj_get() != dir) {
     usethis::proj_set(dir)
+  }
   pkg <- desc::desc(dir)
   pkg$set_dep("knitr", "Suggests")
   pkg$set_dep("rmarkdown", "Suggests")

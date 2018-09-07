@@ -117,7 +117,10 @@ use_processing_script <- function(file = NULL, title = NULL, author = NULL) {
       grepl("\\.rmd$", tolower(raw_file)))) {
     # we have a valid file name and should create it.
     file.create(file.path(proj_path, "data-raw", basename(raw_file)))
-    .update_header(file.path(proj_path, "data-raw", basename(raw_file)), title = title, author = author)
+    .update_header(file.path(proj_path,
+                             "data-raw",
+                             basename(raw_file)),
+                   title = title, author = author)
     # add it to the yaml.
     yml <- yml_find(path = proj_path)
     yml <- yml_add_files(yml, basename(raw_file))
@@ -177,7 +180,8 @@ use_data_object <- function(object_name = NULL) {
     partitioned_file <- .partition_rmd_front_matter(file_contents)
   }
   if (!is.null(partitioned_file$front_matter)) {
-    front_matter <- .parse_yaml_front_matter(gsub("#'\\s*", "", partitioned_file$front_matter))
+    front_matter <- .parse_yaml_front_matter(
+      gsub("#'\\s*", "", partitioned_file$front_matter))
   } else {
     front_matter <- list()
   }
@@ -206,9 +210,11 @@ use_data_object <- function(object_name = NULL) {
     # open the file for writing.
     connection <- file(file, open = "w+")
     # write the header
-    writeLines(ifelse(grepl("\\.r$", tolower(file)), "#' ---", "---"), con = connection)
+    writeLines(ifelse(grepl("\\.r$", tolower(file)),
+                      "#' ---", "---"), con = connection)
     writeLines(front_matter, con = connection, sep = "")
-    writeLines(ifelse(grepl("\\.r$", tolower(file)), "#' ---", "---"), con = connection)
+    writeLines(ifelse(grepl("\\.r$", tolower(file)),
+                      "#' ---", "---"), con = connection)
     # write the body
     if (!is.null(partitioned_file$body)) {
       writeLines(partitioned_file$body, con = connection)

@@ -50,7 +50,9 @@ package_build <- function(packageName = NULL,
     packageName <- basename(package_path)
     # Is this a package root?
     if (!is_r_package$find_file() == package_path) {
-      flog.fatal(paste0(package_path, " is not an R package root directory"), name = "console")
+      flog.fatal(paste0(package_path,
+                        " is not an R package root directory"),
+                 name = "console")
       stop("exiting", call. = FALSE)
     }
   } else {

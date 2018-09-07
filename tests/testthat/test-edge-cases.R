@@ -166,8 +166,8 @@ test_that("package built in different edge cases", {
 
   library(futile.logger)
   DataPackageR:::.multilog_setup("/tmp/test.log")
-  DataPackageR:::.multilog_thresold(INFO,TRACE)
-  
+  DataPackageR:::.multilog_thresold(INFO, TRACE)
+
   suppressWarnings(expect_false({
     DataPackageR:::.compare_digests(
       list(

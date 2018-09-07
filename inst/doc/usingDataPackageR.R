@@ -44,7 +44,9 @@ df <- data.frame(pathString = file.path(
 as.Node(df)
 
 ## ---- echo=FALSE, eval = rmarkdown::pandoc_available()-------------------
-cat(yaml::as.yaml(yaml::yaml.load_file(file.path(tempdir(),"mtcars20","datapackager.yml"))))
+cat(yaml::as.yaml(yaml::yaml.load_file(
+  file.path(tempdir(),
+            "mtcars20","datapackager.yml"))))
 
 ## ---- eval = rmarkdown::pandoc_available()-------------------------------
 # Run the preprocessing code to build cars_over_20
@@ -67,7 +69,8 @@ document(file.path(tempdir(),"mtcars20"))
 
 ## ---- eval = rmarkdown::pandoc_available()-------------------------------
 # Let's use the package we just created.
-install.packages(file.path(tempdir(),"mtcars20_1.0.tar.gz"), type = "source", repos = NULL)
+install.packages(file.path(tempdir(),"mtcars20_1.0.tar.gz"),
+                 type = "source", repos = NULL)
 if(!"package:mtcars20"%in%search())
   attachNamespace('mtcars20') #use library() in your code
 data("cars_over_20") # load the data
