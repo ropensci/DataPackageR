@@ -30,7 +30,7 @@ ENVS <- new.env() # ENVS would be in the environment
                  # handled automatically by the package.
 assign("find_me", 100, ENVS) #This is done automatically by DataPackageR
 
-datapackager_object_read("find_me") # This would appear in an Rmd processed by
+find_me <- datapackager_object_read("find_me") # This would appear in an Rmd processed by
                                     # DataPackageR to access the object named "find_me" created
                                     # by a previous script. "find_me" would also need to
                                     # appear in the objects property of config.yml

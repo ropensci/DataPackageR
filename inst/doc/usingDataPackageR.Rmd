@@ -384,7 +384,7 @@ If a script writes files to the working directory, that is where files will appe
 
 A script (e.g., `script2.Rmd`) running after `script1.Rmd` can access a stored data object named `script1_dataset` created by `script1.Rmd` by calling
 
-`DataPackageR::datapackager_object_read("script1_dataset")`. 
+`script1_dataset <- DataPackageR::datapackager_object_read("script1_dataset")`. 
 
 Passing of data objects amongst scripts can be turned off via:
 

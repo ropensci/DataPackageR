@@ -1,7 +1,7 @@
 ---
 title: "The DataPackageR YAML configuration file."
 author: "Greg Finak <gfinak@fredhutch.org>"
-date: "2018-08-21"
+date: "2018-09-07"
 output: 
   rmarkdown::html_vignette:
     keep_md: TRUE
@@ -38,7 +38,7 @@ configuration:
       enabled: yes
   objects: cars_over_20
   render_root:
-    tmp: '408402'
+    tmp: '292721'
 ```
 
 ## YAML config file properties.
@@ -164,7 +164,7 @@ configuration:
       enabled: no
   objects: cars_over_20
   render_root:
-    tmp: '870092'
+    tmp: '258860'
 ```
 
 #### `yml_enable_compile` 
@@ -187,7 +187,7 @@ configuration:
       enabled: yes
   objects: cars_over_20
   render_root:
-    tmp: '870092'
+    tmp: '258860'
 ```
 
 #### `yml_add_files` 
@@ -212,7 +212,7 @@ configuration:
       enabled: yes
   objects: cars_over_20
   render_root:
-    tmp: '870092'
+    tmp: '258860'
 ```
 
 #### `yml_add_objects` 
@@ -239,7 +239,7 @@ configuration:
   - cars_over_20
   - another_object
   render_root:
-    tmp: '870092'
+    tmp: '258860'
 ```
 
 #### `yml_remove_files` 
@@ -264,7 +264,7 @@ configuration:
   - cars_over_20
   - another_object
   render_root:
-    tmp: '870092'
+    tmp: '258860'
 ```
 
 #### `yml_remove_objects` 
@@ -287,7 +287,7 @@ configuration:
       enabled: yes
   objects: cars_over_20
   render_root:
-    tmp: '870092'
+    tmp: '258860'
 ```
 
 #### `yml_write` 
