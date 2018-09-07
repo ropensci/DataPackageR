@@ -3,7 +3,7 @@
                "DataPackageR_interact",
                interactive()
              )) {
-    if (interactive()) {
+    if (interactive()&interact) {
       cat(crayon::cyan("Enter a text description of the changes for the NEWS.md file.\n")) # nolint
     }else{
       cat(crayon::cyan("Non-interactive NEWS.md file update.\n"))
