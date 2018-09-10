@@ -180,6 +180,12 @@ test_that(".partition_r_front_matter", {
     DataPackageR:::.partition_r_front_matter(test_string2)$front_matter,
     NULL
   )
+  
+  expect_equal(DataPackageR:::.partition_r_front_matter(
+    c("#' ---","author:Greg Finak","#' ---","body")),
+    list(front_matter = c("#' ---","author:Greg Finak","#' ---"),
+         body = "body"))
+  
   expect_equal(
     is.null(
       DataPackageR:::.partition_r_front_matter(test_string3)$body
@@ -259,6 +265,12 @@ test_that(".partition_rmd_front_matter", {
     DataPackageR:::.partition_rmd_front_matter(test_string4)$front_matter,
     NULL
   )
+  
+  expect_equal(DataPackageR:::.partition_rmd_front_matter(
+    c("---","author:Greg Finak","---","body")),
+    list(front_matter = c("---","author:Greg Finak","---"),
+         body = "body"))
+  
   expect_equal(
     is.null(
       DataPackageR:::.partition_rmd_front_matter(test_string5)$front_matter
@@ -306,6 +318,7 @@ test_that(".parse_yaml_front_matter", {
     (DataPackageR:::.parse_yaml_front_matter(test_string6)),
     list(input = "in", output = "out")
   )
+  expect_equal(DataPackageR:::.parse_yaml_front_matter(c("foo:bar","yes:no","if:then")),list())
 })
 
 test_that(".mark_utf8", {
@@ -315,4 +328,6 @@ test_that(".mark_utf8", {
 
 test_that(".is_blank", {
   expect_true(DataPackageR:::.is_blank(x = ""))
+  expect_true(DataPackageR:::.is_blank(character(0)))
 })
+

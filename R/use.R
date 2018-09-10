@@ -336,7 +336,7 @@ use_data_object <- function(object_name = NULL) {
     yaml::yaml.load(string, ...)
   }
   else {
-    .mark_utf8(yaml::yaml.load(enc2utf8(string), ...))
+    .mark_utf8(yaml::yaml.load(enc2utf8(string), ...)) #nocov
   }
 }
 

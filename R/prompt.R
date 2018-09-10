@@ -4,7 +4,7 @@
                interactive()
              )) {
     if (interactive()&interact) {
-      cat(crayon::cyan("Enter a text description of the changes for the NEWS.md file.\n")) # nolint
+      cat(crayon::cyan("Enter a text description of the changes for the NEWS.md file.\n")) #nocov
     }else{
       cat(crayon::cyan("Non-interactive NEWS.md file update.\n"))
     }
