@@ -115,6 +115,14 @@ package_build <- function(packageName = NULL,
   cat(crayon::white("   - Set up a github repository for your pacakge."), "\n") # nolint
   cat(crayon::white("   - Add the github repository as a remote of your local package repository."), "\n") # nolint
   cat(crayon::white("   - ", crayon::red("git push"), " your local repository to gitub."), "\n") # nolint
+  cat(crayon::white(crayon::yellow(crayon::bold("3. Build a Docker container!")), "\n")) # nolint
+  cat(crayon::white("   - At a prompt: "),crayon::red("docker build . -t containername")) # nolint
+  cat(crayon::white("     Where "),crayon::red("containername"),crayon::white(" is a name for your container.")) 
+  cat(crayon::white(crayon::yellow(crayon::bold("4. Run the Docker container to build your data package!")), "\n")) # nolint
+  cat(crayon::white("   - At a prompt: "),crayon::red("docker run -v `pwd`:/host -t containername")) # nolint
+  cat(crayon::white("     Where "),crayon::red("`pwd`"),crayon::white(" is interpreted as the current directory.")) 
+  cat(crayon::white("     It will be mounted on the container.")) 
+  cat(crayon::white("     The container will build the data package and copy the package archive (tar.gz file) to this directory.")) 
 }
 #' These functions are no longer available.
 #'
