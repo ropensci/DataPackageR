@@ -1,7 +1,7 @@
 ---
 title: "Using DataPackageR"
 author: "Greg Finak <gfinak@fredhutch.org>"
-date: "2018-09-07"
+date: "2018-09-13"
 output: 
   rmarkdown::html_vignette:
     keep_md: TRUE
@@ -109,7 +109,7 @@ configuration:
       enabled: yes
   objects: cars_over_20
   render_root:
-    tmp: '704183'
+    tmp: '111174'
 ```
 
 The two main pieces of information in the configuration are a list of the files to be processed and the data sets the package will store.
@@ -140,12 +140,12 @@ These are useful for constructing portable paths in your code to read files from
 
 For example: to construct a path to a file named "mydata.csv" located in `inst/extdata` in your data package source tree:
 
-- use `DataPackageR::project_extdata_path("mydata.csv")` in your `R` or `Rmd` file. This would return: e.g., /var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//RtmpRwP4Ud/mtcars20/inst/extdata/mydata.csv
+- use `DataPackageR::project_extdata_path("mydata.csv")` in your `R` or `Rmd` file. This would return: e.g., /var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//RtmpCPOKiZ/mtcars20/inst/extdata/mydata.csv
 
 Similarly: 
 
-- `DataPackageR::project_path()`  constructs a path to the data package root directory. (e.g., /var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//RtmpRwP4Ud/mtcars20)
-- `DataPackageR::project_data_path()` constructs a path to the data package `data` subdirectory. (e.g., /var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//RtmpRwP4Ud/mtcars20/data)
+- `DataPackageR::project_path()`  constructs a path to the data package root directory. (e.g., /var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//RtmpCPOKiZ/mtcars20)
+- `DataPackageR::project_data_path()` constructs a path to the data package `data` subdirectory. (e.g., /var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//RtmpCPOKiZ/mtcars20/data)
 
 Raw data sets that are stored externally (outside the data package source tree) can be constructed relative to the `project_path()`.
 
@@ -177,7 +177,20 @@ Once the skeleton framework is set up,
 # and reproducibly enclose it in a package.
 DataPackageR:::package_build(file.path(tempdir(),"mtcars20"))
 
-✔ Setting active project to '/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpRwP4Ud/mtcars20'
+✔ Setting active project to '/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpCPOKiZ/mtcars20'
+❌ Not writing a Dockerfile
+INFO [2018-09-13 13:24:47] Reading object 'sessionInfo' from the given file /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpCPOKiZ/mtcars20/inst/extdata/sessionInfo.RData
+INFO [2018-09-13 13:24:47] Extracting session object from RData file T/RtmpCPOKiZ/mtcars20/inst/extdata/sessionInfo.RData
+INFO [2018-09-13 13:24:47] Reading object 'sessionInfo' from the given file /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpCPOKiZ/mtcars20/inst/extdata/sessionInfo.RData
+Warning in FUN(X[[i]], ...): Failed to identify a source for package mtcars20. Therefore the package cannot be installed in the Docker image.
+Warning in FUN(X[[i]], ...): Failed to identify a source for package DataPackageR. Therefore the package cannot be installed in the Docker image.
+INFO [2018-09-13 13:24:47] Going online? TRUE  ... to retrieve system dependencies (sysreq-api)
+INFO [2018-09-13 13:24:47] Trying to determine system requirements for the package(s) 'yaml,mtcars20,data.tree,DataPackageR,viridis,pkgload,tidyr,jsonlite,viridisLite,assertthat,pillar,backports,glue,downloader,digest,RColorBrewer,colorspace,htmltools,plyr,clisymbols,XML,pkgconfig,devtools,DiagrammeR,purrr,scales,stevedore,processx,brew,whisker,git2r,tibble,ggplot2,usethis,influenceR,withr,lazyeval,rgexf,magrittr,crayon,ps,memoise,evaluate,fs,xml2,pkgbuild,rsconnect,Rook,hms,formatR,stringr,munsell,lambda.r,bindrcpp,callr,rlang,debugme,futile.logger,rstudioapi,rjson,htmlwidgets,visNetwork,igraph,base64enc,rmarkdown,testthat,gtable,roxygen2,curl,R6,gridExtra,knitr,dplyr,bindr,commonmark,rprojroot,futile.options,semver,readr,desc,stringi,Rcpp,tidyselect,remotes' from sysreqs online DB
+INFO [2018-09-13 13:24:49] Adding CRAN packages: assertthat, backports, base64enc, bindr, bindrcpp, brew, callr, clisymbols, colorspace, commonmark, crayon, curl, data.tree, debugme, desc, devtools, DiagrammeR, digest, downloader, dplyr, evaluate, formatR, fs, futile.options, ggplot2, git2r, gridExtra, gtable, hms, htmltools, htmlwidgets, igraph, influenceR, jsonlite, knitr, lambda.r, lazyeval, magrittr, memoise, munsell, pillar, pkgbuild, pkgconfig, pkgload, plyr, processx, ps, purrr, R6, RColorBrewer, Rcpp, readr, remotes, rgexf, rjson, rlang, rmarkdown, Rook, roxygen2, rprojroot, rsconnect, rstudioapi, scales, semver, stringi, stringr, testthat, tibble, tidyr, tidyselect, usethis, viridis, viridisLite, visNetwork, whisker, withr, XML, xml2, yaml
+INFO [2018-09-13 13:24:49] Adding GitHub packages: richfitz/stevedore@29ffb67985e97c468d283428e4f1e203543d147e, tidyverse/glue@a2921484ee19132dbb60eacaeb24c7902548ae4a, zatonovo/futile.logger@d96c47cd96b0876a54a0617232c277ddba02ec86
+INFO [2018-09-13 13:24:49] Created Dockerfile-Object based on /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpCPOKiZ/mtcars20/inst/extdata/sessionInfo.RData
+INFO [2018-09-13 13:24:49] Writing dockerfile to /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpCPOKiZ/mtcars20/Dockerfile
+✔ Wrote Dockerfile
 ✔ 1 data set(s) created by subsetCars.Rmd
 • cars_over_20
 ☘ Built  all datasets!
@@ -186,14 +199,14 @@ Enter a text description of the changes for the NEWS.md file.
 ✔ Creating 'vignettes/'
 ✔ Creating 'inst/doc/'
 First time using roxygen2. Upgrading automatically...
-Updating roxygen version in /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpRwP4Ud/mtcars20/DESCRIPTION
+Updating roxygen version in /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpCPOKiZ/mtcars20/DESCRIPTION
 Writing NAMESPACE
 Loading mtcars20
 Writing mtcars20.Rd
 Writing cars_over_20.Rd
 '/Library/Frameworks/R.framework/Resources/bin/R' --no-site-file  \
   --no-environ --no-save --no-restore --quiet CMD build  \
-  '/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpRwP4Ud/mtcars20'  \
+  '/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpCPOKiZ/mtcars20'  \
   --no-resave-data --no-manual --no-build-vignettes 
 
 Next Steps 
@@ -207,7 +220,7 @@ Next Steps
    - Set up a github repository for your pacakge. 
    - Add the github repository as a remote of your local package repository. 
    -  git push  your local repository to gitub. 
-[1] "/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpRwP4Ud/mtcars20_1.0.tar.gz"
+[1] "/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpCPOKiZ/mtcars20_1.0.tar.gz"
 ```
 
 ### Documenting your data set changes in NEWS.md
@@ -258,24 +271,26 @@ The pacakge source directory changes after the first build.
 7   ¦--DATADIGEST                 
 8   ¦--datapackager.yml           
 9   ¦--DESCRIPTION                
-10  ¦--inst                       
-11  ¦   ¦--doc                    
-12  ¦   ¦   ¦--subsetCars.html    
-13  ¦   ¦   °--subsetCars.Rmd     
-14  ¦   °--extdata                
-15  ¦       °--Logfiles           
-16  ¦           ¦--processing.log 
-17  ¦           °--subsetCars.html
-18  ¦--man                        
-19  ¦   ¦--cars_over_20.Rd        
-20  ¦   °--mtcars20.Rd            
-21  ¦--NAMESPACE                  
-22  ¦--NEWS.md                    
-23  ¦--R                          
-24  ¦   °--mtcars20.R             
-25  ¦--Read-and-delete-me         
-26  °--vignettes                  
-27      °--subsetCars.Rmd         
+10  ¦--Dockerfile                 
+11  ¦--inst                       
+12  ¦   ¦--doc                    
+13  ¦   ¦   ¦--subsetCars.html    
+14  ¦   ¦   °--subsetCars.Rmd     
+15  ¦   °--extdata                
+16  ¦       ¦--Logfiles           
+17  ¦       ¦   ¦--processing.log 
+18  ¦       ¦   °--subsetCars.html
+19  ¦       °--sessionInfo.RData  
+20  ¦--man                        
+21  ¦   ¦--cars_over_20.Rd        
+22  ¦   °--mtcars20.Rd            
+23  ¦--NAMESPACE                  
+24  ¦--NEWS.md                    
+25  ¦--R                          
+26  ¦   °--mtcars20.R             
+27  ¦--Read-and-delete-me         
+28  °--vignettes                  
+29      °--subsetCars.Rmd         
 ```
 
 ### Update the autogenerated documentation. 
@@ -292,7 +307,7 @@ You should update this file to properly document your objects. Then rebuild the 
 ```r
 document(file.path(tempdir(),"mtcars20"))
 
-✔ Setting active project to '/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpRwP4Ud/mtcars20'
+✔ Setting active project to '/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpCPOKiZ/mtcars20'
 Updating mtcars20 documentation
 Loading mtcars20
 [1] TRUE
@@ -397,7 +412,7 @@ configuration:
   - object1
   - object2
   render_root:
-    tmp: '464979'
+    tmp: '809069'
 ```
 
 `config` is a newly constructed yaml configuration object. It can be written to the package directory:
@@ -460,7 +475,7 @@ configuration:
   - object1
   - object2
   render_root:
-    tmp: '464979'
+    tmp: '809069'
 ```
 
 Note that the modified configuration needs to be written back to the package source directory in order for the 
@@ -559,7 +574,7 @@ Encoding: UTF-8
 LazyData: true
 DataVersion: 0.1.0
 Roxygen: list(markdown = TRUE)
-Date: 2018-09-07
+Date: 2018-09-13
 Suggests: 
     knitr,
     rmarkdown

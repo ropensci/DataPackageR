@@ -305,6 +305,13 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
         output_dir = logpath, clean = TRUE, knit_root_dir = render_root,
         quiet = TRUE
       )
+      # write a docker file (if we can!).
+      df <- try(.writeDockerFile())
+      if (inherits(df,"try-error")) {
+             .bullet("Not writing a Dockerfile",bullet = "\u274c")
+      }else{
+        .done("Wrote Dockerfile")
+      }
       # The created objects
       object_names <- setdiff(ls(dataenv),
                               c("ENVS", already_built)) # ENVS is removed

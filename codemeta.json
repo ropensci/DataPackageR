@@ -10,7 +10,7 @@
   "codeRepository": "https://github.com/ropensci/DataPackageR",
   "issueTracker": "https://github.com/ropensci/DataPackageR/issues",
   "license": "https://spdx.org/licenses/MIT",
-  "version": "0.15.3.900",
+  "version": "0.15.3.9001",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
@@ -267,6 +267,11 @@
     },
     {
       "@type": "SoftwareApplication",
+      "identifier": "containerit",
+      "name": "containerit"
+    },
+    {
+      "@type": "SoftwareApplication",
       "identifier": "crayon",
       "name": "crayon",
       "provider": {
@@ -284,7 +289,7 @@
   ],
   "releaseNotes": "https://github.com/ropensci/DataPackageR/blob/master/NEWS.md",
   "readme": "https://github.com/ropensci/DataPackageR/blob/master/README.md",
-  "fileSize": "308.386KB",
+  "fileSize": "338.003KB",
   "contIntegration": [
     "https://travis-ci.org/ropensci/DataPackageR",
     "https://codecov.io/github/ropensci/DataPackageR?branch=master",
@@ -307,6 +312,7 @@
     "r",
     "r-package",
     "reproducibility",
-    "rstats"
+    "rstats",
+    "peer-reviewed"
   ]
 }
