@@ -305,8 +305,8 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
         output_dir = logpath, clean = TRUE, knit_root_dir = render_root,
         quiet = TRUE
       )
-      # write a docker file (if we can!).
-      df <- tryCatch(.writeDockerFile(),
+      # write a docker file (if we can!). Exclude the package we are building.
+      df <- tryCatch(.writeDockerFile(exclude = basename(pkg_dir)),
           error = function(e){
             .bullet("Not writing a Dockerfile",bullet = "\u274c")
           },
