@@ -306,18 +306,8 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
         quiet = TRUE
       )
       # write a docker file (if we can!). Exclude the package we are building.
-      df <- tryCatch(.writeDockerFile(exclude = basename(pkg_dir)),
-          error = function(e){
-            .bullet("Not writing a Dockerfile",bullet = "\u274c")
-          },
-          warning = function(w){
-            cat(crayon::inverse("These packages should be installed from GitHub or CRAN\n"))
-            .bullet(crayon::inverse(w$message), bullet = "\u274c")
-            .done("Writing incomplete Dockerfile")
-          }
-      )
-      if (!is.null(df))
-          .done("Writing Dockerfile")
+      .writeDockerFile(exclude = basename(pkg_dir))
+      
       # The created objects
       object_names <- setdiff(ls(dataenv),
                               c("ENVS", already_built)) # ENVS is removed

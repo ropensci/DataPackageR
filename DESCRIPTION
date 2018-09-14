@@ -39,13 +39,13 @@ Imports:
     rprojroot,
     usethis,
     containerit,
-    crayon
+    crayon,
+    testthat
 VignetteBuilder: knitr
 RoxygenNote: 6.1.0
 Encoding: UTF-8
 Suggests:
     spelling,
-    testthat,
     covr,
     data.tree
 URL: https://github.com/ropensci/DataPackageR
