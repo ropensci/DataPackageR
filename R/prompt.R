@@ -3,9 +3,9 @@
                "DataPackageR_interact",
                interactive()
              )) {
-    if (interactive()&interact) {
-      cat(crayon::cyan("Enter a text description of the changes for the NEWS.md file.\n")) #nocov
-    }else{
+    if (interactive() & interact) {
+      cat(crayon::cyan("Enter a text description of the changes for the NEWS.md file.\n")) # nocov # nolint
+    } else {
       cat(crayon::cyan("Non-interactive NEWS.md file update.\n"))
     }
     change_description <-
@@ -73,33 +73,35 @@
   assert_that(header_2 == ul_2 - 1)
   header <- news_file_data[header_1:ul_1]
   news_file_data <- news_file_data[-c(header_1:ul_1)]
-  #write header
+  # write header
   writeLines(
     text = header,
     con = news_con,
     sep = "\n"
   )
-  #write changes
+  # write changes
   added <- objectlist[["added"]]
   deleted <- objectlist[["deleted"]]
   changed <- objectlist[["changed"]]
-  
+
   .write_changes <- function(string, news_con, what = NULL) {
     if (length(string) != 0) {
-      cat(crayon::cyan(paste0("* ",what,": ",string,"\n")))
-       writeLines(text = paste0("* ",what,": ", string),
-                  con = news_con,
-                  sep = "\n")
+      cat(crayon::cyan(paste0("* ", what, ": ", string, "\n")))
+      writeLines(
+        text = paste0("* ", what, ": ", string),
+        con = news_con,
+        sep = "\n"
+      )
     }
   }
   .write_changes(added, news_con, "Added")
   .write_changes(deleted, news_con, "Deleted")
   .write_changes(changed, news_con, "Changed")
-  
-  #write the rest of the data
+
+  # write the rest of the data
   writeLines(news_file_data,
-             con = news_con,
-             sep = "\n"
+    con = news_con,
+    sep = "\n"
   )
   flush(news_con)
   close(news_con)

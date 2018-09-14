@@ -239,7 +239,7 @@ construct_yml_config <- function(code = NULL, data = NULL, render_root = NULL) {
   for (i in code) {
     files[[i]]$enabled <- TRUE
   }
-  
+
   # create render root at a temporary directory.
   # this will be stored in the yaml. What if we restart?
   # see processData - it gets validated and created if not existing.

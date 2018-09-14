@@ -111,8 +111,10 @@ datapackage_skeleton <-
         obj <- match.arg(obj, c("code", "dependencies"))
         for (y in x) {
           file.copy(y, file.path(package_path, "data-raw"), overwrite = TRUE)
-          .done(paste0("Copied ", basename(y),
-                       " into ", crayon::blue("'data-raw'")))
+          .done(paste0(
+            "Copied ", basename(y),
+            " into ", crayon::blue("'data-raw'")
+          ))
         }
       }
     }

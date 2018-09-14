@@ -307,13 +307,17 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
       )
       # write a docker file (if we can!). Exclude the package we are building.
       .writeDockerFile(exclude = basename(pkg_dir))
-      
+
       # The created objects
-      object_names <- setdiff(ls(dataenv),
-                              c("ENVS", already_built)) # ENVS is removed
+      object_names <- setdiff(
+        ls(dataenv),
+        c("ENVS", already_built)
+      ) # ENVS is removed
       object_tally <- object_tally | objects_to_keep %in% object_names
-      already_built <- unique(c(already_built,
-                                objects_to_keep[objects_to_keep %in% object_names]))
+      already_built <- unique(c(
+        already_built,
+        objects_to_keep[objects_to_keep %in% object_names]
+      ))
       .multilog_trace(paste0(
         sum(objects_to_keep %in% object_names),
         " data set(s) created by ",
@@ -332,7 +336,8 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
         }
         .bullet(
           .add_newlines_to_vector(
-            objects_to_keep[which(objects_to_keep %in% object_names)]),
+            objects_to_keep[which(objects_to_keep %in% object_names)]
+          ),
           crayon::red("\u2022")
         )
       }
@@ -342,8 +347,10 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
           ifelse(
             sum(object_tally) == length(object_tally),
             " all datasets!",
-            paste0(sum(object_tally), " of ",
-                   length(object_tally), " data sets.")
+            paste0(
+              sum(object_tally), " of ",
+              length(object_tally), " data sets."
+            )
           )
         ),
         ifelse(
@@ -392,9 +399,9 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
           pkg_description,
           new_data_digest
         )
-        #TODO what objects have changed?
-        changed_objects <- .qualify_changes(new_data_digest,old_data_digest)
-        
+        # TODO what objects have changed?
+        changed_objects <- .qualify_changes(new_data_digest, old_data_digest)
+
         .update_news_md(updated_version$new_data_digest[["DataVersion"]],
           interact = getOption("DataPackageR_interact", interactive())
         )
@@ -441,12 +448,12 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
           new_data_digest
         )
         # TODO what objects have changed?
-        changed_objects <- .qualify_changes(new_data_digest,old_data_digest)
+        changed_objects <- .qualify_changes(new_data_digest, old_data_digest)
         .update_news_md(updated_version$new_data_digest[["DataVersion"]],
           interact = getOption("DataPackageR_interact", interactive())
         )
         .update_news_changed_objects(changed_objects)
-        
+
         pkg_description <- updated_version$pkg_description
         new_data_digest <- updated_version$new_data_digest
         can_write <- TRUE
@@ -570,7 +577,7 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
 .ppfiles_mkvignettes <- function(dir = NULL) {
   cat("\n")
   if (proj_get() != dir) {
-    usethis::proj_set(dir) #nocov
+    usethis::proj_set(dir) # nocov
   }
   pkg <- desc::desc(dir)
   pkg$set_dep("knitr", "Suggests")

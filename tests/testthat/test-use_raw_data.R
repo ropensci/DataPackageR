@@ -318,7 +318,8 @@ test_that(".parse_yaml_front_matter", {
     (DataPackageR:::.parse_yaml_front_matter(test_string6)),
     list(input = "in", output = "out")
   )
-  expect_equal(DataPackageR:::.parse_yaml_front_matter(c("foo:bar","yes:no","if:then")),list())
+  expect_equal(DataPackageR:::.parse_yaml_front_matter(
+    c("foo:bar","yes:no","if:then")),list())
 })
 
 test_that(".mark_utf8", {

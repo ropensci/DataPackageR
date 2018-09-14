@@ -50,9 +50,12 @@ package_build <- function(packageName = NULL,
     packageName <- basename(package_path)
     # Is this a package root?
     if (!is_r_package$find_file() == package_path) {
-      flog.fatal(paste0(package_path,
-                        " is not an R package root directory"),
-                 name = "console")
+      flog.fatal(paste0(
+        package_path,
+        " is not an R package root directory"
+      ),
+      name = "console"
+      )
       stop("exiting", call. = FALSE)
     }
   } else {
@@ -116,13 +119,13 @@ package_build <- function(packageName = NULL,
   cat(crayon::white("   - Add the github repository as a remote of your local package repository."), "\n") # nolint
   cat(crayon::white("   - ", crayon::red("git push"), " your local repository to gitub."), "\n") # nolint
   cat(crayon::white(crayon::yellow(crayon::bold("3. Build a Docker container!")), "\n")) # nolint
-  cat(crayon::white("   - At a prompt: "),crayon::red("docker build . -t containername")) # nolint
-  cat(crayon::white("     Where "),crayon::red("containername"),crayon::white(" is a name for your container.\n")) 
+  cat(crayon::white("   - At a prompt: "), crayon::red("docker build . -t containername")) # nolint
+  cat(crayon::white("     Where "), crayon::red("containername"), crayon::white(" is a name for your container.\n"))
   cat(crayon::white(crayon::yellow(crayon::bold("4. Run the Docker container to build your data package!")), "\n")) # nolint
-  cat(crayon::white("   - At a prompt: "),crayon::red("docker run -v `pwd`:/host -t containername\n")) # nolint
-  cat(crayon::white("     Where "),crayon::red("`pwd`"),crayon::white(" is interpreted as the current directory.\n")) 
-  cat(crayon::white("     It will be mounted on the container.\n")) 
-  cat(crayon::white("     The container will build the data package and copy the package archive (tar.gz file) to this directory.\n")) 
+  cat(crayon::white("   - At a prompt: "), crayon::red("docker run -v `pwd`:/host -t containername\n")) # nolint
+  cat(crayon::white("     Where "), crayon::red("`pwd`"), crayon::white(" is interpreted as the current directory.\n")) #nolint
+  cat(crayon::white("     It will be mounted on the container.\n")) #nolint
+  cat(crayon::white("     The container will build the data package and copy the package archive (tar.gz file) to this directory.\n"))#nolint
 }
 #' These functions are no longer available.
 #'

@@ -1,5 +1,6 @@
 # DataPackageR 0.15.3.9001
 * Docker container support via containerit. (ropensci/DataPackageR/issues/52)
+
 # DataPackageR 0.15.3.9000
 * Reduce the console output from logging. (ropensci/DataPackageR/issues/50)
 * Create a new logger that logs at different thresholds to console and to file (ropensci/DataPackageR/issues/50)
