@@ -36,6 +36,7 @@ test_that("use_raw_data works as expected", {
   recursive = TRUE
   )
   expect_true(use_raw_dataset(myfile))
+  expect_true(use_raw_dataset(myfile, ignore = TRUE))
   expect_true(file_test(
     "-f",
     file.path(

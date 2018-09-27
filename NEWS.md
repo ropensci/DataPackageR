@@ -8,6 +8,7 @@
 * Fix the documentation for datapackager_object_read() and "Migrating old packages".
 * code argument no longer required for construct_yml_config
 * Add option to overwrite (or not) via use_processing_script. Provide warning.
+* Add use_ignore() to ignore files and data sets in .Rbuildignore and .gitignore and added ignore argument to use_raw_dataset().
 
 # DataPackageR 0.15.3
 * conditional tests when pandoc is missing (ropensci/DataPackager/issues/46)

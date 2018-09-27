@@ -4,7 +4,8 @@
 #' the inst/extdata directory.
 #'
 #' @param path \code{character} path to file or directory.
-#'
+#' @param ignore \code{logical} whether to ignore the path or file in git and R build. 
+#' 
 #' @return invisibly returns TRUE for success. Stops on failure.
 #' @importFrom usethis proj_get proj_set create_package use_data_raw
 #' @importFrom utils file_test
@@ -25,7 +26,7 @@
 #'   r_object_names = "data")
 #' use_raw_dataset(raw_data)
 #' }
-use_raw_dataset <- function(path = NULL) {
+use_raw_dataset <- function(path = NULL, ignore = FALSE) {
   if (is.null(path)) {
     stop("You must provide a full path to a file or directory.")
   }
@@ -40,6 +41,11 @@ use_raw_dataset <- function(path = NULL) {
       to = file.path(proj_path, "inst", "extdata"),
       overwrite = TRUE
     )
+    if (ignore) {
+      # inst/extdata is a path relative to the project root 
+      # as needed by git_ignore
+      use_ignore(basename(raw_file), path = file.path("inst", "extdata"))
+    }
     return(invisible(TRUE))
   } else if (utils::file_test("-d", raw_file)) {
     file.copy(
@@ -47,6 +53,10 @@ use_raw_dataset <- function(path = NULL) {
       to = file.path(proj_path, "inst", "extdata"),
       recursive = TRUE, overwrite = TRUE
     )
+    if (ignore) {
+      #should work and the directory should be ignored
+      use_ignore(basename(raw_file), path = file.path("inst", "extdata"))
+    }
     return(invisible(TRUE))
   } else {
     stop("path must be a path to an existing file or directory.")

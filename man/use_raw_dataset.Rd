@@ -4,10 +4,12 @@
 \alias{use_raw_dataset}
 \title{Add a raw data set to inst/extdata}
 \usage{
-use_raw_dataset(path = NULL)
+use_raw_dataset(path = NULL, ignore = FALSE)
 }
 \arguments{
 \item{path}{\code{character} path to file or directory.}
+
+\item{ignore}{\code{logical} whether to ignore the path or file in git and R build.}
 }
 \value{
 invisibly returns TRUE for success. Stops on failure.
