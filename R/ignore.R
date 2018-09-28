@@ -11,7 +11,7 @@
 use_ignore <- function(file = NULL, path = NULL){
   if (is.null(file)) {
     message("No file name provided to ignore.")
-    invisible(0)
+    return(invisible(0))
   }
   proj_path <- usethis::proj_get()
   usethis::use_build_ignore(files = file.path(path,file), escape = TRUE)

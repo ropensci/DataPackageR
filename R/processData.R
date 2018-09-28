@@ -591,6 +591,13 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
       full.names = TRUE,
       recursive = FALSE
     )
+  pdffiles_for_vignettes <- 
+    list.files(
+      path = file.path(dir, "inst/extdata/Logfiles"),
+      pattern = "pdf$",
+      full.names = TRUE,
+      recursive = FALSE
+    )
   purrr::map(
     htmlfiles_for_vignettes,
     function(x) {
@@ -601,6 +608,20 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
           basename(x)
         ),
         overwrite = TRUE
+      )
+    }
+  )
+  
+  purrr::map(
+    pdffiles_for_vignettes,
+    function(x) {
+      file.copy(x,
+                file.path(
+                  dir,
+                  "inst/doc",
+                  basename(x)
+                ),
+                overwrite = TRUE
       )
     }
   )

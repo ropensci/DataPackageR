@@ -49,7 +49,7 @@ test_that("use_raw_data works as expected", {
   ))
   expect_error(use_raw_dataset())
   expect_error(suppressWarnings(use_raw_dataset("foobar")))
-  expect_true(use_raw_dataset(file.path(tempdir(), "subsetCars20", "R")))
+  expect_true(use_raw_dataset(file.path(tempdir(), "subsetCars20", "R"), ignore = TRUE))
 })
 
 
