@@ -69,16 +69,20 @@ test_that("use_processing_script works as expected", {
   )
   expect_true(use_processing_script("newScript.Rmd"))
   expect_true(use_processing_script("newScript.Rmd", overwrite = TRUE))
-  expect_true(use_processing_script("newScript.Rmd", title = "foo"))
+  expect_false(any(grepl("foo",readLines(file.path(tempdir(),"subsetCars20","data-raw","newScript.Rmd")))))
+  expect_true(use_processing_script("newScript.Rmd", title = "foo", overwrite = FALSE))
+  expect_false(any(grepl("foo",readLines(file.path(tempdir(),"subsetCars20","data-raw","newScript.Rmd")))))
+  expect_true(use_processing_script("newScript.Rmd", title = "foo", overwrite = TRUE))
+  
   expect_true(use_processing_script("newScript.Rmd", 
-                                    title = "foo", author = "bar"))
-  expect_true(use_processing_script("newScript.Rmd", author = "bar"))
+                                    title = "foo", author = "bar", overwrite = TRUE))
+  expect_true(use_processing_script("newScript.Rmd", author = "bar", overwrite = TRUE))
 
-  expect_true(use_processing_script("newScript.R"))
-  expect_true(use_processing_script("newScript.R", title = "foo"))
+  expect_true(use_processing_script("newScript.R", overwrite = TRUE))
+  expect_true(use_processing_script("newScript.R", title = "foo", overwrite = TRUE))
   expect_true(use_processing_script("newScript.R", 
-                                    title = "foo", author = "bar"))
-  expect_true(use_processing_script("newScript.R", author = "bar"))
+                                    title = "foo", author = "bar", overwrite = TRUE))
+  expect_true(use_processing_script("newScript.R", author = "bar", overwrite = TRUE))
   expect_equal(readLines(
     file.path(tempdir(), "subsetCars20", "data-raw", "newScript.Rmd")
   )[2], "author: bar")
@@ -91,14 +95,14 @@ test_that("use_processing_script works as expected", {
     force = TRUE,
     recursive = TRUE
   )
-  expect_error(use_processing_script(file = "newScript.R"))
+  expect_error(use_processing_script(file = "newScript.R", overwrite = TRUE))
   dir.create(file.path(tempdir(), "subsetCars20", "data-raw"))
-  expect_error(use_processing_script(file = "newScript.foo"))
+  expect_error(use_processing_script(file = "newScript.foo", overwrite = TRUE))
   expect_error(use_processing_script("."))
   file.create(file.path(tempdir(), "foo.csv"))
-  expect_error(use_processing_script(file.path(tempdir(), "foo.csv")))
+  expect_error(use_processing_script(file.path(tempdir(), "foo.csv"), overwrite = TRUE))
   file.create(file.path(tempdir(), "foo.R"))
-  expect_true(use_processing_script(file.path(tempdir(), "foo.R")))
+  expect_true(use_processing_script(file.path(tempdir(), "foo.R"), overwrite = TRUE))
 })
 
 test_that("use_data_object works as expected", {

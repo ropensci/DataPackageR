@@ -137,11 +137,15 @@ use_processing_script <- function(file = NULL, title = NULL, author = NULL, over
     (grepl("\\.r$", tolower(raw_file)) |
       grepl("\\.rmd$", tolower(raw_file)))) {
     # we have a valid file name and should create it.
+    if (utils::file_test("-f",file.path(proj_path,"data-raw",raw_file)) && !overwrite){
+      .bullet(paste0("Skipping file creation: pass overwrite = TRUE to use_processing_script()"), bullet = crayon::red("\u2622")) #nolint
+    }else{
     file.create(file.path(proj_path, "data-raw", basename(raw_file)))
     .update_header(file.path(proj_path,
                              "data-raw",
                              basename(raw_file)),
                    title = title, author = author)
+    }
     # add it to the yaml.
     yml <- yml_find(path = proj_path)
     yml <- yml_add_files(yml, basename(raw_file))
