@@ -352,6 +352,9 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
       if (sum(objects_to_keep %in% object_names) > 0) {
         for (o in objects_to_keep[objects_to_keep %in% object_names]) {
           assign(o, get(o, dataenv), ENVS)
+          # write the object to render_root
+          o_instance <- get(o,dataenv)
+          saveRDS(o_instance, file = paste0(file.path(render_root,o),".rds"))
         }
       }
     }

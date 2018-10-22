@@ -8,10 +8,12 @@
 * Write deleted, changed, and added data objects to the NEWS file automatically.
 * Add option to overwrite (or not) via use_processing_script. Provide warning.
 * Add use_ignore() to ignore files and data sets in .Rbuildignore and .gitignore and added ignore argument to use_raw_dataset().
+
 ### Bug fixes
 * code argument no longer required for construct_yml_config
 * Fix the documentation for datapackager_object_read() and "Migrating old packages".
 * Copy over vignettes generated as pdfs into the package inst/doc
+* Data objects are incrementally stored during the build process, into the render_root directory specified in the datapackager.yml config file.
 
 # DataPackageR 0.15.3
 * conditional tests when pandoc is missing (ropensci/DataPackager/issues/46)
