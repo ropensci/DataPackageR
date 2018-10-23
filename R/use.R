@@ -105,7 +105,7 @@ use_processing_script <- function(file = NULL, title = NULL, author = NULL, over
   }
   #check if the given file or directory already exists
   if (utils::file_test("-f",file.path(proj_path,"data-raw",file))|utils::file_test("-d",file.path(proj_path,"data-raw",file))) { #nolint
-    if(overwrite){
+    if (overwrite) {
       .bullet(paste0("Courtesy warning: ", basename(file), " exists in ",crayon::blue("'data-raw'"),", and ",crayon::red("WILL")," be overwritten."),bullet = crayon::red("\u2622")) #nolint
     } else {
       .bullet(paste0("Courtesy warning: ", basename(file), " exists in ",crayon::blue("'data-raw'"),", and ",crayon::red("WILL NOT")," be overwritten."),bullet = crayon::red("\u2622")) #nolint
@@ -137,14 +137,17 @@ use_processing_script <- function(file = NULL, title = NULL, author = NULL, over
     (grepl("\\.r$", tolower(raw_file)) |
       grepl("\\.rmd$", tolower(raw_file)))) {
     # we have a valid file name and should create it.
-    if (utils::file_test("-f",file.path(proj_path,"data-raw",raw_file)) && !overwrite){
+    if (utils::file_test("-f", normalizePath(file.path(proj_path, "data-raw", basename(raw_file)), winslash = "/")) &&
+        !overwrite) {
       .bullet(paste0("Skipping file creation: pass overwrite = TRUE to use_processing_script()"), bullet = crayon::red("\u2622")) #nolint
-    }else{
-    file.create(file.path(proj_path, "data-raw", basename(raw_file)))
-    .update_header(file.path(proj_path,
-                             "data-raw",
-                             basename(raw_file)),
-                   title = title, author = author)
+    } else {
+      cat("Attempting to create ", raw_file)
+      file.create(file.path(proj_path, "data-raw", basename(raw_file)))
+      .update_header(file.path(proj_path,
+                               "data-raw",
+                               basename(raw_file)),
+                     title = title,
+                     author = author)
     }
     # add it to the yaml.
     yml <- yml_find(path = proj_path)

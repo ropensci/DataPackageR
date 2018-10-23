@@ -69,10 +69,11 @@ test_that("use_processing_script works as expected", {
   )
   expect_true(use_processing_script("newScript.Rmd"))
   expect_true(use_processing_script("newScript.Rmd", overwrite = TRUE))
-  expect_false(any(grepl("foo",readLines(file.path(tempdir(),"subsetCars20","data-raw","newScript.Rmd")))))
+  expect_false(any(grepl("foo",readLines(normalizePath(file.path(tempdir(),"subsetCars20","data-raw","newScript.Rmd"), winslash = "/")))))
   expect_true(use_processing_script("newScript.Rmd", title = "foo", overwrite = FALSE))
-  expect_false(any(grepl("foo",readLines(file.path(tempdir(),"subsetCars20","data-raw","newScript.Rmd")))))
+  expect_false(any(grepl("foo",readLines(normalizePath(file.path(tempdir(),"subsetCars20","data-raw","newScript.Rmd"), winslash = "/")))))
   expect_true(use_processing_script("newScript.Rmd", title = "foo", overwrite = TRUE))
+  expect_true(any(grepl("foo",readLines(normalizePath(file.path(tempdir(),"subsetCars20","data-raw","newScript.Rmd"), winslash = "/")))))
   
   expect_true(use_processing_script("newScript.Rmd", 
                                     title = "foo", author = "bar", overwrite = TRUE))

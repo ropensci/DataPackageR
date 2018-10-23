@@ -35,6 +35,6 @@ datapackage_skeleton(name=pname,
    r_object_names = "tbl",
    code_files = f)
 
-package_build(file.path(tempdir(),pname))
+package_build(file.path(tempdir(),pname), install = FALSE)
 }
 }

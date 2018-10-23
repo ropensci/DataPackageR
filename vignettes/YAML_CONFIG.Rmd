@@ -28,13 +28,13 @@ It is automatically populated with the names of the `code_files` and `data_objec
 
 The structure of a correctly formatted `datapackager.yml` file is shown below:
 
-```{r, echo = FALSE, results = 'hide'}
+```{r, echo = FALSE, results = 'hide', eval = rmarkdown::pandoc_available()}
 library(DataPackageR)
 library(yaml)
 yml <- DataPackageR::construct_yml_config(code = "subsetCars.Rmd", data = "cars_over_20")
 ```
 
-```{r, echo = FALSE, comment=""}
+```{r, echo = FALSE, comment="", eval = rmarkdown::pandoc_available()}
 cat(yaml::as.yaml(yml))
 ```
 
@@ -80,7 +80,7 @@ DataPackageR provides a number of API calls to construct, read, modify, and writ
   
 ##### Example
   The YAML config shown above was created by: 
-```{r}
+```{r, eval = rmarkdown::pandoc_available()}
 # Note this is done by the datapackage_skeleton. 
 # The user doesn't usually need to call 
 # construct_yml_config()
@@ -113,7 +113,7 @@ mtcars20_config <- yml_find(
 
 ##### Example
 
-```{r, comment=""}
+```{r, comment="", eval = rmarkdown::pandoc_available()}
   yml_list_objects(yml)
 ```
   
@@ -123,7 +123,7 @@ mtcars20_config <- yml_find(
 
 ##### Example
 
-```{r, comment=""}
+```{r, comment="", eval = rmarkdown::pandoc_available()}
   yml_list_files(yml)
 ```
   
@@ -133,7 +133,7 @@ mtcars20_config <- yml_find(
 
 ##### Example
 
-```{r, comment="", echo = 1}
+```{r, comment="", echo = 1, eval = rmarkdown::pandoc_available()}
 yml_disabled <- yml_disable_compile(
     yml,
     filenames = "subsetCars.Rmd")
@@ -146,7 +146,7 @@ cat(as.yaml(yml_disabled))
 
 ##### Example
 
-```{r, comment="", echo = 1}
+```{r, comment="", echo = 1, eval = rmarkdown::pandoc_available()}
 yml_enabled <- yml_enable_compile(
     yml,
     filenames = "subsetCars.Rmd")
@@ -159,7 +159,7 @@ cat(as.yaml(yml_enabled))
   
 ##### Example
 
-```{r, comment="", echo = 1}
+```{r, comment="", echo = 1, eval = rmarkdown::pandoc_available()}
 yml_twofiles <- yml_add_files(
     yml,
     filenames = "anotherFile.Rmd")
@@ -172,7 +172,7 @@ yml_twofiles <- yml_add_files(
 
 ##### Example
 
-```{r, comment="", echo = 1}
+```{r, comment="", echo = 1, eval = rmarkdown::pandoc_available()}
 yml_twoobj <- yml_add_objects(
     yml_twofiles,
     objects = "another_object")
@@ -185,7 +185,7 @@ yml_twoobj <- yml_add_objects(
 
 ##### Example
 
-```{r, comment="", echo = 1}
+```{r, comment="", echo = 1, eval = rmarkdown::pandoc_available()}
 yml_twoobj <- yml_remove_files(
     yml_twoobj,
     filenames = "anotherFile.Rmd")
@@ -198,7 +198,7 @@ yml_twoobj <- yml_remove_files(
 
 ##### Example
 
-```{r, comment="", echo = 1}
+```{r, comment="", echo = 1, eval = rmarkdown::pandoc_available()}
 yml_oneobj <- yml_remove_objects(
     yml_twoobj,
     objects = "another_object")
