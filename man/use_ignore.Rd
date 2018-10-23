@@ -18,5 +18,6 @@ invisibly returns 0.
 Ignore specific files by git and R build.
 }
 \examples{
+datapackage_skeleton(name="test",path = tempdir())
 use_ignore("foo", ".")
 }

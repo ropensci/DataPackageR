@@ -23,25 +23,16 @@ This minor release fixes bugs and introduces new features.
 * ubuntu  14.04.05 LTS (on travis-ci) R Under development (unstable) (2018-10-23 r75480)
 * Platform: i386-w64-mingw32/i386 (32-bit) Running under: Windows Server 2012 R2 x64 (build 9600) (under Appveyor) R version 3.5.1 Patched (2018-08-06 r75070)
 * build on: Ubuntu 18.04.1 LTS x86_64-pc-linux-gnu (64-bit) (via OpenCPU CI) R version 3.5.1 (2018-07-02)
-
 * Windows (via Winbuilder) R 3.5.1 R-release and  3.6.0 R-devel.
 
 ## R CMD check results
 
 There were no ERRORs or WARNINGs 
 
-There was 1 NOTE when pandoc was present:
-
-NOTE
-Maintainer: ‘Greg Finak <gfinak@fredhutch.org>’
-
-Days since last update: 5
-
-There were 2 NOTEs when pandoc was absent, the one above and :
+There was 1 NOTE when pandoc was absent:
 
 NOTE:
 Files ‘README.md’ or ‘NEWS.md’ cannot be checked without ‘pandoc’ being installed.
-
 
 ## Downstream dependencies
 
