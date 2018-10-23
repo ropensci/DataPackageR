@@ -168,7 +168,9 @@ test_that("package built in different edge cases", {
     recursive = TRUE
   )
   package.skeleton("foo", path = tempdir())
-
+  DataPackageR:::.multilog_setup(normalizePath(file.path(tempdir(),"test.log"), winslash = "/"))
+  DataPackageR:::.multilog_thresold(INFO, TRACE)
+  
   suppressWarnings(expect_false({
     DataPackageR:::.compare_digests(
       list(
