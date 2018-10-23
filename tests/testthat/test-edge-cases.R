@@ -1,5 +1,9 @@
 context("edge cases")
 test_that("package built in different edge cases", {
+  require(futile.logger)
+  DataPackageR:::.multilog_setup(normalizePath(file.path(tempdir(),"test.log"), winslash = "/"))
+  DataPackageR:::.multilog_thresold(INFO, TRACE)
+  
   file <- system.file("extdata", "tests", "subsetCars.Rmd",
     package = "DataPackageR"
   )
@@ -11,7 +15,8 @@ test_that("package built in different edge cases", {
     r_object_names = "cars_over_20"
   )
   expect_error(package_build(packageName = NULL))
-  old <- setwd(file.path(tempdir(), "subsetCars")) # nolint
+  old <- getwd()
+  setwd(file.path(tempdir(), "subsetCars")) # nolint
   on.exit(setwd(old)) # nolint
   expect_equal(
     basename(package_build(packageName = NULL)),
@@ -163,10 +168,6 @@ test_that("package built in different edge cases", {
     recursive = TRUE
   )
   package.skeleton("foo", path = tempdir())
-
-  library(futile.logger)
-  DataPackageR:::.multilog_setup(normalizePath(file.path(tempdir(),"test.log"), winslash = "/"))
-  DataPackageR:::.multilog_thresold(INFO, TRACE)
 
   suppressWarnings(expect_false({
     DataPackageR:::.compare_digests(
