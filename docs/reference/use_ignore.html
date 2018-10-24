@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Authors • DataPackageR</title>
+<title>Ignore specific files by git and R build. — use_ignore • DataPackageR</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -25,12 +25,15 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
-<link href="pkgdown.css" rel="stylesheet">
-<script src="pkgdown.js"></script>
+<link href="../pkgdown.css" rel="stylesheet">
+<script src="../pkgdown.js"></script>
 
 
 
-<meta property="og:title" content="Authors" />
+<meta property="og:title" content="Ignore specific files by git and R build. — use_ignore" />
+
+<meta property="og:description" content="Ignore specific files by git and R build." />
+<meta name="twitter:card" content="summary" />
 
 
 
@@ -46,7 +49,7 @@
   </head>
 
   <body>
-    <div class="container template-authors">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -57,7 +60,7 @@
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="index.html">DataPackageR</a>
+        <a class="navbar-link" href="../index.html">DataPackageR</a>
         <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.15.4</span>
       </span>
     </div>
@@ -65,13 +68,13 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="index.html">
+  <a href="../index.html">
     <span class="fa fa-home fa-lg"></span>
      
   </a>
 </li>
 <li>
-  <a href="reference/index.html">Reference</a>
+  <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -81,15 +84,15 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="articles/YAML_CONFIG.html">The DataPackageR YAML configuration file.</a>
+      <a href="../articles/YAML_CONFIG.html">The DataPackageR YAML configuration file.</a>
     </li>
     <li>
-      <a href="articles/usingDataPackageR.html">Using DataPackageR</a>
+      <a href="../articles/usingDataPackageR.html">Using DataPackageR</a>
     </li>
   </ul>
 </li>
 <li>
-  <a href="news/index.html">Changelog</a>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       
@@ -110,34 +113,64 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Authors</h1>
+    <h1>Ignore specific files by git and R build.</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ropensci/DataPackageR/blob/master/R/ignore.R'><code>R/ignore.R</code></a></small>
+    <div class="hidden name"><code>use_ignore.Rd</code></div>
     </div>
 
-    <ul class="list-unstyled">
-      <li>
-        <p><strong>Greg Finak</strong>. Author, maintainer, copyright holder. 
-        </p>
-      </li>
-      <li>
-        <p><strong>Paul Obrecht</strong>. Contributor. 
-        </p>
-      </li>
-      <li>
-        <p><strong>Kara Woo</strong>. Reviewer. 
-        <br /><small>Kara reviewed the package for ropensci, see <https://github.com/ropensci/onboarding/issues/230></small></p>
-      </li>
-      <li>
-        <p><strong>William Landau</strong>. Reviewer. 
-        <br /><small>William reviewed the package for ropensci, see <https://github.com/ropensci/onboarding/issues/230></small></p>
-      </li>
+    <div class="ref-description">
+    
+    <p>Ignore specific files by git and R build.</p>
+    
+    </div>
+
+    <pre class="usage"><span class='fu'>use_ignore</span>(<span class='kw'>file</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>path</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>file</th>
+      <td><p><code>character</code> File to ignore.</p></td>
+    </tr>
+    <tr>
+      <th>path</th>
+      <td><p><code>character</code> Path to the file.</p></td>
+    </tr>
+    </table>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>invisibly returns 0.</p>
+    
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'><a href='datapackage_skeleton.html'>datapackage_skeleton</a></span>(<span class='kw'>name</span><span class='kw'>=</span><span class='st'>"test"</span>,<span class='kw'>path</span> <span class='kw'>=</span> <span class='fu'>tempdir</span>())</div><div class='output co'>#&gt; ✔ Setting active project to '/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpXhvbVH/test'
+#&gt; ✔ Creating 'R/'
+#&gt; ✔ Creating 'man/'
+#&gt; ✔ Writing 'DESCRIPTION'
+#&gt; ✔ Writing 'NAMESPACE'
+#&gt; ✔ Added DataVersion string to 'DESCRIPTION'
+#&gt; ✔ Creating 'data-raw/'
+#&gt; ✔ Creating 'data/'
+#&gt; ✔ Creating 'inst/extdata/'
+#&gt; ✔ configured 'datapackager.yml' file</div><div class='input'><span class='fu'>use_ignore</span>(<span class='st'>"foo"</span>, <span class='st'>"."</span>)</div><div class='output co'>#&gt; ✔ Adding '^\\./foo$' to '.Rbuildignore'
+#&gt; ✔ Adding 'foo' to '.gitignore'</div></pre>
+  </div>
+  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+    <h2>Contents</h2>
+    <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
+      
+      <li><a href="#value">Value</a></li>
+      
+      <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>
-
 </div>
-
 
       <footer>
       <div class="copyright">

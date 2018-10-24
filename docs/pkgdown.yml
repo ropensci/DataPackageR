@@ -1,0 +1,7 @@
+pandoc: 2.3.1
+pkgdown: 1.1.0
+pkgdown_sha: ~
+articles:
+  YAML_CONFIG: YAML_CONFIG.html
+  usingDataPackageR: usingDataPackageR.html
+

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>DataPackageR — DataPackageR-package • DataPackageR</title>
+<title>Build documentation for a data package using DataPackageR. — document • DataPackageR</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -30,10 +30,9 @@
 
 
 
-<meta property="og:title" content="DataPackageR — DataPackageR-package" />
+<meta property="og:title" content="Build documentation for a data package using DataPackageR. — document" />
 
-<meta property="og:description" content="A framework to automate the processing, tidying and packaging of raw data into analysis-ready
-data sets as R packages." />
+<meta property="og:description" content="Build documentation for a data package using DataPackageR." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -116,49 +115,31 @@ data sets as R packages." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>DataPackageR</h1>
+    <h1>Build documentation for a data package using DataPackageR.</h1>
     <small class="dont-index">Source: <a href='https://github.com/ropensci/DataPackageR/blob/master/R/processData.R'><code>R/processData.R</code></a></small>
-    <div class="hidden name"><code>DataPackageR-package.Rd</code></div>
+    <div class="hidden name"><code>document.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>A framework to automate the processing, tidying and packaging of raw data into analysis-ready
-data sets as R packages.</p>
+    <p>Build documentation for a data package using DataPackageR.</p>
     
     </div>
 
-        
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>DataPackageR will automate running of data processing code,
-storing tidied data sets in an R package, producing
-data documentation stubs, tracking data object finger prints (md5 hash)
-and tracking and incrementing a "DataVersion" string
-in the DESCRIPTION file of the package when raw data or data
-objects change.
-Code to perform the data processing is passed to DataPackageR by the user.
-The user also specifies the names of the tidy data objects to be stored,
-documented and tracked in the final package. Raw data should be read from
-"inst/extdata" but large raw data files can be read from sources external
-to the package source tree.</p>
-<p>Configuration is controlled via the config.yml file created at the package root.
-Its properties include a list of R and Rmd files that are to be rendered / sourced and
-which read data and do the actual processing.
-It also includes a list of r object names created by those files. These objects
-are stored in the final package and accessible via the <code>data()</code> API.
-The documentation for these objects is accessible via "?object-name", and md5
-fingerprints of these objects are created and tracked.</p>
-<p>The Rmd and R files used to process the objects are transformed into vignettes
-accessible in the final package so that the processing is fully documented.</p>
-<p>A DATADIGEST file in the package source keeps track of the data object fingerprints.
-A DataVersion string is added to the package DESCRIPTION file and updated when these
-objects are updated or changed on subsequent builds.</p>
-<p>Once the package is built and installed, the data objects created in the package are accessible via
-the <code>data()</code> API, and
-Calling <code><a href='datapackage_skeleton.html'>datapackage_skeleton()</a></code> and passing in R / Rmd file names, and r object names
-constructs a skeleton data package source tree and an associated <code>config.yml</code> file.</p>
-<p>Calling <code>build_package()</code> sets the build process in motion.</p>
+    <pre class="usage"><span class='fu'>document</span>(<span class='kw'>path</span> <span class='kw'>=</span> <span class='st'>"."</span>, <span class='kw'>install</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>path</th>
+      <td><p><code>character</code> the path to the data package source root.</p></td>
+    </tr>
+    <tr>
+      <th>install</th>
+      <td><p><code>logical</code> install and reload the package. (default TRUE)</p></td>
+    </tr>
+    </table>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -168,7 +149,7 @@ constructs a skeleton data package source tree and an associated <code>config.ym
 <span class='no'>f</span> <span class='kw'>&lt;-</span> <span class='fu'>tempdir</span>()
 <span class='no'>f</span> <span class='kw'>&lt;-</span> <span class='fu'>file.path</span>(<span class='no'>f</span>,<span class='st'>"foo.Rmd"</span>)
 <span class='no'>con</span> <span class='kw'>&lt;-</span> <span class='fu'>file</span>(<span class='no'>f</span>)
-<span class='fu'>writeLines</span>(<span class='st'>"```{r}\n tbl = table(sample(1:10,1000,replace=TRUE)) \n```\n"</span>,<span class='kw'>con</span><span class='kw'>=</span><span class='no'>con</span>)
+<span class='fu'>writeLines</span>(<span class='st'>"```{r}\n tbl = table(sample(1:10,100,replace=TRUE)) \n```\n"</span>,<span class='kw'>con</span><span class='kw'>=</span><span class='no'>con</span>)
 <span class='fu'>close</span>(<span class='no'>con</span>)
 
 <span class='co'># construct a data package skeleton named "MyDataPackage" and pass</span>
@@ -185,25 +166,8 @@ constructs a skeleton data package source tree and an associated <code>config.ym
 <span class='co'># call build_package to run the "foo.Rmd" processing and</span>
 <span class='co'># build a data package.</span>
 <span class='fu'><a href='package_build.html'>package_build</a></span>(<span class='fu'>file.path</span>(<span class='fu'>tempdir</span>(), <span class='no'>pname</span>), <span class='kw'>install</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-
-<span class='co'># "install" the data package</span>
-<span class='kw pkg'>devtools</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/devtools/topics/load_all'>load_all</a></span>(<span class='fu'>file.path</span>(<span class='fu'>tempdir</span>(), <span class='no'>pname</span>))
-
-<span class='co'># read the data version</span>
-<span class='fu'><a href='data_version.html'>data_version</a></span>(<span class='no'>pname</span>)
-
-<span class='co'># list the data sets in the package.</span>
-<span class='fu'>data</span>(<span class='kw'>package</span> <span class='kw'>=</span> <span class='no'>pname</span>)
-
-<span class='co'># The data objects are in the package source under "/data"</span>
-<span class='fu'>list.files</span>(<span class='kw'>pattern</span><span class='kw'>=</span><span class='st'>"rda"</span>, <span class='kw'>path</span> <span class='kw'>=</span> <span class='fu'>file.path</span>(<span class='fu'>tempdir</span>(),<span class='no'>pname</span>,<span class='st'>"data"</span>), <span class='kw'>full</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-
-<span class='co'># The documentation that needs to be edited is in "/R"</span>
-<span class='fu'>list.files</span>(<span class='kw'>pattern</span><span class='kw'>=</span><span class='st'>"R"</span>, <span class='kw'>path</span> <span class='kw'>=</span> <span class='fu'>file.path</span>(<span class='fu'>tempdir</span>(), <span class='no'>pname</span>,<span class='st'>"R"</span>), <span class='kw'>full</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='fu'>readLines</span>(<span class='fu'>list.files</span>(<span class='kw'>pattern</span><span class='kw'>=</span><span class='st'>"R"</span>, <span class='kw'>path</span> <span class='kw'>=</span> <span class='fu'>file.path</span>(<span class='fu'>tempdir</span>(),<span class='no'>pname</span>,<span class='st'>"R"</span>), <span class='kw'>full</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))
-<span class='co'># view the documentation with</span>
-?<span class='no'>tbl</span>
-}</div><div class='output co'>#&gt; ✔ Setting active project to '/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpXhvbVH/file118281c3780d4'
+<span class='fu'>document</span>(<span class='kw'>path</span> <span class='kw'>=</span> <span class='fu'>file.path</span>(<span class='fu'>tempdir</span>(), <span class='no'>pname</span>), <span class='kw'>install</span><span class='kw'>=</span><span class='fl'>FALSE</span>)
+}</div><div class='output co'>#&gt; ✔ Setting active project to '/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpXhvbVH/file1182823ebb9da'
 #&gt; ✔ Creating 'R/'
 #&gt; ✔ Creating 'man/'
 #&gt; ✔ Writing 'DESCRIPTION'
@@ -215,24 +179,24 @@ constructs a skeleton data package source tree and an associated <code>config.ym
 #&gt; ✔ Copied foo.Rmd into 'data-raw'
 #&gt; ✔ configured 'datapackager.yml' file
 #&gt; 
-#&gt; ✔ Setting active project to '/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpXhvbVH/file118281c3780d4'
+#&gt; ✔ Setting active project to '/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpXhvbVH/file1182823ebb9da'
 #&gt; ✔ 1 data set(s) created by foo.Rmd
 #&gt; • tbl
 #&gt; ☘ Built  all datasets!
 #&gt; Non-interactive NEWS.md file update.
 #&gt; 
 #&gt; ✔ Creating 'vignettes/'
-#&gt; ✔ Creating 'inst/doc/'</div><div class='output co'>#&gt; <span class='message'>First time using roxygen2. Upgrading automatically...</span></div><div class='output co'>#&gt; <span class='message'>Updating roxygen version in /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpXhvbVH/file118281c3780d4/DESCRIPTION</span></div><div class='output co'>#&gt; Writing NAMESPACE</div><div class='output co'>#&gt; <span class='message'>Loading file118281c3780d4</span></div><div class='output co'>#&gt; Writing file118281c3780d4.Rd
+#&gt; ✔ Creating 'inst/doc/'</div><div class='output co'>#&gt; <span class='message'>First time using roxygen2. Upgrading automatically...</span></div><div class='output co'>#&gt; <span class='message'>Updating roxygen version in /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpXhvbVH/file1182823ebb9da/DESCRIPTION</span></div><div class='output co'>#&gt; Writing NAMESPACE</div><div class='output co'>#&gt; <span class='message'>Loading file1182823ebb9da</span></div><div class='output co'>#&gt; Writing file1182823ebb9da.Rd
 #&gt; Writing tbl.Rd
-#&gt;      checking for file ‘/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpXhvbVH/file118281c3780d4/DESCRIPTION’ ...  ✔  checking for file ‘/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpXhvbVH/file118281c3780d4/DESCRIPTION’
-#&gt;   ─  preparing ‘file118281c3780d4’:
-#&gt;      checking DESCRIPTION meta-information ...  ✔  checking DESCRIPTION meta-information
+#&gt;      checking for file ‘/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpXhvbVH/file1182823ebb9da/DESCRIPTION’ ...  ✔  checking for file ‘/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpXhvbVH/file1182823ebb9da/DESCRIPTION’
+#&gt;   ─  preparing ‘file1182823ebb9da’:
+#&gt;   ✔  checking DESCRIPTION meta-information
 #&gt;   ─  checking for LF line-endings in source and make files and shell scripts
 #&gt;   ─  checking for empty or unneeded directories
 #&gt; ─  looking to see if a ‘data/datalist’ file should be added
-#&gt;      NB: this package now depends on R (&gt;= 3.5.0)
-#&gt;      WARNING: Added dependency on R &gt;= 3.5.0 because serialized objects in  serialize/load version 3 cannot be read in older versions of R.  File(s) containing such objects: 'file118281c3780d4/data/tbl.rda'
-#&gt; ─  building 'file118281c3780d4_1.0.tar.gz'
+#&gt;        NB: this package now depends on R (&gt;= 3.5.0)
+#&gt;        WARNING: Added dependency on R &gt;= 3.5.0 because serialized objects in  serialize/load version 3 cannot be read in older versions of R.  File(s) containing such objects: 'file1182823ebb9da/data/tbl.rda'
+#&gt;   ─  building 'file1182823ebb9da_1.0.tar.gz'
 #&gt;      
 #&gt; Next Steps 
 #&gt; 1. Update your package documentation. 
@@ -244,14 +208,15 @@ constructs a skeleton data package source tree and an associated <code>config.ym
 #&gt;    -  git commit  your new package. 
 #&gt;    - Set up a github repository for your pacakge. 
 #&gt;    - Add the github repository as a remote of your local package repository. 
-#&gt;    -  git push  your local repository to gitub. </div><div class='output co'>#&gt; <span class='message'>Loading file118281c3780d4</span></div><div class='output co'>#&gt; <span class='message'>Rendering development documentation for 'tbl'</span></div></pre>
+#&gt;    -  git push  your local repository to gitub. 
+#&gt; 
+#&gt; ✔ Setting active project to '/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpXhvbVH/file1182823ebb9da'</div><div class='output co'>#&gt; <span class='message'>Updating file1182823ebb9da documentation</span></div><div class='output co'>#&gt; <span class='message'>Loading file1182823ebb9da</span></div><div class='output co'>#&gt; [1] TRUE</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      
-      <li><a href="#details">Details</a></li>
-      
+      <li><a href="#arguments">Arguments</a></li>
+            
       <li><a href="#examples">Examples</a></li>
     </ul>
 

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Process data generation code in 'data-raw' — DataPackageR • DataPackageR</title>
+<title>Construct a datapackager.yml configuration — construct_yml_config • DataPackageR</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -30,12 +30,11 @@
 
 
 
-<meta property="og:title" content="Process data generation code in 'data-raw' — DataPackageR" />
+<meta property="og:title" content="Construct a datapackager.yml configuration — construct_yml_config" />
 
-<meta property="og:description" content="Assumes .R files in 'data-raw' generate rda files to be stored in 'data'.
-Sources datasets.R which can source other R files.
-R files sourced by datasets.R must invoke sys.source('myRfile.R',env=topenv()).
-Meant to be called before R CMD build." />
+<meta property="og:description" content="Constructs a datapackager.yml configuration object from a vector of file names and a vector of object names (all quoted).
+Can be written to disk via yml_write.
+render_root is set to a randomly generated named subdirectory of tempdir()." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -118,40 +117,48 @@ Meant to be called before R CMD build." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Process data generation code in 'data-raw'</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ropensci/DataPackageR/blob/master/R/processData.R'><code>R/processData.R</code></a></small>
-    <div class="hidden name"><code>DataPackageR.Rd</code></div>
+    <h1>Construct a datapackager.yml configuration</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ropensci/DataPackageR/blob/master/R/yamlR.R'><code>R/yamlR.R</code></a></small>
+    <div class="hidden name"><code>construct_yml_config.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Assumes .R files in 'data-raw' generate rda files to be stored in 'data'.
-Sources datasets.R which can source other R files.
-R files sourced by datasets.R must invoke <code>sys.source('myRfile.R',env=topenv())</code>.
-Meant to be called before R CMD build.</p>
+    <p>Constructs a datapackager.yml configuration object from a vector of file names and a vector of object names (all quoted).
+Can be written to disk via <code>yml_write</code>.
+<code>render_root</code> is set to a randomly generated named subdirectory of <code>tempdir()</code>.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>DataPackageR</span>(<span class='kw'>arg</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>deps</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>construct_yml_config</span>(<span class='kw'>code</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>render_root</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>arg</th>
-      <td><p><code>character</code> name of the package to build.</p></td>
+      <th>code</th>
+      <td><p>A vector of filenames</p></td>
     </tr>
     <tr>
-      <th>deps</th>
-      <td><p><code>logical</code> should scripts pass data objects to each other (default=TRUE)</p></td>
+      <th>data</th>
+      <td><p>A vector of quoted object names</p></td>
+    </tr>
+    <tr>
+      <th>render_root</th>
+      <td><p>The root directory where the package data processing code will be rendered.
+Defaults to is set to a randomly generated named subdirectory of <code>tempdir()</code>.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>logical TRUE if successful, FALSE, if not.</p>
+    <p>a datapackager.yml configuration represented as an R object</p>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='no'>conf</span> <span class='kw'>&lt;-</span> <span class='fu'>construct_yml_config</span>(<span class='kw'>code</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>'file1.rmd'</span>,<span class='st'>'file2.rmd'</span>), <span class='kw'>data</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='st'>'object1'</span>,<span class='st'>'object2'</span>))
+<span class='no'>tmp</span> <span class='kw'>&lt;-</span> <span class='fu'>normalizePath</span>(<span class='fu'>tempdir</span>(), <span class='kw'>winslash</span> <span class='kw'>=</span> <span class='st'>"/"</span>)
+<span class='fu'><a href='yaml.html'>yml_write</a></span>(<span class='no'>conf</span>,<span class='kw'>path</span><span class='kw'>=</span><span class='no'>tmp</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -159,7 +166,9 @@ Meant to be called before R CMD build.</p>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-          </ul>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>
