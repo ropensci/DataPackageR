@@ -9,8 +9,8 @@ output:
 vignette: >
   %\VignetteIndexEntry{A Guide to using DataPackageR}
   %\VignetteEngine{knitr::rmarkdown}
-  \usepackage[utf8]{inputenc}
-  \usepackage{graphicx}
+  %\usepackage[utf8]{inputenc}
+  %\usepackage{graphicx}
 ---
 
 ```{r, echo = FALSE}

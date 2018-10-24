@@ -12,7 +12,7 @@
 
 <meta name="author" content="Greg Finak gfinak@fredhutch.org" />
 
-<meta name="date" content="2018-09-07" />
+<meta name="date" content="2018-10-24" />
 
 <title>The DataPackageR YAML configuration file.</title>
 
@@ -277,8 +277,8 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 
 <h1 class="title toc-ignore">The DataPackageR YAML configuration file.</h1>
-<h4 class="author"><em>Greg Finak <a href="mailto:gfinak@fredhutch.org">gfinak@fredhutch.org</a></em></h4>
-<h4 class="date"><em>2018-09-07</em></h4>
+<h4 class="author"><em>Greg Finak <a href="mailto:gfinak@fredhutch.org" class="email">gfinak@fredhutch.org</a></em></h4>
+<h4 class="date"><em>2018-10-24</em></h4>
 
 
 <div id="TOC">
@@ -307,7 +307,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
       enabled: yes
   objects: cars_over_20
   render_root:
-    tmp: '858965'</code></pre>
+    tmp: &#39;860879&#39;</code></pre>
 </div>
 <div id="yaml-config-file-properties." class="section level2">
 <h2>YAML config file properties.</h2>
@@ -342,7 +342,7 @@ The names of the data objects created by the processing files, to be stored in t
 <h5>Example</h5>
 <p>The YAML config shown above was created by:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="co"># Note this is done by the datapackage_skeleton. </span></a>
-<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="co"># The user doesn't usually need to call </span></a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="co"># The user doesn&#39;t usually need to call </span></a>
 <a class="sourceLine" id="cb2-3" data-line-number="3"><span class="co"># construct_yml_config()</span></a>
 <a class="sourceLine" id="cb2-4" data-line-number="4">yml &lt;-<span class="st"> </span>DataPackageR<span class="op">::</span><span class="kw">construct_yml_config</span>(</a>
 <a class="sourceLine" id="cb2-5" data-line-number="5">  <span class="dt">code =</span> <span class="st">&quot;subsetCars.Rmd&quot;</span>,</a>
@@ -397,7 +397,7 @@ subsetCars.Rmd</code></pre>
       enabled: no
   objects: cars_over_20
   render_root:
-    tmp: '883379'</code></pre>
+    tmp: &#39;342974&#39;</code></pre>
 </div>
 </div>
 <div id="yml_enable_compile" class="section level4">
@@ -414,7 +414,7 @@ subsetCars.Rmd</code></pre>
       enabled: yes
   objects: cars_over_20
   render_root:
-    tmp: '883379'</code></pre>
+    tmp: &#39;342974&#39;</code></pre>
 </div>
 </div>
 <div id="yml_add_files" class="section level4">
@@ -433,7 +433,7 @@ subsetCars.Rmd</code></pre>
       enabled: yes
   objects: cars_over_20
   render_root:
-    tmp: '883379'</code></pre>
+    tmp: &#39;342974&#39;</code></pre>
 </div>
 </div>
 <div id="yml_add_objects" class="section level4">
@@ -454,7 +454,7 @@ subsetCars.Rmd</code></pre>
   - cars_over_20
   - another_object
   render_root:
-    tmp: '883379'</code></pre>
+    tmp: &#39;342974&#39;</code></pre>
 </div>
 </div>
 <div id="yml_remove_files" class="section level4">
@@ -473,7 +473,7 @@ subsetCars.Rmd</code></pre>
   - cars_over_20
   - another_object
   render_root:
-    tmp: '883379'</code></pre>
+    tmp: &#39;342974&#39;</code></pre>
 </div>
 </div>
 <div id="yml_remove_objects" class="section level4">
@@ -490,7 +490,7 @@ subsetCars.Rmd</code></pre>
       enabled: yes
   objects: cars_over_20
   render_root:
-    tmp: '883379'</code></pre>
+    tmp: &#39;342974&#39;</code></pre>
 </div>
 </div>
 <div id="yml_write" class="section level4">

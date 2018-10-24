@@ -10,8 +10,8 @@ output:
 vignette: >
   %\VignetteIndexEntry{DataPackageR YAML configuration.}
   %\VignetteEngine{knitr::rmarkdown}
-  \usepackage[utf8]{inputenc}
-  \usepackage{graphicx}
+  %\usepackage[utf8]{inputenc}
+  %\usepackage{graphicx}
 editor_options: 
   chunk_output_type: inline
 ---
