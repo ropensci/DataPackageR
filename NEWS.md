@@ -1,3 +1,6 @@
+# DataPackageR 0.15.4
+New CRAN Release
+
 # DataPackageR 0.15.3.9000
 ### Features and enhancements
 * Reduce the console output from logging. (ropensci/DataPackageR/issues/50)
