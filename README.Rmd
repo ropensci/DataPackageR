@@ -31,7 +31,7 @@ DataPackageR is used to reproducibly process raw data into packaged, analysis-re
 - [yaml configuration guide](vignettes/YAML_CONFIG.md)
 - [a more detailed technical vignette](vignettes/usingDataPackageR.md)
 
-> **Important Note**: [datapack](https://github.com/ropensci/datapack) is a *different pacakge* that is used to "create, send and load data from common repositories such as DataONE into the R environment".
+> **Important Note**: [datapack](https://github.com/ropensci/datapack) is a *different package* that is used to "create, send and load data from common repositories such as DataONE into the R environment".
 
 > **This package** is for processing raw data into tidy data sets and bundling them into R packages.
 
@@ -222,7 +222,7 @@ assert_data_version(data_package_name = "mtcars20",
 ### Reading external data from within R / Rmd processing scripts.
 
 When creating a data package, your processing scripts will need to read your raw data sets in order to process them.
-These data sets can be stored in `inst/extdata` of the data pacakge source tree, or elsewhere outside the package source tree.
+These data sets can be stored in `inst/extdata` of the data package source tree, or elsewhere outside the package source tree.
 In order to have portable and reproducible code, you should not use absolute paths to the raw data.
 Instead, `DataPackageR` provides several APIs to access the data package project root directory, the `inst/extdata` subdirectory, and the `data` subdirectory.
 
@@ -230,7 +230,7 @@ Instead, `DataPackageR` provides several APIs to access the data package project
 # This returns the datapackage source 
 # root directory. 
 # In an R or Rmd processing script this can be used to build a path to a directory that is exteral to the package, for 
-# example if we are dealing with very large data sets where data cannot be pacakged.
+# example if we are dealing with very large data sets where data cannot be packaged.
 DataPackageR::project_path()
 
 # This returns the   
