@@ -156,7 +156,7 @@ the user has all the code and data ready to go for `datapackage_skeleton()`.
 
 ## Example (assuming all code and data are available)
 
-```{r minimal_example, results='hide'}
+```{r minimal_example, results='hide', message=FALSE}
 library(DataPackageR)
 
 # Let's reproducibly package up
