@@ -30,8 +30,8 @@
           paste0(
             "@details Use \\code{",
             "data(package='", pname, "')$",
-            "results[, 3]} to",
-            "see a list of available",
+            "results[, 3]} to ",
+            "see a list of available ",
             "data sets in this data package"
           ),
           "    and/or DataPackageR::load_all",
