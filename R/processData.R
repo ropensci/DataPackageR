@@ -57,7 +57,7 @@
 #'    r_object_names = "tbl",
 #'    code_files = f)
 #'
-#' # call build_package to run the "foo.Rmd" processing and
+#' # call package_build to run the "foo.Rmd" processing and
 #' # build a data package.
 #' package_build(file.path(tempdir(), pname), install = FALSE)
 #'
@@ -803,7 +803,7 @@ project_data_path <- function(file = NULL) {
 #'    r_object_names = "tbl",
 #'    code_files = f)
 #'
-#' # call build_package to run the "foo.Rmd" processing and
+#' # call package_build to run the "foo.Rmd" processing and
 #' # build a data package.
 #' package_build(file.path(tempdir(), pname), install = FALSE)
 #' document(path = file.path(tempdir(), pname), install=FALSE)
