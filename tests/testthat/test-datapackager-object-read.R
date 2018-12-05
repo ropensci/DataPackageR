@@ -38,3 +38,36 @@ test_that("data objects are saved incrementally in render_root", {
   )
   expect_true(file_test("-f",file.path(tempdir(),DataPackageR::yml_find(file.path(tempdir(),"subsetCars"))[["configuration"]][["render_root"]][["tmp"]],"cars_over_20.rds")))
 })
+
+
+test_that("data objects can be read from render_root or the data dir", {
+  file <- system.file("extdata", "tests", "subsetCars.Rmd",
+                      package = "DataPackageR"
+  )
+  datapackage_skeleton(
+    name = "subsetCars",
+    path = tempdir(),
+    code_files = c(file),
+    force = TRUE,
+    r_object_names = "cars_over_20"
+  )
+  package_build(
+    file.path(tempdir(), "subsetCars")
+  )
+  
+  #create object that doesn't exist in temporary file, so datapackager_object_read is forced to look in the data dir
+  file.copy(file.path(tempdir(),"subsetCars","data","cars_over_20.rda"),
+            file.path(tempdir(), "subsetCars","data","cars_over_20_2.rda"))
+  
+  original<-readRDS(file.path(tempdir(),DataPackageR::yml_find(file.path(tempdir(),"subsetCars"))[["configuration"]][["render_root"]][["tmp"]],"cars_over_20.rds"))
+  
+  expect_identical(suppressMessages(datapackager_object_read("cars_over_20")),original)
+  expect_identical(datapackager_object_read("cars_over_20_2"),original)
+  
+  #check if the reading will try to read from the ENV
+  options("DataPackageR_packagebuilding" = TRUE)
+  on.exit({options("DataPackageR_packagebuilding" = FALSE)})
+  
+  expect_error(datapackager_object_read("cars_over_20"))
+  
+})

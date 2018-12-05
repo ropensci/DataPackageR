@@ -125,6 +125,12 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
   raw_data_dir <- "data-raw"
   target <- normalizePath(file.path(pkg_dir, raw_data_dir), winslash = "/")
   raw_data_dir <- target
+  
+  #set the option that DataPackageR is building the package. On exit ensures when it leaves, it will set it back to false
+  options("DataPackageR_packagebuilding" = TRUE)
+  on.exit(options("DataPackageR_packagebuilding" = FALSE))
+  
+  
 
   # validate that render_root exists.
   # if it's an old temp dir, what then?
