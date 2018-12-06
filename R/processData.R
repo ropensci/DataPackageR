@@ -362,6 +362,7 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
     dataenv <- ENVS
     # Digest each object
     new_data_digest <- .digest_data_env(ls(ENVS), dataenv, pkg_description)
+    .newsfile()
     if (!is.null(old_data_digest)) {
       string_check <- .check_dataversion_string(
         old_data_digest,

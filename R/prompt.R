@@ -66,11 +66,11 @@
   news_con <- file(news_file, open = "r+")
   news_file_data <- readLines(news_con)
   header_1 <- grep("DataVersion", news_file_data)[1]
-  header_2 <- grep("DataVersion", news_file_data)[2]
+  # header_2 <- grep("DataVersion", news_file_data)[2]
   ul_1 <- grep("=====", news_file_data)[1]
-  ul_2 <- grep("=====", news_file_data)[2]
+  # ul_2 <- grep("=====", news_file_data)[2]
   assert_that(header_1 == ul_1 - 1)
-  assert_that(header_2 == ul_2 - 1)
+  # assert_that(header_2 == ul_2 - 1)
   header <- news_file_data[header_1:ul_1]
   news_file_data <- news_file_data[-c(header_1:ul_1)]
   #write header
