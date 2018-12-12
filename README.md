@@ -151,7 +151,7 @@ complementary problems:
       - Access multiple versions of the data at once
     
     `datastorrr` could be used with DataPackageR to store / access
-    remote raw data sets, remotely store / acess tidied data that are
+    remote raw data sets, remotely store / access tidied data that are
     too large to fit in the package itself.
 
   - **fst** [github repo](https://github.com/fstpackage/fst)
@@ -190,7 +190,7 @@ devtools::install_github("RGLab/DataPackageR")
 
 ## Blog Post - building packages interactively.
 
-See this [rOpeSci blog
+See this [rOpenSci blog
 post](https://ropensci.org/blog/2018/09/18/datapackager/) on how to
 build data packages interactively using DataPackageR. This uses several
 new interfaces: `use_data_object()`, `use_processing_script()` and

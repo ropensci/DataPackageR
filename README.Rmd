@@ -115,7 +115,7 @@ There are a number of tools out there that address similar and complementary pro
     - Deal consistently with translating the file stored online into a loaded data object
     - Access multiple versions of the data at once 
     
-  `datastorrr` could be used with DataPackageR to store / access remote raw data sets, remotely store / acess tidied data that are too large to fit in the package itself.
+  `datastorrr` could be used with DataPackageR to store / access remote raw data sets, remotely store / access tidied data that are too large to fit in the package itself.
 
 - **fst**
   [github repo](https://github.com/fstpackage/fst)
@@ -150,7 +150,7 @@ devtools::install_github("RGLab/DataPackageR")
 
 ## Blog Post - building packages interactively.
 
-See this [rOpeSci blog post](https://ropensci.org/blog/2018/09/18/datapackager/) on how to build data packages interactively using DataPackageR. 
+See this [rOpenSci blog post](https://ropensci.org/blog/2018/09/18/datapackager/) on how to build data packages interactively using DataPackageR. 
 This uses several new interfaces: `use_data_object()`, `use_processing_script()` and `use_raw_dataset()` to build up a data package, rather than assuming
 the user has all the code and data ready to go for `datapackage_skeleton()`. 
 
