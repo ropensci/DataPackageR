@@ -10,7 +10,7 @@
   "codeRepository": "https://github.com/ropensci/DataPackageR",
   "issueTracker": "https://github.com/ropensci/DataPackageR/issues",
   "license": "https://spdx.org/licenses/MIT",
-  "version": "0.15.4",
+  "version": "0.15.4.900",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
@@ -29,6 +29,10 @@
     {
       "@type": "Organization",
       "name": "Paul Obrecht"
+    },
+    {
+      "@type": "Organization",
+      "name": "Ellis Hughes"
     }
   ],
   "copyrightHolder": [
