@@ -10,6 +10,9 @@ init:
 install:
   ps: Bootstrap
 
+environment:
+  R_VERSION: release
+
 cache:
   - C:\RLibrary
 
