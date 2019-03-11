@@ -4,12 +4,14 @@
 \alias{document}
 \title{Build documentation for a data package using DataPackageR.}
 \usage{
-document(path = ".", install = TRUE)
+document(path = ".", install = TRUE, ...)
 }
 \arguments{
 \item{path}{\code{character} the path to the data package source root.}
 
 \item{install}{\code{logical} install and reload the package. (default TRUE)}
+
+\item{...}{additional arguments to \code{install}}
 }
 \description{
 Build documentation for a data package using DataPackageR.

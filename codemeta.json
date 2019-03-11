@@ -10,7 +10,7 @@
   "codeRepository": "https://github.com/ropensci/DataPackageR",
   "issueTracker": "https://github.com/ropensci/DataPackageR/issues",
   "license": "https://spdx.org/licenses/MIT",
-  "version": "0.15.4.901",
+  "version": "0.15.5",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",

@@ -788,6 +788,7 @@ project_data_path <- function(file = NULL) {
 #' @title Build documentation for a data package using DataPackageR.
 #' @param path \code{character} the path to the data package source root.
 #' @param install \code{logical} install and reload the package. (default TRUE)
+#' @param ... additional arguments to \code{install}
 #' @export
 #' @examples
 #' # A simple Rmd file that creates one data object
@@ -815,7 +816,7 @@ project_data_path <- function(file = NULL) {
 #' package_build(file.path(tempdir(), pname), install = FALSE)
 #' document(path = file.path(tempdir(), pname), install=FALSE)
 #' }
-document <- function(path = ".", install = TRUE) {
+document <- function(path = ".", install = TRUE, ...) {
   cat("\n")
   usethis::proj_set(path = path)
   path <- usethis::proj_get()
@@ -834,7 +835,7 @@ document <- function(path = ".", install = TRUE) {
     vignettes = FALSE, quiet = TRUE
   )
   if (install) {
-    install.packages(location, repos = NULL, type = "source", quiet = TRUE)
+    install.packages(location, repos = NULL, type = "source", quiet = TRUE, ...)
     devtools::reload(path, quiet = TRUE)
   }
   return(TRUE)
