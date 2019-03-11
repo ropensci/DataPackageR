@@ -9,6 +9,7 @@
 #' @param log log level \code{INFO,WARN,DEBUG,FATAL}
 #' @param deps \code{logical} should we pass data objects into subsequent scripts? Default TRUE
 #' @param install \code{logical} automatically install and load the package after building. (default TRUE)
+#' @param ... additional arguments passed to \code{install.packages} when \code{install=TRUE}.
 #' @importFrom roxygen2 roxygenise roxygenize
 #' @importFrom devtools build_vignettes build parse_deps reload
 #' @importFrom usethis use_build_ignore use_rstudio proj_set use_directory
@@ -39,7 +40,8 @@ package_build <- function(packageName = NULL,
                           vignettes = FALSE,
                           log = INFO,
                           deps = TRUE,
-                          install = FALSE) {
+                          install = FALSE,
+                          ...) {
   .multilog_setup(LOGFILE = NULL)
   # flog.appender(appender.console())
   # requireNamespace("futile.logger")
@@ -96,7 +98,7 @@ package_build <- function(packageName = NULL,
   )
   # try to install and then reload the package in the current session
   if (install) {
-    install.packages(location, repos = NULL, type = "source")
+    install.packages(location, repos = NULL, type = "source", ...)
     devtools::reload(package_path)
   }
   .next_steps()

@@ -1,3 +1,6 @@
+### DataPackageR 0.15.4.901
+* Fix bug in vignette and code that writes to user space during CRAN checks.
+
 ### DataPackageR 0.15.4.900
 * Fix a bug in update_news.
 * Create news files if it doesn't exist.

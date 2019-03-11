@@ -1,7 +1,7 @@
 ---
 title: "Using DataPackageR"
 author: "Greg Finak <gfinak@fredhutch.org>"
-date: "2018-10-24"
+date: "2019-03-11"
 output: 
   rmarkdown::html_vignette:
     keep_md: TRUE
@@ -76,9 +76,6 @@ The contents of `mtcars20` are:
 
 
 ```
-Registered S3 method overwritten by 'dplyr':
-  method               from  
-  as.data.frame.tbl_df tibble
 Registered S3 methods overwritten by 'ggplot2':
   method         from 
   [.quosures     rlang
@@ -86,16 +83,16 @@ Registered S3 methods overwritten by 'ggplot2':
   print.quosures rlang
                 levelName
 1  mtcars20              
-2   ¦--data              
-3   ¦--data-raw          
-4   ¦   °--subsetCars.Rmd
-5   ¦--datapackager.yml  
-6   ¦--DESCRIPTION       
-7   ¦--inst              
-8   ¦   °--extdata       
-9   ¦--man               
-10  ¦--R                 
-11  °--Read-and-delete-me
+2   ¦--DESCRIPTION       
+3   ¦--R                 
+4   ¦--Read-and-delete-me
+5   ¦--data              
+6   ¦--data-raw          
+7   ¦   °--subsetCars.Rmd
+8   ¦--datapackager.yml  
+9   ¦--inst              
+10  ¦   °--extdata       
+11  °--man               
 ```
 
 You should fill out the `DESCRIPTION` file to describe your data package. 
@@ -117,7 +114,7 @@ configuration:
       enabled: yes
   objects: cars_over_20
   render_root:
-    tmp: '411610'
+    tmp: '69649'
 ```
 
 The two main pieces of information in the configuration are a list of the files to be processed and the data sets the package will store.
@@ -148,12 +145,12 @@ These are useful for constructing portable paths in your code to read files from
 
 For example: to construct a path to a file named "mydata.csv" located in `inst/extdata` in your data package source tree:
 
-- use `DataPackageR::project_extdata_path("mydata.csv")` in your `R` or `Rmd` file. This would return: e.g., /var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//RtmpjpZUX9/mtcars20/inst/extdata/mydata.csv
+- use `DataPackageR::project_extdata_path("mydata.csv")` in your `R` or `Rmd` file. This would return: e.g., /var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//Rtmp765KFQ/mtcars20/inst/extdata/mydata.csv
 
 Similarly: 
 
-- `DataPackageR::project_path()`  constructs a path to the data package root directory. (e.g., /var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//RtmpjpZUX9/mtcars20)
-- `DataPackageR::project_data_path()` constructs a path to the data package `data` subdirectory. (e.g., /var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//RtmpjpZUX9/mtcars20/data)
+- `DataPackageR::project_path()`  constructs a path to the data package root directory. (e.g., /var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//Rtmp765KFQ/mtcars20)
+- `DataPackageR::project_data_path()` constructs a path to the data package `data` subdirectory. (e.g., /var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T//Rtmp765KFQ/mtcars20/data)
 
 Raw data sets that are stored externally (outside the data package source tree) can be constructed relative to the `project_path()`.
 
@@ -185,26 +182,26 @@ Once the skeleton framework is set up,
 # and reproducibly enclose it in a package.
 DataPackageR:::package_build(file.path(tempdir(),"mtcars20"))
 
-✔ Setting active project to '/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpjpZUX9/mtcars20'
+✔ Setting active project to '/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmp765KFQ/mtcars20'
 ✔ 1 data set(s) created by subsetCars.Rmd
 • cars_over_20
 ☘ Built  all datasets!
-Enter a text description of the changes for the NEWS.md file.
+Non-interactive NEWS.md file update.
 
 ✔ Creating 'vignettes/'
 ✔ Creating 'inst/doc/'
 First time using roxygen2. Upgrading automatically...
-Updating roxygen version in /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpjpZUX9/mtcars20/DESCRIPTION
+Updating roxygen version in /private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmp765KFQ/mtcars20/DESCRIPTION
 Writing NAMESPACE
 Loading mtcars20
 Writing mtcars20.Rd
 Writing cars_over_20.Rd
-     checking for file ‘/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpjpZUX9/mtcars20/DESCRIPTION’ ...  ✔  checking for file ‘/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpjpZUX9/mtcars20/DESCRIPTION’
+     checking for file ‘/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmp765KFQ/mtcars20/DESCRIPTION’ ...  ✔  checking for file ‘/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmp765KFQ/mtcars20/DESCRIPTION’
   ─  preparing ‘mtcars20’:
      checking DESCRIPTION meta-information ...  ✔  checking DESCRIPTION meta-information
   ─  checking for LF line-endings in source and make files and shell scripts
   ─  checking for empty or unneeded directories
-─  looking to see if a ‘data/datalist’ file should be added
+  ─  looking to see if a ‘data/datalist’ file should be added
        NB: this package now depends on R (>= 3.5.0)
        WARNING: Added dependency on R >= 3.5.0 because serialized objects in  serialize/load version 3 cannot be read in older versions of R.  File(s) containing such objects: 'mtcars20/data/cars_over_20.rda'
   ─  building 'mtcars20_1.0.tar.gz'
@@ -220,7 +217,7 @@ Writing cars_over_20.Rd
    - Set up a github repository for your pacakge. 
    - Add the github repository as a remote of your local package repository. 
    -  git push  your local repository to gitub. 
-[1] "/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpjpZUX9/mtcars20_1.0.tar.gz"
+[1] "/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmp765KFQ/mtcars20_1.0.tar.gz"
 ```
 
 ### Documenting your data set changes in NEWS.md
@@ -263,31 +260,31 @@ The pacakge source directory changes after the first build.
 ```
                          levelName
 1  mtcars20                       
-2   ¦--data                       
-3   ¦   °--cars_over_20.rda       
-4   ¦--data-raw                   
-5   ¦   ¦--documentation.R        
-6   ¦   ¦--subsetCars.R           
-7   ¦   °--subsetCars.Rmd         
-8   ¦--DATADIGEST                 
-9   ¦--datapackager.yml           
-10  ¦--DESCRIPTION                
-11  ¦--inst                       
-12  ¦   ¦--doc                    
-13  ¦   ¦   ¦--subsetCars.html    
-14  ¦   ¦   °--subsetCars.Rmd     
-15  ¦   °--extdata                
-16  ¦       °--Logfiles           
-17  ¦           ¦--processing.log 
-18  ¦           °--subsetCars.html
-19  ¦--man                        
-20  ¦   ¦--cars_over_20.Rd        
-21  ¦   °--mtcars20.Rd            
-22  ¦--NAMESPACE                  
-23  ¦--NEWS.md                    
-24  ¦--R                          
-25  ¦   °--mtcars20.R             
-26  ¦--Read-and-delete-me         
+2   ¦--DATADIGEST                 
+3   ¦--DESCRIPTION                
+4   ¦--NAMESPACE                  
+5   ¦--NEWS.md                    
+6   ¦--R                          
+7   ¦   °--mtcars20.R             
+8   ¦--Read-and-delete-me         
+9   ¦--data                       
+10  ¦   °--cars_over_20.rda       
+11  ¦--data-raw                   
+12  ¦   ¦--documentation.R        
+13  ¦   ¦--subsetCars.R           
+14  ¦   °--subsetCars.Rmd         
+15  ¦--datapackager.yml           
+16  ¦--inst                       
+17  ¦   ¦--doc                    
+18  ¦   ¦   ¦--subsetCars.Rmd     
+19  ¦   ¦   °--subsetCars.html    
+20  ¦   °--extdata                
+21  ¦       °--Logfiles           
+22  ¦           ¦--processing.log 
+23  ¦           °--subsetCars.html
+24  ¦--man                        
+25  ¦   ¦--cars_over_20.Rd        
+26  ¦   °--mtcars20.Rd            
 27  °--vignettes                  
 28      °--subsetCars.Rmd         
 ```
@@ -306,7 +303,7 @@ You should update this file to properly document your objects. Then rebuild the 
 ```r
 document(file.path(tempdir(),"mtcars20"))
 
-✔ Setting active project to '/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/RtmpjpZUX9/mtcars20'
+✔ Setting active project to '/private/var/folders/jh/x0h3v3pd4dd497g3gtzsm8500000gn/T/Rtmp765KFQ/mtcars20'
 Updating mtcars20 documentation
 Loading mtcars20
 [1] TRUE
@@ -334,8 +331,10 @@ The data set documentation will be accessible via `?cars_over_20`, and the data 
 
 
 ```r
+# create a temporary library to install into.
+dir.create(file.path(tempdir(),"lib"))
 # Let's use the package we just created.
-install.packages(file.path(tempdir(),"mtcars20_1.0.tar.gz"), type = "source", repos = NULL)
+install.packages(file.path(tempdir(),"mtcars20_1.0.tar.gz"), type = "source", repos = NULL, lib = file.path(tempdir(),"lib"))
 if(!"package:mtcars20"%in%search())
   attachNamespace('mtcars20') #use library() in your code
 data("cars_over_20") # load the data
@@ -411,7 +410,7 @@ configuration:
   - object1
   - object2
   render_root:
-    tmp: '169120'
+    tmp: '251712'
 ```
 
 `config` is a newly constructed yaml configuration object. It can be written to the package directory:
@@ -474,7 +473,7 @@ configuration:
   - object1
   - object2
   render_root:
-    tmp: '169120'
+    tmp: '251712'
 ```
 
 Note that the modified configuration needs to be written back to the package source directory in order for the 
@@ -573,12 +572,12 @@ Encoding: UTF-8
 LazyData: true
 DataVersion: 0.1.0
 Roxygen: list(markdown = TRUE)
-Date: 2018-10-24
+Date: 2019-03-11
 Suggests: 
     knitr,
     rmarkdown
 VignetteBuilder: knitr
-RoxygenNote: 6.1.0
+RoxygenNote: 6.1.1
 ```
 
 

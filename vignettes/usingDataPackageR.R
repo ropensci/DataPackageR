@@ -66,8 +66,10 @@ df <- data.frame(pathString = file.path(
 document(file.path(tempdir(),"mtcars20"))
 
 ## ---- eval = rmarkdown::pandoc_available()-------------------------------
+# create a temporary library to install into.
+dir.create(file.path(tempdir(),"lib"))
 # Let's use the package we just created.
-install.packages(file.path(tempdir(),"mtcars20_1.0.tar.gz"), type = "source", repos = NULL)
+install.packages(file.path(tempdir(),"mtcars20_1.0.tar.gz"), type = "source", repos = NULL, lib = file.path(tempdir(),"lib"))
 if(!"package:mtcars20"%in%search())
   attachNamespace('mtcars20') #use library() in your code
 data("cars_over_20") # load the data

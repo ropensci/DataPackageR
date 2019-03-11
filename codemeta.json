@@ -10,14 +10,14 @@
   "codeRepository": "https://github.com/ropensci/DataPackageR",
   "issueTracker": "https://github.com/ropensci/DataPackageR/issues",
   "license": "https://spdx.org/licenses/MIT",
-  "version": "0.15.4.900",
+  "version": "0.15.4.901",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
     "version": "3.6.0",
     "url": "https://r-project.org"
   },
-  "runtimePlatform": "R Under development (unstable) (2018-10-09 r75419)",
+  "runtimePlatform": "R Under development (unstable) (2019-03-07 r76210)",
   "author": [
     {
       "@type": "Organization",
