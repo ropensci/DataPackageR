@@ -13,7 +13,8 @@ test_that("documentation is built via document()", {
   package_build(
     file.path(tempdir(), "subsetCars")
   )
-  expect_true(document(file.path(tempdir(), "subsetCars")))
+  dir.create(file.path(tempdir(),"lib"))
+  expect_true(document(file.path(tempdir(), "subsetCars"), lib = file.path(tempdir(),"lib")))
   docfile <- readLines(file.path(
     tempdir(),
     "subsetCars", "data-raw", "documentation.R"
@@ -44,10 +45,10 @@ test_that("documentation is built via document()", {
   flush(connection)
   close(connection)
   expect_output(
-    document(file.path(tempdir(), "subsetCars")),
+    document(file.path(tempdir(), "subsetCars"), lib = file.path(tempdir(),"lib")),
     "Writing testmarkdownroxygen.Rd"
   )
-  v <- vignette(package = "subsetCars")
+  v <- vignette(package = "subsetCars", lib.loc = file.path(tempdir(),"lib"))
   expect_equal(v$results[, "Item"], "subsetCars")
   unlink(file.path(tempdir(), "subsetCars"),
     recursive = TRUE,

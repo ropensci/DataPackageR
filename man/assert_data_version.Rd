@@ -5,7 +5,7 @@
 \title{Assert that a data version in a data package matches an expectation.}
 \usage{
 assert_data_version(data_package_name = NULL, version_string = NULL,
-  acceptable = "equal")
+  acceptable = "equal", ...)
 }
 \arguments{
 \item{data_package_name}{\code{character} Name of the package.}
@@ -13,6 +13,8 @@ assert_data_version(data_package_name = NULL, version_string = NULL,
 \item{version_string}{\code{character} Version string in "x.y.z" format.}
 
 \item{acceptable}{\code{character} one of "equal", "equal_or_greater", describing what version match is acceptable.}
+
+\item{...}{additional arguments passed to data_version (such as lib.loc)}
 }
 \value{
 invisible \code{logical} TRUE if success, otherwise stop on mismatch.

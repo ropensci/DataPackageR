@@ -1,8 +1,7 @@
-## Release 0.15.5
-* This minor release fixes bugs in the build and check on debian on CRAN.
-* Build failure on debian because tests were writing to a user-space library. 
-* Now the code has been updated to write to a temporary library in the R's temporary directory structure.
-
+## Minor release 0.15.6
+* I have addresed remaining issues in the vignette and the test cases that were still trying write to the user's library causing failures on debian-gcc on CRAN for version 0.15.5
+* I've tested with a read-only system and user R library to simulate the errors on the debian system.
+* There is one remaining NOTE that is due to the way we load and test a package (using loadNamespace) built by DataPackageR in the vignettes.
 
 ## Test environments
 * local OS X install (x86_64-apple-darwin16.7.0), R 3.6.0  (2019-03-07 r76210)
@@ -14,9 +13,14 @@
 * Windows (via Winbuilder) R Under development (unstable) (2019-03-09 r76216)
 * Windows Server 2008 R2 SP1, R-devel, 32/64 bit (via R-hub)
 
+
 ## R CMD check results
 
 There were no ERRORs or WARNINGs 
+
+There was 1 NOTE:
+N  checking for unstated dependencies in vignettes ...
+   'library' or 'require' call not declared from: ‘mtcars20’
 
 There was 1 NOTE when pandoc was absent:
 

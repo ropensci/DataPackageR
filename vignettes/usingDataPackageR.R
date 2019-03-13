@@ -49,7 +49,8 @@ cat(yaml::as.yaml(yaml::yaml.load_file(file.path(tempdir(),"mtcars20","datapacka
 ## ---- eval = rmarkdown::pandoc_available()-------------------------------
 # Run the preprocessing code to build cars_over_20
 # and reproducibly enclose it in a package.
-DataPackageR:::package_build(file.path(tempdir(),"mtcars20"))
+dir.create(file.path(tempdir(),"lib"))
+DataPackageR:::package_build(file.path(tempdir(),"mtcars20"), install = TRUE, lib = file.path(tempdir(),"lib"))
 
 ## ---- echo=FALSE, eval = rmarkdown::pandoc_available()-------------------
 df <- data.frame(pathString = file.path(
@@ -63,54 +64,6 @@ df <- data.frame(pathString = file.path(
   as.Node(df)
 
 ## ----rebuild_docs, eval = rmarkdown::pandoc_available()------------------
-document(file.path(tempdir(),"mtcars20"))
-
-## ---- eval = rmarkdown::pandoc_available()-------------------------------
-# create a temporary library to install into.
-dir.create(file.path(tempdir(),"lib"))
-# Let's use the package we just created.
-install.packages(file.path(tempdir(),"mtcars20_1.0.tar.gz"), type = "source", repos = NULL, lib = file.path(tempdir(),"lib"))
-if(!"package:mtcars20"%in%search())
-  attachNamespace('mtcars20') #use library() in your code
-data("cars_over_20") # load the data
-
-cars_over_20 # now we can use it.
-?cars_over_20 # See the documentation you wrote in data-raw/documentation.R.
-  
-vignettes <- vignette(package = "mtcars20")
-vignettes$results
-
-## ---- eval = rmarkdown::pandoc_available()-------------------------------
-# We can easily check the version of the data
-DataPackageR::data_version("mtcars20")
-
-# You can use an assert to check the data version in  reports and
-# analyses that use the packaged data.
-assert_data_version(data_package_name = "mtcars20",
-                    version_string = "0.1.0",
-                    acceptable = "equal")  #If this fails, execution stops
-                                           #and provides an informative error.
-
-## ----construct_config, eval = rmarkdown::pandoc_available()--------------
-# assume I have file1.Rmd and file2.R located in /data-raw, 
-# and these create 'object1' and 'object2' respectively.
-
-config <- construct_yml_config(code = c("file1.Rmd", "file2.R"),
-                              data = c("object1", "object2"))
-cat(yaml::as.yaml(config))
-
-## ---- eval = rmarkdown::pandoc_available()-------------------------------
-path_to_package <- tempdir() #e.g., if tempdir() was the root of our package.
-yml_write(config, path = path_to_package)
-
-## ----echo=1:2, eval = rmarkdown::pandoc_available()----------------------
-config <- yml_disable_compile(config,filenames = "file2.R")
-yml_write(config, path = path_to_package) # write modified yml to the package.
-cat(yaml::as.yaml(config))
-
-## ---- echo=FALSE, eval = rmarkdown::pandoc_available()-------------------
-cat(readLines(file.path(tempdir(),"mtcars20","DATADIGEST")),sep="\n")
-
-## ----echo=FALSE, eval = rmarkdown::pandoc_available()--------------------
-cat(readLines(file.path(tempdir(),"mtcars20","DESCRIPTION")),sep="\n")
+dir.create(file.path(tempdir(),"lib")) # a temporary library directory
+document(file.path(tempdir(),"mtcars20"), lib = file.path(tempdir(),"lib"))
 

@@ -85,6 +85,7 @@ dataVersion <- function(pkg, lib.loc = NULL) {
 #' @param data_package_name \code{character} Name of the package.
 #' @param version_string \code{character} Version string in "x.y.z" format.
 #' @param acceptable  \code{character} one of "equal", "equal_or_greater", describing what version match is acceptable.
+#' @param ... additional arguments passed to data_version (such as lib.loc)
 #' @details Tests the DataVersion string in \code{data_package_name} against \code{version_string} testing the major, minor and revision portion.
 #' @return invisible \code{logical} TRUE if success, otherwise stop on mismatch.
 #' @details
@@ -112,9 +113,10 @@ dataVersion <- function(pkg, lib.loc = NULL) {
 assert_data_version <-
   function(data_package_name = NULL,
              version_string = NULL,
-             acceptable = "equal") {
+             acceptable = "equal",
+           ...) {
     acceptable <- match.arg(acceptable, c("equal", "equal_or_greater"))
-    pkg_version <- data_version(pkg = data_package_name)
+    pkg_version <- data_version(pkg = data_package_name,...)
     required_version <- as.numeric_version(version_string)
     base <-
       max(10, max(
