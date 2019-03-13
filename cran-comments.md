@@ -1,7 +1,6 @@
-## Minor release 0.15.6
+## Resubmission 0.15.6
 * I have addresed remaining issues in the vignette and the test cases that were still trying write to the user's library causing failures on debian-gcc on CRAN for version 0.15.5
 * I've tested with a read-only system and user R library to simulate the errors on the debian system.
-* There is one remaining NOTE that is due to the way we load and test a package (using loadNamespace) built by DataPackageR in the vignettes.
 
 ## Test environments
 * local OS X install (x86_64-apple-darwin16.7.0), R 3.6.0  (2019-03-07 r76210)
@@ -18,14 +17,10 @@
 
 There were no ERRORs or WARNINGs 
 
-There was 1 NOTE:
-N  checking for unstated dependencies in vignettes ...
-   'library' or 'require' call not declared from: ‘mtcars20’
+There was 1 NOTE
 
-There was 1 NOTE when pandoc was absent:
-
-NOTE:
-Files ‘README.md’ or ‘NEWS.md’ cannot be checked without ‘pandoc’ being installed.
+* checking CRAN incoming feasibility ... NOTE
+Maintainer: 'Greg Finak <gfinak@fredhutch.org>'
 
 ## Downstream dependencies
 

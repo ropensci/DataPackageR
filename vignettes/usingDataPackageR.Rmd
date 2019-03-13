@@ -261,8 +261,9 @@ The data set documentation will be accessible via `?cars_over_20`, and the data 
 dir.create(file.path(tempdir(),"lib"))
 # Let's use the package we just created.
 install.packages(file.path(tempdir(),"mtcars20_1.0.tar.gz"), type = "source", repos = NULL, lib = file.path(tempdir(),"lib"))
-if(!"package:mtcars20"%in%search())
-  attachNamespace(loadNamespace('mtcars20',lib.loc = file.path(tempdir(),"lib"))) #use library() in your code
+lns <- loadNamespace    
+if (!"package:mtcars20"%in%search())
+  attachNamespace(lns('mtcars20',lib.loc = file.path(tempdir(),"lib"))) #use library() in your code
 data("cars_over_20") # load the data
 
 cars_over_20 # now we can use it.
