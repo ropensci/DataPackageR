@@ -65,4 +65,5 @@ test_that("data, code, and dependencies are moved into place by skeleton", {
     recursive = TRUE,
     force = TRUE
   )
+  usethis::proj_set(NULL)
 })

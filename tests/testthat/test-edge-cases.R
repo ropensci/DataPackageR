@@ -261,6 +261,7 @@ test_that("package built in different edge cases", {
     force = TRUE,
     recursive = TRUE
   )
+  usethis::proj_set(NULL)
   expect_error(DataPackageR:::DataPackageR(file.path(tempdir(), "foo")))
   datapackage_skeleton(
     name = "subsetCars",
@@ -327,3 +328,4 @@ test_that("package built in different edge cases", {
     recursive = TRUE
   )
 })
+

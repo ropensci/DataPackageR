@@ -51,13 +51,13 @@ datapackage_skeleton <-
     if (force) {
       unlink(file.path(path, name), recursive = TRUE, force = TRUE)
     }
-    usethis::create_package(
+    package_path <- usethis::create_package(
       path = file.path(path, name),
       rstudio = FALSE, open = FALSE
     )
-
+    usethis::proj_set(package_path)
     # create the rest of the necessary elements in the package
-    package_path <- file.path(path, name)
+    # package_path <- file.path(path, name)
     description <-
       desc::desc(file = file.path(package_path, "DESCRIPTION"))
     description$set("DataVersion" = "0.1.0")
@@ -189,13 +189,14 @@ datapackage.skeleton <- function(name = NULL,
                                  code_files = character(),
                                  r_object_names = character()) {
   warning("Please use datapackage_skeleton() instead of datapackage.skeleton()")
-  datapackage_skeleton(
+  proj_path <- datapackage_skeleton(
     name = name,
     path = path,
     force = force,
     code_files = code_files,
     r_object_names = r_object_names
   )
+  proj_set(proj_path)
 }
 
 .done <- function(...) {

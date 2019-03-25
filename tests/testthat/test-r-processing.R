@@ -56,5 +56,6 @@ test_that("R file processing works and creates vignettes", {
     recursive = TRUE,
     force = TRUE
   )
+  usethis::proj_set(NULL)
   remove.packages("rfiletest",lib = file.path(tempdir(),"lib"))
 })

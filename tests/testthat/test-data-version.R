@@ -11,7 +11,7 @@ test_that("assert_data_version", {
   pname <- basename(tempfile())
   suppressWarnings(datapackage.skeleton(
     name = pname,
-    path = tempdir(),
+    path = normalizePath(tempdir()),
     force = TRUE,
     r_object_names = "tbl",
     code_files = f
@@ -20,7 +20,7 @@ test_that("assert_data_version", {
 
   devtools::load_all(file.path(tempdir(), pname))
   suppressWarnings(expect_true(
-    dataVersion(pkg = pname) == numeric_version("0.1.0")
+    data_version(pkg = pname) == numeric_version("0.1.0")
   ))
   expect_true(
     assert_data_version(

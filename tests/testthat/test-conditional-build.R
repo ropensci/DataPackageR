@@ -33,4 +33,6 @@ test_that("can add a data item", {
     recursive = TRUE,
     force = TRUE
   )
+  setwd(tempdir())
+  usethis::proj_set(path = NULL)
 })

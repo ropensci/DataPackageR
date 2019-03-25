@@ -24,3 +24,5 @@ unlink(file.path(tempdir(), "subsetCars"),
   recursive = TRUE,
   force = TRUE
 )
+usethis::proj_set(path = NULL)
+

@@ -1,4 +1,8 @@
-### DataPackageR 0.15.4.901
+### DataPackageR 0.15.6.900
+* Fix test and vignette bugs related to usethis version 1.4.900
+
+
+### DataPackageR 0.15.6
 * Fix bug in vignette and code that writes to user space during CRAN checks.
 
 ### DataPackageR 0.15.4.900

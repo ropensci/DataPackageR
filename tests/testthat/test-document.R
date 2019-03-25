@@ -54,4 +54,5 @@ test_that("documentation is built via document()", {
     recursive = TRUE,
     force = TRUE
   )
+  usethis::proj_set(path = NULL)
 })
