@@ -34,5 +34,5 @@ test_that("can add a data item", {
     force = TRUE
   )
   setwd(tempdir())
-  usethis::proj_set(path = NULL)
+  try(usethis::proj_set(NULL),silent = TRUE) #wrap in try for usethis 1.4 vs 1.5
 })
