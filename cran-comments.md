@@ -1,6 +1,6 @@
-## Resubmission 0.15.6
-* I have addresed remaining issues in the vignette and the test cases that were still trying write to the user's library causing failures on debian-gcc on CRAN for version 0.15.5
-* I've tested with a read-only system and user R library to simulate the errors on the debian system.
+## Submission 0.15.7
+* This is a new release that fixes test and vignette bugs related to the upcoming version of usethis  (1.5)
+
 
 ## Test environments
 * local OS X install (x86_64-apple-darwin16.7.0), R 3.6.0  (2019-03-07 r76210)
