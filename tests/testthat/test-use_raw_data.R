@@ -122,6 +122,8 @@ test_that("use_data_object works as expected", {
   )
   expect_true(use_data_object("newobject"))
   expect_error(use_data_object(object_name = NULL))
+  expect_error(use_data_object(object_name = 1))
+  expect_error(use_data_object(object_name = c("a","b")))
 })
 
 test_that(".update_header", {
