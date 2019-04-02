@@ -187,6 +187,8 @@ use_processing_script <- function(file = NULL, title = NULL, author = NULL, over
 use_data_object <- function(object_name = NULL) {
   if (is.null(object_name)) {
     stop(paste0(object_name, " cannot be NULL."))
+  } else if(!is.character(object_name) | !length(object_name)==1){
+    stop("object_name must be a character vector of length 1.")
   } else {
     proj_path <- usethis::proj_get()
     yml <- yml_find(path = proj_path)
