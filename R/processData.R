@@ -262,8 +262,20 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
     object_tally <- 0
     already_built <- NULL
     building <- NULL
+    r_dir <- normalizePath(file.path(pkg_dir, "R" ), winslash = "/")
+    r_dir_files <- list.files( r_dir )
+    r_dir_files <- r_dir_files[ !grepl( pkg_description$Package, 
+                                        r_dir_files ) ]
     for (i in seq_along(r_files)) {
       dataenv <- new.env(hash = TRUE, parent = .GlobalEnv)
+      for( j in seq_along( r_dir_files ) ){
+        curr_path <- normalizePath(file.path(pkg_dir, 
+                                             "R",
+                                             r_dir_files[j] ), 
+                                   winslash = "/")
+        source( curr_path, 
+                local = dataenv )
+      }
       # assign ENVS into dataenv.
       # provide functions in the package to read from it (if deps = TRUE)
       if (deps) {
