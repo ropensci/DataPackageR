@@ -1,20 +1,21 @@
-### DataPackageR 0.15.7
+# DataPackageR 0.15.7
 * Fix test and vignette bugs related to upcoming version of usethis (1.5)
 
 
-### DataPackageR 0.15.6
+# DataPackageR 0.15.6
 * Fix bug in vignette and code that writes to user space during CRAN checks.
 
-### DataPackageR 0.15.4.900
+# DataPackageR 0.15.4.900
 * Fix a bug in update_news.
 * Create news files if it doesn't exist.
 
 
-### DataPackageR 0.15.4
+# DataPackageR 0.15.4
 * New CRAN Release
 
 # DataPackageR 0.15.3.9000
-### Features and enhancements
+
+## Features and enhancements
 * Reduce the console output from logging. (ropensci/DataPackageR/issues/50)
 * Create a new logger that logs at different thresholds to console and to file (ropensci/DataPackageR/issues/50)
 * Default on build is not to install.
@@ -24,7 +25,7 @@
 * Add option to overwrite (or not) via use_processing_script. Provide warning.
 * Add use_ignore() to ignore files and data sets in .Rbuildignore and .gitignore and added ignore argument to use_raw_dataset().
 
-### Bug fixes
+## Bug fixes
 * code argument no longer required for construct_yml_config
 * Fix the documentation for datapackager_object_read() and "Migrating old packages".
 * Copy over vignettes generated as pdfs into the package inst/doc
