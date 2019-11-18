@@ -1,3 +1,6 @@
+# DataPackageR 0.15.8
+* Fix tests for compatibility with upcoming usethis (1.5.2)
+
 # DataPackageR 0.15.7
 * Fix test and vignette bugs related to upcoming version of usethis (1.5)
 
