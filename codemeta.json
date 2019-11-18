@@ -10,14 +10,14 @@
   "codeRepository": "https://github.com/ropensci/DataPackageR",
   "issueTracker": "https://github.com/ropensci/DataPackageR/issues",
   "license": "https://spdx.org/licenses/MIT",
-  "version": "0.15.7",
+  "version": "0.15.8",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
     "version": "3.6.0",
     "url": "https://r-project.org"
   },
-  "runtimePlatform": "R Under development (unstable) (2019-03-20 r76254)",
+  "runtimePlatform": "R version 3.6.0 Patched (2019-05-02 r76454)",
   "author": [
     {
       "@type": "Organization",
@@ -305,7 +305,7 @@
     "name": "Comprehensive R Archive Network (CRAN)",
     "url": "https://cran.r-project.org"
   },
-  "relatedLink": "https://CRAN.R-project.org/package=DataPackageR",
+  "relatedLink": ["https://CRAN.R-project.org/package=DataPackageR", "https://docs.ropensci.org/DataPackageR"],
   "keywords": [
     "r",
     "r-package",
