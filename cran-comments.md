@@ -1,27 +1,25 @@
-## Submission 0.15.7
-* This is a new release that fixes test and vignette bugs related to the upcoming version of usethis  (1.5)
+## Submission 0.15.8
+* Fix a test associated with usethis 1.5.1.9000
 
 
 ## Test environments
-* local OS X install (x86_64-apple-darwin16.7.0), R 3.6.0  (2019-03-07 r76210)
-* local OS X install (x86_64-apple-darwin16.7.0), R 3.6.0  (2019-03-07r76210) without pandoc.
-* ubuntu  16.04.15 LTS (on travis-ci) R 3.5.2 (2017-01-27)
-* ubuntu  16.04.15 LTS (on travis-ci) R Under development (unstable) (2019-03-11 r76221)
-* Ubuntu Ubuntu 18.04.2 LTS x86_64-pc-linux-gnu (64-bit) (via OpenCPU CI) R 3.5.2  (2019-03-11) 
-* Windows (via Winbuilder) R version 3.5.3 (2019-03-11) 
-* Windows (via Winbuilder) R Under development (unstable) (2019-03-09 r76216)
-* Windows Server 2008 R2 SP1, R-devel, 32/64 bit (via R-hub)
+* local linux (x86_64-pc-linux-gnu), R 3.6.1  (2019-07-05)
+* Local rhub docker (rhub/ubuntu-gcc-devel)
+* Local rhub docker (rhub/ubuntu-gcc-release)
+* Local rhub docker (rhub/ubuntu-rchk)
+* Platform:   Windows Server 2008 R2 SP1, R-devel, 32/64 bit
+* Platform:   Ubuntu Linux 16.04 LTS, R-release, GCC
+* Platform:   Fedora Linux, R-devel, clang, gfortran
 
 
 ## R CMD check results
 
-There were no ERRORs or WARNINGs 
+There were no ERRORs or WARNINGs
 
-There was 1 NOTE
-
-* checking CRAN incoming feasibility ... NOTE
-Maintainer: 'Greg Finak <gfinak@fredhutch.org>'
-
+One NOTE
+─  checking CRAN incoming feasibility ... Note_to_CRAN_maintainers (1.4s)
+   Maintainer: 'Greg Finak <gfinak@fredhutch.org>'
+   
 ## Downstream dependencies
 
 The package has no reverse dependencies.

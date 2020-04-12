@@ -33,7 +33,7 @@ datapackager_object_read <- function(name) {
   buildingPackage<-getOption("DataPackageR_packagebuilding",TRUE)
   
   
-  object<-try(get(name, get("ENVS", parent.frame())),silent=TRUE)
+  object<-try(get(name, get("ENVS", parent.frame(),inherits=FALSE),inherits=FALSE),silent=TRUE)
   
   if( !buildingPackage && inherits(object,"try-error")){
     #if the package is not being build and the object is not found in the "ENVS" environment
