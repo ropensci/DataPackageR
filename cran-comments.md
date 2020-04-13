@@ -10,7 +10,7 @@
 * Windows 10 enterprise v1607 14393.2906 (R 4.0.0 2020-04-09 v78186)
 * rhub macOS 10.11 El Capitan, R-release (experimental)
 
-I've also tested on rhub windows machines, a couple of tests fail on these systems. It's a bit of a mystery for me as to why.
+I've also tested on rhub windows machines, a couple of tests fail on these systems. It's a bit of a mystery for me as to why and I'm curretly unable to debug them.
 
 ## R CMD check results
 
