@@ -25,7 +25,7 @@ if(rmarkdown::pandoc_available()){
 f <- tempdir()
 f <- file.path(f,"foo.Rmd")
 con <- file(f)
-writeLines("```{r}\\n tbl = table(sample(1:10,1000,replace=TRUE)) \\n```\\n",con=con)
+writeLines("```{r}\n tbl = table(sample(1:10,1000,replace=TRUE)) \n```\n",con=con)
 close(con)
 pname <- basename(tempfile())
 datapackage_skeleton(name = pname,

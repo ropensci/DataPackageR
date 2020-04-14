@@ -9,8 +9,7 @@
 * Local rhub docker (rhub/ubuntu-rchk)
 * Windows 10 enterprise v1607 14393.2906 (R 4.0.0 2020-04-09 v78186)
 * rhub macOS 10.11 El Capitan, R-release (experimental)
-
-I've also tested on rhub windows machines, a couple of tests fail on these systems. It's a bit of a mystery for me as to why and I'm curretly unable to debug them.
+* rhub fedora-gcc-devel
 
 ## R CMD check results
 
@@ -20,6 +19,9 @@ One NOTE
 ─  checking CRAN incoming feasibility ... Note_to_CRAN_maintainers (1.4s)
    Maintainer: 'Greg Finak <gfinak@fredhutch.org>'
 
+On rhub/fedora-gcc-devel one test fails because the texlive-framed package is not installed and is needed for rmarkdown.
+
+I observe two test failures on rhub windows systems that I am unable to reproduce on windows systems I have avaialble to me with R 4.0.0. 
 
 ## Downstream dependencies
 

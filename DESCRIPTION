@@ -41,7 +41,7 @@ Imports:
     usethis,
     crayon
 VignetteBuilder: knitr
-RoxygenNote: 6.1.1
+RoxygenNote: 7.1.0
 Encoding: UTF-8
 Suggests:
     spelling,
