@@ -3,7 +3,7 @@ sudo: required
 addons:
   apt:
     packages:
-      - libgit-dev
+      - libgit2-dev
 matrix:
   include:
    - os: linux
