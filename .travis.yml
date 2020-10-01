@@ -1,6 +1,9 @@
 language: r
 sudo: required
-
+addons:
+  apt:
+    packages:
+      - libgit-dev
 matrix:
   include:
    - os: linux
