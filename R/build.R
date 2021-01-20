@@ -98,8 +98,8 @@ package_build <- function(packageName = NULL,
   )
   # try to install and then reload the package in the current session
   if (install) {
+    devtools::unload(packageName)
     install.packages(location, repos = NULL, type = "source", ...)
-    devtools::reload(package_path)
   }
   .next_steps()
   return(location)
