@@ -68,11 +68,6 @@ jobs:
             eval sudo $cmd
           done < <(Rscript -e 'writeLines(remotes::system_requirements("ubuntu", "20.04"))')
 
-      - name: Install other Linux system dependencies
-        if: runner.os == 'Linux'
-        run: |
-          sudo apt install libicu66
-
       - name: Install dependencies
         run: |
           remotes::install_deps(dependencies = TRUE)
