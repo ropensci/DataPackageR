@@ -4,7 +4,7 @@ Title: Construct Reproducible Analytic Data Sets as R Packages
 Authors@R:
     c(person(given = "Greg Finak", 
              role=c("aut","cph"),
-             email="gfinak@fredhutch.org",
+             email="greg.finak@gmail.com",
              comment="Original author and creator of DataPackageR"),
       person(given = "Paul Obrecht", role=c("ctb")),
       person(given = "Ellis Hughes", role=c("ctb","cre"), email = "ellishughes@live.com"),
