@@ -9,7 +9,7 @@ Authors@R:
       person(given = "Paul Obrecht", role=c("ctb")),
       person(given = "Ellis Hughes", role=c("ctb","cre"), email = "ehhughes@scharp.org"),
       person(given = "Jimmy Fulp", role=c("ctb"), email = "wfulp@scharp.org"),
-      person(given = "Marie Vendettuoli", role=c("ctb")),
+      person(given = "Marie Vendettuoli", role=c("ctb"), email = "mvendett@scharp.org"),
       person(given = "Jason Taylor", role=c("ctb")),
       person("Kara", "Woo", role = "rev",
       comment = "Kara reviewed the package for ropensci, see <https://github.com/ropensci/onboarding/issues/230>"),
