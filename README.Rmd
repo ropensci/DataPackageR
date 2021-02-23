@@ -20,14 +20,14 @@ knitr::opts_chunk$set(
 
 DataPackageR is used to reproducibly process raw data into packaged, analysis-ready data sets.
 
+<!-- badges: start -->
 [![CRAN](https://www.r-pkg.org/badges/version/DataPackageR)]( https://CRAN.R-project.org/package=DataPackageR)
-[![Build Status](https://travis-ci.org/ropensci/DataPackageR.svg?branch=master)](https://travis-ci.org/ropensci/DataPackageR)
- [![Coverage status](https://codecov.io/gh/ropensci/DataPackageR/branch/master/graph/badge.svg)](https://codecov.io/github/ropensci/DataPackageR?branch=master)
- [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/5y004036wg2rh2dx?svg=true
-)](https://ci.appveyor.com/project/gfinak/DataPackageR)
+[![R-CMD-check](https://github.com/ropensci/DataPackageR/workflows/R-CMD-check/badge.svg)](https://github.com/ropensci/DataPackageR/actions)
+[![Coverage status](https://codecov.io/gh/ropensci/DataPackageR/branch/master/graph/badge.svg)](https://codecov.io/github/ropensci/DataPackageR?branch=master)
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
-[![](https://badges.ropensci.org/230_status.svg)](https://github.com/ropensci/onboarding/issues/230)
+[![](https://badges.ropensci.org/230_status.svg)](https://github.com/ropensci/software-review/issues/230)
 [![DOI](https://zenodo.org/badge/29267435.svg)](https://doi.org/10.5281/zenodo.1292095)
+<!-- badges: end -->
 
 - [yaml configuration guide](vignettes/YAML_CONFIG.md)
 - [a more detailed technical vignette](vignettes/usingDataPackageR.md)
@@ -63,7 +63,7 @@ You have diverse raw data sets that you need to preprocess and tidy in order to:
 
 - **Documentation.**
 
-  R's package system allows us to document data objects. What's more, the `roxygen2` package makes this very easy to do with [markup tags](http://r-pkgs.had.co.nz/data.html). 
+  R's package system allows us to document data objects. What's more, the `roxygen2` package makes this very easy to do with [markup tags](https://r-pkgs.org/data.html). 
   That documentation is the equivalent of a data dictionary and can be extremely valuable when returning to a project after a period of time.
   
 - **Convenience.**
@@ -77,7 +77,7 @@ You have diverse raw data sets that you need to preprocess and tidy in order to:
 
   R packages have a 5MB size limit, at least on CRAN. BioConductor has explicit [data package](https://www.bioconductor.org/developers/package-guidelines/#package-types) types that can be larger and use git LFS for very large files. 
   
-  Sharing large volumes of raw data in an R package format is still not ideal, and there are public biological data repositories better suited for raw data: e.g.,  [GEO](https://www.ncbi.nlm.nih.gov/geo/), [SRA](https://www.ncbi.nlm.nih.gov/sra), [ImmPort](http://www.immport.org/immport-open/public/home/home), [ImmuneSpace](https://immunespace.org/), [FlowRepository](https://flowrepository.org/).
+  Sharing large volumes of raw data in an R package format is still not ideal, and there are public biological data repositories better suited for raw data: e.g.,  [GEO](https://www.ncbi.nlm.nih.gov/geo/), [SRA](https://www.ncbi.nlm.nih.gov/sra), [ImmPort](https://www.immport.org:443/shared/immport-open/public/home/home), [ImmuneSpace](https://immunespace.org/), [FlowRepository](https://flowrepository.org/).
   
   Tools like [datastorr](https://github.com/ropenscilabs/datastorr) can help with this and we hope to integrate the into DataPackageR in the future.
 
@@ -142,11 +142,11 @@ There are a number of tools out there that address similar and complementary pro
  
 ## Installation
 
-You can install the latest version of DataPackageR from [github](https://www.github.com/RGLab/DataPackageR) with:
+You can install the latest version of DataPackageR from [github](https://www.github.com/ropensci/DataPackageR) with:
 
 ```{r, eval=FALSE}
 library(devtools)
-devtools::install_github("RGLab/DataPackageR")
+devtools::install_github("ropensci/DataPackageR")
 ```
 
 ## Blog Post - building packages interactively.

@@ -21,7 +21,7 @@ bug, create an associated issue and illustrate the bug with a minimal
 *  Look at the Travis and AppVeyor build status before and after making changes.
 The `README` should contain badges for any continuous integration services used
 by the package.  
-*  We recommend the tidyverse [style guide](http://style.tidyverse.org).
+*  We recommend the tidyverse [style guide](https://style.tidyverse.org).
 You can use the [styler](https://CRAN.R-project.org/package=styler) package to
 apply these styles, but please don't restyle code that has nothing to do with 
 your PR.  

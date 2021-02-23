@@ -35,7 +35,7 @@ In this vignette we will subset and package the `mtcars` data set.
 
 ## Set up a new data package.
 
-We'll set up a new data package based on `mtcars` example in the [README](https://github.com/RGLab/DataPackageR/blob/master/README.md).
+We'll set up a new data package based on `mtcars` example in the [README](https://github.com/ropensci/DataPackageR/blob/master/README.md).
 The `datapackage_skeleton()` API is used to set up a new package. 
 The user needs to provide:
 
@@ -413,7 +413,7 @@ You now have a data package source tree.
 This will let you version control your data processing code, and provide a mechanism for sharing your package with others.
 
 
-For more details on using git and github with R, there is an excellent guide provided by Jenny Bryan: [Happy Git and GitHub for the useR](http://happygitwithr.com/) and Hadley Wickham's [book on R packages](http://r-pkgs.had.co.nz/).
+For more details on using git and github with R, there is an excellent guide provided by Jenny Bryan: [Happy Git and GitHub for the useR](https://happygitwithr.com/) and Hadley Wickham's [book on R packages]( https://r-pkgs.org/).
 
 # Additional Details
 
