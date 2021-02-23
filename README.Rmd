@@ -142,7 +142,7 @@ There are a number of tools out there that address similar and complementary pro
  
 ## Installation
 
-You can install the latest version of DataPackageR from [github](https://www.github.com/ropensci/DataPackageR) with:
+You can install the latest version of DataPackageR from [github](https://github.com/ropensci/DataPackageR) with:
 
 ```{r, eval=FALSE}
 library(devtools)
