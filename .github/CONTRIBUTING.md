@@ -17,8 +17,11 @@ bug, create an associated issue and illustrate the bug with a minimal
 
 ### Pull request process
 
-*  We recommend that you create a Git branch for each pull request (PR).  
-*  Look at the Travis and AppVeyor build status before and after making changes.
+*  We are using the Git commit workflow found here: 
+https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow  
+*  We recommend that you create a Git branch for each pull request (PR) and keep
+issues addressed to one issue per branch.  
+*  Look at the git workflow checks before and after making changes.
 The `README` should contain badges for any continuous integration services used
 by the package.  
 *  We recommend the tidyverse [style guide](http://style.tidyverse.org).
