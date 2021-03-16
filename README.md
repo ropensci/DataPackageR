@@ -182,7 +182,7 @@ See the [publication](#publication) for further discussion.
 ## Installation
 
 You can install the latest version of DataPackageR from
-[github](https://www.github.com/ropensci/DataPackageR) with:
+[github](https://github.com/ropensci/DataPackageR) with:
 
 ``` r
 library(devtools)

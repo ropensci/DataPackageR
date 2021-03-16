@@ -17,3 +17,4 @@ bibliography.bib
 cran-comments.md
 ^revdep$
 ^$
+^cran-comments\.md$
