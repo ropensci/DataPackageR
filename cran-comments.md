@@ -1,6 +1,7 @@
 ## Submission 0.15.8
 * Fix tests that were failing. This should resolve the failures identified by CRAN
 * Change maintainer to Ellis Hughes from Greg Finak
+* update filepaths/URLS based on request from CRAN
 
 
 ## Test environments
