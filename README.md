@@ -19,8 +19,10 @@ developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.re
 [![DOI](https://zenodo.org/badge/29267435.svg)](https://doi.org/10.5281/zenodo.1292095)
 <!-- badges: end -->
 
--   [yaml configuration guide](vignettes/YAML_CONFIG.md)
--   [a more detailed technical vignette](vignettes/usingDataPackageR.md)
+-   [yaml configuration
+    guide](https://github.com/ropensci/DataPackageR/blob/main/vignettes/YAML_CONFIG.md)
+-   [a more detailed technical
+    vignette](https://github.com/ropensci/DataPackageR/blob/main/vignettes/usingDataPackageR.md)
 
 > **Important Note**: [datapack](https://github.com/ropensci/datapack)
 > is a *different package* that is used to “create, send and load data
@@ -309,8 +311,8 @@ The preprint is on [biorxiv](https://doi.org/10.1101/342907).
 ## Code of conduct
 
 Please note that this project is released with a [Contributor Code of
-Conduct](CODE_OF_CONDUCT.md). By participating in this project you agree
-to abide by its terms.
+Conduct](https://github.com/ropensci/DataPackageR/blob/main/CODE_OF_CONDUCT.md).
+By participating in this project you agree to abide by its terms.
 
 ### References
 

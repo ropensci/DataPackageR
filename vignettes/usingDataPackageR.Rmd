@@ -117,7 +117,7 @@ The objects must be listed in the yaml configuration file. `datapackage_skeleton
 
 DataPackageR provides an API for modifying this file, so it does not need to be done by hand. 
 
-Further information on the contents of the YAML configuration file, and the API are in the [YAML Configuration Details](YAML_CONFIG.md)
+Further information on the contents of the YAML configuration file, and the API are in the [YAML Configuration Details](YAML_CONFIG.html)
 
 ### Where do I put my raw datasets?
 
@@ -298,7 +298,7 @@ assert_data_version(data_package_name = "mtcars20",
 
 Version 1.12.0 has moved away from controlling the build process using `datasets.R` and an additional `masterfile` argument. 
 
-The build process is now controlled via a `datapackager.yml` configuration file located in the package root directory.  (see [YAML Configuration Details](YAML_CONFIG.md))
+The build process is now controlled via a `datapackager.yml` configuration file located in the package root directory.  (see [YAML Configuration Details](YAML_CONFIG.html))
 
 ### Create a datapackager.yml file
 
