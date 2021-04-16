@@ -115,6 +115,7 @@ test_that("package built in different edge cases", {
     recursive = TRUE,
     force = TRUE
   )
+  setwd(old)
 
   yml <- DataPackageR:::construct_yml_config("foo.Rmd")
   expect_true(yml_enable_compile(

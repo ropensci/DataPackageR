@@ -35,7 +35,7 @@ In this vignette we will subset and package the `mtcars` data set.
 
 ## Set up a new data package.
 
-We'll set up a new data package based on `mtcars` example in the [README](https://github.com/RGLab/DataPackageR/blob/master/README.md).
+We'll set up a new data package based on `mtcars` example in the [README](https://github.com/ropensci/DataPackageR/blob/master/README.md).
 The `datapackage_skeleton()` API is used to set up a new package. 
 The user needs to provide:
 
@@ -117,7 +117,7 @@ The objects must be listed in the yaml configuration file. `datapackage_skeleton
 
 DataPackageR provides an API for modifying this file, so it does not need to be done by hand. 
 
-Further information on the contents of the YAML configuration file, and the API are in the [YAML Configuration Details](YAML_CONFIG.md)
+Further information on the contents of the YAML configuration file, and the API are in the [YAML Configuration Details](YAML_CONFIG.html)
 
 ### Where do I put my raw datasets?
 
@@ -298,7 +298,7 @@ assert_data_version(data_package_name = "mtcars20",
 
 Version 1.12.0 has moved away from controlling the build process using `datasets.R` and an additional `masterfile` argument. 
 
-The build process is now controlled via a `datapackager.yml` configuration file located in the package root directory.  (see [YAML Configuration Details](YAML_CONFIG.md))
+The build process is now controlled via a `datapackager.yml` configuration file located in the package root directory.  (see [YAML Configuration Details](YAML_CONFIG.html))
 
 ### Create a datapackager.yml file
 
@@ -413,7 +413,7 @@ You now have a data package source tree.
 This will let you version control your data processing code, and provide a mechanism for sharing your package with others.
 
 
-For more details on using git and github with R, there is an excellent guide provided by Jenny Bryan: [Happy Git and GitHub for the useR](http://happygitwithr.com/) and Hadley Wickham's [book on R packages](http://r-pkgs.had.co.nz/).
+For more details on using git and github with R, there is an excellent guide provided by Jenny Bryan: [Happy Git and GitHub for the useR](https://happygitwithr.com/) and Hadley Wickham's [book on R packages]( https://r-pkgs.org/).
 
 # Additional Details
 

@@ -834,9 +834,10 @@ document <- function(path = ".", install = TRUE, ...) {
     pkg = path, path = dirname(path),
     vignettes = FALSE, quiet = TRUE
   )
+  # try to install and then reload the package in the current session
   if (install) {
-    install.packages(location, repos = NULL, type = "source", quiet = TRUE, ...)
-    devtools::reload(path, quiet = TRUE)
+    devtools::unload(basename(path))
+    install.packages(location, repos = NULL, type = "source", ...)
   }
   return(TRUE)
 }

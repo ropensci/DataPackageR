@@ -1,27 +1,42 @@
 ## Submission 0.15.8
-* Fix a test associated with usethis 1.5.1.9000
+* Fix tests that were failing. This should resolve the failures identified by CRAN
+* Change maintainer to Ellis Hughes from Greg Finak
+* update filepaths/URLS based on request from CRAN
 
 
 ## Test environments
-* Local linux (x86_64-pc-linux-gnu), R 3.6.1  (2019-07-05)
-* Local rhub docker (rhub/ubuntu-gcc-devel)
-* Local rhub docker (rhub/ubuntu-gcc-release)
-* Local rhub docker (rhub/ubuntu-rchk)
-* Windows 10 enterprise v1607 14393.2906 (R 4.0.0 2020-04-09 v78186)
-* rhub macOS 10.11 El Capitan, R-release (experimental)
-* rhub fedora-gcc-devel
+* local R installation, R 4.0.3
+* github actions/ windows-latest - R Release
+* github actions/ macOS-latest - R Release
+* github actions/ ubuntu-20.04 - R Release
+* github actions/ ubuntu-20.04 - R devel
+* github actions/ ubuntu-20.04 - R 3.6
+* github actions/ ubuntu-20.04 - R 3.5
+* rhub/windows-x86_64- R devel
+* rhub/ubuntu-gcc - R release
+* rhub/fedora-clang - R devel
+* win-builder (devel)
+
 
 ## R CMD check results
 
 There were no ERRORs or WARNINGs
 
-One NOTE
-─  checking CRAN incoming feasibility ... Note_to_CRAN_maintainers (1.4s)
-   Maintainer: 'Greg Finak <gfinak@fredhutch.org>'
+One NOTE:
 
-On rhub/fedora-gcc-devel one test fails because the texlive-framed package is not installed and is needed for rmarkdown.
+Maintainer: 'Ellis Hughes <ehhughes@scharp.org>'
 
-I observe two test failures on rhub windows systems that I am unable to reproduce on windows systems I have avaialble to me with R 4.0.0. 
+New submission
+
+Package was archived on CRAN
+
+CRAN repository db overrides:
+  X-CRAN-Comment: Archived on 2020-04-25 as check problems were not
+    corrected in time.
+
+This package was archived earlier due to not resolving check errors. With this
+upload, this should resolve any errors.
+
 
 ## Downstream dependencies
 
