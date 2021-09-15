@@ -8,7 +8,7 @@ output:
     toc: yes
   bibliography: bibliography.bib
 vignette: >
-  %\VignetteIndexEntry{A guild to using the DataPackageR YAML configuration file}
+  %\VignetteIndexEntry{A guide to using the DataPackageR YAML configuration file}
   %\VignetteEngine{knitr::rmarkdown}
   %\usepackage[utf8]{inputenc}
   %\usepackage{graphicx}
