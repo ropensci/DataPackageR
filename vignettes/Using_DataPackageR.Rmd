@@ -29,7 +29,7 @@ For demonstration purposes, in this vignette we will subset and package the `mtc
 
 ## Set up a new data package.
 
-We'll set up a new data package based on the `mtcars` example in the [README](https://github.com/ropensci/DataPackageR/blob/master/README.md).
+We will set up a new data package based on the `mtcars` example in the [README](https://github.com/ropensci/DataPackageR/blob/master/README.md).
 The `datapackage_skeleton()` API is used to set up a new package. 
 The user needs to provide:
 
@@ -138,7 +138,7 @@ If your processing scripts are R files, you can still include a yaml header, but
 
 ```
 #'---
-#'title: Sample report  from R script
+#\'title: Sample report from R script
 #'author: Greg Finak
 #'date: August 1, 2018
 #'---
@@ -401,7 +401,7 @@ DataPackageR calcudevtools::install(build_vignettes = T)lates an md5 checksum of
 called `DATADIGEST`.
 
 - Each time the package is rebuilt, the md5 sums of the new data objects are compared against `DATADIGEST`.
-- If they don't match, the build process checks that the `DataVersion` string has been incremented in the `DESCRIPTION` file.
+- If they do not match, the build process checks that the `DataVersion` string has been incremented in the `DESCRIPTION` file.
 - If it has not, the build process will exit and produce an error message.
 
 ### DATADIGEST

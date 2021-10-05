@@ -76,7 +76,7 @@ DataPackageR provides a number of API calls to construct, read, modify, and writ
   The YAML config shown above was created by: 
 ```{r, eval = rmarkdown::pandoc_available()}
 # Note this is done by the datapackage_skeleton. 
-# The user doesn't usually need to call 
+# The user does not usually need to call 
 # construct_yml_config()
 yml <- DataPackageR::construct_yml_config(
   code = "subsetCars.Rmd",
@@ -216,4 +216,4 @@ yml_write(yml_oneobj, path = "path_to_package")
 ```
 
 The `yml_oneobj` read by `yml_find()` carries an attribute
-that is the path to the package. The user doesn't need to pass a `path` to `yml_write` if the config has been read by `yml_find`.
+that is the path to the package. The user does not need to pass a `path` to `yml_write` if the config has been read by `yml_find`.
