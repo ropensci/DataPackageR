@@ -1,5 +1,5 @@
 ---
-title: "The DataPackageR YAML configuration file."
+title: "YAML Configuration Details."
 author: "Greg Finak <gfinak@fredhutch.org>"
 date: "`r Sys.Date()`"
 output: 
@@ -8,7 +8,7 @@ output:
     toc: yes
   bibliography: bibliography.bib
 vignette: >
-  %\VignetteIndexEntry{The DataPackageR YAML configuration file.}
+  %\VignetteIndexEntry{A guide to using the DataPackageR YAML configuration file}
   %\VignetteEngine{knitr::rmarkdown}
   %\usepackage[utf8]{inputenc}
   %\usepackage{graphicx}
@@ -18,11 +18,7 @@ editor_options:
 
 # Configuring and controlling DataPackageR builds.
 
-Data package builds are controlled using the `datapackager.yml` file. 
-
-This file is created in the package source tree when the user creates a package using `datapackage_skeleton()`. 
-
-It is automatically populated with the names of the `code_files` and `data_objects` the passed in to datapackage_skeleton.
+Data package builds are controlled using the `datapackager.yml` file. This file is created in the package source tree when the user creates a package using `datapackage_skeleton()`. It is automatically populated with the names of the `code_files` and `data_objects` the passed in to datapackage_skeleton.
 
 ## The `datapackager.yml` file.
 
@@ -46,33 +42,31 @@ It has three properties:
 
 - `files:` 
   
-  The files (`R` or `Rmd`) to be processed by DataPackageR. They are processed in the order shown. Users running multi-script workflows with dependencies between the scripts need to ensure the files are processed in the correct order. 
+The files (`R` or `Rmd`) to be processed by DataPackageR. They are processed in the order shown. Users running multi-script workflows with dependencies between the scripts need to ensure the files are processed in the correct order. Here `subsetCars.Rmd` is the only file to process. The name is transformed to an absolute path within the package.
   
-  Here `subsetCars.Rmd` is the only file to process. The name is transformed to an absolute path within the package.
+Each file itself has just one property:
   
-  Each file itself has just one property:
-  
-  <!-- - `name:`  -->
-     <!-- The name of the file. This is transformed to an absolute path within the package. -->
-    
   - `enabled:` 
-     A logical `yes`, `no` flag indicating whether the file should be rendered during the build, or whether it should be skipped.
-    This is useful for 'turning off' long running processing tasks if they have not changed. Disabling processing of a file will not overwrite existing documentation or data objecs created during previous builds.
+    
+  A logical `yes`, `no` flag indicating whether the file should be rendered during the build, or whether it should be skipped.
+
+  This is useful for 'turning off' long running processing tasks if they have not changed. Disabling processing of a file will not overwrite existing documentation or data objecs created during previous builds.
   
 - `objects:` 
   
-  The names of the data objects created by the processing files, to be stored in the package. These names are compared against the objects created in the render environment by each file. They names must match.
+The names of the data objects created by the processing files, to be stored in the package. These names are compared against the objects created in the render environment by each file. The names must match.
+
 - `render_root:` 
   
-  The directory where the `Rmd` or `R` files will be rendered. Defaults to a randomly named subdirectory of `tempdir()`. Allows workflows that use multiple scripts and create file system artifacts to function correctly by simply writing to and reading from the working directory.
+The directory where the `Rmd` or `R` files will be rendered which will default to a randomly named subdirectory given by `tempdir()`. This render location will allow workflows that use multiple scripts, and will create file system artifacts to function correctly by simply writing to and reading from the workoing directory.
 
 ## Editing the YAML config file.
 
-The structure of the YAML is simple enough to understand but complex enough that it can be a pain to edit by hand.
+The structure of the YAML is simple enough to understand but complex enough that it can be challenging to edit manually.
 
 DataPackageR provides a number of API calls to construct, read, modify, and write the yaml config file.
 
-### API calls
+### YAML config API calls.
 
 #### `construct_yml_config` 
 
@@ -82,7 +76,7 @@ DataPackageR provides a number of API calls to construct, read, modify, and writ
   The YAML config shown above was created by: 
 ```{r, eval = rmarkdown::pandoc_available()}
 # Note this is done by the datapackage_skeleton. 
-# The user doesn't usually need to call 
+# The user does not usually need to call 
 # construct_yml_config()
 yml <- DataPackageR::construct_yml_config(
   code = "subsetCars.Rmd",
@@ -96,6 +90,7 @@ yml <- DataPackageR::construct_yml_config(
   Read a yaml config file from a package path into an r object.
   
 ##### Example
+
   Read the YAML config file from the `mtcars20` example.
   
 ```{r eval=FALSE}
@@ -103,14 +98,13 @@ yml <- DataPackageR::construct_yml_config(
 # the config file.
 mtcars20_config <- yml_find(
   file.path(tempdir(),"mtcars20")
-  )
+)
 ```
 
 #### `yml_list_objects` 
 
   List the `objects` in a config read by `yml_find`.
   
-
 ##### Example
 
 ```{r, comment="", eval = rmarkdown::pandoc_available()}
@@ -136,7 +130,8 @@ mtcars20_config <- yml_find(
 ```{r, comment="", echo = 1, eval = rmarkdown::pandoc_available()}
 yml_disabled <- yml_disable_compile(
     yml,
-    filenames = "subsetCars.Rmd")
+    filenames = "subsetCars.Rmd"
+)
 cat(as.yaml(yml_disabled))
 ```
 
@@ -149,7 +144,8 @@ cat(as.yaml(yml_disabled))
 ```{r, comment="", echo = 1, eval = rmarkdown::pandoc_available()}
 yml_enabled <- yml_enable_compile(
     yml,
-    filenames = "subsetCars.Rmd")
+    filenames = "subsetCars.Rmd"
+)
 cat(as.yaml(yml_enabled))
 ```
 
@@ -162,7 +158,8 @@ cat(as.yaml(yml_enabled))
 ```{r, comment="", echo = 1, eval = rmarkdown::pandoc_available()}
 yml_twofiles <- yml_add_files(
     yml,
-    filenames = "anotherFile.Rmd")
+    filenames = "anotherFile.Rmd"
+)
 # cat(as.yaml(yml_twofiles))
 ```
 
@@ -175,7 +172,8 @@ yml_twofiles <- yml_add_files(
 ```{r, comment="", echo = 1, eval = rmarkdown::pandoc_available()}
 yml_twoobj <- yml_add_objects(
     yml_twofiles,
-    objects = "another_object")
+    objects = "another_object"
+)
 # cat(as.yaml(yml_twoobj))
 ```
 
@@ -188,7 +186,8 @@ yml_twoobj <- yml_add_objects(
 ```{r, comment="", echo = 1, eval = rmarkdown::pandoc_available()}
 yml_twoobj <- yml_remove_files(
     yml_twoobj,
-    filenames = "anotherFile.Rmd")
+    filenames = "anotherFile.Rmd"
+)
 # cat(as.yaml(yml_twoobj))
 ```
 
@@ -201,7 +200,8 @@ yml_twoobj <- yml_remove_files(
 ```{r, comment="", echo = 1, eval = rmarkdown::pandoc_available()}
 yml_oneobj <- yml_remove_objects(
     yml_twoobj,
-    objects = "another_object")
+    objects = "another_object"
+)
 # cat(as.yaml(yml_oneobj))
 ```
 
@@ -216,4 +216,4 @@ yml_write(yml_oneobj, path = "path_to_package")
 ```
 
 The `yml_oneobj` read by `yml_find()` carries an attribute
-that is the path to the package. The user doesn't need to pass a `path` to `yml_write` if the config has been read by `yml_find`.
+that is the path to the package. The user does not need to pass a `path` to `yml_write` if the config has been read by `yml_find`.

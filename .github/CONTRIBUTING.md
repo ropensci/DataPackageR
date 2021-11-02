@@ -6,7 +6,7 @@ Small typos or grammatical errors in documentation may be edited directly using
 the GitHub web interface, so long as the changes are made in the _source_ file.
 
 *  YES: you edit a roxygen comment in a `.R` file below `R/`.
-*  NO: you edit an `.Rd` file below `man/`.
+*  NO: you should not edit an `.Rd` file below `man/`.
 
 ### Prerequisites
 
@@ -43,6 +43,22 @@ project you agree to abide by its terms.
 
 ### See rOpenSci [contributing guide](https://ropensci.github.io/dev_guide/contributingguide.html)
 for further details.
+
+### Style pointers for vignettes
+
+* Headings are in sentence case and contain a period at the end of the heading when appropriate.
+* Conjunctions are excluded from text.
+* Multiline function calls use the following whitespace schema:
+
+``` R
+myFunction <- aFunctionCall(
+  input1 = "this",
+  input2 = "that"
+)
+```
+
+* Vignette file names are snake cased with capital first letters: Like_This.Rmd
+* Vignette `VignetteIndexEntry` are in sentence case: My new vignette
 
 ### Discussion forum
 
