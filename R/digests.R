@@ -30,7 +30,9 @@
 }
 
 .compare_digests <- function(old_digest, new_digest) {
-  valid <- ifelse(length(old_digest) != length(new_digest), FALSE, TRUE)
+  valid <- ifelse(all(names(new_digest) %in% names(old_digest)), TRUE, FALSE)
+
+
   if (valid) {
     for (i in names(new_digest)[-1L]) {
       if (new_digest[[i]] != old_digest[[i]]) {
