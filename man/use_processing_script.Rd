@@ -4,8 +4,12 @@
 \alias{use_processing_script}
 \title{Add a processing script to a data package.}
 \usage{
-use_processing_script(file = NULL, title = NULL, author = NULL,
-  overwrite = FALSE)
+use_processing_script(
+  file = NULL,
+  title = NULL,
+  author = NULL,
+  overwrite = FALSE
+)
 }
 \arguments{
 \item{file}{\code{character} path to an existing file or name of a new R or Rmd file to create.}

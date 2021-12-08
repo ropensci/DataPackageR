@@ -5,13 +5,25 @@
 \alias{datapackage.skeleton}
 \title{Create a Data Package skeleton for use with DataPackageR.}
 \usage{
-datapackage_skeleton(name = NULL, path = ".", force = FALSE,
-  code_files = character(), r_object_names = character(),
-  raw_data_dir = character(), dependencies = character())
+datapackage_skeleton(
+  name = NULL,
+  path = ".",
+  force = FALSE,
+  code_files = character(),
+  r_object_names = character(),
+  raw_data_dir = character(),
+  dependencies = character()
+)
 
-datapackage.skeleton(name = NULL, list = character(),
-  environment = .GlobalEnv, path = ".", force = FALSE,
-  code_files = character(), r_object_names = character())
+datapackage.skeleton(
+  name = NULL,
+  list = character(),
+  environment = .GlobalEnv,
+  path = ".",
+  force = FALSE,
+  code_files = character(),
+  r_object_names = character()
+)
 }
 \arguments{
 \item{name}{\code{character} name of the package to create.}
@@ -46,7 +58,7 @@ if(rmarkdown::pandoc_available()){
 f <- tempdir()
 f <- file.path(f,"foo.Rmd")
 con <- file(f)
-writeLines("```{r}\\n tbl = table(sample(1:10,1000,replace=TRUE)) \\n```\\n",con=con)
+writeLines("```{r}\n tbl = table(sample(1:10,1000,replace=TRUE)) \n```\n",con=con)
 close(con)
 pname <- basename(tempfile())
 datapackage_skeleton(name = pname,

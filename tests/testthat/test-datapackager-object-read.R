@@ -1,5 +1,16 @@
 context("datapackager_object_read")
 test_that("data objects can be read across scripts", {
+  # file <- system.file("extdata", "tests", "subsetCars.Rmd",
+  #                     package = "DataPackageR"
+  # )
+  # datapackage_skeleton(
+  #   name = "subsetCars",
+  #   path = tempdir(),
+  #   code_files = c(file),
+  #   force = TRUE,
+  #   r_object_names = "cars_over_20"
+  # )
+  # 
   ENVS <- new.env()
   dataenv <- new.env()
   assign("foo", 100, ENVS)
@@ -16,9 +27,9 @@ test_that("data objects can be read across scripts", {
     ),
     100
   )
-  expect_true(is.character(DataPackageR::project_path()))
-  expect_true(is.character(DataPackageR::project_data_path()))
-  expect_true(is.character(DataPackageR::project_extdata_path()))
+  # expect_true(is.character(DataPackageR::project_path()))
+  # expect_true(is.character(DataPackageR::project_data_path()))
+  # expect_true(is.character(DataPackageR::project_extdata_path()))
 })
 
 

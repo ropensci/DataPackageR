@@ -1,5 +1,12 @@
-# DataPackageR 0.15.8
+# DataPackageR 0.15.8.9000
 * Fix tests for compatibility with upcoming usethis (1.5.2)
+
+# DataPackageR 0.15.8
+* Fix to datapackager_object_read that was causing a test to break. `get` needs to have `inherits=FALSE`. 
+* Other fixes for `usethis` 1.6.0
+* Fixes to tests that were failing on CRAN
+* In `package_build`, remove `devtools::reload` and put `devtools::unload` and in front of install.packages
+* in `document`, remove `devtools::reload` and put in `devtools::unload` and install.packages
 
 # DataPackageR 0.15.7
 * Fix test and vignette bugs related to upcoming version of usethis (1.5)
