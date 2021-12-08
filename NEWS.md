@@ -1,5 +1,5 @@
 # DataPackageR 0.15.8.9000
-* Fix tests for compatibility with upcoming usethis (1.5.2)
+* Fix tests for compatibility with usethis >1.5.2
 
 # DataPackageR 0.15.8
 * Fix to datapackager_object_read that was causing a test to break. `get` needs to have `inherits=FALSE`. 
