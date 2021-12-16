@@ -46,6 +46,8 @@ Imports:
     rprojroot,
     usethis,
     crayon
+Remotes:
+    r-lib/desc
 VignetteBuilder: knitr
 RoxygenNote: 7.1.1
 Encoding: UTF-8
