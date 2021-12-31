@@ -30,42 +30,34 @@
 }
 
 .compare_digests <- function(old_digest, new_digest) {
-  valid <- ifelse(length(old_digest) != length(new_digest), FALSE, TRUE)
-  if (valid) {
-    for (i in names(new_digest)[-1L]) {
-      if (new_digest[[i]] != old_digest[[i]]) {
-        .multilog_warn(paste0(i, " has changed."))
-        valid <- FALSE
+  # Returns FALSE when any exisiting data has is changed or new data is added, else return TRUE.
+  # If no datasets are present in data digest, return FALSE.
+  # Use .mutlilog_warn when there is a change and multilog_debug when new data is added.
+  if(length(new_digest) <= 1) return(FALSE)
+
+  existed <- names(new_digest)[names(new_digest) %in% names(old_digest)]
+  added <- setdiff(names(new_digest), existed)
+  existed <- existed[existed != "DataVersion"]  
+
+  if(length(existed) > 0){
+    changed <- new_digest[ new_digest[[existed]] != old_digest[[existed]] ] 
+    if(length(changed) > 0){
+      for(name in changed){
+        .multilog_warn(paste(name, "has changed."))
       }
-    }
-    if (!valid) {
       warning()
-    }
-  } else {
-    difference <- setdiff(names(new_digest), names(old_digest))
-    intersection <- intersect(names(new_digest), names(old_digest))
-    # No existing or new objects are changed
-    if (length(difference) == 0) {
-      valid <- TRUE
-    } else {
-      # some new elements exist
-      valid <- FALSE
-      for (i in difference) {
-        .multilog_debug(paste0(i, " added."))
-      }
-    }
-    for (i in intersection) {
-      if (new_digest[[i]] != old_digest[[i]]) {
-        .multilog_debug(paste0(i, " changed"))
-        # some new elements are not the same
-        valid <- FALSE
-      }
+      return(FALSE)
     }
   }
-  return(valid)
-}
+  
+  for(name in added){
+    .multilog_debug(paste(name, "was added."))
+    return(FALSE)
+  }
 
-
+  return(TRUE)
+};
+  
 .combine_digests <- function(new, old) {
   intersection <- intersect(names(new), names(old))
   difference <- setdiff(names(new), names(old))
