@@ -20,7 +20,7 @@ test_that("can add a data item", {
   
   package_build(file.path(tempdir(), "testRSourcing"))
   
-  path_rmd <- paste0( tempdir(), "\\testRSourcing\\data-raw" )
+  path_rmd <- paste0( tempdir(), "/testRSourcing/data-raw" )
   path_rmd <- normalizePath( path_rmd )
   wd_old <- getwd()
   setwd(path_rmd)
@@ -38,7 +38,7 @@ test_that("can add a data item", {
   expect_error( package_build(file.path(tempdir(), "testRSourcing")))
 
 
-  path_r <- paste0( tempdir(), "\\testRSourcing\\R" )
+  path_r <- paste0( tempdir(), "/testRSourcing/R" )
   path_r <- normalizePath( path_r )
   wd_old <- getwd()
   setwd(path_r)
