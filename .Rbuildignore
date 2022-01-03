@@ -16,3 +16,5 @@ bibliography.bib
 ^\.github$
 cran-comments.md
 ^revdep$
+^$
+^cran-comments\.md$
