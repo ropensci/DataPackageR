@@ -360,7 +360,8 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
           assign(o, get(o, dataenv), ENVS)
           # write the object to render_root
           o_instance <- get(o,dataenv)
-          saveRDS(o_instance, file = paste0(file.path(render_root,o),".rds"))
+          saveRDS(o_instance, file = paste0(file.path(render_root,o),".rds"),
+                  version = 2)
         }
       }
     }
