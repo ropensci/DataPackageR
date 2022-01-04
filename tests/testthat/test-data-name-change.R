@@ -23,8 +23,21 @@ test_that("data object can be renamed", {
     package_build(file.path(tempdir(), pname))
   }
 
+  removeName <- function(dataset_name, script, pname){
+    process_path <- file.path(tempdir(), sprintf("%s/data-raw/%s", pname, script))
+    fil <- gsub(paste0("^", dataset_name, ".+$"), "", readLines(process_path))
+    writeLines(fil, process_path)
+
+    yml <- yml_remove_objects(file.path(tempdir(), pname), dataset_name)
+    yml_write(yml)
+    
+    package_build(file.path(tempdir(), pname))
+  }
+
   pname <- "test"
   datapackage_skeleton(pname, tempdir(), force = TRUE)
   addData("mtcars", pname)
   expect_error(changeName("mtcars", "mtcars2", pname), NA)
+  expect_error(removeName("mtcars2", "mtcars.R", pname), "exiting")
+    
 })
