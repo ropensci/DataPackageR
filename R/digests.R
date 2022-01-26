@@ -39,7 +39,7 @@
   existed <- existed[existed != "DataVersion"]  
 
   if(length(existed) > 0){
-    changed <- new_digest[ new_digest[[existed]] != old_digest[[existed]] ] 
+    changed <- names(new_digest)[ unlist(new_digest[existed]) != unlist(old_digest[existed]) ] 
     if(length(changed) > 0){
       for(name in changed){
         .multilog_warn(paste(name, "has changed."))

@@ -34,10 +34,28 @@ test_that("data object can be renamed", {
     package_build(file.path(tempdir(), pname))
   }
 
-  pname <- "test"
+  ## test change when one object is present 
+  pname <- "nameChangeTest1"
   datapackage_skeleton(pname, tempdir(), force = TRUE)
   addData("mtcars", pname)
   expect_error(changeName("mtcars", "mtcars2", pname), NA)
   expect_error(removeName("mtcars2", "mtcars.R", pname), "exiting")
-    
+
+  ## test change when two objects are present 
+  pname <- "nameChangeTest2"
+  datapackage_skeleton(pname, tempdir(), force = TRUE)
+  addData("mtcars", pname)
+  addData("iris", pname)
+  expect_error(changeName("mtcars", "mtcars2", pname), NA)
+  expect_error(removeName("mtcars2", "mtcars.R", pname), NA)
+  
+  ## test change when more than 2 objects are present 
+  pname <- "nameChangeTest3"
+  datapackage_skeleton(pname, tempdir(), force = TRUE)
+  addData("mtcars", pname)
+  addData("iris", pname)
+  addData("ToothGrowth", pname)
+  expect_error(changeName("mtcars", "mtcars2", pname), NA)
+  expect_error(removeName("mtcars2", "mtcars.R", pname), NA)
+  
 })
