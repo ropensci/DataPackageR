@@ -8,7 +8,7 @@ Authors@R:
              comment="Original author and creator of DataPackageR"),
       person(given = "Paul Obrecht", role=c("ctb")),
       person(given = "Ellis Hughes", role=c("ctb"), email = "ellishughes@live.com"),
-      person(given = "Jimmy Fulp", role=c("ctb"), email = "wfulp@scharp.org"),
+      person(given = "Jimmy Fulp", role=c("ctb"), email = "williamjfulp@gmail.com"),
       person(given = "Marie Vendettuoli", role=c("ctb", "cre"), email = "sc.mvendett.viscdevelopers@scharp.org"),
       person(given = "Jason Taylor", role=c("ctb"), email = "jmtaylor@fredhutch.org"),
       person("Kara", "Woo", role = "rev",
