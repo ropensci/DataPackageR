@@ -20,9 +20,9 @@ developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.re
 <!-- badges: end -->
 
 -   [yaml configuration
-    guide](https://github.com/ropensci/DataPackageR/blob/main/vignettes/YAML_CONFIG.md)
+    guide](https://github.com/ropensci/DataPackageR/blob/main/vignettes/YAML_Configuration_Details.Rmd)
 -   [a more detailed technical
-    vignette](https://github.com/ropensci/DataPackageR/blob/main/vignettes/usingDataPackageR.md)
+    vignette](https://github.com/ropensci/DataPackageR/blob/main/vignettes/Using_DataPackageR.Rmd)
 
 > **Important Note**: [datapack](https://github.com/ropensci/datapack)
 > is a *different package* that is used to “create, send and load data
@@ -95,7 +95,7 @@ purpose is to contain, access, and / or document data sets.
     [ImmuneSpace](https://immunespace.org/),
     [FlowRepository](https://flowrepository.org/).
 
-    Tools like [datastorr](https://github.com/ropenscilabs/datastorr)
+    Tools like [datastorr](https://github.com/traitecoevo/datastorr)
     can help with this and we hope to integrate the into DataPackageR in
     the future.
 
@@ -144,7 +144,7 @@ There are a number of tools out there that address similar and
 complementary problems:
 
 -   **datastorr** [github
-    repo](https://github.com/ropenscilabs/datastorr)
+    repo](https://github.com/traitecoevo/datastorr)
 
     Simple data retrieval and versioning using GitHub to store data.
 

@@ -385,8 +385,8 @@ You now have a data package source tree.
 
 - **Place your package under version control**
     1. Call `git init` in the package source root to initialize a new git repository.
-    2. [Create a new repository for your data package on github](https://help.github.com/articles/create-a-repo/).
-    3. Push your local package repository to `github`. [see step 7](https://help.github.com/articles/adding-an-existing-project-to-github-using-the-command-line/)
+    2. [Create a new repository for your data package on github](https://docs.github.com/articles/create-a-repo/).
+    3. Push your local package repository to `github`. [see step 7](https://docs.github.com/articles/adding-an-existing-project-to-github-using-the-command-line/)
 
 
 This will let you version control your data processing code, and will provide a mechanism for sharing your package with others.
