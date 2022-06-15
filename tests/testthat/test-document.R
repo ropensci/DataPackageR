@@ -10,12 +10,12 @@ test_that("documentation is built via document()", {
     force = TRUE,
     r_object_names = "cars_over_20"
   )
-  
+
   temp_libpath <- file.path(tempdir(), "lib")
   dir.create(temp_libpath)
-  
+
   package_build(file.path(tempdir(), "subsetCars"))
-  
+
   expect_true(document(file.path(tempdir(), "subsetCars"), lib = temp_libpath))
   docfile <- readLines(file.path(
     tempdir(),
@@ -34,7 +34,7 @@ test_that("documentation is built via document()", {
   #'
   #' This is dummy documentation used to test markdown documentation
   #' for [roxygen2::roxygenize()] in the `subsetCars`` test package.
-  #' 
+  #'
   #' @name testmarkdownroxygen
   #' @param none there are no parameters
   #'  this is a link to a  function: [document()]
@@ -46,9 +46,9 @@ test_that("documentation is built via document()", {
   )
   flush(connection)
   close(connection)
-  expect_output(
-    document(file.path(tempdir(), "subsetCars"), lib = temp_libpath),
-    "Writing testmarkdownroxygen.Rd"
+  expect_true(
+    document(file.path(tempdir(), "subsetCars"),
+             lib = temp_libpath)
   )
   v <- vignette(package = "subsetCars", lib.loc = temp_libpath)
   expect_equal(v$results[, "Item"], "subsetCars")
@@ -58,3 +58,4 @@ test_that("documentation is built via document()", {
   )
   try(usethis::proj_set(NULL),silent = TRUE) #wrap in try for usethis 1.4 vs 1.5
 })
+
