@@ -23,7 +23,7 @@ if(rmarkdown::pandoc_available()){
 f <- tempdir()
 f <- file.path(f,"foo.Rmd")
 con <- file(f)
-writeLines("```{r}\n tbl = table(sample(1:10,100,replace=TRUE)) \n```\n",con=con)
+writeLines("```{r}\n tbl = data.frame(1:10) \n```\n",con=con)
 close(con)
 
 # construct a data package skeleton named "MyDataPackage" and pass
