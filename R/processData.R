@@ -125,12 +125,12 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
   raw_data_dir <- "data-raw"
   target <- normalizePath(file.path(pkg_dir, raw_data_dir), winslash = "/")
   raw_data_dir <- target
-  
+
   #set the option that DataPackageR is building the package. On exit ensures when it leaves, it will set it back to false
   options("DataPackageR_packagebuilding" = TRUE)
   on.exit(options("DataPackageR_packagebuilding" = FALSE))
-  
-  
+
+
 
   # validate that render_root exists.
   # if it's an old temp dir, what then?
@@ -264,16 +264,16 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
     building <- NULL
     r_dir <- normalizePath(file.path(pkg_dir, "R" ), winslash = "/")
     r_dir_files <- list.files( r_dir )
-    r_dir_files <- r_dir_files[ !grepl( pkg_description$Package, 
+    r_dir_files <- r_dir_files[ !grepl( pkg_description$Package,
                                         r_dir_files ) ]
     for (i in seq_along(r_files)) {
       dataenv <- new.env(hash = TRUE, parent = .GlobalEnv)
       for( j in seq_along( r_dir_files ) ){
-        curr_path <- normalizePath(file.path(pkg_dir, 
+        curr_path <- normalizePath(file.path(pkg_dir,
                                              "R",
-                                             r_dir_files[j] ), 
+                                             r_dir_files[j] ),
                                    winslash = "/")
-        source( curr_path, 
+        source( curr_path,
                 local = dataenv )
       }
       # assign ENVS into dataenv.
@@ -414,7 +414,7 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
         )
         #TODO what objects have changed?
         changed_objects <- .qualify_changes(new_data_digest,old_data_digest)
-        
+
         .update_news_md(updated_version$new_data_digest[["DataVersion"]],
           interact = getOption("DataPackageR_interact", interactive())
         )
@@ -466,7 +466,7 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
           interact = getOption("DataPackageR_interact", interactive())
         )
         .update_news_changed_objects(changed_objects)
-        
+
         pkg_description <- updated_version$pkg_description
         new_data_digest <- updated_version$new_data_digest
         can_write <- TRUE
@@ -614,7 +614,7 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
       full.names = TRUE,
       recursive = FALSE
     )
-  pdffiles_for_vignettes <- 
+  pdffiles_for_vignettes <-
     list.files(
       path = file.path(dir, "inst/extdata/Logfiles"),
       pattern = "pdf$",
@@ -634,7 +634,7 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
       )
     }
   )
-  
+
   purrr::map(
     pdffiles_for_vignettes,
     function(x) {
@@ -812,7 +812,7 @@ project_data_path <- function(file = NULL) {
 #' con <- file(f)
 #' writeLines("```{r}\n tbl = data.frame(1:10) \n```\n",con=con)
 #' close(con)
-#'
+#' \dontrun{
 #' # construct a data package skeleton named "MyDataPackage" and pass
 #' # in the Rmd file name with full path, and the name of the object(s) it
 #' # creates.
@@ -828,6 +828,7 @@ project_data_path <- function(file = NULL) {
 #' # build a data package.
 #' package_build(file.path(tempdir(), pname), install = FALSE)
 #' document(path = file.path(tempdir(), pname), install=FALSE)
+#' }
 #' }
 document <- function(path = ".", install = TRUE, ...) {
   cat("\n")
