@@ -87,3 +87,30 @@ readLines(list.files(pattern="R", path = file.path(tempdir(),pname,"R"), full = 
 ?tbl
 }
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://docs.ropensci.org/DataPackageR/ (website) https://github.com/ropensci/DataPackageR/}
+  \item Report bugs at \url{https://github.com/ropensci/DataPackageR/issues}
+}
+
+}
+\author{
+\strong{Maintainer}: Marie Vendettuoli \email{sc.mvendett.viscdevelopers@scharp.org} [contributor]
+
+Authors:
+\itemize{
+  \item Greg Finak \email{greg.finak@gmail.com} (Original author and creator of DataPackageR) [copyright holder]
+}
+
+Other contributors:
+\itemize{
+  \item Paul Obrecht [contributor]
+  \item Ellis Hughes \email{ellishughes@live.com} [contributor]
+  \item Jimmy Fulp \email{williamjfulp@gmail.com} [contributor]
+  \item Jason Taylor \email{jmtaylor@fredhutch.org} [contributor]
+  \item Kara Woo (Kara reviewed the package for ropensci, see <https://github.com/ropensci/onboarding/issues/230>) [reviewer]
+  \item William Landau (William reviewed the package for ropensci, see <https://github.com/ropensci/onboarding/issues/230>) [reviewer]
+}
+
+}

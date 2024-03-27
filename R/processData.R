@@ -79,9 +79,8 @@
 #' # view the documentation with
 #' ?tbl
 #' }
-#' @docType package
 #' @name DataPackageR-package
-NULL
+'_PACKAGE'
 
 
 .validate_render_root <- function(x) {

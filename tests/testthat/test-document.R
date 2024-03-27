@@ -46,10 +46,15 @@ test_that("documentation is built via document()", {
   )
   flush(connection)
   close(connection)
-  expect_output(
-    document(file.path(tempdir(), "subsetCars"), lib = temp_libpath),
-    "Writing testmarkdownroxygen.Rd"
+
+  path_chk <- file.path(tempdir(), "subsetCars")
+  files_before <- list.files(path_chk, recursive = TRUE)
+  document(path_chk, lib = temp_libpath)
+  files_after <- list.files(path_chk, recursive = TRUE)
+  expect_true(
+    setdiff(files_after, files_before) == "man/testmarkdownroxygen.Rd"
   )
+
   v <- vignette(package = "subsetCars", lib.loc = temp_libpath)
   expect_equal(v$results[, "Item"], "subsetCars")
   unlink(file.path(tempdir(), "subsetCars"),
