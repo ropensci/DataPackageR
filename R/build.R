@@ -8,7 +8,7 @@
 #' @param vignettes \code{logical} specify whether to build vignettes. Default FALSE.
 #' @param log log level \code{INFO,WARN,DEBUG,FATAL}
 #' @param deps \code{logical} should we pass data objects into subsequent scripts? Default TRUE
-#' @param install \code{logical} automatically install and load the package after building. (default TRUE)
+#' @param install \code{logical} automatically install and load the package after building. Default FALSE
 #' @param ... additional arguments passed to \code{install.packages} when \code{install=TRUE}.
 #' @importFrom roxygen2 roxygenise roxygenize
 #' @importFrom devtools build_vignettes build parse_deps reload

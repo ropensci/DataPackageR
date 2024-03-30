@@ -22,7 +22,7 @@ package_build(
 
 \item{deps}{\code{logical} should we pass data objects into subsequent scripts? Default TRUE}
 
-\item{install}{\code{logical} automatically install and load the package after building. (default TRUE)}
+\item{install}{\code{logical} automatically install and load the package after building. Default FALSE}
 
 \item{...}{additional arguments passed to \code{install.packages} when \code{install=TRUE}.}
 }
