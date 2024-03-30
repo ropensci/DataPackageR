@@ -171,7 +171,8 @@ test_that("package built in different edge cases", {
   package.skeleton("foo", path = tempdir())
   DataPackageR:::.multilog_setup(normalizePath(file.path(tempdir(),"test.log"), winslash = "/"))
   DataPackageR:::.multilog_thresold(INFO, TRACE)
-  
+
+  # data in digest changes while names do not
   suppressWarnings(expect_false({
     DataPackageR:::.compare_digests(
       list(
@@ -185,6 +186,64 @@ test_that("package built in different edge cases", {
     )
   }))
 
+  # names in digest changes while data do not
+  suppressWarnings(expect_false({
+    DataPackageR:::.compare_digests(
+      list(
+        DataVersion = "1.1.1",
+        a = paste0(letters[1:10], collapse = "")
+      ),
+      list(
+        DataVersion = "1.1.2",
+        b = paste0(letters[1:10], collapse = "")
+      )
+    )
+  }))
+
+  # names in digest nor data changes
+  suppressWarnings(expect_true({
+    DataPackageR:::.compare_digests(
+      list(
+        DataVersion = "1.1.1",
+        a = paste0(letters[1:10], collapse = "")
+      ),
+      list(
+        DataVersion = "1.1.1",
+        a = paste0(letters[1:10], collapse = "")
+      )
+    )
+  }))
+
+  # names in old digest have one more than new
+  suppressWarnings(expect_false({
+    DataPackageR:::.compare_digests(
+      list(
+        DataVersion = "1.1.1",
+        a = paste0(letters[1:10], collapse = ""),
+        b = paste0(LETTERS[1:10], collapse = "")
+      ),
+      list(
+        DataVersion = "1.1.2",
+        a = paste0(letters[1:10], collapse = "")
+      )
+    )
+  }))
+
+  # names in new digest have one more than old
+  suppressWarnings(expect_false({
+    DataPackageR:::.compare_digests(
+      list(
+        DataVersion = "1.1.1",
+        a = paste0(letters[1:10], collapse = "")
+      ),
+      list(
+        DataVersion = "1.1.2",
+        a = paste0(letters[1:10], collapse = ""),
+        b = paste0(LETTERS[1:10], collapse = "")
+      )
+    )
+  }))
+  
   unlink(file.path(tempdir(), "foo"),
     force = TRUE,
     recursive = TRUE
