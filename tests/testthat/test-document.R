@@ -50,6 +50,7 @@ test_that("documentation is built via document()", {
     document(file.path(tempdir(), "subsetCars"),
              lib = temp_libpath)
   )
+
   v <- vignette(package = "subsetCars", lib.loc = temp_libpath)
   expect_equal(v$results[, "Item"], "subsetCars")
   unlink(file.path(tempdir(), "subsetCars"),
