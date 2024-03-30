@@ -22,7 +22,7 @@ package_build(
 
 \item{deps}{\code{logical} should we pass data objects into subsequent scripts? Default TRUE}
 
-\item{install}{\code{logical} automatically install and load the package after building. (default TRUE)}
+\item{install}{\code{logical} automatically install and load the package after building. Default FALSE}
 
 \item{...}{additional arguments passed to \code{install.packages} when \code{install=TRUE}.}
 }
@@ -43,7 +43,7 @@ if(rmarkdown::pandoc_available()){
 f <- tempdir()
 f <- file.path(f,"foo.Rmd")
 con <- file(f)
-writeLines("```{r}\n tbl = table(sample(1:10,1000,replace=TRUE)) \n```\n",con=con)
+writeLines("```{r}\n tbl = data.frame(1:10) \n```\n",con=con)
 close(con)
 pname <- basename(tempfile())
 datapackage_skeleton(name=pname,
