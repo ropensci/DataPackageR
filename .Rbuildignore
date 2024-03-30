@@ -18,3 +18,4 @@ cran-comments.md
 ^revdep$
 ^$
 ^cran-comments\.md$
+^DataPackageR\.Rproj$
