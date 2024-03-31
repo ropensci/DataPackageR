@@ -23,7 +23,7 @@ DataPackageR is used to reproducibly process raw data into packaged, analysis-re
 <!-- badges: start -->
 [![CRAN](https://www.r-pkg.org/badges/version/DataPackageR)]( https://CRAN.R-project.org/package=DataPackageR)
 [![R-CMD-check](https://github.com/ropensci/DataPackageR/workflows/R-CMD-check/badge.svg)](https://github.com/ropensci/DataPackageR/actions)
-[![Coverage status](https://codecov.io/gh/ropensci/DataPackageR/branch/master/graph/badge.svg)](https://codecov.io/github/ropensci/DataPackageR?branch=master)
+[![Coverage status](https://codecov.io/gh/ropensci/DataPackageR/branch/main/graph/badge.svg)](https://app.codecov.io/github/ropensci/DataPackageR?branch=main)
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![](https://badges.ropensci.org/230_status.svg)](https://github.com/ropensci/software-review/issues/230)
 [![DOI](https://zenodo.org/badge/29267435.svg)](https://doi.org/10.5281/zenodo.1292095)
@@ -75,9 +75,9 @@ You have diverse raw data sets that you need to preprocess and tidy in order to:
 
 - **Package size limits.**
 
-  R packages have a 5MB size limit, at least on CRAN. BioConductor has explicit [data package](https://www.bioconductor.org/developers/package-guidelines/#package-types) types that can be larger and use git LFS for very large files. 
+  R packages have a 10MB size limit, at least on [CRAN](https://cran.r-project.org/web/packages/policies.html). BioConductor [ExperimentHub](http://contributions.bioconductor.org/data.html#data) may be able to support larger data packages.
   
-  Sharing large volumes of raw data in an R package format is still not ideal, and there are public biological data repositories better suited for raw data: e.g.,  [GEO](https://www.ncbi.nlm.nih.gov/geo/), [SRA](https://www.ncbi.nlm.nih.gov/sra), [ImmPort](https://www.immport.org:443/shared/immport-open/public/home/home), [ImmuneSpace](https://immunespace.org/), [FlowRepository](https://flowrepository.org/).
+  Sharing large volumes of raw data in an R package format is still not ideal, and there are public biological data repositories better suited for raw data: e.g.,  [GEO](https://www.ncbi.nlm.nih.gov/geo/), [SRA](https://www.ncbi.nlm.nih.gov/sra), [ImmPort](https://www.immport.org/), [ImmuneSpace](https://immunespace.org/), [FlowRepository](https://flowrepository.org/).
   
   Tools like [datastorr](https://github.com/ropenscilabs/datastorr) can help with this and we hope to integrate the into DataPackageR in the future.
 
