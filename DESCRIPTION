@@ -66,8 +66,9 @@ Suggests:
     testthat,
     covr,
     data.tree,
-URL: https://docs.ropensci.org/DataPackageR/ (website)
-    https://github.com/ropensci/DataPackageR/
+URL:
+    https://github.com/ropensci/DataPackageR/,
+    https://docs.ropensci.org/DataPackageR/
 BugReports: https://github.com/ropensci/DataPackageR/issues
 SystemRequirements: pandoc (>= 1.12.3) - http://pandoc.org
 Language: en-US
