@@ -94,10 +94,14 @@ package_build <- function(packageName = NULL,
     .multilog_warn("DataPackageR failed")
   )
   .multilog_trace("Building documentation")
-  roxygen2::roxygenise(package_path,
-    clean = TRUE
-  )
-
+  local({
+    on.exit({
+      if (packageName %in% devtools::package_info('attached')$package){
+        devtools::unload(packageName)
+      }
+    })
+    roxygen2::roxygenise(package_path, clean = TRUE)
+  })
   .multilog_trace("Building package")
   location <- build(package_path,
     path = dirname(package_path),
@@ -105,7 +109,6 @@ package_build <- function(packageName = NULL,
   )
   # try to install and then reload the package in the current session
   if (install) {
-    devtools::unload(packageName)
     install.packages(location, repos = NULL, type = "source", ...)
   }
   .next_steps()
