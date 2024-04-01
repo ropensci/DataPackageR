@@ -12,3 +12,4 @@ bibliography.bib
 ^cran-comments\.md$
 ^DataPackageR\.Rproj$
 ^CRAN-SUBMISSION$
+^LICENSE\.md$
