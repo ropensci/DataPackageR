@@ -1,11 +1,7 @@
-Meta
-doc
 .Rproj.user
 .Rhistory
 .RData
-README.html
-preprocessData.Rproj
-codecov.yml
-.travis.yml
 /revdep/.cache.rds
-check/
+.DS_Store
+.httr-oauth
+inst/doc
