@@ -6,6 +6,11 @@ testthat::test_that(
       "extdata", "tests", "subsetCars.Rmd", package = "DataPackageR"
     )
     pkg_name <- "mtcars20"
+    on.exit(
+      if (pkg_name %in% devtools::package_info('attached')$package){
+        devtools::unload(pkg_name)
+      }
+    )
     # remove this directory on exit
     temp_dir <- withr::local_tempdir()
     pkg_path <- file.path(temp_dir, pkg_name)
@@ -31,9 +36,5 @@ testthat::test_that(
     expect_false(
       res2 <- pkg_name %in% devtools::package_info('attached')$package
     )
-
-    # reset and verify attachment state
-    if (res2) devtools::unload(pkg_name)
-    expect_false(pkg_name %in% devtools::package_info('attached')$package)
   }
 )
