@@ -41,7 +41,7 @@ the \code{data()} API, and
 Calling \code{datapackage_skeleton()} and passing in R / Rmd file names, and r object names
 constructs a skeleton data package source tree and an associated \code{config.yml} file.
 
-Calling \code{build_package()} sets the build process in motion.
+Calling \code{package_build()} sets the build process in motion.
 }
 \examples{
 # A simple Rmd file that creates one data object
