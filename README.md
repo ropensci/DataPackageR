@@ -90,7 +90,7 @@ purpose is to contain, access, and / or document data sets.
     [SRA](https://www.ncbi.nlm.nih.gov/sra),
     [ImmPort](https://www.immport.org/),
     [ImmuneSpace](https://immunespace.org/),
-    [FlowRepository](https://flowrepository.org/).
+    [FlowRepository](http://flowrepository.org/).
 
     Tools like [datastorr](https://github.com/traitecoevo/datastorr)
     can help with this and we hope to integrate the into DataPackageR in
