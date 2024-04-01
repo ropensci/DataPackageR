@@ -5,7 +5,6 @@
 ^\.Rproj\.user$
 ^README\.Rmd$
 ^README-.*\.png$
-^docs$
 README.html
 ^codecov\.yml$
 ^\.travis\.yml$
