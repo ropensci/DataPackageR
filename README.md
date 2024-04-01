@@ -10,8 +10,8 @@ analysis-ready data sets.
 
 [![CRAN](https://www.r-pkg.org/badges/version/DataPackageR)](https://CRAN.R-project.org/package=DataPackageR)
 [![R-CMD-check](https://github.com/ropensci/DataPackageR/workflows/R-CMD-check/badge.svg)](https://github.com/ropensci/DataPackageR/actions)
-[![Coverage
-status](https://codecov.io/gh/ropensci/DataPackageR/branch/main/graph/badge.svg)](https://app.codecov.io/github/ropensci/DataPackageR?branch=main)
+[![Codecov test
+coverage](https://codecov.io/gh/ropensci/DataPackageR/branch/main/graph/badge.svg)](https://app.codecov.io/gh/ropensci/DataPackageR?branch=main)
 [![Project Status: Active – The project has reached a stable, usable
 state and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
