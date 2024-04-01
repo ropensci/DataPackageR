@@ -23,7 +23,7 @@ DataPackageR is used to reproducibly process raw data into packaged, analysis-re
 <!-- badges: start -->
 [![CRAN](https://www.r-pkg.org/badges/version/DataPackageR)]( https://CRAN.R-project.org/package=DataPackageR)
 [![R-CMD-check](https://github.com/ropensci/DataPackageR/workflows/R-CMD-check/badge.svg)](https://github.com/ropensci/DataPackageR/actions)
-[![Coverage status](https://codecov.io/gh/ropensci/DataPackageR/branch/main/graph/badge.svg)](https://app.codecov.io/github/ropensci/DataPackageR?branch=main)
+[![Codecov test coverage](https://codecov.io/gh/ropensci/DataPackageR/branch/main/graph/badge.svg)](https://app.codecov.io/gh/ropensci/DataPackageR?branch=main)
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![](https://badges.ropensci.org/230_status.svg)](https://github.com/ropensci/software-review/issues/230)
 [![DOI](https://zenodo.org/badge/29267435.svg)](https://doi.org/10.5281/zenodo.1292095)
