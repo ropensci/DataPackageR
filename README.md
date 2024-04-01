@@ -11,7 +11,7 @@ analysis-ready data sets.
 [![CRAN](https://www.r-pkg.org/badges/version/DataPackageR)](https://CRAN.R-project.org/package=DataPackageR)
 [![R-CMD-check](https://github.com/ropensci/DataPackageR/workflows/R-CMD-check/badge.svg)](https://github.com/ropensci/DataPackageR/actions)
 [![Coverage
-status](https://codecov.io/gh/ropensci/DataPackageR/branch/master/graph/badge.svg)](https://codecov.io/github/ropensci/DataPackageR?branch=master)
+status](https://codecov.io/gh/ropensci/DataPackageR/branch/main/graph/badge.svg)](https://app.codecov.io/github/ropensci/DataPackageR?branch=main)
 [![Project Status: Active – The project has reached a stable, usable
 state and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
@@ -82,18 +82,15 @@ purpose is to contain, access, and / or document data sets.
 
 -   **Package size limits.**
 
-    R packages have a 5MB size limit, at least on CRAN. BioConductor has
-    explicit [data
-    package](https://www.bioconductor.org/developers/package-guidelines/#package-types)
-    types that can be larger and use git LFS for very large files.
+    R packages have a 10MB size limit, at least on [CRAN](https://cran.r-project.org/web/packages/policies.html). BioConductor [ExperimentHub](http://contributions.bioconductor.org/data.html#data) may be able to support larger data packages.
 
     Sharing large volumes of raw data in an R package format is still
     not ideal, and there are public biological data repositories better
     suited for raw data: e.g., [GEO](https://www.ncbi.nlm.nih.gov/geo/),
     [SRA](https://www.ncbi.nlm.nih.gov/sra),
-    [ImmPort](https://www.immport.org:443/shared/immport-open/public/home/home),
+    [ImmPort](https://www.immport.org/),
     [ImmuneSpace](https://immunespace.org/),
-    [FlowRepository](https://flowrepository.org/).
+    [FlowRepository](http://flowrepository.org/).
 
     Tools like [datastorr](https://github.com/traitecoevo/datastorr)
     can help with this and we hope to integrate the into DataPackageR in
