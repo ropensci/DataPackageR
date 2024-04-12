@@ -97,7 +97,7 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Marie Vendettuoli \email{sc.mvendett.viscdevelopers@scharp.org} [contributor]
+\strong{Maintainer}: Dave Slager \email{sc.mvendett.viscdevelopers@scharp.org} (\href{https://orcid.org/0000-0003-2525-2039}{ORCID}) [contributor]
 
 Authors:
 \itemize{
@@ -107,8 +107,9 @@ Authors:
 Other contributors:
 \itemize{
   \item Paul Obrecht [contributor]
-  \item Ellis Hughes \email{ellishughes@live.com} [contributor]
+  \item Ellis Hughes \email{ellishughes@live.com} (\href{https://orcid.org/0000-0003-0637-4436}{ORCID}) [contributor]
   \item Jimmy Fulp \email{williamjfulp@gmail.com} [contributor]
+  \item Marie Vendettuoli (\href{https://orcid.org/0000-0001-9321-1410}{ORCID}) [contributor]
   \item Jason Taylor \email{jmtaylor@fredhutch.org} [contributor]
   \item Kara Woo (Kara reviewed the package for ropensci, see <https://github.com/ropensci/onboarding/issues/230>) [reviewer]
   \item William Landau (William reviewed the package for ropensci, see <https://github.com/ropensci/onboarding/issues/230>) [reviewer]
