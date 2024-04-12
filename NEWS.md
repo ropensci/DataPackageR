@@ -1,5 +1,16 @@
-# DataPackageR 0.15.8.9000
+# DataPackageR (development version)
+
+## Bug fixes
+
+* Fix bugs where document() and package_build() left the data package attached
+* Fix broken test that led to archiving on CRAN
+* Fix package documentation method for data packages and DataPackageR itself (r-lib/roxygen2#1491)
 * Fix tests for compatibility with usethis >1.5.2
+
+## Minor improvements
+
+* Various maintenance tweaks
+* Update maintainer and contact info
 
 # DataPackageR 0.15.8
 * Fix to datapackager_object_read that was causing a test to break. `get` needs to have `inherits=FALSE`. 
