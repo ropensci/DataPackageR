@@ -29,8 +29,8 @@ DataPackageR is used to reproducibly process raw data into packaged, analysis-re
 [![DOI](https://zenodo.org/badge/29267435.svg)](https://doi.org/10.5281/zenodo.1292095)
 <!-- badges: end -->
 
-- [yaml configuration guide](https://github.com/ropensci/DataPackageR/blob/main/vignettes/YAML_CONFIG.md)
-- [a more detailed technical vignette](https://github.com/ropensci/DataPackageR/blob/main/vignettes/usingDataPackageR.md)
+- [yaml configuration guide](https://docs.ropensci.org/DataPackageR/articles/YAML_Configuration_Details.html)
+- [a more detailed technical vignette](https://docs.ropensci.org/DataPackageR/articles/Using_DataPackageR.html)
 
 > **Important Note**: [datapack](https://github.com/ropensci/datapack) is a *different package* that is used to "create, send and load data from common repositories such as DataONE into the R environment".
 
@@ -79,7 +79,7 @@ You have diverse raw data sets that you need to preprocess and tidy in order to:
   
   Sharing large volumes of raw data in an R package format is still not ideal, and there are public biological data repositories better suited for raw data: e.g.,  [GEO](https://www.ncbi.nlm.nih.gov/geo/), [SRA](https://www.ncbi.nlm.nih.gov/sra), [ImmPort](https://www.immport.org/), [ImmuneSpace](https://immunespace.org/), [FlowRepository](http://flowrepository.org/).
   
-  Tools like [datastorr](https://github.com/ropenscilabs/datastorr) can help with this and we hope to integrate this into DataPackageR in the future.
+  Tools like [datastorr](https://github.com/traitecoevo/datastorr) can help with this and we hope to integrate this into DataPackageR in the future.
 
 - **Manual effort**
 
@@ -108,7 +108,7 @@ DataPackageR provides a number of benefits when packaging your data.
 There are a number of tools out there that address similar and complementary problems: 
 
 - **datastorr**
-  [github repo](https://github.com/ropenscilabs/datastorr)
+  [github repo](https://github.com/traitecoevo/datastorr)
   
   Simple data retrieval and versioning using GitHub to store data.
   
@@ -253,7 +253,7 @@ DataPackageR::project_data_path()
 
 ## Preprint and publication. <a id = "publication"></a>
 
-The publication describing the package, (Finak *et* *al.,* 2018)<!--@10.12688/gatesopenres.12832.2-->, is now available at   [Gates Open Research](https://gatesopenresearch.org/articles/2-31/v1) .
+The publication describing the package, (Finak *et* *al.,* 2018)<!--@10.12688/gatesopenres.12832.2-->, is now available at   [Gates Open Research](https://gatesopenresearch.org/articles/2-31/v2) .
 
 
 The preprint is on [biorxiv](https://doi.org/10.1101/342907).
