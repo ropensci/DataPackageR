@@ -79,7 +79,7 @@ You have diverse raw data sets that you need to preprocess and tidy in order to:
   
   Sharing large volumes of raw data in an R package format is still not ideal, and there are public biological data repositories better suited for raw data: e.g.,  [GEO](https://www.ncbi.nlm.nih.gov/geo/), [SRA](https://www.ncbi.nlm.nih.gov/sra), [ImmPort](https://www.immport.org/), [ImmuneSpace](https://immunespace.org/), [FlowRepository](http://flowrepository.org/).
   
-  Tools like [datastorr](https://github.com/ropenscilabs/datastorr) can help with this and we hope to integrate the into DataPackageR in the future.
+  Tools like [datastorr](https://github.com/ropenscilabs/datastorr) can help with this and we hope to integrate this into DataPackageR in the future.
 
 - **Manual effort**
 
@@ -145,8 +145,8 @@ There are a number of tools out there that address similar and complementary pro
 You can install the latest version of DataPackageR from [github](https://github.com/ropensci/DataPackageR) with:
 
 ```{r, eval=FALSE}
-library(devtools)
-devtools::install_github("ropensci/DataPackageR")
+library(remotes)
+remotes::install_github("ropensci/DataPackageR")
 ```
 
 ## Blog Post - building packages interactively.
@@ -157,7 +157,7 @@ the user has all the code and data ready to go for `datapackage_skeleton()`.
 
 ## Example (assuming all code and data are available)
 
-```{r minimal_example, results='hide', message=FALSE}
+```{r minimal_example}
 library(DataPackageR)
 
 # Let's reproducibly package up
