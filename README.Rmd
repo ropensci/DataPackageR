@@ -268,7 +268,7 @@ Please note that this project is released with a [Contributor Code of Conduct](h
 
 1. Gentleman, Robert, and Duncan Temple Lang. 2004. “Statistical Analyses and Reproducible Research.” Bioconductor Project Working Papers, Bioconductor project working papers,. bepress.
 
-2. Finak G, Mayer B, Fulp W et al. DataPackageR: Reproducible data preprocessing, standardization and sharing using R/Bioconductor for collaborative data analysis [version 1; referees: 1 approved with reservations]. Gates Open Res 2018, 2:31
+2. Finak G, Mayer B, Fulp W, et al. DataPackageR: Reproducible data preprocessing, standardization and sharing using R/Bioconductor for collaborative data analysis. Gates Open Res 2018, 2:31
 (doi: 10.12688/gatesopenres.12832.1)
 
 

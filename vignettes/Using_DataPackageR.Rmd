@@ -397,7 +397,7 @@ For more details on using git and github with R, there is an excellent guide pro
 
 ## Fingerprints of stored data objects.
 
-DataPackageR calcudevtools::install(build_vignettes = T)lates an md5 checksum of each data object it stores, and keeps track of them in a file
+DataPackageR calculates an md5 checksum of each data object it stores, and keeps track of them in a file
 called `DATADIGEST`.
 
 - Each time the package is rebuilt, the md5 sums of the new data objects are compared against `DATADIGEST`.

@@ -55,7 +55,7 @@
 # DataPackageR 0.15.3
 * conditional tests when pandoc is missing (ropensci/DataPackager/issues/46)
 * add use_data_object and use_processing_script (ropensci/DataPackager/issues/44)
-* allow datapacakge_skeleton to be called without files or data objects for interactive construction. (ropensci/DataPackager/issues/44)
+* allow datapackage_skeleton to be called without files or data objects for interactive construction. (ropensci/DataPackager/issues/44)
 
 # DataPackageR 0.15.2
 * Add  pandoc to SystemRequirements (ropensci/DataPackager/issues/46)
@@ -75,7 +75,7 @@
 
 - Moving towards ropensci compliance
 - NEWS.md updated with description of changes to data sets when version is bumped (or new package is created).
-- Output of "next steps" for user when pakcage is built
+- Output of "next steps" for user when package is built
 - New `document()` function to rebuild docs from `documentation.R` in `data-raw` without rebuilding the whole package.
 - Improved package test.
 - R scripts processed properly into vignettes.

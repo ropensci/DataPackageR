@@ -58,7 +58,7 @@ The names of the data objects created by the processing files, to be stored in t
 
 - `render_root:` 
   
-The directory where the `Rmd` or `R` files will be rendered which will default to a randomly named subdirectory given by `tempdir()`. This render location will allow workflows that use multiple scripts, and will create file system artifacts to function correctly by simply writing to and reading from the workoing directory.
+The directory where the `Rmd` or `R` files will be rendered which will default to a randomly named subdirectory given by `tempdir()`. This render location will allow workflows that use multiple scripts, and will create file system artifacts to function correctly by simply writing to and reading from the working directory.
 
 ## Editing the YAML config file.
 
