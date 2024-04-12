@@ -3,7 +3,7 @@
 0 errors ✔ | 0 warnings ✔ | 1 note ✖
 
 ❯ checking CRAN incoming feasibility ... [12s/44s] NOTE
-  Maintainer: ‘Dave Slager <sc.mvendett.viscdevelopers@scharp.org>’
+  Maintainer: ‘Dave Slager <dslager@scharp.org>’
 
   New submission
 

@@ -20,7 +20,7 @@ Authors@R:
               comment = c(ORCID = "0000-0001-9321-1410")),
       person(given = "Dave", family = "Slager",
               role = c("ctb", "cre"),
-              email = "sc.mvendett.viscdevelopers@scharp.org",
+              email = "dslager@scharp.org",
               comment = c(ORCID = "0000-0003-2525-2039")),
       person(given = "Jason", family = "Taylor",
               role = c("ctb"), 
