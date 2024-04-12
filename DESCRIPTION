@@ -35,15 +35,15 @@ Version: 0.15.8.9000
 Description: A framework to help construct R data packages in a 
   reproducible manner. Potentially time consuming processing of 
   raw data sets into analysis ready data sets is done in a reproducible 
-  manner and decoupled from the usual R CMD build process so that
+  manner and decoupled from the usual 'R CMD build' process so that
   data sets can be processed into R objects in the data package and 
   the data package can then be shared, built, and installed by others
   without the need to repeat computationally costly data processing.
   The package maintains data provenance by turning the data processing
   scripts into package vignettes, as well as enforcing documentation 
   and version checking of included data objects. Data packages can be
-  version controlled in github, and used to share data for manuscripts,
-  collaboration and general reproducibility.
+  version controlled on 'GitHub', and used to share data for manuscripts,
+  collaboration and reproducible research.
 License: MIT + file LICENSE
 Depends: R (>= 3.5.0)
 Imports:
