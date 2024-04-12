@@ -757,14 +757,20 @@ document <- function(path = ".", install = TRUE, ...) {
     overwrite = TRUE
   )
   .multilog_trace("Rebuilding data package documentation.")
-  devtools::document(pkg = path)
+  local({
+    on.exit({
+      if (basename(path) %in% devtools::package_info('attached')$package){
+        devtools::unload(basename(path))
+      }
+    })
+    devtools::document(pkg = path)
+  })
   location <- devtools::build(
     pkg = path, path = dirname(path),
     vignettes = FALSE, quiet = TRUE
   )
   # try to install and then reload the package in the current session
   if (install) {
-    devtools::unload(basename(path))
     install.packages(location, repos = NULL, type = "source", ...)
   }
   return(TRUE)
