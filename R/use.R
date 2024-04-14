@@ -137,7 +137,7 @@ use_processing_script <- function(file = NULL, title = NULL, author = NULL, over
     (grepl("\\.r$", tolower(raw_file)) |
       grepl("\\.rmd$", tolower(raw_file)))) {
     # we have a valid file name and should create it.
-    if (utils::file_test("-f", normalizePath(file.path(proj_path, "data-raw", basename(raw_file)), winslash = "/")) &&
+    if (file.exists(file.path(proj_path, "data-raw", basename(raw_file))) &&
         !overwrite) {
       .bullet(paste0("Skipping file creation: pass overwrite = TRUE to use_processing_script()"), bullet = crayon::red("\u2622")) #nolint
     } else {
