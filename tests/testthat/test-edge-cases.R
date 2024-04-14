@@ -1,9 +1,8 @@
 context("edge cases")
 test_that("package built in different edge cases", {
-  require(futile.logger)
   DataPackageR:::.multilog_setup(file.path(tempdir(),"test.log"))
   DataPackageR:::.multilog_thresold(INFO, TRACE)
-  
+
   file <- system.file("extdata", "tests", "subsetCars.Rmd",
     package = "DataPackageR"
   )
@@ -245,7 +244,7 @@ test_that("package built in different edge cases", {
       )
     )
   }))
-  
+
   unlink(file.path(tempdir(), "foo"),
     force = TRUE,
     recursive = TRUE

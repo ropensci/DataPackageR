@@ -31,7 +31,6 @@
 #' @importFrom utils getSrcref modifyList
 #' @importFrom usethis proj_set proj_get
 DataPackageR <- function(arg = NULL, deps = TRUE) {
-  # requireNamespace("futile.logger")
   pkg_dir <- arg
   pkg_dir <- normalizePath(pkg_dir, winslash = "/")
   cat("\n")
