@@ -30,8 +30,7 @@ This API reads from an environment named `ENVS`, containing `subsetCars` and any
 This file will add the pressure data set to the example.
 
 ```{r}
-data(pressure)
-pressure <- pressure # need to do an assignment
+data(pressure, envir = environment())
 plot(pressure)
 ```
 
