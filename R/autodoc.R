@@ -15,6 +15,7 @@
   }
 
   # create Roxygen documentation for data package
+  on.exit(close(con))
   con <- file(tempfilename, open = "w")
   writeLines(
     c(
@@ -90,5 +91,4 @@
       ), con
     )
   }
-  close(con)
 }

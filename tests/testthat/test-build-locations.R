@@ -1,9 +1,4 @@
 context("building packages")
-test_that(".onLoad sets options", {
-  DataPackageR:::.onLoad()
-  expect_true(getOption("DataPackageR_interact") == interactive())
-  options("DataPackageR_interact" = FALSE)
-})
 
 test_that("package can be built from different locations", {
   file <- system.file("extdata", "tests", "subsetCars.Rmd",

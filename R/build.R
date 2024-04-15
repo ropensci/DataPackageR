@@ -20,12 +20,12 @@
 #' @importFrom futile.logger flog.logger flog.trace appender.file flog.debug flog.info flog.warn flog.error flog.fatal flog.appender flog.threshold INFO TRACE appender.console appender.tee
 #' @importFrom knitr knit spin
 #' @details Note that if \code{package_build} returns an error when rendering an \code{.Rmd}
-#' internally, but that same \code{.Rmd} can be run successfully manually using \code{rmarkdown::render}, 
-#' then the following code facilitates debugging. Set \code{options(error = function(){ sink(); recover()})} 
-#' before running \code{package_build} . This will enable examination of the active function calls at the time of the error, 
-#' with output printed to the console rather than \code{knitr}'s default sink. 
-#' After debugging, evaluate \code{options(error = NULL)} to revert to default error handling. 
-#' See section "22.5.3 RMarkdown" at \url{ https://adv-r.hadley.nz/debugging.html} for more details. 
+#' internally, but that same \code{.Rmd} can be run successfully manually using \code{rmarkdown::render},
+#' then the following code facilitates debugging. Set \code{options(error = function(){ sink(); recover()})}
+#' before running \code{package_build} . This will enable examination of the active function calls at the time of the error,
+#' with output printed to the console rather than \code{knitr}'s default sink.
+#' After debugging, evaluate \code{options(error = NULL)} to revert to default error handling.
+#' See section "22.5.3 RMarkdown" at \url{ https://adv-r.hadley.nz/debugging.html} for more details.
 #' @export
 #' @examples
 #' if(rmarkdown::pandoc_available()){
@@ -51,7 +51,6 @@ package_build <- function(packageName = NULL,
                           ...) {
   .multilog_setup(LOGFILE = NULL)
   # flog.appender(appender.console())
-  # requireNamespace("futile.logger")
   if (is.null(packageName)) {
     packageName <- "."
     # use normalizePath

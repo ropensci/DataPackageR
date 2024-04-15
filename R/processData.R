@@ -31,7 +31,6 @@
 #' @importFrom utils getSrcref modifyList
 #' @importFrom usethis proj_set proj_get
 DataPackageR <- function(arg = NULL, deps = TRUE) {
-  # requireNamespace("futile.logger")
   pkg_dir <- arg
   pkg_dir <- normalizePath(pkg_dir, winslash = "/")
   cat("\n")
@@ -455,16 +454,19 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
           new = missing_doc
         )
         file.info("Writing merged docs.")
-        docfile <- file(
-          file.path(
-            target,
-            paste0("documentation", ".R")
-          ),
-          open = "w"
-        )
-        for (i in seq_along(doc_parsed)) {
-          writeLines(text = doc_parsed[[i]], con = docfile)
-        }
+        local({
+          on.exit(close(docfile))
+          docfile <- file(
+            file.path(
+              target,
+              paste0("documentation", ".R")
+            ),
+            open = "w"
+          )
+          for (i in seq_along(doc_parsed)) {
+            writeLines(text = doc_parsed[[i]], con = docfile)
+          }
+        })
       }
       # Partial build if enabled=FALSE for
       # any file We've disabled an object but don't

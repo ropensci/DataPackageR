@@ -1,4 +1,12 @@
 .onLoad <- function(libname, pkgname) {
-  options("DataPackageR_interact" = interactive())
+  # keeping this first option hardcoded on load for now
   options("DataPackageR_packagebuilding" = FALSE)
+  # respect previous user setting for 'DataPackageR_interact' if set
+  op <- options()
+  op.DataPackageR <- list(
+    DataPackageR_interact = interactive()
+  )
+  toset <- !(names(op.DataPackageR) %in% names(op))
+  if (any(toset)) options(op.DataPackageR[toset])
+  invisible()
 }
