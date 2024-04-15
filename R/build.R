@@ -10,6 +10,7 @@
 #' @param deps \code{logical} should we pass data objects into subsequent scripts? Default TRUE
 #' @param install \code{logical} automatically install and load the package after building. Default FALSE
 #' @param ... additional arguments passed to \code{install.packages} when \code{install=TRUE}.
+#' @returns Character vector. File path of the built package.
 #' @importFrom roxygen2 roxygenise roxygenize
 #' @importFrom devtools build_vignettes build parse_deps reload
 #' @importFrom usethis use_build_ignore use_rstudio proj_set use_directory
@@ -132,6 +133,7 @@ package_build <- function(packageName = NULL,
 #' @name keepDataObjects-defunct
 #' @aliases  keepDataObjects
 #' @param ... arguments
+#' @returns Defunct. No return value.
 #' @rdname keepDataObjects-defunct
 #' @export
 keepDataObjects <- function(...) {

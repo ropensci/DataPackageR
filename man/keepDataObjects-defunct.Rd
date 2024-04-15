@@ -10,6 +10,9 @@ keepDataObjects(...)
 \arguments{
 \item{...}{arguments}
 }
+\value{
+Defunct. No return value.
+}
 \description{
 These functions are no longer available.
 }

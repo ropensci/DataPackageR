@@ -14,6 +14,9 @@ dataVersion(pkg, lib.loc = NULL)
 
 \item{lib.loc}{\code{character} path to library location.}
 }
+\value{
+Object of class 'package_version' and 'numeric_version' specifying the DataVersion of the package
+}
 \description{
 Retrieves the DataVersion of a package if available
 }

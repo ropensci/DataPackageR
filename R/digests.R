@@ -4,13 +4,13 @@
 
 .check_dataversion_string <- function(old_data_digest, new_data_digest) {
   oldwarn <- options("warn")$warn
-  options(warn = -1)
-  oldv <- strsplit(old_data_digest[["DataVersion"]], "\\.")
-  newv <- strsplit(new_data_digest[["DataVersion"]], "\\.")
-  oldv <- lapply(oldv, as.numeric)[[1]]
-  newv <- lapply(newv, as.numeric)[[1]]
+  suppressWarnings({
+    oldv <- strsplit(old_data_digest[["DataVersion"]], "\\.")
+    newv <- strsplit(new_data_digest[["DataVersion"]], "\\.")
+    oldv <- lapply(oldv, as.numeric)[[1]]
+    newv <- lapply(newv, as.numeric)[[1]]
+  })
   if (any(is.na(oldv)) | any(is.na(newv))) {
-    options(warn = oldwarn)
     .multilog_fatal(paste0(
       "Invalid DataVersion string found ",
       old_data_digest[["DataVersion"]],
@@ -36,10 +36,10 @@
   existed <- names(new_digest)[names(new_digest) %in% names(old_digest)]
   added <- setdiff(names(new_digest), existed)
   removed <- names(old_digest)[!names(old_digest) %in% names(new_digest)]
-  existed <- existed[existed != "DataVersion"]  
+  existed <- existed[existed != "DataVersion"]
 
   if(length(existed) > 0){
-    changed <- names(new_digest)[ unlist(new_digest[existed]) != unlist(old_digest[existed]) ] 
+    changed <- names(new_digest)[ unlist(new_digest[existed]) != unlist(old_digest[existed]) ]
     if(length(changed) > 0){
       for(name in changed){
         .multilog_warn(paste(name, "has changed."))
@@ -53,7 +53,7 @@
     .multilog_debug(paste(name, "was removed."))
     return(FALSE)
   }
-  
+
   for(name in added){
     .multilog_debug(paste(name, "was added."))
     return(FALSE)
@@ -61,7 +61,7 @@
 
   return(TRUE)
 };
-  
+
 .combine_digests <- function(new, old) {
   intersection <- intersect(names(new), names(old))
   difference <- setdiff(names(new), names(old))

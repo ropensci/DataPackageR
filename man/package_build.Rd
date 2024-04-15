@@ -26,6 +26,9 @@ package_build(
 
 \item{...}{additional arguments passed to \code{install.packages} when \code{install=TRUE}.}
 }
+\value{
+Character vector. File path of the built package.
+}
 \description{
 Combines the preprocessing, documentation, and build steps into one.
 }

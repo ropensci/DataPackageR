@@ -45,6 +45,9 @@ into R objects.}
 
 \item{environment}{Not used.}
 }
+\value{
+No return value, called for side effects
+}
 \description{
 Creates a package skeleton directory structure for use with DataPackageR.
 Adds the DataVersion string to DESCRIPTION, creates the DATADIGEST file, and the data-raw directory.

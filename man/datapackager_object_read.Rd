@@ -24,7 +24,7 @@ with objects specified in the yaml \code{objects} property and passed along
 to subsequent R and Rmd files as DataPackageR processes them in order.
 }
 \examples{
-\dontrun{
+\donttest{
 if(rmarkdown::pandoc_available()){
 ENVS <- new.env() # ENVS would be in the environment
                   # where the data processing is run. It is
