@@ -28,7 +28,7 @@ f <- file.path(f,"foo.Rmd")
 con <- file(f)
 writeLines("```{r}\n tbl = data.frame(1:10) \n```\n",con=con)
 close(con)
-\dontrun{
+\donttest{
 # construct a data package skeleton named "MyDataPackage" and pass
 # in the Rmd file name with full path, and the name of the object(s) it
 # creates.
