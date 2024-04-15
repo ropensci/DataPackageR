@@ -28,6 +28,7 @@
 #' @param r_object_names \code{vector} of quoted r object names , tables, etc. created when the files in \code{code_files} are run.
 #' @param raw_data_dir \code{character} pointing to a raw data directory. Will be moved with all its subdirectories to "inst/extdata"
 #' @param dependencies \code{vector} of \code{character}, paths to R files that will be moved to "data-raw" but not included in the yaml config file. e.g., dependency scripts.
+#' @returns No return value, called for side effects
 #' @note renamed \code{datapackage.skeleton()} to \code{datapackage_skeleton()}.
 #' @importFrom crayon bold green
 #' @export

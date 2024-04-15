@@ -13,6 +13,9 @@ document(path = ".", install = TRUE, ...)
 
 \item{...}{additional arguments to \code{install}}
 }
+\value{
+Called for side effects. Returns TRUE on successful exit.
+}
 \description{
 Build documentation for a data package using DataPackageR.
 }

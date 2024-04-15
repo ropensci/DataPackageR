@@ -718,6 +718,7 @@ project_data_path <- function(file = NULL) {
 #' @param path \code{character} the path to the data package source root.
 #' @param install \code{logical} install and reload the package. (default TRUE)
 #' @param ... additional arguments to \code{install}
+#' @returns Called for side effects. Returns TRUE on successful exit.
 #' @export
 #' @examples
 #' # A simple Rmd file that creates one data object
