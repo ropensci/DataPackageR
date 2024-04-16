@@ -116,6 +116,7 @@ package_build <- function(packageName = NULL,
 }
 
 .next_steps <- function() {
+  if (! getOption('DataPackageR_verbose', TRUE)) return(invisible(NULL))
   cat(crayon::green(crayon::bold("Next Steps")), "\n") # nolint
   cat(crayon::white(crayon::yellow(crayon::bold("1. Update your package documentation.")), "\n")) # nolint
   cat(crayon::white("   - Edit the documentation.R file in the package source", crayon::green("data-raw"), "subdirectory and update the roxygen markup."), "\n") # nolint
