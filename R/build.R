@@ -105,7 +105,8 @@ package_build <- function(packageName = NULL,
   .multilog_trace("Building package")
   location <- build(package_path,
     path = dirname(package_path),
-    vignettes = vignettes
+    vignettes = vignettes,
+    quiet = ! getOption('DataPackageR_verbose', TRUE)
   )
   # try to install and then reload the package in the current session
   if (install) {
