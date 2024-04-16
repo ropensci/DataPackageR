@@ -504,7 +504,6 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
 
 
 .ppfiles_mkvignettes <- function(dir = NULL) {
-  cat("\n")
   if (proj_get() != dir) {
     usethis::proj_set(dir) #nocov
   }
