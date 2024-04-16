@@ -31,9 +31,12 @@
 #' @importFrom utils getSrcref modifyList
 #' @importFrom usethis proj_set proj_get
 DataPackageR <- function(arg = NULL, deps = TRUE) {
+  if (! getOption('DataPackageR_verbose', TRUE)){
+    withr::local_options(list(usethis.quiet = TRUE))
+  }
   pkg_dir <- arg
   pkg_dir <- normalizePath(pkg_dir, winslash = "/")
-  cat("\n")
+  if (getOption('DataPackageR_verbose', TRUE)) cat("\n")
   usethis::proj_set(path = pkg_dir)
   raw_data_dir <- "data-raw"
   target <- normalizePath(file.path(pkg_dir, raw_data_dir), winslash = "/")
