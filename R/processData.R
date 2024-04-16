@@ -750,7 +750,7 @@ project_data_path <- function(file = NULL) {
 #' }
 #' }
 document <- function(path = ".", install = TRUE, ...) {
-  cat("\n")
+  if (getOption('DataPackageR_verbose', TRUE)) cat("\n")
   usethis::proj_set(path = path)
   path <- usethis::proj_get()
   assert_that(file.exists(file.path(path, "data-raw", "documentation.R")))
