@@ -25,8 +25,11 @@ test_that("can update", {
   oldDigest$cars_over_20<-"123456789"
   DataPackageR:::.save_digest(oldDigest,file.path(tempdir(),"subsetCars"))
 
+  suppressWarnings({
+    expect_warning(build_res <- package_build(file.path(tempdir(), "subsetCars")))
+  })
   expect_identical(
-    try(package_build(file.path(tempdir(), "subsetCars"))),
+    build_res,
     normalizePath(file.path(tempdir(),"subsetCars_1.0.tar.gz"),winslash = "/")
   )#if it passes, it returns the path to the tar file?
 
