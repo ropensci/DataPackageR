@@ -42,12 +42,16 @@ datapackager_object_read <- function(name) {
     temp_folder_path<-file.path(tempdir(),yml_find(usethis::proj_get())[["configuration"]][["render_root"]]$tmp)
 
     if(file.exists(objectPath<-file.path(temp_folder_path,paste0(name,".rds")))){
-      message('loading ',name,' from temporary folder from previous build attempt.')
+      if (getOption('DataPackageR_verbose', TRUE)){
+        message('loading ',name,' from temporary folder from previous build attempt.')
+      }
       object<-readRDS(objectPath)
 
     }else if(file.exists(objectPath<-file.path(project_data_path(),paste0(name,".rda")))){
-      message('loading ',name,' from data directory.')
-      print(objectPath)
+      if (getOption('DataPackageR_verbose', TRUE)){
+        message('loading ',name,' from data directory.')
+        print(objectPath)
+      }
       load_env<-new.env()
       load(objectPath,envir = load_env)
       object<-load_env[[ls(load_env)[1]]]
