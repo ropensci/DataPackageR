@@ -7,7 +7,7 @@
 #' @details Add, remove files and objects, enable or disable parsing of specific files,  list objects or files in a yaml config, or write a config back to a package.
 #' @importFrom yaml yaml.load_file as.yaml write_yaml
 #' @importFrom stats runif
-#' @importFrom withr with_options 
+#' @importFrom withr with_options
 #' @export
 #'
 #' @examples
@@ -62,7 +62,7 @@ yml_add_files <- function(config, filenames) {
       config[["configuration"]][["files"]][[i]]$enabled <- TRUE
     }
   }
-  cat(yaml::as.yaml(config))
+  if (getOption('DataPackageR_verbose', TRUE)) cat(yaml::as.yaml(config))
   return(config)
 }
 
@@ -111,7 +111,7 @@ yml_add_objects <- function(config, objects) {
       config[["configuration"]][["objects"]],
       objects
     ))
-  cat(yaml::as.yaml(config))
+  if (getOption('DataPackageR_verbose', TRUE)) cat(yaml::as.yaml(config))
   return(config)
 }
 
@@ -123,8 +123,10 @@ yml_list_objects <- function(config) {
     # assume config is a package root path
     config <- yml_find(config)
   }
-  cat("\n")
-  cat(config[["configuration"]][["objects"]])
+  if (getOption('DataPackageR_verbose', TRUE)){
+    cat("\n")
+    cat(config[["configuration"]][["objects"]])
+  }
   invisible(config[["configuration"]][["objects"]])
 }
 
@@ -135,8 +137,10 @@ yml_list_files <- function(config) {
     # assume config is a package root path
     config <- yml_find(config)
   }
-  cat("\n")
-  cat(names(config[["configuration"]][["files"]]))
+  if (getOption('DataPackageR_verbose', TRUE)){
+    cat("\n")
+    cat(names(config[["configuration"]][["files"]]))
+  }
   invisible(names(config[["configuration"]][["files"]]))
 }
 
@@ -152,7 +156,7 @@ yml_remove_objects <- function(config, objects) {
       config[["configuration"]][["objects"]],
       objects
     )
-  cat(yaml::as.yaml(config))
+  if (getOption('DataPackageR_verbose', TRUE)) cat(yaml::as.yaml(config))
   return(config)
 }
 
@@ -168,7 +172,7 @@ yml_remove_files <- function(config, filenames) {
       config[["configuration"]][["files"]][[i]] <- NULL
     }
   }
-  cat(yaml::as.yaml(config))
+  if (getOption('DataPackageR_verbose', TRUE)) cat(yaml::as.yaml(config))
   return(config)
 }
 
@@ -237,7 +241,7 @@ construct_yml_config <- function(code = NULL, data = NULL, render_root = NULL) {
   for (i in code) {
     files[[i]]$enabled <- TRUE
   }
-  
+
   # create render root at a temporary directory.
   # this will be stored in the yaml. What if we restart?
   # see processData - it gets validated and created if not existing.

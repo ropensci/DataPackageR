@@ -31,9 +31,12 @@
 #' @importFrom utils getSrcref modifyList
 #' @importFrom usethis proj_set proj_get
 DataPackageR <- function(arg = NULL, deps = TRUE) {
+  if (! getOption('DataPackageR_verbose', TRUE)){
+    withr::local_options(list(usethis.quiet = TRUE))
+  }
   pkg_dir <- arg
   pkg_dir <- normalizePath(pkg_dir, winslash = "/")
-  cat("\n")
+  if (getOption('DataPackageR_verbose', TRUE)) cat("\n")
   usethis::proj_set(path = pkg_dir)
   raw_data_dir <- "data-raw"
   target <- normalizePath(file.path(pkg_dir, raw_data_dir), winslash = "/")
@@ -504,7 +507,6 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
 
 
 .ppfiles_mkvignettes <- function(dir = NULL) {
-  cat("\n")
   if (proj_get() != dir) {
     usethis::proj_set(dir) #nocov
   }
@@ -748,7 +750,7 @@ project_data_path <- function(file = NULL) {
 #' }
 #' }
 document <- function(path = ".", install = TRUE, ...) {
-  cat("\n")
+  if (getOption('DataPackageR_verbose', TRUE)) cat("\n")
   usethis::proj_set(path = path)
   path <- usethis::proj_get()
   assert_that(file.exists(file.path(path, "data-raw", "documentation.R")))

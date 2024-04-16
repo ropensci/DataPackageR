@@ -21,7 +21,8 @@ test_that("R file processing works and creates vignettes", {
       basename(package_build(
         file.path(tempdir, "rfiletest"),
         install = TRUE,
-        lib = temp_libpath
+        lib = temp_libpath,
+        quiet = ! getOption('DataPackageR_verbose', TRUE)
       )),
       "rfiletest_1.0.tar.gz"
     )
@@ -56,7 +57,8 @@ test_that("R file processing works and creates vignettes", {
         package_build(
           file.path(tempdir, "rfiletest"),
           install = TRUE,
-          lib = temp_libpath
+          lib = temp_libpath,
+          quiet = ! getOption('DataPackageR_verbose', TRUE)
         )
       ),
       "rfiletest_1.0.tar.gz"

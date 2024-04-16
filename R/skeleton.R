@@ -40,6 +40,9 @@ datapackage_skeleton <-
              r_object_names = character(),
              raw_data_dir = character(),
              dependencies = character()) {
+    if (! getOption('DataPackageR_verbose', TRUE)){
+      withr::local_options(list(usethis.quiet = TRUE))
+    }
     if (is.null(name)) {
       stop("Must supply a package name", call. = FALSE)
     }
@@ -217,5 +220,5 @@ datapackage.skeleton <- function(name = NULL,
 }
 
 .cat_line <- function(...) {
-  cat(..., "\n", sep = "")
+  if (getOption('DataPackageR_verbose', TRUE)) cat(..., "\n", sep = "")
 }

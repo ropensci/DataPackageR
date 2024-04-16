@@ -74,17 +74,16 @@ package_build <- function(packageName = NULL,
   }
   # This should always be a proper name of a directory, either current or a
   # subdirectory
-  if (inherits(
-    try(is_r_package$find_file(path = package_path))
-    , "try-error"
-  )) {
-    flog.fatal(paste0(
-      package_path,
-      " is not a valid R package directory beneath ",
-      getwd()
-    ), name = "console")
-    stop("exiting", call. = FALSE)
-  }
+  tryCatch({is_r_package$find_file(path = package_path)},
+           error = function(cond){
+             flog.fatal(paste0(
+               package_path,
+               " is not a valid R package directory beneath ",
+               getwd()
+             ), name = "console")
+             stop("exiting", call. = FALSE)
+           }
+  )
 
   # Return success if we've processed everything
   success <-
@@ -105,7 +104,8 @@ package_build <- function(packageName = NULL,
   .multilog_trace("Building package")
   location <- build(package_path,
     path = dirname(package_path),
-    vignettes = vignettes
+    vignettes = vignettes,
+    quiet = ! getOption('DataPackageR_verbose', TRUE)
   )
   # try to install and then reload the package in the current session
   if (install) {
@@ -116,6 +116,7 @@ package_build <- function(packageName = NULL,
 }
 
 .next_steps <- function() {
+  if (! getOption('DataPackageR_verbose', TRUE)) return(invisible(NULL))
   cat(crayon::green(crayon::bold("Next Steps")), "\n") # nolint
   cat(crayon::white(crayon::yellow(crayon::bold("1. Update your package documentation.")), "\n")) # nolint
   cat(crayon::white("   - Edit the documentation.R file in the package source", crayon::green("data-raw"), "subdirectory and update the roxygen markup."), "\n") # nolint
