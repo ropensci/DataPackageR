@@ -4,8 +4,8 @@
 #' the inst/extdata directory.
 #'
 #' @param path \code{character} path to file or directory.
-#' @param ignore \code{logical} whether to ignore the path or file in git and R build. 
-#' 
+#' @param ignore \code{logical} whether to ignore the path or file in git and R build.
+#'
 #' @return invisibly returns TRUE for success. Stops on failure.
 #' @importFrom usethis proj_get proj_set create_package use_data_raw
 #' @importFrom utils file_test
@@ -42,7 +42,7 @@ use_raw_dataset <- function(path = NULL, ignore = FALSE) {
       overwrite = TRUE
     )
     if (ignore) {
-      # inst/extdata is a path relative to the project root 
+      # inst/extdata is a path relative to the project root
       # as needed by git_ignore
       use_ignore(basename(raw_file), path = file.path("inst", "extdata"))
     }
@@ -68,7 +68,7 @@ use_raw_dataset <- function(path = NULL, ignore = FALSE) {
 #'
 #' The Rmd or R file or directory specified by \code{file} will be moved into
 #' the data-raw directory. It will also be added to the yml configuration file.
-#' Any existing file by that name will be overwritten when overwrite is set to TRUE 
+#' Any existing file by that name will be overwritten when overwrite is set to TRUE
 #'
 #' @param file \code{character} path to an existing file or name of a new R or Rmd file to create.
 #' @param title \code{character} title of the processing script for the yaml header. Used only if file is being created.
@@ -112,7 +112,7 @@ use_processing_script <- function(file = NULL, title = NULL, author = NULL, over
     }
   }
   raw_file <- suppressWarnings(normalizePath(file))
-  
+
   if (utils::file_test("-f", raw_file)) {
     # test if it's an R or Rmd file.
     if (!(grepl("\\.rmd$", tolower(raw_file)) |
@@ -141,7 +141,9 @@ use_processing_script <- function(file = NULL, title = NULL, author = NULL, over
         !overwrite) {
       .bullet(paste0("Skipping file creation: pass overwrite = TRUE to use_processing_script()"), bullet = crayon::red("\u2622")) #nolint
     } else {
-      cat("Attempting to create ", raw_file)
+      if (getOption('DataPackageR_verbose', TRUE)){
+        cat("Attempting to create ", raw_file)
+      }
       file.create(file.path(proj_path, "data-raw", basename(raw_file)))
       .update_header(file.path(proj_path,
                                "data-raw",
