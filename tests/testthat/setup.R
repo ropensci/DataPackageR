@@ -4,7 +4,8 @@
 withr::local_options(
   list(
     DataPackageR_interact = FALSE,
-    DataPackageR_packagebuilding = FALSE
+    DataPackageR_packagebuilding = FALSE,
+    DataPackageR_verbose = FALSE
     ),
   .local_envir = teardown_env()
 )
