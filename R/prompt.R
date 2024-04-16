@@ -88,7 +88,9 @@
 
   .write_changes <- function(string, news_con, what = NULL) {
     if (length(string) != 0) {
-      cat(crayon::cyan(paste0("* ",what,": ",string,"\n")))
+      if (getOption('DataPackageR_verbose', TRUE)){
+        cat(crayon::cyan(paste0("* ",what,": ",string,"\n")))
+      }
        writeLines(text = paste0("* ",what,": ", string),
                   con = news_con,
                   sep = "\n")
