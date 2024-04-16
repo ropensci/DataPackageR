@@ -15,7 +15,10 @@ test_that("documentation is built via document()", {
     temp_libpath <- file.path(tempdir, "lib")
     dir.create(temp_libpath)
     package_build(file.path(tempdir, "subsetCars"))
-    expect_true(document(file.path(tempdir, "subsetCars"), lib = temp_libpath))
+    expect_true(document(
+      file.path(tempdir, "subsetCars"),
+      lib = temp_libpath,
+      quiet = ! getOption('DataPackageR_verbose', TRUE)))
     docfile <- readLines(file.path(
       tempdir,
       "subsetCars", "data-raw", "documentation.R"
@@ -47,7 +50,8 @@ NULL
     close(connection)
     expect_true(
       document(file.path(tempdir, "subsetCars"),
-               lib = temp_libpath)
+               lib = temp_libpath,
+               quiet = ! getOption('DataPackageR_verbose', TRUE))
     )
     v <- vignette(package = "subsetCars", lib.loc = temp_libpath)
     expect_equal(v$results[, "Item"], "subsetCars")
