@@ -74,17 +74,16 @@ package_build <- function(packageName = NULL,
   }
   # This should always be a proper name of a directory, either current or a
   # subdirectory
-  if (inherits(
-    try(is_r_package$find_file(path = package_path))
-    , "try-error"
-  )) {
-    flog.fatal(paste0(
-      package_path,
-      " is not a valid R package directory beneath ",
-      getwd()
-    ), name = "console")
-    stop("exiting", call. = FALSE)
-  }
+  tryCatch({is_r_package$find_file(path = package_path)},
+           error = function(cond){
+             flog.fatal(paste0(
+               package_path,
+               " is not a valid R package directory beneath ",
+               getwd()
+             ), name = "console")
+             stop("exiting", call. = FALSE)
+           }
+  )
 
   # Return success if we've processed everything
   success <-
