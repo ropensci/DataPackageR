@@ -27,6 +27,16 @@
   flog.threshold(console, name = "console")
   flog.threshold(logfile, name = "logfile")
 }
+
+select_console_appender <- function(){
+  if (getOption('DataPackageR_verbose', TRUE)){
+    appender.console()
+  } else {
+    # quiet console appender
+    function(line) { }
+  }
+}
+
 .multilog_setup <- function(LOGFILE = NULL) {
   if (!is.null(LOGFILE)) {
     flog.logger(
@@ -37,7 +47,7 @@
   }
   flog.logger(
     name = "console",
-    appender = appender.console(),
+    appender = select_console_appender(),
     threshold = INFO
   )
 }
