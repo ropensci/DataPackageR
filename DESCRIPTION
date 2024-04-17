@@ -31,7 +31,7 @@ Authors@R:
       person(given = "William", family = "Landau",
               role = "rev",
       comment = "William reviewed the package for ropensci, see <https://github.com/ropensci/onboarding/issues/230>"))
-Version: 0.15.9
+Version: 0.15.9.9000
 Description: A framework to help construct R data packages in a 
   reproducible manner. Potentially time consuming processing of 
   raw data sets into analysis ready data sets is done in a reproducible 
