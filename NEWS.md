@@ -2,7 +2,11 @@
 
 ## Bug fixes
 
+* Fix bug where `.Rprofile` options setting for `DataPackageR_interact` was overwritten upon package load
 * Fix bugs where document() and package_build() left the data package attached
+* Fix unit test inter-dependencies
+* Make package template depend on R >= 3.5.0, suppressing `.rda` serialization warnings upon install
+* Close a file connection, suppressing warnings about orphaned connections
 * Fix broken test that led to archiving on CRAN
 * Fix package documentation method for data packages and DataPackageR itself (r-lib/roxygen2#1491)
 * Fix tests for compatibility with usethis >1.5.2
@@ -10,7 +14,9 @@
 ## Minor improvements
 
 * Various maintenance tweaks
+* Documentation improvements
 * Update maintainer and contact info
+* New global option `DataPackageR_verbose` to suppress console output, e.g. during unit testing
 
 # DataPackageR 0.15.8
 * Fix to datapackager_object_read that was causing a test to break. `get` needs to have `inherits=FALSE`. 
