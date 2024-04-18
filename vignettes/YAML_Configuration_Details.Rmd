@@ -1,5 +1,5 @@
 ---
-title: "YAML Configuration Details."
+title: "YAML Configuration Details"
 author: "Greg Finak <gfinak@fredhutch.org>"
 date: "`r Sys.Date()`"
 output: 
@@ -8,7 +8,7 @@ output:
     toc: yes
   bibliography: bibliography.bib
 vignette: >
-  %\VignetteIndexEntry{A guide to using the DataPackageR YAML configuration file}
+  %\VignetteIndexEntry{YAML Configuration Details}
   %\VignetteEngine{knitr::rmarkdown}
   %\usepackage[utf8]{inputenc}
   %\usepackage{graphicx}
