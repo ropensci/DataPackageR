@@ -21,10 +21,11 @@ User-configurable options consulted by DataPackageR, which
 - \code{DataPackageR_interact}: Upon package load, this defaults to the value of
   \code{interactive()}, unless the option has been previously set (e.g., in
   \code{.Rprofile}). TRUE prompts user interactively for a NEWS update on
-  \code{package_build()}. See the example above and the [rOpenSci blog
-  post](https://ropensci.org/blog/2018/09/18/datapackager/) for more details
-  on how to set this to FALSE, which will never prompt user for a NEWS
-  update. FALSE is also the setting used for DataPackageR's internal tests.
+  \code{package_build()}. See the example above and the
+  \href{https://ropensci.org/blog/2018/09/18/datapackager/}{rOpenSci blog
+  post} for more details on how to set this to FALSE, which will never prompt
+  user for a NEWS update. FALSE is also the setting used for DataPackageR's
+  internal tests.
 
 - \code{DataPackageR_verbose}: Default upon package load is TRUE. FALSE suppresses
   all console output and is currently only used for DataPackageR's automated

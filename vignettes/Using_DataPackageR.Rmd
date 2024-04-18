@@ -7,7 +7,7 @@ output:
     keep_md: TRUE
     toc: yes
 vignette: >
-  %\VignetteIndexEntry{A guide to using DataPackageR}
+  %\VignetteIndexEntry{Using DataPackageR}
   %\VignetteEngine{knitr::rmarkdown}
   %\usepackage[utf8]{inputenc}
   %\usepackage{graphicx}
