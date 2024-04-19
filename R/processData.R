@@ -116,6 +116,14 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
     assert_that("files" %in% names(ymlconf[["configuration"]]))
     assert_that(!is.null(names(ymlconf[["configuration"]][["files"]])))
 
+    # object with same name as package causes problems with
+    # overwriting documentation files
+    if (basename(pkg_dir) %in% ymlconf$configuration$objects){
+      err_msg <- "Data object not allowed to have same name as data package"
+      flog.fatal(err_msg, name = "console")
+      stop(err_msg, call. = FALSE)
+    }
+
     r_files <- unique(names(
       Filter(
         x = ymlconf[["configuration"]][["files"]],
