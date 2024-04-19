@@ -57,13 +57,7 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
       stop("exiting", call. = FALSE)
     }
   } else {
-    logpath <-
-      normalizePath(
-        file.path(pkg_dir, "inst/extdata"),
-        winslash = "/"
-      )
-    logpath <- file.path(logpath, "Logfiles")
-
+    logpath <- file.path(pkg_dir, "inst", "extdata", "Logfiles")
     dir.create(logpath, recursive = TRUE, showWarnings = FALSE)
     # open a log file
     LOGFILE <- file.path(logpath, "processing.log")
