@@ -415,89 +415,8 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
       )
       do_documentation <- TRUE
     }
-    if (do_documentation) {
-      # Run .doc_autogen #needs to be run when we have a partial build..
-      if (!file.exists(file.path(target, "documentation.R"))) {
-        .doc_autogen(basename(pkg_dir),
-          ds2kp = ls(dataenv),
-          env = dataenv,
-          path = target
-        )
-      }
-      # parse documentation
-      doc_parsed <- .doc_parse(file.path(target, "documentation.R"))
-      .identify_missing_docs <- function(environment = NULL,
-                                               description = NULL,
-                                               docs = NULL) {
-        setdiff(
-          ls(environment),
-          setdiff(
-            names(docs),
-            description[["Package"]]
-          )
-        )
-      }
-      # case where we add an object,
-      # ensures we combine the documentation properly
-      missing_doc_for_autodoc <- .identify_missing_docs(
-        dataenv,
-        pkg_description,
-        doc_parsed
-      )
-      if (length(missing_doc_for_autodoc) != 0) {
-        tmptarget <- tempdir()
-        file.info("Writing missing docs.")
-        .doc_autogen(basename(pkg_dir),
-          ds2kp = missing_doc_for_autodoc,
-          env = dataenv,
-          path = tmptarget,
-          name = "missing_doc.R"
-        )
-        missing_doc <- .doc_parse(file.path(tmptarget, "missing_doc.R"))
-        doc_parsed <- .doc_merge(
-          old = doc_parsed,
-          new = missing_doc
-        )
-        file.info("Writing merged docs.")
-        local({
-          on.exit(close(docfile))
-          docfile <- file(
-            file.path(
-              target,
-              paste0("documentation", ".R")
-            ),
-            open = "w"
-          )
-          for (i in seq_along(doc_parsed)) {
-            writeLines(text = doc_parsed[[i]], con = docfile)
-          }
-        })
-      }
-      # Partial build if enabled=FALSE for
-      # any file We've disabled an object but don't
-      # want to overwrite its documentation
-      # or remove it The new approach just builds
-      # all the docs independent of what's enabled.
-      save_docs <- do.call(c, doc_parsed)
-      docfile <- file(file.path(pkg_dir, "R",
-        pattern = paste0(pkg_description$Package, ".R")
-      ),
-      open = "w"
-      )
-      for (i in seq_along(save_docs)) {
-        writeLines(text = save_docs[[i]], con = docfile)
-      }
-      close(docfile)
-      .multilog_trace(
-        paste0(
-          "Copied documentation to ",
-          file.path(pkg_dir, "R", paste0(pkg_description$Package, ".R"))
-        )
-      )
-      # TODO test that we have documented
-      # everything successfully and that all files
-      # have been parsed successfully
-      can_write <- TRUE
+    if (do_documentation){
+      can_write <- do_doc(pkg_dir, dataenv)
     }
     eval(expr = expression(rm(list = ls())), envir = dataenv)
     # copy html files to vignettes
@@ -507,6 +426,81 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
   return(can_write)
 }
 
+#' do_doc() function extracted out from end of DataPackageR
+#'
+#' @param pkg_dir The top level file path of the data package
+#' @param dataenv The data environment, from DataPackageR
+#' @returns TRUE if success
+do_doc <- function(pkg_dir, dataenv) {
+  # Run .doc_autogen #needs to be run when we have a partial build..
+  if (!file.exists(file.path(pkg_dir, 'data-raw', "documentation.R"))) {
+    .doc_autogen(basename(pkg_dir),
+                 ds2kp = ls(dataenv),
+                 env = dataenv,
+                 path = file.path(pkg_dir, 'data-raw')
+    )
+  }
+  # parse documentation
+  doc_parsed <- .doc_parse(file.path(pkg_dir, 'data-raw', "documentation.R"))
+  # case where we add an object,
+  # ensures we combine the documentation properly
+  pkg_name <- validate_pkg_name(pkg_dir)
+  missing_doc_for_autodoc <- setdiff(
+    ls(dataenv),
+    setdiff(names(doc_parsed), pkg_name)
+  )
+  if (length(missing_doc_for_autodoc) != 0) {
+    tmptarget <- tempdir()
+    file.info("Writing missing docs.")
+    .doc_autogen(basename(pkg_dir),
+                 ds2kp = missing_doc_for_autodoc,
+                 env = dataenv,
+                 path = tmptarget,
+                 name = "missing_doc.R"
+    )
+    missing_doc <- .doc_parse(file.path(tmptarget, "missing_doc.R"))
+    doc_parsed <- .doc_merge(
+      old = doc_parsed,
+      new = missing_doc
+    )
+    file.info("Writing merged docs.")
+    local({
+      on.exit(close(docfile))
+      docfile <- file(
+        file.path(pkg_dir, 'data-raw', "documentation.R"),
+        open = "w"
+      )
+      for (i in seq_along(doc_parsed)) {
+        writeLines(text = doc_parsed[[i]], con = docfile)
+      }
+    })
+  }
+  # Partial build if enabled=FALSE for
+  # any file We've disabled an object but don't
+  # want to overwrite its documentation
+  # or remove it The new approach just builds
+  # all the docs independent of what's enabled.
+  save_docs <- do.call(c, doc_parsed)
+  docfile <- file(file.path(pkg_dir, "R",
+                            pattern = paste0(pkg_name, ".R")
+  ),
+  open = "w"
+  )
+  for (i in seq_along(save_docs)) {
+    writeLines(text = save_docs[[i]], con = docfile)
+  }
+  close(docfile)
+  .multilog_trace(
+    paste0(
+      "Copied documentation to ",
+      file.path(pkg_dir, "R", paste0(pkg_name, ".R"))
+    )
+  )
+  # TODO test that we have documented
+  # everything successfully and that all files
+  # have been parsed successfully
+  return(TRUE)
+}
 
 .ppfiles_mkvignettes <- function(dir = NULL) {
   if (proj_get() != dir) {
