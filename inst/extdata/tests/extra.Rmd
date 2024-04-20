@@ -23,7 +23,7 @@ cars_over_20 = datapackager_object_read("cars_over_20")
 print(cars_over_20)
 ```
 
-This API reads from an environment named `ENVS`, containing `subsetCars` and any other previously built data set objects. It is passed into the render environment of `extra.rmd` by DataPackageR at the `render()` call. 
+This API reads from an environment named `ENVS`, containing `subsetCars` and any other previously built data set objects. It is passed into the render environment of `extra.Rmd` by DataPackageR at the `render()` call. 
 
 ## Additional data objects
 

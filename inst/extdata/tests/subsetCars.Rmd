@@ -36,7 +36,7 @@ When DataPackageR processes this file, it creates this `cars_over_20` object. Af
 
 1. It compares the objects in the rmarkdown render environment of `subsetCars.Rmd` against the objects listed in the `config.yml` file `objects` property. 
 2. It finds `cars_over_20` is listed there, so it stores it in a new environment.
-3. That environment is passed to subsequent R and Rmd files. Specifically when the `extra.rmd` file is processed, it has access to an environment object that holds all the `objects` (defined in the yaml config) that have already been created and processed. This environment is passed into subsequent scripts at the `render()` call. 
+3. That environment is passed to subsequent R and Rmd files. Specifically when the `extra.Rmd` file is processed, it has access to an environment object that holds all the `objects` (defined in the yaml config) that have already been created and processed. This environment is passed into subsequent scripts at the `render()` call. 
 
 All of the above is done automatically. The user only needs to list the objects to be stored and passed to other scripts in the `config.yml` file. 
 

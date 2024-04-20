@@ -21,7 +21,7 @@ the inst/extdata directory.
 \examples{
 if(rmarkdown::pandoc_available()){
 myfile <- tempfile()
-file <- system.file("extdata", "tests", "extra.rmd",
+file <- system.file("extdata", "tests", "extra.Rmd",
                      package = "DataPackageR")
 raw_data <- system.file("extdata", "tests", "raw_data",
                         package = "DataPackageR")

@@ -18,7 +18,7 @@ The data object will be added to the yml configuration file.
 \examples{
 if(rmarkdown::pandoc_available()){
 myfile <- tempfile()
-file <- system.file("extdata", "tests", "extra.rmd",
+file <- system.file("extdata", "tests", "extra.Rmd",
                      package = "DataPackageR")
 datapackage_skeleton(
   name = "datatest",

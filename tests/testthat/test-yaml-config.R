@@ -3,7 +3,7 @@ test_that("can add a file", {
   file <- system.file("extdata", "tests", "subsetCars.Rmd",
     package = "DataPackageR"
   )
-  file2 <- system.file("extdata", "tests", "extra.rmd",
+  file2 <- system.file("extdata", "tests", "extra.Rmd",
     package = "DataPackageR"
   )
   expect_null(
@@ -27,7 +27,7 @@ test_that("can add a file", {
       ))
   ))
   config <- yml_find(file.path(tempdir(), "subsetCars"))
-  config <- yml_add_files(config, "extra.rmd")
+  config <- yml_add_files(config, "extra.Rmd")
   yml_write(config)
   file.copy(from = file2, file.path(tempdir(), "subsetCars", "data-raw"))
   expect_equal(

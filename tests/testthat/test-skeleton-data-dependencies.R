@@ -1,6 +1,6 @@
 context("skeleton")
 test_that("data, code, and dependencies are moved into place by skeleton", {
-  file <- system.file("extdata", "tests", "extra.rmd",
+  file <- system.file("extdata", "tests", "extra.Rmd",
     package = "DataPackageR"
   )
   ancillary <- system.file("extdata", "tests", "rfileTest.R",
@@ -42,7 +42,7 @@ test_that("data, code, and dependencies are moved into place by skeleton", {
           tempdir(),
           "datatest",
           "data-raw",
-          "extra.rmd"
+          "extra.Rmd"
         ),
         winslash = "/"
       )

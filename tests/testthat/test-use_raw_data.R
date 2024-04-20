@@ -2,7 +2,7 @@ context("test-use_raw_data")
 
 test_that("use_raw_data works as expected", {
   myfile <- tempfile()
-  file <- system.file("extdata", "tests", "extra.rmd",
+  file <- system.file("extdata", "tests", "extra.Rmd",
     package = "DataPackageR"
   )
   ancillary <- system.file("extdata", "tests", "rfileTest.R",
@@ -55,7 +55,7 @@ test_that("use_raw_data works as expected", {
 
 test_that("use_processing_script works as expected", {
   myfile <- tempfile()
-  file <- system.file("extdata", "tests", "extra.rmd",
+  file <- system.file("extdata", "tests", "extra.Rmd",
     package = "DataPackageR"
   )
   expect_null(
@@ -108,7 +108,7 @@ test_that("use_processing_script works as expected", {
 
 test_that("use_data_object works as expected", {
   myfile <- tempfile()
-  file <- system.file("extdata", "tests", "extra.rmd",
+  file <- system.file("extdata", "tests", "extra.Rmd",
     package = "DataPackageR"
   )
   expect_null(
