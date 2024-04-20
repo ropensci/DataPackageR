@@ -85,6 +85,9 @@ package_build <- function(packageName = NULL,
            }
   )
 
+  # Check that directory name matches package name
+  validate_pkg_name(package_path)
+
   # Return success if we've processed everything
   success <-
     DataPackageR(arg = package_path, deps = deps)
@@ -139,4 +142,23 @@ package_build <- function(packageName = NULL,
 #' @export
 keepDataObjects <- function(...) {
   .Defunct(msg = "keepDataObjects is defunct as of version 0.12.1 of DataPackageR. \nUse the config.yml file to control packaging.") # nolint
+}
+
+#' Check that pkg name inferred from pkg path is same as pkg name in DESCRIPTION
+#'
+#' @param package_path Package path
+#'
+#' @returns Package name (character) if validated
+validate_pkg_name <- function(package_path){
+  desc_pkg_name <- desc::desc(
+    file = file.path(package_path, 'DESCRIPTION')
+  )$get("Package")
+  path_pkg_name <- basename(package_path)
+  if (desc_pkg_name != path_pkg_name){
+    err_msg <- paste("Data package name in DESCRIPTION does not match",
+                     "name of the data package directory")
+    flog.fatal(err_msg, name = "console")
+    stop(err_msg, call. = FALSE)
+  }
+  desc_pkg_name
 }

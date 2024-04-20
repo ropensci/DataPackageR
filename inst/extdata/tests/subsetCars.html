@@ -335,7 +335,7 @@ $(document).ready(function () {
 <ol style="list-style-type: decimal">
 <li>It compares the objects in the rmarkdown render environment of <code>subsetCars.Rmd</code> against the objects listed in the <code>config.yml</code> file <code>objects</code> property.</li>
 <li>It finds <code>cars_over_20</code> is listed there, so it stores it in a new environment.</li>
-<li>That environment is passed to subsequent R and Rmd files. Specifically when the <code>extra.rmd</code> file is processed, it has access to an environment object that holds all the <code>objects</code> (defined in the yaml config) that have already been created and processed. This environment is passed into subsequent scripts at the <code>render()</code> call.</li>
+<li>That environment is passed to subsequent R and Rmd files. Specifically when the <code>extra.Rmd</code> file is processed, it has access to an environment object that holds all the <code>objects</code> (defined in the yaml config) that have already been created and processed. This environment is passed into subsequent scripts at the <code>render()</code> call.</li>
 </ol>
 <p>All of the above is done automatically. The user only needs to list the objects to be stored and passed to other scripts in the <code>config.yml</code> file.</p>
 <p>The <code>datapackager_object_read()</code> API can be used to retrieve these objects from the environment.</p>

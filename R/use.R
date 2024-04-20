@@ -14,7 +14,7 @@
 #' @examples
 #' if(rmarkdown::pandoc_available()){
 #' myfile <- tempfile()
-#' file <- system.file("extdata", "tests", "extra.rmd",
+#' file <- system.file("extdata", "tests", "extra.Rmd",
 #'                      package = "DataPackageR")
 #' raw_data <- system.file("extdata", "tests", "raw_data",
 #'                         package = "DataPackageR")
@@ -83,7 +83,7 @@ use_raw_dataset <- function(path = NULL, ignore = FALSE) {
 #' @examples
 #' if(rmarkdown::pandoc_available()){
 #' myfile <- tempfile()
-#' file <- system.file("extdata", "tests", "extra.rmd",
+#' file <- system.file("extdata", "tests", "extra.Rmd",
 #'                      package = "DataPackageR")
 #' datapackage_skeleton(
 #'   name = "datatest",
@@ -175,7 +175,7 @@ use_processing_script <- function(file = NULL, title = NULL, author = NULL, over
 #' @examples
 #' if(rmarkdown::pandoc_available()){
 #' myfile <- tempfile()
-#' file <- system.file("extdata", "tests", "extra.rmd",
+#' file <- system.file("extdata", "tests", "extra.Rmd",
 #'                      package = "DataPackageR")
 #' datapackage_skeleton(
 #'   name = "datatest",

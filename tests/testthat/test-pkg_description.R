@@ -4,7 +4,7 @@ test_that("can_read_pkg_description,  data_version", {
   file <- system.file("extdata", "tests", "subsetCars.Rmd",
     package = "DataPackageR"
   )
-  file2 <- system.file("extdata", "tests", "extra.rmd",
+  file2 <- system.file("extdata", "tests", "extra.Rmd",
     package = "DataPackageR"
   )
   datapackage_skeleton(

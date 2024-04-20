@@ -4,7 +4,7 @@ test_that("manual bump version when data unchanged", {
   file <- system.file("extdata", "tests", "subsetCars.Rmd",
     package = "DataPackageR"
   )
-  file2 <- system.file("extdata", "tests", "extra.rmd",
+  file2 <- system.file("extdata", "tests", "extra.Rmd",
     package = "DataPackageR"
   )
   expect_null(

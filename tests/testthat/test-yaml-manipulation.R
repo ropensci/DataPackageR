@@ -3,7 +3,7 @@ test_that("can remove a data item", {
   file <- system.file("extdata", "tests", "subsetCars.Rmd",
     package = "DataPackageR"
   )
-  file2 <- system.file("extdata", "tests", "extra.rmd",
+  file2 <- system.file("extdata", "tests", "extra.Rmd",
     package = "DataPackageR"
   )
   expect_null(

@@ -57,13 +57,7 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
       stop("exiting", call. = FALSE)
     }
   } else {
-    logpath <-
-      normalizePath(
-        file.path(pkg_dir, "inst/extdata"),
-        winslash = "/"
-      )
-    logpath <- file.path(logpath, "Logfiles")
-
+    logpath <- file.path(pkg_dir, "inst", "extdata", "Logfiles")
     dir.create(logpath, recursive = TRUE, showWarnings = FALSE)
     # open a log file
     LOGFILE <- file.path(logpath, "processing.log")
@@ -115,6 +109,14 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
     assert_that("configuration" %in% names(ymlconf))
     assert_that("files" %in% names(ymlconf[["configuration"]]))
     assert_that(!is.null(names(ymlconf[["configuration"]][["files"]])))
+
+    # object with same name as package causes problems with
+    # overwriting documentation files
+    if (basename(pkg_dir) %in% ymlconf$configuration$objects){
+      err_msg <- "Data object not allowed to have same name as data package"
+      flog.fatal(err_msg, name = "console")
+      stop(err_msg, call. = FALSE)
+    }
 
     r_files <- unique(names(
       Filter(

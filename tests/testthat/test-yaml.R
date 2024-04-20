@@ -29,13 +29,13 @@ test_that("yaml reading, adding, removing, listing, and writing", {
   attr(test_config, "path") <- attr(config, "path")
   expect_identical(config, test_config)
 
-  config <- yml_add_files(config, "extra.rmd")
+  config <- yml_add_files(config, "extra.Rmd")
   test_config <-
     structure(list(
       configuration = list(
         files = list(
           subsetCars.Rmd = list(enabled = TRUE),
-          extra.rmd = list(enabled = TRUE)
+          extra.Rmd = list(enabled = TRUE)
         ),
         objects = "cars_over_20",
         render_root = "dummy"
@@ -52,7 +52,7 @@ test_that("yaml reading, adding, removing, listing, and writing", {
       configuration = list(
         files = list(
           subsetCars.Rmd = list(enabled = TRUE),
-          extra.rmd = list(enabled = TRUE)
+          extra.Rmd = list(enabled = TRUE)
         ),
         objects = "cars_over_20",
         render_root = "dummy"
@@ -69,7 +69,7 @@ test_that("yaml reading, adding, removing, listing, and writing", {
       configuration = list(
         files = list(
           subsetCars.Rmd = list(enabled = TRUE),
-          extra.rmd = list(enabled = TRUE)
+          extra.Rmd = list(enabled = TRUE)
         ),
         objects = c(
           "cars_over_20",
@@ -90,7 +90,7 @@ test_that("yaml reading, adding, removing, listing, and writing", {
       configuration = list(
         files = list(
           subsetCars.Rmd = list(enabled = TRUE),
-          extra.rmd = list(enabled = TRUE)
+          extra.Rmd = list(enabled = TRUE)
         ),
         objects = "cars_over_20",
         render_root = "dummy"
@@ -104,7 +104,7 @@ test_that("yaml reading, adding, removing, listing, and writing", {
   list <- yml_list_files(config)
   expect_identical(
     list,
-    c("subsetCars.Rmd", "extra.rmd")
+    c("subsetCars.Rmd", "extra.Rmd")
   )
 
 
@@ -119,7 +119,7 @@ test_that("yaml reading, adding, removing, listing, and writing", {
       configuration = list(
         files = list(
           subsetCars.Rmd = list(enabled = TRUE),
-          extra.rmd = list(enabled = TRUE)
+          extra.Rmd = list(enabled = TRUE)
         ),
         objects = "cars_over_20",
         render_root = "dummy"

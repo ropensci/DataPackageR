@@ -95,7 +95,7 @@ datapackage_skeleton <-
         "When you call package_build(), your datasets will",
         "be automatically documented. Edit datapackager.yml to",
         "add additional files / data objects to the package.",
-        "After building, you should edit dat-raw/documentation.R",
+        "After building, you should edit data-raw/documentation.R",
         "to fill in dataset documentation details and rebuild.",
         "",
         "NOTES",
@@ -103,8 +103,9 @@ datapackage_skeleton <-
         "add those to the @import tag of the roxygen markup.",
         "The R object names you wish to make available",
         "(and document) in the package must match",
-        "the roxygen @name tags and must be listed",
-        "in the yml file."
+        "the roxygen @name tags, must be listed",
+        "in the yml file, and must not have the same name",
+        "as the name of your data package."
       ),
       con
     )

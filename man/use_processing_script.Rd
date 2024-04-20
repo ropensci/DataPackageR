@@ -31,7 +31,7 @@ Any existing file by that name will be overwritten when overwrite is set to TRUE
 \examples{
 if(rmarkdown::pandoc_available()){
 myfile <- tempfile()
-file <- system.file("extdata", "tests", "extra.rmd",
+file <- system.file("extdata", "tests", "extra.Rmd",
                      package = "DataPackageR")
 datapackage_skeleton(
   name = "datatest",
