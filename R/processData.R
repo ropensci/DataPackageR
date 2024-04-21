@@ -152,7 +152,6 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
       stop("error", call. = FALSE)
     }
     .multilog_trace(paste0("Found ", r_files))
-    old_data_digest <- .parse_data_digest(pkg_dir = pkg_dir)
     description_file <- normalizePath(file.path(pkg_dir, "DESCRIPTION"),
       winslash = "/"
     )
@@ -298,6 +297,7 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
     # currently environments for each file are independent.
     dataenv <- ENVS
     # Digest each object
+    old_data_digest <- .parse_data_digest(pkg_dir = pkg_dir)
     new_data_digest <- .digest_data_env(ls(ENVS), dataenv, pkg_description)
     .newsfile()
     if (!is.null(old_data_digest)) {
