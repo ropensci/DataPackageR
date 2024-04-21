@@ -415,15 +415,13 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
       )
       do_documentation <- TRUE
     }
-    if (do_documentation){
-      can_write <- do_doc(pkg_dir, dataenv)
-    }
+    if (do_documentation) do_doc(pkg_dir, dataenv)
     eval(expr = expression(rm(list = ls())), envir = dataenv)
     # copy html files to vignettes
     .ppfiles_mkvignettes(dir = pkg_dir)
   }
   .multilog_trace("Done")
-  return(can_write)
+  return(TRUE)
 }
 
 #' do_doc() function extracted out from end of DataPackageR
