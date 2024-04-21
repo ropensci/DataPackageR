@@ -152,12 +152,6 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
       stop("error", call. = FALSE)
     }
     .multilog_trace(paste0("Found ", r_files))
-    description_file <- normalizePath(file.path(pkg_dir, "DESCRIPTION"),
-      winslash = "/"
-    )
-    pkg_description <- try(read.description(file = description_file),
-      silent = TRUE
-    )
     # The test for a valid DESCRIPTION here is no longer needed since
     # we use proj_set().
 
@@ -181,7 +175,7 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
     building <- NULL
     r_dir <- normalizePath(file.path(pkg_dir, "R" ), winslash = "/")
     r_dir_files <- list.files( r_dir )
-    r_dir_files <- r_dir_files[ !grepl( pkg_description$Package,
+    r_dir_files <- r_dir_files[ !grepl( validate_pkg_name(pkg_dir),
                                         r_dir_files ) ]
     for (i in seq_along(r_files)) {
       dataenv <- new.env(hash = TRUE, parent = .GlobalEnv)
@@ -298,6 +292,12 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
     dataenv <- ENVS
     # Digest each object
     old_data_digest <- .parse_data_digest(pkg_dir = pkg_dir)
+    description_file <- normalizePath(file.path(pkg_dir, "DESCRIPTION"),
+                                      winslash = "/"
+    )
+    pkg_description <- try(read.description(file = description_file),
+                           silent = TRUE
+    )
     new_data_digest <- .digest_data_env(ls(ENVS), dataenv, pkg_description)
     .newsfile()
     if (!is.null(old_data_digest)) {
