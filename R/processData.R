@@ -298,7 +298,7 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
     pkg_description <- try(read.description(file = description_file),
                            silent = TRUE
     )
-    new_data_digest <- .digest_data_env(ls(ENVS), dataenv, pkg_description)
+    new_data_digest <- .digest_data_env(ls(dataenv), dataenv, pkg_description)
     .newsfile()
     if (!is.null(old_data_digest)) {
       string_check <- .check_dataversion_string(
