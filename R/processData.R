@@ -292,7 +292,6 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
     dataenv <- ENVS
     do_digests(pkg_dir, dataenv)
     do_doc(pkg_dir, dataenv)
-    eval(expr = expression(rm(list = ls())), envir = dataenv)
     # copy html files to vignettes
     .ppfiles_mkvignettes(dir = pkg_dir)
   }
