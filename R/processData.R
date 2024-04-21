@@ -35,12 +35,8 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
     withr::local_options(list(usethis.quiet = TRUE))
   }
   pkg_dir <- arg
-  pkg_dir <- normalizePath(pkg_dir, winslash = "/")
   if (getOption('DataPackageR_verbose', TRUE)) cat("\n")
   usethis::proj_set(path = pkg_dir)
-  raw_data_dir <- "data-raw"
-  target <- normalizePath(file.path(pkg_dir, raw_data_dir), winslash = "/")
-  raw_data_dir <- target
 
   #set the option that DataPackageR is building the package. On exit ensures when it leaves, it will set it back to false
   options("DataPackageR_packagebuilding" = TRUE)
@@ -49,8 +45,9 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
   # validate that render_root exists.
   # if it's an old temp dir, what then?
 
-  if (!file.exists(target)) {
-    .multilog_fatal(paste0("Directory ", target, " doesn't exist."))
+  if (!file.exists(file.path(pkg_dir, 'data-raw'))) {
+    .multilog_fatal(paste0(
+      "Directory ", file.path(pkg_dir, 'data-raw'), " doesn't exist."))
     stop("exiting", call. = FALSE)
   }
   logpath <- file.path(pkg_dir, "inst", "extdata", "Logfiles")
@@ -128,7 +125,7 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
     render_root <- normalizePath(render_root, winslash = "/")
   }
 
-  r_files <- file.path(raw_data_dir, r_files)
+  r_files <- file.path(pkg_dir, 'data-raw', r_files)
   if (all(!file.exists(r_files))) {
     .multilog_fatal(paste0("Can't find any R or Rmd files."))
     .multilog_fatal(paste0(
