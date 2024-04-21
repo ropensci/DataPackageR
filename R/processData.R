@@ -45,11 +45,6 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
   # validate that render_root exists.
   # if it's an old temp dir, what then?
 
-  if (!file.exists(file.path(pkg_dir, 'data-raw'))) {
-    .multilog_fatal(paste0(
-      "Directory ", file.path(pkg_dir, 'data-raw'), " doesn't exist."))
-    stop("exiting", call. = FALSE)
-  }
   logpath <- file.path(pkg_dir, "inst", "extdata", "Logfiles")
   dir.create(logpath, recursive = TRUE, showWarnings = FALSE)
   # open a log file
@@ -57,17 +52,8 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
   .multilog_setup(LOGFILE)
   .multilog_thresold(console = INFO, logfile = TRACE)
   .multilog_trace(paste0("Logging to ", LOGFILE))
-  # we know it's a proper package root, but we want to test if we have the
-  # necessary subdirectories
-  testme <- file.path(pkg_dir, c("R", "inst", "data", "data-raw"))
-  if (!all(utils::file_test(testme, op = "-d"))) {
-    .multilog_fatal(paste0(
-      "You need a valid package data strucutre.",
-      " Missing ./R ./inst ./data or",
-      "./data-raw subdirectories."
-    ))
-    stop("exiting", call. = FALSE)
-  }
+  # validate package
+  validate_package_skeleton(pkg_dir)
   .multilog_trace("Processing data")
   # read YAML
   ymlfile <- dir(
@@ -273,6 +259,26 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
   .multilog_trace("Done")
   return(TRUE)
 }
+
+#' Validate data package skeleton, extracted out from big DataPackageR function
+#'
+#' @param pkg_dir Path of top level of data package
+#'
+#' @return Silently returns pkg_dir if no errors thrown
+validate_package_skeleton <- function(pkg_dir){
+  # we know it's a proper package root, but we want to test if we have the
+  # necessary subdirectories
+  dirs <- file.path(pkg_dir, c("R", "inst", "data", "data-raw"))
+  for (dir in dirs){
+    if (! utils::file_test(dir, op = "-d")){
+      err_msg <- paste("Missing required subdirectory", dir)
+      .multilog_fatal(err_msg)
+      stop(err_msg)
+    }
+  }
+  invisible(pkg_dir)
+}
+
 
 #' do_digests() function extracted out from DataPackageR
 #'
