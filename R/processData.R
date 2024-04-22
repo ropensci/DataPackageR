@@ -67,9 +67,6 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
     .multilog_fatal("No files enabled for processing!")
     stop("error", call. = FALSE)
   }
-  objects_to_keep <- purrr::map(ymlconf, "objects")[["configuration"]]
-  render_root <- .get_render_root(ymlconf)
-
   r_files <- file.path(pkg_dir, 'data-raw', r_files)
   if (all(!file.exists(r_files))) {
     .multilog_fatal(paste0("Can't find any R or Rmd files."))
@@ -80,13 +77,12 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
     stop("error", call. = FALSE)
   }
   .multilog_trace(paste0("Found ", r_files))
+  objects_to_keep <- get_yml_objects(ymlconf)
+  render_root <- .get_render_root(ymlconf)
+
   # The test for a valid DESCRIPTION here is no longer needed since
   # we use proj_set().
 
-  if (length(objects_to_keep) == 0) {
-    .multilog_fatal("You must specify at least one data object.")
-    stop("exiting", call. = FALSE)
-  }
   # TODO Can we configure documentation in yaml?
   do_documentation <- FALSE
   # This flag indicates success
@@ -219,6 +215,14 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
   return(TRUE)
 }
 
+#' Get data objects from YAML configuration
+#'
+#' @param ymlconf YAML configuration list produced by validate_yml()
+#'
+#' @return Character vector of object names
+get_yml_objects <- function(ymlconf){
+  ymlconf$configuration$objects
+}
 
 #' Validate YAML file, extracted out from big DataPackageR function
 #'
@@ -266,6 +270,10 @@ validate_yml <- function(pkg_dir){
       render_root, " doesn't exist"
     ))
     stop("error", call. = FALSE)
+  }
+  if (length(get_yml_objects(ymlconf)) == 0) {
+    .multilog_fatal("You must specify at least one data object.")
+    stop("exiting", call. = FALSE)
   }
   return(ymlconf)
 }
