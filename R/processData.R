@@ -55,28 +55,10 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
   # validate package
   validate_package_skeleton(pkg_dir)
   .multilog_trace("Processing data")
+  # validate datapackager.yml
   ymlconf <- validate_yml(pkg_dir)
-
-  r_files <- unique(names(
-    Filter(
-      x = ymlconf[["configuration"]][["files"]],
-      f = function(x) x$enabled
-    )
-  ))
-  if (length(r_files) == 0) {
-    .multilog_fatal("No files enabled for processing!")
-    stop("error", call. = FALSE)
-  }
-  r_files <- file.path(pkg_dir, 'data-raw', r_files)
-  if (all(!file.exists(r_files))) {
-    .multilog_fatal(paste0("Can't find any R or Rmd files."))
-    .multilog_fatal(paste0(
-      "     Cant' find file: ",
-      r_files[!file.exists(r_files)]
-    ))
-    stop("error", call. = FALSE)
-  }
-  .multilog_trace(paste0("Found ", r_files))
+  # get vector of R and Rmd files from validated YAML
+  r_files <- file.path(pkg_dir, 'data-raw', get_yml_r_files(ymlconf))
   objects_to_keep <- get_yml_objects(ymlconf)
   render_root <- .get_render_root(ymlconf)
 
@@ -215,6 +197,20 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
   return(TRUE)
 }
 
+#' Get R and Rmd files from YAML configuration
+#'
+#' @param ymlconf YAML configuration list produced by validate_yml()
+#'
+#' @return Character vector of enabled R and Rmd files specified in YAML file
+get_yml_r_files <- function(ymlconf) {
+  r_files <- names(
+    Filter(
+      x = ymlconf[["configuration"]][["files"]],
+      f = function(x) x$enabled
+    )
+  )
+}
+
 #' Get data objects from YAML configuration
 #'
 #' @param ymlconf YAML configuration list produced by validate_yml()
@@ -275,6 +271,24 @@ validate_yml <- function(pkg_dir){
     .multilog_fatal("You must specify at least one data object.")
     stop("exiting", call. = FALSE)
   }
+  r_files <- get_yml_r_files(ymlconf)
+  if (length(r_files) == 0) {
+    .multilog_fatal("No files enabled for processing!")
+    stop("error", call. = FALSE)
+  }
+  if (any(duplicated(r_files))){
+    err_msg <- "Duplicate R files specified in YAML."
+    .multilog_fatal(err_msg)
+    stop(err_msg, call. = FALSE)
+  }
+  for (file in r_files){
+    if (! file.exists(file.path(pkg_dir, 'data-raw', file))){
+      err_msg <- paste("Missing R file specified in YAML:", file)
+      .multilog_fatal(err_msg)
+      stop(err_msg, call. = FALSE)
+    }
+  }
+  .multilog_trace(paste0("Found ", r_files))
   return(ymlconf)
 }
 
