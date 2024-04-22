@@ -55,39 +55,7 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
   # validate package
   validate_package_skeleton(pkg_dir)
   .multilog_trace("Processing data")
-  # read YAML
-  ymlfile <- dir(
-    path = pkg_dir, pattern = "^datapackager.yml$",
-    full.names = TRUE
-  )
-  if (length(ymlfile) == 0) {
-    .multilog_fatal(paste0("Yaml configuration file not found at ", pkg_dir))
-    stop("exiting", call. = FALSE)
-  }
-  ymlconf <- read_yaml(ymlfile)
-  # test that the structure of the yaml file is correct!
-  if (!"configuration" %in% names(ymlconf)) {
-    .multilog_fatal("YAML is missing 'configuration:' entry")
-    stop("exiting", call. = FALSE)
-  }
-  if (!all(c("files", "objects") %in%
-           purrr::map(ymlconf, names)[["configuration"]])) {
-    .multilog_fatal("YAML is missing files: and objects: entries")
-    stop("exiting", call. = FALSE)
-  }
-  .multilog_trace("Reading yaml configuration")
-  # files that have enable: TRUE
-  assert_that("configuration" %in% names(ymlconf))
-  assert_that("files" %in% names(ymlconf[["configuration"]]))
-  assert_that(!is.null(names(ymlconf[["configuration"]][["files"]])))
-
-  # object with same name as package causes problems with
-  # overwriting documentation files
-  if (basename(pkg_dir) %in% ymlconf$configuration$objects){
-    err_msg <- "Data object not allowed to have same name as data package"
-    flog.fatal(err_msg, name = "console")
-    stop(err_msg, call. = FALSE)
-  }
+  ymlconf <- validate_yml(pkg_dir)
 
   r_files <- unique(names(
     Filter(
@@ -101,15 +69,6 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
   }
   objects_to_keep <- purrr::map(ymlconf, "objects")[["configuration"]]
   render_root <- .get_render_root(ymlconf)
-  if (!.validate_render_root(render_root)) {
-    .multilog_fatal(paste0(
-      "Can't create, or render_root = ",
-      render_root, " doesn't exist"
-    ))
-    stop("error", call. = FALSE)
-  } else {
-    render_root <- normalizePath(render_root, winslash = "/")
-  }
 
   r_files <- file.path(pkg_dir, 'data-raw', r_files)
   if (all(!file.exists(r_files))) {
@@ -259,6 +218,58 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
   .multilog_trace("Done")
   return(TRUE)
 }
+
+
+#' Validate YAML file, extracted out from big DataPackageR function
+#'
+#' @param pkg_dir Path of top level of data package
+#'
+#' @return List object from read_yaml(ymlfile)
+validate_yml <- function(pkg_dir){
+  # read YAML
+  ymlfile <- list.files(
+    path = pkg_dir, pattern = "^datapackager.yml$",
+    full.names = TRUE
+  )
+  if (length(ymlfile) == 0) {
+    .multilog_fatal(paste0("Yaml configuration file not found at ", pkg_dir))
+    stop("exiting", call. = FALSE)
+  }
+  ymlconf <- read_yaml(ymlfile)
+  # test that the structure of the yaml file is correct!
+  if (!"configuration" %in% names(ymlconf)) {
+    .multilog_fatal("YAML is missing 'configuration:' entry")
+    stop("exiting", call. = FALSE)
+  }
+  if (!all(c("files", "objects") %in%
+           purrr::map(ymlconf, names)[["configuration"]])) {
+    .multilog_fatal("YAML is missing files: and objects: entries")
+    stop("exiting", call. = FALSE)
+  }
+  .multilog_trace("Reading yaml configuration")
+  # files that have enable: TRUE
+  assert_that("configuration" %in% names(ymlconf))
+  assert_that("files" %in% names(ymlconf[["configuration"]]))
+  assert_that(!is.null(names(ymlconf[["configuration"]][["files"]])))
+
+  # object with same name as package causes problems with
+  # overwriting documentation files
+  if (basename(pkg_dir) %in% ymlconf$configuration$objects){
+    err_msg <- "Data object not allowed to have same name as data package"
+    flog.fatal(err_msg, name = "console")
+    stop(err_msg, call. = FALSE)
+  }
+  render_root <- .get_render_root(ymlconf)
+  if (!.validate_render_root(render_root)) {
+    .multilog_fatal(paste0(
+      "Can't create, or render_root = ",
+      render_root, " doesn't exist"
+    ))
+    stop("error", call. = FALSE)
+  }
+  return(ymlconf)
+}
+
 
 #' Validate data package skeleton, extracted out from big DataPackageR function
 #'
