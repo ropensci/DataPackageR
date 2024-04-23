@@ -42,25 +42,24 @@
     changed <- names(new_digest)[ unlist(new_digest[existed]) != unlist(old_digest[existed]) ]
     if(length(changed) > 0){
       for(name in changed){
-        .multilog_warn(paste(name, "has changed."))
+        .multilog_info(paste(name, "has changed."))
       }
-      warning()
       return(FALSE)
     }
   }
 
   for(name in removed){
-    .multilog_debug(paste(name, "was removed."))
+    .multilog_info(paste(name, "was removed."))
     return(FALSE)
   }
 
   for(name in added){
-    .multilog_debug(paste(name, "was added."))
+    .multilog_info(paste(name, "was added."))
     return(FALSE)
   }
 
   return(TRUE)
-};
+}
 
 .combine_digests <- function(new, old) {
   intersection <- intersect(names(new), names(old))
