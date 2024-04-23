@@ -330,116 +330,114 @@ do_digests <- function(pkg_dir, dataenv) {
   )
   new_data_digest <- .digest_data_env(ls(dataenv), dataenv, pkg_description)
   .newsfile()
-  if (!is.null(old_data_digest)) {
-    string_check <- .check_dataversion_string(
-      old_data_digest,
-      new_data_digest
-    )
-    can_write <- FALSE
-    stopifnot(!((!.compare_digests(
-      old_data_digest,
-      new_data_digest
-    )) & string_check$isgreater))
-    if (.compare_digests(
-      old_data_digest,
-      new_data_digest
-    ) &
-    string_check$isequal) {
-      can_write <- TRUE
-      .multilog_trace(paste0(
-        "Processed data sets match ",
-        "existing data sets at version ",
-        new_data_digest[["DataVersion"]]
-      ))
-    } else if ((!.compare_digests(
-      old_data_digest,
-      new_data_digest
-    )) &
-    string_check$isequal) {
-      updated_version <- .increment_data_version(
-        pkg_description,
-        new_data_digest
-      )
-      #TODO what objects have changed?
-      changed_objects <- .qualify_changes(new_data_digest,old_data_digest)
-
-      .update_news_md(updated_version$new_data_digest[["DataVersion"]],
-                      interact = getOption("DataPackageR_interact", interactive())
-      )
-      .update_news_changed_objects(changed_objects)
-      pkg_description <- updated_version$pkg_description
-      new_data_digest <- updated_version$new_data_digest
-      can_write <- TRUE
-      .multilog_trace(paste0(
-        "Data has been updated and DataVersion ",
-        "string incremented automatically to ",
-        new_data_digest[["DataVersion"]]
-      ))
-    } else if (.compare_digests(
-      old_data_digest,
-      new_data_digest
-    ) &
-    string_check$isgreater) {
-      # edge case that shouldn't happen
-      # but we test for it in the test suite
-      can_write <- TRUE
-      .multilog_trace(paste0(
-        "Data hasn't changed but the ",
-        "DataVersion has been bumped."
-      ))
-    } else if (string_check$isless & .compare_digests(
-      old_data_digest,
-      new_data_digest
-    )) {
-      # edge case that shouldn't happen but
-      # we test for it in the test suite.
-      .multilog_trace(paste0(
-        "New DataVersion is less than ",
-        "old but data are unchanged"
-      ))
-      new_data_digest <- old_data_digest
-      pkg_description[["DataVersion"]] <- new_data_digest[["DataVersion"]]
-      can_write <- TRUE
-    } else if (string_check$isless & !.compare_digests(
-      old_data_digest,
-      new_data_digest
-    )) {
-      updated_version <- .increment_data_version(
-        pkg_description,
-        new_data_digest
-      )
-      # TODO what objects have changed?
-      changed_objects <- .qualify_changes(new_data_digest,old_data_digest)
-      .update_news_md(updated_version$new_data_digest[["DataVersion"]],
-                      interact = getOption("DataPackageR_interact", interactive())
-      )
-      .update_news_changed_objects(changed_objects)
-
-      pkg_description <- updated_version$pkg_description
-      new_data_digest <- updated_version$new_data_digest
-      can_write <- TRUE
-    }
-    if (can_write) {
-      .save_data(new_data_digest,
-                 pkg_description,
-                 ls(dataenv),
-                 dataenv,
-                 old_data_digest = old_data_digest,
-                 pkg_path = pkg_dir
-      )
-    }
-  } else {
+  if (is.null(old_data_digest)){
+    # first time data digest & early return
     .update_news_md(new_data_digest[["DataVersion"]],
                     interact = getOption(
                       "DataPackageR_interact",
-                      interactive()
-                    )
-    )
+                      interactive()))
     .save_data(new_data_digest,
                pkg_description,
                ls(dataenv),
                dataenv,
                old_data_digest = NULL,
+               pkg_path = pkg_dir)
+    return(TRUE)
+  }
+  string_check <- .check_dataversion_string(
+    old_data_digest,
+    new_data_digest
+  )
+  can_write <- FALSE
+  stopifnot(!((!.compare_digests(
+    old_data_digest,
+    new_data_digest
+  )) & string_check$isgreater))
+  if (.compare_digests(
+    old_data_digest,
+    new_data_digest
+  ) &
+  string_check$isequal) {
+    can_write <- TRUE
+    .multilog_trace(paste0(
+      "Processed data sets match ",
+      "existing data sets at version ",
+      new_data_digest[["DataVersion"]]
+    ))
+  } else if ((!.compare_digests(
+    old_data_digest,
+    new_data_digest
+  )) &
+  string_check$isequal) {
+    updated_version <- .increment_data_version(
+      pkg_description,
+      new_data_digest
+    )
+    #TODO what objects have changed?
+    changed_objects <- .qualify_changes(new_data_digest,old_data_digest)
+
+    .update_news_md(updated_version$new_data_digest[["DataVersion"]],
+                    interact = getOption("DataPackageR_interact", interactive())
+    )
+    .update_news_changed_objects(changed_objects)
+    pkg_description <- updated_version$pkg_description
+    new_data_digest <- updated_version$new_data_digest
+    can_write <- TRUE
+    .multilog_trace(paste0(
+      "Data has been updated and DataVersion ",
+      "string incremented automatically to ",
+      new_data_digest[["DataVersion"]]
+    ))
+  } else if (.compare_digests(
+    old_data_digest,
+    new_data_digest
+  ) &
+  string_check$isgreater) {
+    # edge case that shouldn't happen
+    # but we test for it in the test suite
+    can_write <- TRUE
+    .multilog_trace(paste0(
+      "Data hasn't changed but the ",
+      "DataVersion has been bumped."
+    ))
+  } else if (string_check$isless & .compare_digests(
+    old_data_digest,
+    new_data_digest
+  )) {
+    # edge case that shouldn't happen but
+    # we test for it in the test suite.
+    .multilog_trace(paste0(
+      "New DataVersion is less than ",
+      "old but data are unchanged"
+    ))
+    new_data_digest <- old_data_digest
+    pkg_description[["DataVersion"]] <- new_data_digest[["DataVersion"]]
+    can_write <- TRUE
+  } else if (string_check$isless & !.compare_digests(
+    old_data_digest,
+    new_data_digest
+  )) {
+    updated_version <- .increment_data_version(
+      pkg_description,
+      new_data_digest
+    )
+    # TODO what objects have changed?
+    changed_objects <- .qualify_changes(new_data_digest,old_data_digest)
+    .update_news_md(updated_version$new_data_digest[["DataVersion"]],
+                    interact = getOption("DataPackageR_interact", interactive())
+    )
+    .update_news_changed_objects(changed_objects)
+
+    pkg_description <- updated_version$pkg_description
+    new_data_digest <- updated_version$new_data_digest
+    can_write <- TRUE
+  }
+  if (can_write) {
+    .save_data(new_data_digest,
+               pkg_description,
+               ls(dataenv),
+               dataenv,
+               old_data_digest = old_data_digest,
                pkg_path = pkg_dir
     )
   }
