@@ -3,7 +3,7 @@ test_that("data object can be renamed", {
   addData <- function(dataset, pname){
     fil <- sprintf("data(%s, envir=environment())", dataset)
     writeLines(fil, file.path(tempdir(), sprintf("%s/data-raw/%s.R", pname, dataset)))
-    
+
     yml <- yml_add_files(file.path(tempdir(), pname), c(sprintf("%s.R", dataset)))
     yml <- yml_add_objects(yml, dataset)
     yml_write(yml)
@@ -19,7 +19,7 @@ test_that("data object can be renamed", {
     yml <- yml_remove_objects(file.path(tempdir(), pname), old_dataset_name)
     yml <- yml_add_objects(yml, new_dataset_name)
     yml_write(yml)
-    
+
     package_build(file.path(tempdir(), pname))
   }
 
@@ -30,32 +30,32 @@ test_that("data object can be renamed", {
 
     yml <- yml_remove_objects(file.path(tempdir(), pname), dataset_name)
     yml_write(yml)
-    
+
     package_build(file.path(tempdir(), pname))
   }
 
-  ## test change when one object is present 
+  ## test change when one object is present
   pname <- "nameChangeTest1"
   datapackage_skeleton(pname, tempdir(), force = TRUE)
   addData("mtcars", pname)
-  expect_error(changeName("mtcars", "mtcars2", pname), NA)
+  expect_no_error(changeName("mtcars", "mtcars2", pname))
   expect_error(removeName("mtcars2", "mtcars.R", pname), "exiting")
 
-  ## test change when two objects are present 
+  ## test change when two objects are present
   pname <- "nameChangeTest2"
   datapackage_skeleton(pname, tempdir(), force = TRUE)
   addData("mtcars", pname)
   addData("iris", pname)
-  expect_error(changeName("mtcars", "mtcars2", pname), NA)
-  expect_error(removeName("mtcars2", "mtcars.R", pname), NA)
-  
-  ## test change when more than 2 objects are present 
+  expect_no_error(changeName("mtcars", "mtcars2", pname))
+  expect_no_error(removeName("mtcars2", "mtcars.R", pname))
+
+  ## test change when more than 2 objects are present
   pname <- "nameChangeTest3"
   datapackage_skeleton(pname, tempdir(), force = TRUE)
   addData("mtcars", pname)
   addData("iris", pname)
   addData("ToothGrowth", pname)
-  expect_error(changeName("mtcars", "mtcars2", pname), NA)
-  expect_error(removeName("mtcars2", "mtcars.R", pname), NA)
-  
+  expect_no_error(changeName("mtcars", "mtcars2", pname))
+  expect_no_error(removeName("mtcars2", "mtcars.R", pname))
+
 })

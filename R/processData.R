@@ -35,270 +35,283 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
     withr::local_options(list(usethis.quiet = TRUE))
   }
   pkg_dir <- arg
-  pkg_dir <- normalizePath(pkg_dir, winslash = "/")
   if (getOption('DataPackageR_verbose', TRUE)) cat("\n")
   usethis::proj_set(path = pkg_dir)
-  raw_data_dir <- "data-raw"
-  target <- normalizePath(file.path(pkg_dir, raw_data_dir), winslash = "/")
-  raw_data_dir <- target
 
   #set the option that DataPackageR is building the package. On exit ensures when it leaves, it will set it back to false
   options("DataPackageR_packagebuilding" = TRUE)
   on.exit(options("DataPackageR_packagebuilding" = FALSE))
 
-
-
   # validate that render_root exists.
   # if it's an old temp dir, what then?
 
-  if (!file.exists(target)) {
-    .multilog_fatal(paste0("Directory ", target, " doesn't exist."))
-    {
-      stop("exiting", call. = FALSE)
-    }
-  } else {
-    logpath <- file.path(pkg_dir, "inst", "extdata", "Logfiles")
-    dir.create(logpath, recursive = TRUE, showWarnings = FALSE)
-    # open a log file
-    LOGFILE <- file.path(logpath, "processing.log")
-    .multilog_setup(LOGFILE)
-    .multilog_thresold(console = INFO, logfile = TRACE)
-    .multilog_trace(paste0("Logging to ", LOGFILE))
-    # we know it's a proper package root, but we want to test if we have the
-    # necessary subdirectories
-    testme <- file.path(pkg_dir, c("R", "inst", "data", "data-raw"))
-    if (!all(utils::file_test(testme, op = "-d"))) {
-      .multilog_fatal(paste0(
-        "You need a valid package data strucutre.",
-        " Missing ./R ./inst ./data or",
-        "./data-raw subdirectories."
-      ))
-      {
-        stop("exiting", call. = FALSE)
-      }
-    }
-    .multilog_trace("Processing data")
-    # read YAML
-    ymlfile <- dir(
-      path = pkg_dir, pattern = "^datapackager.yml$",
-      full.names = TRUE
-    )
-    if (length(ymlfile) == 0) {
-      .multilog_fatal(paste0("Yaml configuration file not found at ", pkg_dir))
-      {
-        stop("exiting", call. = FALSE)
-      }
-    }
-    ymlconf <- read_yaml(ymlfile)
-    # test that the structure of the yaml file is correct!
-    if (!"configuration" %in% names(ymlconf)) {
-      .multilog_fatal("YAML is missing 'configuration:' entry")
-      {
-        stop("exiting", call. = FALSE)
-      }
-    }
-    if (!all(c("files", "objects") %in%
-      purrr::map(ymlconf, names)[["configuration"]])) {
-      .multilog_fatal("YAML is missing files: and objects: entries")
-      {
-        stop("exiting", call. = FALSE)
-      }
-    }
-    .multilog_trace("Reading yaml configuration")
-    # files that have enable: TRUE
-    assert_that("configuration" %in% names(ymlconf))
-    assert_that("files" %in% names(ymlconf[["configuration"]]))
-    assert_that(!is.null(names(ymlconf[["configuration"]][["files"]])))
+  logpath <- file.path(pkg_dir, "inst", "extdata", "Logfiles")
+  dir.create(logpath, recursive = TRUE, showWarnings = FALSE)
+  # open a log file
+  LOGFILE <- file.path(logpath, "processing.log")
+  .multilog_setup(LOGFILE)
+  .multilog_thresold(console = INFO, logfile = TRACE)
+  .multilog_trace(paste0("Logging to ", LOGFILE))
+  # validate package
+  validate_package_skeleton(pkg_dir)
+  .multilog_trace("Processing data")
+  # validate datapackager.yml
+  ymlconf <- validate_yml(pkg_dir)
+  # get vector of R and Rmd files from validated YAML
+  r_files <- file.path(pkg_dir, 'data-raw', get_yml_r_files(ymlconf))
+  objects_to_keep <- get_yml_objects(ymlconf)
+  render_root <- .get_render_root(ymlconf)
 
-    # object with same name as package causes problems with
-    # overwriting documentation files
-    if (basename(pkg_dir) %in% ymlconf$configuration$objects){
-      err_msg <- "Data object not allowed to have same name as data package"
-      flog.fatal(err_msg, name = "console")
-      stop(err_msg, call. = FALSE)
-    }
+  # The test for a valid DESCRIPTION here is no longer needed since
+  # we use proj_set().
 
-    r_files <- unique(names(
-      Filter(
-        x = ymlconf[["configuration"]][["files"]],
-        f = function(x) x$enabled
-      )
+  # TODO Can we configure documentation in yaml?
+  do_documentation <- FALSE
+  # This flag indicates success
+  can_write <- FALSE
+  # environment for the data
+  ENVS <- new.env(hash = TRUE, parent = .GlobalEnv)
+  object_tally <- 0
+  already_built <- NULL
+  building <- NULL
+  r_dir <- normalizePath(file.path(pkg_dir, "R" ), winslash = "/")
+  r_dir_files <- list.files( r_dir )
+  r_dir_files <- r_dir_files[ !grepl( validate_pkg_name(pkg_dir),
+                                      r_dir_files ) ]
+  for (i in seq_along(r_files)) {
+    dataenv <- new.env(hash = TRUE, parent = .GlobalEnv)
+    for( j in seq_along( r_dir_files ) ){
+      curr_path <- normalizePath(file.path(pkg_dir,
+                                           "R",
+                                           r_dir_files[j] ),
+                                 winslash = "/")
+      source( curr_path,
+              local = dataenv )
+    }
+    # assign ENVS into dataenv.
+    # provide functions in the package to read from it (if deps = TRUE)
+    if (deps) assign(x = "ENVS", value = ENVS, dataenv)
+    .multilog_trace(paste0(
+      "Processing ", i, " of ",
+      length(r_files), ": ", r_files[i],
+      "\n"
     ))
-    if (length(r_files) == 0) {
-      .multilog_fatal("No files enabled for processing!")
-      {
-        stop("error", call. = FALSE)
-      }
+    # config file goes in the root render the r and rmd files
+    ## First we spin then render if it's an R file
+    flag <- FALSE
+    .isRfile <- function(f) {
+      grepl("\\.r$", tolower(f))
     }
-    objects_to_keep <- purrr::map(ymlconf, "objects")[["configuration"]]
-    render_root <- .get_render_root(ymlconf)
-    if (!.validate_render_root(render_root)) {
-      .multilog_fatal(paste0(
-        "Can't create, or render_root = ",
-        render_root, " doesn't exist"
-      ))
-      stop("error", call. = FALSE)
-    } else {
-      render_root <- normalizePath(render_root, winslash = "/")
-    }
-
-    r_files <- file.path(raw_data_dir, r_files)
-    if (all(!file.exists(r_files))) {
-      .multilog_fatal(paste0("Can't find any R or Rmd files."))
-      .multilog_fatal(paste0(
-        "     Cant' find file: ",
-        r_files[!file.exists(r_files)]
-      ))
-      stop("error", call. = FALSE)
-    }
-    .multilog_trace(paste0("Found ", r_files))
-    # The test for a valid DESCRIPTION here is no longer needed since
-    # we use proj_set().
-
-    # check that we have at least one file
-    # This is caught elsewhere
-
-    if (length(objects_to_keep) == 0) {
-      .multilog_fatal("You must specify at least one data object.")
-      {
-        stop("exiting", call. = FALSE)
-      }
-    }
-    # TODO Can we configure documentation in yaml?
-    do_documentation <- FALSE
-    # This flag indicates success
-    can_write <- FALSE
-    # environment for the data
-    ENVS <- new.env(hash = TRUE, parent = .GlobalEnv)
-    object_tally <- 0
-    already_built <- NULL
-    building <- NULL
-    r_dir <- normalizePath(file.path(pkg_dir, "R" ), winslash = "/")
-    r_dir_files <- list.files( r_dir )
-    r_dir_files <- r_dir_files[ !grepl( validate_pkg_name(pkg_dir),
-                                        r_dir_files ) ]
-    for (i in seq_along(r_files)) {
-      dataenv <- new.env(hash = TRUE, parent = .GlobalEnv)
-      for( j in seq_along( r_dir_files ) ){
-        curr_path <- normalizePath(file.path(pkg_dir,
-                                             "R",
-                                             r_dir_files[j] ),
-                                   winslash = "/")
-        source( curr_path,
-                local = dataenv )
-      }
-      # assign ENVS into dataenv.
-      # provide functions in the package to read from it (if deps = TRUE)
-      if (deps) {
-        assign(x = "ENVS", value = ENVS, dataenv)
-      }
-      .multilog_trace(paste0(
-        "Processing ", i, " of ",
-        length(r_files), ": ", r_files[i],
-        "\n"
-      ))
-      # config file goes in the root render the r and rmd files
-      ## First we spin then render if it's an R file
-      flag <- FALSE
-      .isRfile <- function(f) {
-        grepl("\\.r$", tolower(f))
-      }
-      if (flag <- .isRfile(r_files[i])) {
-        knitr::spin(r_files[i],
-          precious = TRUE,
-          knit = FALSE
-        )
-        r_files[i] <- paste0(tools::file_path_sans_ext(r_files[i]), ".Rmd")
-        assert_that(file.exists(r_files[i]),
-          msg = paste0("File: ", r_files[i], " does not exist!")
-        )
-        lines <- readLines(r_files[i])
-        # do we likely have a yaml header? If not, add one.
-        if (lines[1] != "---") {
-          lines <- c(
-            "---",
-            paste0("title: ", basename(r_files[i])),
-            paste0("author: ", Sys.info()["user"]),
-            paste0("date: ", Sys.Date()),
-            "---",
-            "",
-            lines
-          )
-          con <- file(r_files[i])
-          writeLines(lines, con = con, sep = "\n")
-          close(con)
-        }
-      }
-      rmarkdown::render(
-        input = r_files[i], envir = dataenv,
-        output_dir = logpath, clean = TRUE, knit_root_dir = render_root,
-        quiet = TRUE
+    if (flag <- .isRfile(r_files[i])) {
+      knitr::spin(r_files[i],
+                  precious = TRUE,
+                  knit = FALSE
       )
-      # The created objects
-      object_names <- setdiff(ls(dataenv),
-                              c("ENVS", already_built)) # ENVS is removed
-      object_tally <- object_tally | objects_to_keep %in% object_names
-      already_built <- unique(c(already_built,
-                                objects_to_keep[objects_to_keep %in% object_names]))
-      .multilog_trace(paste0(
-        sum(objects_to_keep %in% object_names),
-        " data set(s) created by ",
-        basename(r_files[i])
-      ))
-      .done(paste0(
-        sum(objects_to_keep %in% object_names),
-        " data set(s) created by ",
-        basename(r_files[i])
-      ))
-      if (sum(objects_to_keep %in% object_names) > 0) {
-        .add_newlines_to_vector <- function(x) {
-          x <- paste0(x, sep = "\n")
-          x[length(x)] <- gsub("\n", "", x[length(x)])
-          x
-        }
-        .bullet(
-          .add_newlines_to_vector(
-            objects_to_keep[which(objects_to_keep %in% object_names)]),
-          crayon::red("\u2022")
+      r_files[i] <- paste0(tools::file_path_sans_ext(r_files[i]), ".Rmd")
+      assert_that(file.exists(r_files[i]),
+                  msg = paste0("File: ", r_files[i], " does not exist!")
+      )
+      lines <- readLines(r_files[i])
+      # do we likely have a yaml header? If not, add one.
+      if (lines[1] != "---") {
+        lines <- c(
+          "---",
+          paste0("title: ", basename(r_files[i])),
+          paste0("author: ", Sys.info()["user"]),
+          paste0("date: ", Sys.Date()),
+          "---",
+          "",
+          lines
         )
+        con <- file(r_files[i])
+        writeLines(lines, con = con, sep = "\n")
+        close(con)
+      }
+    }
+    rmarkdown::render(
+      input = r_files[i], envir = dataenv,
+      output_dir = logpath, clean = TRUE, knit_root_dir = render_root,
+      quiet = TRUE
+    )
+    # The created objects
+    object_names <- setdiff(ls(dataenv),
+                            c("ENVS", already_built)) # ENVS is removed
+    object_tally <- object_tally | objects_to_keep %in% object_names
+    already_built <- unique(c(already_built,
+                              objects_to_keep[objects_to_keep %in% object_names]))
+    .multilog_trace(paste0(
+      sum(objects_to_keep %in% object_names),
+      " data set(s) created by ",
+      basename(r_files[i])
+    ))
+    .done(paste0(
+      sum(objects_to_keep %in% object_names),
+      " data set(s) created by ",
+      basename(r_files[i])
+    ))
+    if (sum(objects_to_keep %in% object_names) > 0) {
+      .add_newlines_to_vector <- function(x) {
+        x <- paste0(x, sep = "\n")
+        x[length(x)] <- gsub("\n", "", x[length(x)])
+        x
       }
       .bullet(
-        paste0(
-          "Built ",
-          ifelse(
-            sum(object_tally) == length(object_tally),
-            " all datasets!",
-            paste0(sum(object_tally), " of ",
-                   length(object_tally), " data sets.")
-          )
-        ),
+        .add_newlines_to_vector(
+          objects_to_keep[which(objects_to_keep %in% object_names)]),
+        crayon::red("\u2022")
+      )
+    }
+    .bullet(
+      paste0(
+        "Built ",
         ifelse(
           sum(object_tally) == length(object_tally),
-          crayon::green("\u2618"),
-          crayon::green("\u2605")
+          " all datasets!",
+          paste0(sum(object_tally), " of ",
+                 length(object_tally), " data sets.")
         )
+      ),
+      ifelse(
+        sum(object_tally) == length(object_tally),
+        crayon::green("\u2618"),
+        crayon::green("\u2605")
       )
-      if (sum(objects_to_keep %in% object_names) > 0) {
-        for (o in objects_to_keep[objects_to_keep %in% object_names]) {
-          assign(o, get(o, dataenv), ENVS)
-          # write the object to render_root
-          o_instance <- get(o,dataenv)
-          saveRDS(o_instance, file = paste0(file.path(render_root,o),".rds"),
-                  version = 2)
-        }
+    )
+    if (sum(objects_to_keep %in% object_names) > 0) {
+      for (o in objects_to_keep[objects_to_keep %in% object_names]) {
+        assign(o, get(o, dataenv), ENVS)
+        # write the object to render_root
+        o_instance <- get(o,dataenv)
+        saveRDS(o_instance, file = paste0(file.path(render_root,o),".rds"),
+                version = 2)
       }
     }
-    # currently environments for each file are independent.
-    dataenv <- ENVS
-    do_digests(pkg_dir, dataenv)
-    do_doc(pkg_dir, dataenv)
-    eval(expr = expression(rm(list = ls())), envir = dataenv)
-    # copy html files to vignettes
-    .ppfiles_mkvignettes(dir = pkg_dir)
   }
+  # currently environments for each file are independent.
+  dataenv <- ENVS
+  do_digests(pkg_dir, dataenv)
+  do_doc(pkg_dir, dataenv)
+  # copy html files to vignettes
+  .ppfiles_mkvignettes(dir = pkg_dir)
   .multilog_trace("Done")
   return(TRUE)
 }
+
+#' Get R and Rmd files from YAML configuration
+#'
+#' @param ymlconf YAML configuration list produced by validate_yml()
+#'
+#' @return Character vector of enabled R and Rmd files specified in YAML file
+get_yml_r_files <- function(ymlconf) {
+  r_files <- names(
+    Filter(
+      x = ymlconf[["configuration"]][["files"]],
+      f = function(x) x$enabled
+    )
+  )
+}
+
+#' Get data objects from YAML configuration
+#'
+#' @param ymlconf YAML configuration list produced by validate_yml()
+#'
+#' @return Character vector of object names
+get_yml_objects <- function(ymlconf){
+  ymlconf$configuration$objects
+}
+
+#' Validate YAML file, extracted out from big DataPackageR function
+#'
+#' @param pkg_dir Path of top level of data package
+#'
+#' @return List object from read_yaml(ymlfile)
+validate_yml <- function(pkg_dir){
+  # read YAML
+  ymlfile <- list.files(
+    path = pkg_dir, pattern = "^datapackager.yml$",
+    full.names = TRUE
+  )
+  if (length(ymlfile) == 0) {
+    .multilog_fatal(paste0("Yaml configuration file not found at ", pkg_dir))
+    stop("exiting", call. = FALSE)
+  }
+  ymlconf <- read_yaml(ymlfile)
+  # test that the structure of the yaml file is correct!
+  if (!"configuration" %in% names(ymlconf)) {
+    .multilog_fatal("YAML is missing 'configuration:' entry")
+    stop("exiting", call. = FALSE)
+  }
+  if (!all(c("files", "objects") %in%
+           purrr::map(ymlconf, names)[["configuration"]])) {
+    .multilog_fatal("YAML is missing files: and objects: entries")
+    stop("exiting", call. = FALSE)
+  }
+  .multilog_trace("Reading yaml configuration")
+  # files that have enable: TRUE
+  assert_that("configuration" %in% names(ymlconf))
+  assert_that("files" %in% names(ymlconf[["configuration"]]))
+  assert_that(!is.null(names(ymlconf[["configuration"]][["files"]])))
+
+  # object with same name as package causes problems with
+  # overwriting documentation files
+  if (basename(pkg_dir) %in% ymlconf$configuration$objects){
+    err_msg <- "Data object not allowed to have same name as data package"
+    flog.fatal(err_msg, name = "console")
+    stop(err_msg, call. = FALSE)
+  }
+  render_root <- .get_render_root(ymlconf)
+  if (!.validate_render_root(render_root)) {
+    .multilog_fatal(paste0(
+      "Can't create, or render_root = ",
+      render_root, " doesn't exist"
+    ))
+    stop("error", call. = FALSE)
+  }
+  if (length(get_yml_objects(ymlconf)) == 0) {
+    .multilog_fatal("You must specify at least one data object.")
+    stop("exiting", call. = FALSE)
+  }
+  r_files <- get_yml_r_files(ymlconf)
+  if (length(r_files) == 0) {
+    .multilog_fatal("No files enabled for processing!")
+    stop("error", call. = FALSE)
+  }
+  if (any(duplicated(r_files))){
+    err_msg <- "Duplicate R files specified in YAML."
+    .multilog_fatal(err_msg)
+    stop(err_msg, call. = FALSE)
+  }
+  for (file in r_files){
+    if (! file.exists(file.path(pkg_dir, 'data-raw', file))){
+      err_msg <- paste("Missing R file specified in YAML:", file)
+      .multilog_fatal(err_msg)
+      stop(err_msg, call. = FALSE)
+    }
+  }
+  .multilog_trace(paste0("Found ", r_files))
+  return(ymlconf)
+}
+
+
+#' Validate data package skeleton, extracted out from big DataPackageR function
+#'
+#' @param pkg_dir Path of top level of data package
+#'
+#' @return Silently returns pkg_dir if no errors thrown
+validate_package_skeleton <- function(pkg_dir){
+  # we know it's a proper package root, but we want to test if we have the
+  # necessary subdirectories
+  dirs <- file.path(pkg_dir, c("R", "inst", "data", "data-raw"))
+  for (dir in dirs){
+    if (! utils::file_test(dir, op = "-d")){
+      err_msg <- paste("Missing required subdirectory", dir)
+      .multilog_fatal(err_msg)
+      stop(err_msg)
+    }
+  }
+  invisible(pkg_dir)
+}
+
 
 #' do_digests() function extracted out from DataPackageR
 #'
@@ -317,116 +330,99 @@ do_digests <- function(pkg_dir, dataenv) {
   )
   new_data_digest <- .digest_data_env(ls(dataenv), dataenv, pkg_description)
   .newsfile()
-  if (!is.null(old_data_digest)) {
-    string_check <- .check_dataversion_string(
-      old_data_digest,
-      new_data_digest
-    )
-    can_write <- FALSE
-    stopifnot(!((!.compare_digests(
-      old_data_digest,
-      new_data_digest
-    )) & string_check$isgreater))
-    if (.compare_digests(
-      old_data_digest,
-      new_data_digest
-    ) &
-    string_check$isequal) {
-      can_write <- TRUE
-      .multilog_trace(paste0(
-        "Processed data sets match ",
-        "existing data sets at version ",
-        new_data_digest[["DataVersion"]]
-      ))
-    } else if ((!.compare_digests(
-      old_data_digest,
-      new_data_digest
-    )) &
-    string_check$isequal) {
-      updated_version <- .increment_data_version(
-        pkg_description,
-        new_data_digest
-      )
-      #TODO what objects have changed?
-      changed_objects <- .qualify_changes(new_data_digest,old_data_digest)
-
-      .update_news_md(updated_version$new_data_digest[["DataVersion"]],
-                      interact = getOption("DataPackageR_interact", interactive())
-      )
-      .update_news_changed_objects(changed_objects)
-      pkg_description <- updated_version$pkg_description
-      new_data_digest <- updated_version$new_data_digest
-      can_write <- TRUE
-      .multilog_trace(paste0(
-        "Data has been updated and DataVersion ",
-        "string incremented automatically to ",
-        new_data_digest[["DataVersion"]]
-      ))
-    } else if (.compare_digests(
-      old_data_digest,
-      new_data_digest
-    ) &
-    string_check$isgreater) {
-      # edge case that shouldn't happen
-      # but we test for it in the test suite
-      can_write <- TRUE
-      .multilog_trace(paste0(
-        "Data hasn't changed but the ",
-        "DataVersion has been bumped."
-      ))
-    } else if (string_check$isless & .compare_digests(
-      old_data_digest,
-      new_data_digest
-    )) {
-      # edge case that shouldn't happen but
-      # we test for it in the test suite.
-      .multilog_trace(paste0(
-        "New DataVersion is less than ",
-        "old but data are unchanged"
-      ))
-      new_data_digest <- old_data_digest
-      pkg_description[["DataVersion"]] <- new_data_digest[["DataVersion"]]
-      can_write <- TRUE
-    } else if (string_check$isless & !.compare_digests(
-      old_data_digest,
-      new_data_digest
-    )) {
-      updated_version <- .increment_data_version(
-        pkg_description,
-        new_data_digest
-      )
-      # TODO what objects have changed?
-      changed_objects <- .qualify_changes(new_data_digest,old_data_digest)
-      .update_news_md(updated_version$new_data_digest[["DataVersion"]],
-                      interact = getOption("DataPackageR_interact", interactive())
-      )
-      .update_news_changed_objects(changed_objects)
-
-      pkg_description <- updated_version$pkg_description
-      new_data_digest <- updated_version$new_data_digest
-      can_write <- TRUE
-    }
-    if (can_write) {
-      .save_data(new_data_digest,
-                 pkg_description,
-                 ls(dataenv),
-                 dataenv,
-                 old_data_digest = old_data_digest,
-                 pkg_path = pkg_dir
-      )
-    }
-  } else {
+  if (is.null(old_data_digest)){
+    # first time data digest & early return
     .update_news_md(new_data_digest[["DataVersion"]],
                     interact = getOption(
                       "DataPackageR_interact",
-                      interactive()
-                    )
-    )
+                      interactive()))
     .save_data(new_data_digest,
                pkg_description,
                ls(dataenv),
                dataenv,
                old_data_digest = NULL,
+               pkg_path = pkg_dir)
+    return(TRUE)
+  }
+  string_check <- .check_dataversion_string(
+    old_data_digest,
+    new_data_digest
+  )
+  can_write <- FALSE
+  same_digests <- .compare_digests(old_data_digest, new_data_digest)
+  if ((! same_digests) && string_check$isgreater){
+    # not sure how this would actually happen
+    err_msg <- 'Digest(s) differ but DataVersion had already been incremented'
+    .multilog_fatal(err_msg)
+    stop(err_msg, call. = FALSE)
+  }
+  if (same_digests && string_check$isequal) {
+    can_write <- TRUE
+    .multilog_trace(paste0(
+      "Processed data sets match ",
+      "existing data sets at version ",
+      new_data_digest[["DataVersion"]]
+    ))
+  } else if ((! same_digests) && string_check$isequal) {
+    updated_version <- .increment_data_version(
+      pkg_description,
+      new_data_digest
+    )
+    #TODO what objects have changed?
+    changed_objects <- .qualify_changes(new_data_digest,old_data_digest)
+
+    .update_news_md(updated_version$new_data_digest[["DataVersion"]],
+                    interact = getOption("DataPackageR_interact", interactive())
+    )
+    .update_news_changed_objects(changed_objects)
+    pkg_description <- updated_version$pkg_description
+    new_data_digest <- updated_version$new_data_digest
+    can_write <- TRUE
+    .multilog_trace(paste0(
+      "Data has been updated and DataVersion ",
+      "string incremented automatically to ",
+      new_data_digest[["DataVersion"]]
+    ))
+  } else if (same_digests && string_check$isgreater) {
+    # edge case that shouldn't happen
+    # but we test for it in the test suite
+    can_write <- TRUE
+    .multilog_trace(paste0(
+      "Data hasn't changed but the ",
+      "DataVersion has been bumped."
+    ))
+  } else if (string_check$isless && same_digests) {
+    # edge case that shouldn't happen but
+    # we test for it in the test suite.
+    .multilog_trace(paste0(
+      "New DataVersion is less than ",
+      "old but data are unchanged"
+    ))
+    new_data_digest <- old_data_digest
+    pkg_description[["DataVersion"]] <- new_data_digest[["DataVersion"]]
+    can_write <- TRUE
+  } else if (string_check$isless && ! same_digests) {
+    updated_version <- .increment_data_version(
+      pkg_description,
+      new_data_digest
+    )
+    # TODO what objects have changed?
+    changed_objects <- .qualify_changes(new_data_digest,old_data_digest)
+    .update_news_md(updated_version$new_data_digest[["DataVersion"]],
+                    interact = getOption("DataPackageR_interact", interactive())
+    )
+    .update_news_changed_objects(changed_objects)
+
+    pkg_description <- updated_version$pkg_description
+    new_data_digest <- updated_version$new_data_digest
+    can_write <- TRUE
+  }
+  if (can_write) {
+    .save_data(new_data_digest,
+               pkg_description,
+               ls(dataenv),
+               dataenv,
+               old_data_digest = old_data_digest,
                pkg_path = pkg_dir
     )
   }
