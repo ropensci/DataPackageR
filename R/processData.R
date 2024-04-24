@@ -717,7 +717,7 @@ project_data_path <- function(file = NULL) {
 #' @rdname document
 #' @title Build documentation for a data package using DataPackageR.
 #' @param path \code{character} the path to the data package source root.
-#' @param install \code{logical} install and reload the package. (default TRUE)
+#' @param install \code{logical} install the package. (default FALSE)
 #' @param ... additional arguments to \code{install}
 #' @returns Called for side effects. Returns TRUE on successful exit.
 #' @export
@@ -745,10 +745,10 @@ project_data_path <- function(file = NULL) {
 #' # call package_build to run the "foo.Rmd" processing and
 #' # build a data package.
 #' package_build(file.path(tempdir(), pname), install = FALSE)
-#' document(path = file.path(tempdir(), pname), install=FALSE)
+#' document(path = file.path(tempdir(), pname), install = FALSE)
 #' }
 #' }
-document <- function(path = ".", install = TRUE, ...) {
+document <- function(path = ".", install = FALSE, ...) {
   if (getOption('DataPackageR_verbose', TRUE)) cat("\n")
   usethis::proj_set(path = path)
   path <- usethis::proj_get()

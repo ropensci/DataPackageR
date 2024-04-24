@@ -4,12 +4,12 @@
 \alias{document}
 \title{Build documentation for a data package using DataPackageR.}
 \usage{
-document(path = ".", install = TRUE, ...)
+document(path = ".", install = FALSE, ...)
 }
 \arguments{
 \item{path}{\code{character} the path to the data package source root.}
 
-\item{install}{\code{logical} install and reload the package. (default TRUE)}
+\item{install}{\code{logical} install the package. (default FALSE)}
 
 \item{...}{additional arguments to \code{install}}
 }
@@ -43,7 +43,7 @@ datapackage_skeleton(name=pname,
 # call package_build to run the "foo.Rmd" processing and
 # build a data package.
 package_build(file.path(tempdir(), pname), install = FALSE)
-document(path = file.path(tempdir(), pname), install=FALSE)
+document(path = file.path(tempdir(), pname), install = FALSE)
 }
 }
 }
