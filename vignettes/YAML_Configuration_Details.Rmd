@@ -1,6 +1,5 @@
 ---
 title: "YAML Configuration Details"
-author: "Greg Finak <gfinak@fredhutch.org>"
 date: "`r Sys.Date()`"
 output: 
   rmarkdown::html_vignette:

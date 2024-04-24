@@ -50,6 +50,7 @@ NULL
     close(connection)
     expect_true(
       document(file.path(tempdir, "subsetCars"),
+               install = TRUE,
                lib = temp_libpath,
                quiet = ! getOption('DataPackageR_verbose', TRUE))
     )
