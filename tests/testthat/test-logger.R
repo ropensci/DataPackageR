@@ -8,7 +8,7 @@ withr::with_options(list(DataPackageR_verbose = TRUE),{
   })
   test_that(".multilog_info", {
     expect_output(DataPackageR:::.multilog_info("message"), "INFO .* message")
-    expect_true(file_test("-f", file.path(tempdir(), "test.log")))
+    expect_true(utils::file_test("-f", file.path(tempdir(), "test.log")))
   })
   test_that(".multilog_error", {
     expect_output(DataPackageR:::.multilog_error("message"), "ERROR .* message")

@@ -30,7 +30,7 @@ test_that("R file processing works and creates vignettes", {
     v <- vignette(package = "rfiletest", lib.loc = temp_libpath)
 
     expect_equal(v$results[, "Item"], "rfileTest")
-    expect_true(file_test("-f", file.path(tempdir,"rfiletest","inst","doc","rfileTest.pdf")))
+    expect_true(utils::file_test("-f", file.path(tempdir,"rfiletest","inst","doc","rfileTest.pdf")))
     unlink(file.path(tempdir, "rfiletest"),
            recursive = TRUE,
            force = TRUE

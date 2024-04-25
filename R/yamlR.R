@@ -6,7 +6,6 @@
 #' @description Edit a yaml configuration file via an API.
 #' @details Add, remove files and objects, enable or disable parsing of specific files,  list objects or files in a yaml config, or write a config back to a package.
 #' @importFrom yaml yaml.load_file as.yaml write_yaml
-#' @importFrom stats runif
 #' @importFrom withr with_options
 #' @export
 #'

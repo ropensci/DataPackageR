@@ -8,7 +8,6 @@
 #'
 #' @return invisibly returns TRUE for success. Stops on failure.
 #' @importFrom usethis proj_get proj_set create_package use_data_raw
-#' @importFrom utils file_test
 #' @export
 #'
 #' @examples
@@ -77,7 +76,6 @@ use_raw_dataset <- function(path = NULL, ignore = FALSE) {
 #'
 #' @return invisibly returns TRUE for success. Stops on failure.
 #' @importFrom usethis proj_get proj_set create_package use_data_raw
-#' @importFrom utils file_test packageVersion
 #' @export
 #'
 #' @examples
@@ -353,7 +351,7 @@ use_data_object <- function(object_name = NULL) {
 
 .yaml_load_utf8 <- function(string, ...) {
   string <- paste(string, collapse = "\n")
-  if (packageVersion("yaml") >= "2.1.14") {
+  if (utils::packageVersion("yaml") >= "2.1.14") {
     yaml::yaml.load(string, ...)
   }
   else {

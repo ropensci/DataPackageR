@@ -37,7 +37,7 @@ test_that("use_raw_data works as expected", {
   )
   expect_true(use_raw_dataset(myfile))
   expect_true(use_raw_dataset(myfile, ignore = TRUE))
-  expect_true(file_test(
+  expect_true(utils::file_test(
     "-f",
     file.path(
       tempdir(),
@@ -74,14 +74,14 @@ test_that("use_processing_script works as expected", {
   expect_false(any(grepl("foo",readLines(normalizePath(file.path(tempdir(),"subsetCars20","data-raw","newScript.Rmd"), winslash = "/")))))
   expect_true(use_processing_script("newScript.Rmd", title = "foo", overwrite = TRUE))
   expect_true(any(grepl("foo",readLines(normalizePath(file.path(tempdir(),"subsetCars20","data-raw","newScript.Rmd"), winslash = "/")))))
-  
-  expect_true(use_processing_script("newScript.Rmd", 
+
+  expect_true(use_processing_script("newScript.Rmd",
                                     title = "foo", author = "bar", overwrite = TRUE))
   expect_true(use_processing_script("newScript.Rmd", author = "bar", overwrite = TRUE))
 
   expect_true(use_processing_script("newScript.R", overwrite = TRUE))
   expect_true(use_processing_script("newScript.R", title = "foo", overwrite = TRUE))
-  expect_true(use_processing_script("newScript.R", 
+  expect_true(use_processing_script("newScript.R",
                                     title = "foo", author = "bar", overwrite = TRUE))
   expect_true(use_processing_script("newScript.R", author = "bar", overwrite = TRUE))
   expect_equal(readLines(
@@ -144,8 +144,8 @@ test_that(".update_header", {
   )
 
   con <- file(file.path(tempdir(), "foo.Rmd"), open = "wt")
-  writeLines(text = 
-               c("---", "title: My Title", "author: My Name", "---"), 
+  writeLines(text =
+               c("---", "title: My Title", "author: My Name", "---"),
              con = con)
   close(con)
   DataPackageR:::.update_header(
@@ -188,12 +188,12 @@ test_that(".partition_r_front_matter", {
     DataPackageR:::.partition_r_front_matter(test_string2)$front_matter,
     NULL
   )
-  
+
   expect_equal(DataPackageR:::.partition_r_front_matter(
     c("#' ---","author:Greg Finak","#' ---","body")),
     list(front_matter = c("#' ---","author:Greg Finak","#' ---"),
          body = "body"))
-  
+
   expect_equal(
     is.null(
       DataPackageR:::.partition_r_front_matter(test_string3)$body
@@ -273,12 +273,12 @@ test_that(".partition_rmd_front_matter", {
     DataPackageR:::.partition_rmd_front_matter(test_string4)$front_matter,
     NULL
   )
-  
+
   expect_equal(DataPackageR:::.partition_rmd_front_matter(
     c("---","author:Greg Finak","---","body")),
     list(front_matter = c("---","author:Greg Finak","---"),
          body = "body"))
-  
+
   expect_equal(
     is.null(
       DataPackageR:::.partition_rmd_front_matter(test_string5)$front_matter

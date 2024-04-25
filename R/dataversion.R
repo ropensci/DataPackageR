@@ -10,7 +10,6 @@
 #' @rdname data_version
 #' @returns Object of class 'package_version' and 'numeric_version' specifying the DataVersion of the package
 #' @note \code{dataVersion()} has been renamed to \code{data_version()}
-#' @importFrom utils capture.output file_test package.skeleton packageDescription
 #' @export
 #' @examples
 #' if(rmarkdown::pandoc_available()){
