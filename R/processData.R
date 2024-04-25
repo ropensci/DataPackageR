@@ -28,7 +28,6 @@
 #' @return logical TRUE if successful, FALSE, if not.
 #' @importFrom desc desc
 #' @importFrom rmarkdown render
-#' @importFrom utils getSrcref modifyList
 #' @importFrom usethis proj_set proj_get
 DataPackageR <- function(arg = NULL, deps = TRUE) {
   if (! getOption('DataPackageR_verbose', TRUE)){
@@ -775,7 +774,7 @@ document <- function(path = ".", install = FALSE, ...) {
   )
   # try to install and then reload the package in the current session
   if (install) {
-    install.packages(location, repos = NULL, type = "source", ...)
+    utils::install.packages(location, repos = NULL, type = "source", ...)
   }
   return(TRUE)
 }

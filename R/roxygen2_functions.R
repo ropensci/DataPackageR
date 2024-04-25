@@ -17,7 +17,6 @@ comments <- function(refs) {
   com
 }
 
-#' @importFrom stats setNames
 #' @importFrom stringr str_trim
 read.description <- function(file) {
   dcf <- read.dcf(file, keep.white = "Authors@R")

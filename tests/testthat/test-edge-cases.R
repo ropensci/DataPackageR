@@ -58,7 +58,7 @@ test_that("package built in different edge cases", {
   )
   test_env <- new.env()
   assign('test_obj', pi, envir = test_env)
-  package.skeleton("foo", path = tempdir(), environment = test_env)
+  utils::package.skeleton("foo", path = tempdir(), environment = test_env)
   suppressWarnings(expect_error(
     DataPackageR:::DataPackageR(
       file.path(tempdir(), "foo")
@@ -89,7 +89,7 @@ test_that("package built in different edge cases", {
   )
 
 
-  package.skeleton("foo", path = tempdir(), environment = test_env, force = TRUE)
+  utils::package.skeleton("foo", path = tempdir(), environment = test_env, force = TRUE)
   expect_error(yml_find(file.path(tempdir(), "foo")))
   dir.create(file.path(tempdir(), "foo", "data-raw"))
   unlink(file.path(tempdir(), "foo", "DESCRIPTION"))
@@ -169,7 +169,7 @@ test_that("package built in different edge cases", {
     force = TRUE,
     recursive = TRUE
   )
-  package.skeleton("foo", path = tempdir(), environment = test_env, force = TRUE)
+  utils::package.skeleton("foo", path = tempdir(), environment = test_env, force = TRUE)
   DataPackageR:::.multilog_setup(file.path(tempdir(),"test.log"))
   DataPackageR:::.multilog_thresold(INFO, TRACE)
 
@@ -297,7 +297,7 @@ test_that("package built in different edge cases", {
     force = TRUE,
     recursive = TRUE
   )
-  package.skeleton("foo", path = tempdir(), environment = test_env, force = TRUE)
+  utils::package.skeleton("foo", path = tempdir(), environment = test_env, force = TRUE)
   dir.create(file.path(tempdir(), "foo", "data-raw"))
   suppressWarnings(
     expect_error(
