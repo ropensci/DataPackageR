@@ -27,10 +27,10 @@ Authors@R:
               email = "jmtaylor@fredhutch.org"),
       person(given = "Kara", family = "Woo",
               role = "rev",
-              comment = "Kara reviewed the package for ropensci, see <https://github.com/ropensci/onboarding/issues/230>"),
+              comment = "Kara reviewed the package for rOpenSci, see <https://github.com/ropensci/onboarding/issues/230>"),
       person(given = "William", family = "Landau",
               role = "rev",
-      comment = "William reviewed the package for ropensci, see <https://github.com/ropensci/onboarding/issues/230>"))
+      comment = "William reviewed the package for rOpenSci, see <https://github.com/ropensci/onboarding/issues/230>"))
 Version: 0.15.9.9000
 Description: A framework to help construct R data packages in a 
   reproducible manner. Potentially time consuming processing of 

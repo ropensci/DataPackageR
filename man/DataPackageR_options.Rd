@@ -24,12 +24,12 @@ User-configurable options consulted by DataPackageR, which
   \code{package_build()}. See the example above and the
   \href{https://ropensci.org/blog/2018/09/18/datapackager/}{rOpenSci blog
   post} for more details on how to set this to FALSE, which will never prompt
-  user for a NEWS update. FALSE is also the setting used for DataPackageR's
-  internal tests.
+  user for a NEWS update. FALSE is also the setting used for DataPackageR
+  internal package tests.
 
 - \code{DataPackageR_verbose}: Default upon package load is TRUE. FALSE suppresses
-  all console output and is currently only used for DataPackageR's automated
-  unit tests.
+  all console output and is currently only used for automated
+  unit tests of the DataPackageR package.
 
 - \code{DataPackageR_packagebuilding}: Default upon package load is FALSE. This
   option is used internally for package operations and changing it is not
