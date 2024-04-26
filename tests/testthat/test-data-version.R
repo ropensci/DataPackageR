@@ -17,13 +17,13 @@ test_that("assert_data_version", {
   )
   close(con)
   pname <- basename(tempfile())
-  suppressWarnings(datapackage.skeleton(
+  datapackage_skeleton(
     name = pname,
     path = normalizePath(tempdir()),
     force = TRUE,
     r_object_names = "tbl",
     code_files = f
-  ))
+  )
   package_build(file.path(tempdir(), pname))
   on.exit(devtools::unload(pname))
   devtools::load_all(file.path(tempdir(), pname))
@@ -114,5 +114,4 @@ test_that("assert_data_version", {
       acceptable = "equal_or_greater"
     )
   )
-  expect_error(keepDataObjects())
 })

@@ -28,8 +28,21 @@
 #' @param raw_data_dir \code{character} pointing to a raw data directory. Will be moved with all its subdirectories to "inst/extdata"
 #' @param dependencies \code{vector} of \code{character}, paths to R files that will be moved to "data-raw" but not included in the yaml config file. e.g., dependency scripts.
 #' @returns No return value, called for side effects
-#' @note renamed \code{datapackage.skeleton()} to \code{datapackage_skeleton()}.
 #' @importFrom crayon bold green
+#' @examples
+#' if(rmarkdown::pandoc_available()){
+#' f <- tempdir()
+#' f <- file.path(f,"foo.Rmd")
+#' con <- file(f)
+#' writeLines("```{r}\n tbl = data.frame(1:10) \n```\n",con=con)
+#' close(con)
+#' pname <- basename(tempfile())
+#' datapackage_skeleton(name = pname,
+#'    path = tempdir(),
+#'    force = TRUE,
+#'    r_object_names = "tbl",
+#'    code_files = f)
+#'    }
 #' @export
 datapackage_skeleton <-
   function(name = NULL,
@@ -90,7 +103,7 @@ datapackage_skeleton <-
         "'inst/extdata/'. If the datasets are large,",
         "they may reside elsewhere outside the package",
         "source tree. If you passed R and Rmd files to",
-        "datapackage.skeleton, they should now appear in 'data-raw'.",
+        "datapackage_skeleton(), they should now appear in 'data-raw'.",
         "When you call package_build(), your datasets will",
         "be automatically documented. Edit datapackager.yml to",
         "add additional files / data objects to the package.",
@@ -168,47 +181,6 @@ datapackage_skeleton <-
     file.remove(oldrdfiles)
     invisible(NULL)
   }
-
-
-#' @rdname datapackage_skeleton
-#' @name datapackage.skeleton
-#' @param list Not used.
-#' @param environment Not used.
-#' @aliases datapackage_skeleton
-#' @export
-#' @examples
-#' if(rmarkdown::pandoc_available()){
-#' f <- tempdir()
-#' f <- file.path(f,"foo.Rmd")
-#' con <- file(f)
-#' writeLines("```{r}\n tbl = data.frame(1:10) \n```\n",con=con)
-#' close(con)
-#' pname <- basename(tempfile())
-#' datapackage_skeleton(name = pname,
-#'    path = tempdir(),
-#'    force = TRUE,
-#'    r_object_names = "tbl",
-#'    code_files = f)
-#'    }
-datapackage.skeleton <- function(name = NULL,
-                                 list = character(),
-                                 environment = .GlobalEnv,
-                                 path = ".",
-                                 force = FALSE,
-                                 code_files = character(),
-                                 r_object_names = character()) {
-  warning("Please use datapackage_skeleton() instead of datapackage.skeleton()")
-  proj_path <- datapackage_skeleton(
-    name = name,
-    path = path,
-    force = force,
-    code_files = code_files,
-    r_object_names = r_object_names
-  )
-  if(is.character(proj_path)){
-    usethis::proj_set(proj_path)
-  }
-}
 
 .done <- function(...) {
   .bullet(paste0(...), bullet = crayon::green("\u2714"))

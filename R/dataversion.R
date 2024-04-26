@@ -9,7 +9,6 @@
 #' @seealso \code{\link[utils]{packageVersion}}
 #' @rdname data_version
 #' @returns Object of class 'package_version' and 'numeric_version' specifying the DataVersion of the package
-#' @note \code{dataVersion()} has been renamed to \code{data_version()}
 #' @export
 #' @examples
 #' if(rmarkdown::pandoc_available()){
@@ -48,13 +47,6 @@ data_version <- function(pkg, lib.loc = NULL) {
     domain = NA
     )
   }
-}
-
-#' @rdname data_version
-#' @export
-dataVersion <- function(pkg, lib.loc = NULL) {
-  warning("Please use data_version() instead of dataVersion().")
-  data_version(pkg = pkg, lib.loc = lib.loc)
 }
 
 .increment_data_version <-
