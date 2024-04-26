@@ -61,13 +61,13 @@
 * Data objects are incrementally stored during the build process, into the render_root directory specified in the datapackager.yml config file.
 
 # DataPackageR 0.15.3
-* conditional tests when pandoc is missing (ropensci/DataPackager/issues/46)
-* add use_data_object and use_processing_script (ropensci/DataPackager/issues/44)
-* allow datapackage_skeleton to be called without files or data objects for interactive construction. (ropensci/DataPackager/issues/44)
+* conditional tests when pandoc is missing (ropensci/DataPackageR/issues/46)
+* add use_data_object and use_processing_script (ropensci/DataPackageR/issues/44)
+* allow datapackage_skeleton to be called without files or data objects for interactive construction. (ropensci/DataPackageR/issues/44)
 
 # DataPackageR 0.15.2
-* Add  pandoc to SystemRequirements (ropensci/DataPackager/issues/46)
-* Add use_raw_dataset() method (and tests) to add data sets to inst/extdata. interactively. (ropensci/DataPackager/issues/44)
+* Add  pandoc to SystemRequirements (ropensci/DataPackageR/issues/46)
+* Add use_raw_dataset() method (and tests) to add data sets to inst/extdata. interactively. (ropensci/DataPackageR/issues/44)
 
 # DataPackageR 0.15.1.9000
 * Development version
@@ -81,7 +81,7 @@
 
 # DataPackageR 0.14.9
 
-- Moving towards ropensci compliance
+- Moving towards rOpenSci compliance
 - NEWS.md updated with description of changes to data sets when version is bumped (or new package is created).
 - Output of "next steps" for user when package is built
 - New `document()` function to rebuild docs from `documentation.R` in `data-raw` without rebuilding the whole package.

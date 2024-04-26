@@ -112,8 +112,8 @@ Other contributors:
   \item Jimmy Fulp \email{williamjfulp@gmail.com} [contributor]
   \item Marie Vendettuoli (\href{https://orcid.org/0000-0001-9321-1410}{ORCID}) [contributor]
   \item Jason Taylor \email{jmtaylor@fredhutch.org} [contributor]
-  \item Kara Woo (Kara reviewed the package for ropensci, see <https://github.com/ropensci/onboarding/issues/230>) [reviewer]
-  \item William Landau (William reviewed the package for ropensci, see <https://github.com/ropensci/onboarding/issues/230>) [reviewer]
+  \item Kara Woo (Kara reviewed the package for rOpenSci, see <https://github.com/ropensci/onboarding/issues/230>) [reviewer]
+  \item William Landau (William reviewed the package for rOpenSci, see <https://github.com/ropensci/onboarding/issues/230>) [reviewer]
 }
 
 }

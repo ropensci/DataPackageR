@@ -31,7 +31,7 @@
 
 .compare_digests <- function(old_digest, new_digest) {
   # Returns FALSE when any exisiting data has is changed, new data is added, or data is removed, else return TRUE.
-  # Use .mutlilog_warn when there is a change and multilog_debug when new data is added.
+  # Use .multilog_warn when there is a change and multilog_debug when new data is added.
 
   existed <- names(new_digest)[names(new_digest) %in% names(old_digest)]
   added <- setdiff(names(new_digest), existed)

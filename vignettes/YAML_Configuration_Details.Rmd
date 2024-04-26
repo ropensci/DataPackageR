@@ -49,7 +49,7 @@ Each file itself has just one property:
     
   A logical `yes`, `no` flag indicating whether the file should be rendered during the build, or whether it should be skipped.
 
-  This is useful for 'turning off' long running processing tasks if they have not changed. Disabling processing of a file will not overwrite existing documentation or data objecs created during previous builds.
+  This is useful for 'turning off' long running processing tasks if they have not changed. Disabling processing of a file will not overwrite existing documentation or data objects created during previous builds.
   
 - `objects:` 
   

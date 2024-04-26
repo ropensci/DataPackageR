@@ -58,7 +58,7 @@ You have diverse raw data sets that you need to preprocess and tidy in order to:
   
 - **Collaboration.**
   
-  A data set packaged in R is easy to distribute and share amongst collaborators, and is easy to install and use.
+  A data set packaged in R is easy to distribute and share among collaborators, and is easy to install and use.
   All the hard work you've put into documenting and standardizing the tidy data set comes right along with the data package.
 
 - **Documentation.**
@@ -75,7 +75,7 @@ You have diverse raw data sets that you need to preprocess and tidy in order to:
 
 - **Package size limits.**
 
-  R packages have a 10MB size limit, at least on [CRAN](https://cran.r-project.org/web/packages/policies.html). BioConductor [ExperimentHub](http://contributions.bioconductor.org/data.html#data) may be able to support larger data packages.
+  R packages have a 10MB size limit, at least on [CRAN](https://cran.r-project.org/web/packages/policies.html). Bioconductor [ExperimentHub](http://contributions.bioconductor.org/data.html#data) may be able to support larger data packages.
   
   Sharing large volumes of raw data in an R package format is still not ideal, and there are public biological data repositories better suited for raw data: e.g.,  [GEO](https://www.ncbi.nlm.nih.gov/geo/), [SRA](https://www.ncbi.nlm.nih.gov/sra), [ImmPort](https://www.immport.org/), [ImmuneSpace](https://immunespace.org/), [FlowRepository](http://flowrepository.org/).
   
@@ -131,7 +131,7 @@ There are a number of tools out there that address similar and complementary pro
 - **rrrpkg**
   [github repo](https://github.com/ropensci/rrrpkg)
 
-  A document from ropensci describing using an R package as a research compendium. Based on ideas originally introduced by Robert Gentleman and Duncan Temple Lang (Gentleman and Lang (2004)<!--@Gentleman2004-oj-->)
+  A document from rOpenSci describing using an R package as a research compendium. Based on ideas originally introduced by Robert Gentleman and Duncan Temple Lang (Gentleman and Lang (2004)<!--@Gentleman2004-oj-->)
 
 - **template**
   [github repo](https://github.com/ropensci/rrrpkg)
@@ -260,10 +260,10 @@ DataPackageR::project_data_path()
 
 ## Preprint and publication. <a id = "publication"></a>
 
-The publication describing the package, (Finak *et* *al.,* 2018)<!--@10.12688/gatesopenres.12832.2-->, is now available at   [Gates Open Research](https://gatesopenresearch.org/articles/2-31/v2) .
+The publication describing the package, (Finak *et al.*, 2018)<!--@10.12688/gatesopenres.12832.2-->, is now available at   [Gates Open Research](https://gatesopenresearch.org/articles/2-31/v2) .
 
 
-The preprint is on [biorxiv](https://doi.org/10.1101/342907).
+The preprint is on [bioRxiv](https://doi.org/10.1101/342907).
 
 
 ## Code of conduct 
@@ -276,7 +276,7 @@ Please note that this project is released with a [Contributor Code of Conduct](h
 1. Gentleman, Robert, and Duncan Temple Lang. 2004. “Statistical Analyses and Reproducible Research.” Bioconductor Project Working Papers, Bioconductor project working papers,. bepress.
 
 2. Finak G, Mayer B, Fulp W, et al. DataPackageR: Reproducible data preprocessing, standardization and sharing using R/Bioconductor for collaborative data analysis. Gates Open Res 2018, 2:31
-(doi: 10.12688/gatesopenres.12832.1)
+(DOI: 10.12688/gatesopenres.12832.1)
 
 
 
