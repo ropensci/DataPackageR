@@ -15,3 +15,9 @@ NULL
 keepDataObjects <- function(...) {
   .Defunct('datapackager.yml', package = 'DataPackageR')
 }
+
+#' @rdname DataPackageR-defunct
+#' @export
+datapackage.skeleton <- function(...) {
+  .Defunct('datapackage_skeleton()', package = 'DataPackageR')
+}

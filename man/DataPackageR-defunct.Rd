@@ -3,9 +3,12 @@
 \name{DataPackageR-defunct}
 \alias{DataPackageR-defunct}
 \alias{keepDataObjects}
+\alias{datapackage.skeleton}
 \title{Defunct functions in package \pkg{DataPackageR}.}
 \usage{
 keepDataObjects(...)
+
+datapackage.skeleton(...)
 }
 \arguments{
 \item{...}{All arguments are now ignored.}

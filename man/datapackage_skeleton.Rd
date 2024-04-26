@@ -2,7 +2,6 @@
 % Please edit documentation in R/skeleton.R
 \name{datapackage_skeleton}
 \alias{datapackage_skeleton}
-\alias{datapackage.skeleton}
 \title{Create a Data Package skeleton for use with DataPackageR.}
 \usage{
 datapackage_skeleton(
@@ -13,16 +12,6 @@ datapackage_skeleton(
   r_object_names = character(),
   raw_data_dir = character(),
   dependencies = character()
-)
-
-datapackage.skeleton(
-  name = NULL,
-  list = character(),
-  environment = .GlobalEnv,
-  path = ".",
-  force = FALSE,
-  code_files = character(),
-  r_object_names = character()
 )
 }
 \arguments{
@@ -40,10 +29,6 @@ into R objects.}
 \item{raw_data_dir}{\code{character} pointing to a raw data directory. Will be moved with all its subdirectories to "inst/extdata"}
 
 \item{dependencies}{\code{vector} of \code{character}, paths to R files that will be moved to "data-raw" but not included in the yaml config file. e.g., dependency scripts.}
-
-\item{list}{Not used.}
-
-\item{environment}{Not used.}
 }
 \value{
 No return value, called for side effects
@@ -52,9 +37,6 @@ No return value, called for side effects
 Creates a package skeleton directory structure for use with DataPackageR.
 Adds the DataVersion string to DESCRIPTION, creates the DATADIGEST file, and the data-raw directory.
 Updates the Read-and-delete-me file to reflect the additional necessary steps.
-}
-\note{
-renamed \code{datapackage.skeleton()} to \code{datapackage_skeleton()}.
 }
 \examples{
 if(rmarkdown::pandoc_available()){
