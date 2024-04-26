@@ -29,6 +29,7 @@
 #' @importFrom desc desc
 #' @importFrom rmarkdown render
 #' @importFrom usethis proj_set proj_get
+#' @noRd
 DataPackageR <- function(arg = NULL, deps = TRUE) {
   if (! getOption('DataPackageR_verbose', TRUE)){
     withr::local_options(list(usethis.quiet = TRUE))
@@ -201,6 +202,7 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
 #' @param ymlconf YAML configuration list produced by validate_yml()
 #'
 #' @return Character vector of enabled R and Rmd files specified in YAML file
+#' @noRd
 get_yml_r_files <- function(ymlconf) {
   r_files <- names(
     Filter(
@@ -215,6 +217,7 @@ get_yml_r_files <- function(ymlconf) {
 #' @param ymlconf YAML configuration list produced by validate_yml()
 #'
 #' @return Character vector of object names
+#' @noRd
 get_yml_objects <- function(ymlconf){
   ymlconf$configuration$objects
 }
@@ -224,6 +227,7 @@ get_yml_objects <- function(ymlconf){
 #' @param pkg_dir Path of top level of data package
 #'
 #' @return List object from read_yaml(ymlfile)
+#' @noRd
 validate_yml <- function(pkg_dir){
   # read YAML
   ymlfile <- list.files(
@@ -297,6 +301,7 @@ validate_yml <- function(pkg_dir){
 #' @param pkg_dir Path of top level of data package
 #'
 #' @return Silently returns pkg_dir if no errors thrown
+#' @noRd
 validate_package_skeleton <- function(pkg_dir){
   # we know it's a proper package root, but we want to test if we have the
   # necessary subdirectories
@@ -318,6 +323,7 @@ validate_package_skeleton <- function(pkg_dir){
 #' @param dataenv The data environment, from DataPackageR
 #'
 #' @returns TRUE if success
+#' @noRd
 do_digests <- function(pkg_dir, dataenv) {
   # Digest each object
   old_data_digest <- .parse_data_digest(pkg_dir = pkg_dir)
@@ -433,6 +439,7 @@ do_digests <- function(pkg_dir, dataenv) {
 #' @param pkg_dir The top level file path of the data package
 #' @param dataenv The data environment, from DataPackageR
 #' @returns TRUE if success
+#' @noRd
 do_doc <- function(pkg_dir, dataenv) {
   # Run .doc_autogen #needs to be run when we have a partial build..
   if (!file.exists(file.path(pkg_dir, 'data-raw', "documentation.R"))) {

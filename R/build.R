@@ -148,6 +148,7 @@ keepDataObjects <- function(...) {
 #' @param package_path Package path
 #'
 #' @returns Package name (character) if validated
+#' @noRd
 validate_pkg_name <- function(package_path){
   desc_pkg_name <- desc::desc(
     file = file.path(package_path, 'DESCRIPTION')
