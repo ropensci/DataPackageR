@@ -131,17 +131,6 @@ package_build <- function(packageName = NULL,
   cat(crayon::white("   - Add the github repository as a remote of your local package repository."), "\n") # nolint
   cat(crayon::white("   - ", crayon::red("git push"), " your local repository to gitub."), "\n") # nolint
 }
-#' These functions are no longer available.
-#'
-#' @name keepDataObjects-defunct
-#' @aliases  keepDataObjects
-#' @param ... arguments
-#' @returns Defunct. No return value.
-#' @rdname keepDataObjects-defunct
-#' @export
-keepDataObjects <- function(...) {
-  .Defunct(msg = "keepDataObjects is defunct as of version 0.12.1 of DataPackageR. \nUse the config.yml file to control packaging.") # nolint
-}
 
 #' Check that pkg name inferred from pkg path is same as pkg name in DESCRIPTION
 #'
