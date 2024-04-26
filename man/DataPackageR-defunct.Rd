@@ -2,13 +2,16 @@
 % Please edit documentation in R/DataPackageR-defunct.R
 \name{DataPackageR-defunct}
 \alias{DataPackageR-defunct}
-\alias{keepDataObjects}
 \alias{datapackage.skeleton}
+\alias{dataVersion}
+\alias{keepDataObjects}
 \title{Defunct functions in package \pkg{DataPackageR}.}
 \usage{
-keepDataObjects(...)
-
 datapackage.skeleton(...)
+
+dataVersion(...)
+
+keepDataObjects(...)
 }
 \arguments{
 \item{...}{All arguments are now ignored.}

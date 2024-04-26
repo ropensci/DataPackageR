@@ -2,12 +2,9 @@
 % Please edit documentation in R/dataversion.R
 \name{data_version}
 \alias{data_version}
-\alias{dataVersion}
 \title{Get the DataVersion for a package}
 \usage{
 data_version(pkg, lib.loc = NULL)
-
-dataVersion(pkg, lib.loc = NULL)
 }
 \arguments{
 \item{pkg}{\code{character} the package name}
@@ -19,9 +16,6 @@ Object of class 'package_version' and 'numeric_version' specifying the DataVersi
 }
 \description{
 Retrieves the DataVersion of a package if available
-}
-\note{
-\code{dataVersion()} has been renamed to \code{data_version()}
 }
 \examples{
 if(rmarkdown::pandoc_available()){

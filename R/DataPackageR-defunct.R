@@ -12,12 +12,18 @@ NULL
 
 #' @rdname DataPackageR-defunct
 #' @export
-keepDataObjects <- function(...) {
-  .Defunct('datapackager.yml', package = 'DataPackageR')
+datapackage.skeleton <- function(...) {
+  .Defunct('datapackage_skeleton()', package = 'DataPackageR')
 }
 
 #' @rdname DataPackageR-defunct
 #' @export
-datapackage.skeleton <- function(...) {
-  .Defunct('datapackage_skeleton()', package = 'DataPackageR')
+dataVersion <- function(...) {
+  .Defunct('data_version()', package = 'DataPackageR')
+}
+
+#' @rdname DataPackageR-defunct
+#' @export
+keepDataObjects <- function(...) {
+  .Defunct('datapackager.yml', package = 'DataPackageR')
 }
