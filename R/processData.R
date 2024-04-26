@@ -107,9 +107,9 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
                   knit = FALSE
       )
       r_files[i] <- paste0(tools::file_path_sans_ext(r_files[i]), ".Rmd")
-      assert_that(file.exists(r_files[i]),
-                  msg = paste0("File: ", r_files[i], " does not exist!")
-      )
+      if (! file.exists(r_files[i])){
+        stop(paste0("File: ", r_files[i], " does not exist!"))
+      }
       lines <- readLines(r_files[i])
       # do we likely have a yaml header? If not, add one.
       if (lines[1] != "---") {
@@ -247,9 +247,9 @@ validate_yml <- function(pkg_dir){
   }
   .multilog_trace("Reading yaml configuration")
   # files that have enable: TRUE
-  assert_that("configuration" %in% names(ymlconf))
-  assert_that("files" %in% names(ymlconf[["configuration"]]))
-  assert_that(!is.null(names(ymlconf[["configuration"]][["files"]])))
+  stopifnot("configuration" %in% names(ymlconf))
+  stopifnot("files" %in% names(ymlconf[["configuration"]]))
+  stopifnot(!is.null(names(ymlconf[["configuration"]][["files"]])))
 
   # object with same name as package causes problems with
   # overwriting documentation files
@@ -751,7 +751,7 @@ document <- function(path = ".", install = FALSE, ...) {
   if (getOption('DataPackageR_verbose', TRUE)) cat("\n")
   usethis::proj_set(path = path)
   path <- usethis::proj_get()
-  assert_that(file.exists(file.path(path, "data-raw", "documentation.R")))
+  stopifnot(file.exists(file.path(path, "data-raw", "documentation.R")))
   desc <- desc::desc(file.path(path, "DESCRIPTION"))
   docfile <- paste0(desc$get("Package"), ".R")
   file.copy(
