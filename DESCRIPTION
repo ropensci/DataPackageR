@@ -59,7 +59,6 @@ Imports:
     rprojroot,
     usethis,
     crayon,
-    withr,
     pkgbuild,
     pkgload
 VignetteBuilder: knitr
@@ -70,6 +69,7 @@ Suggests:
     testthat,
     covr,
     data.tree,
+    withr
 URL:
     https://github.com/ropensci/DataPackageR/,
     https://docs.ropensci.org/DataPackageR/

@@ -32,7 +32,9 @@
 #' @noRd
 DataPackageR <- function(arg = NULL, deps = TRUE) {
   if (! getOption('DataPackageR_verbose', TRUE)){
-    withr::local_options(list(usethis.quiet = TRUE))
+    old_usethis_quiet <- getOption('usethis.quiet')
+    on.exit(options(usethis.quiet = old_usethis_quiet))
+    options(usethis.quiet = TRUE)
   }
   pkg_dir <- arg
   if (getOption('DataPackageR_verbose', TRUE)) cat("\n")
@@ -40,7 +42,7 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
 
   #set the option that DataPackageR is building the package. On exit ensures when it leaves, it will set it back to false
   options("DataPackageR_packagebuilding" = TRUE)
-  on.exit(options("DataPackageR_packagebuilding" = FALSE))
+  on.exit(options("DataPackageR_packagebuilding" = FALSE), add = TRUE)
 
   # validate that render_root exists.
   # if it's an old temp dir, what then?
