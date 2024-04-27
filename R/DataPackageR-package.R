@@ -15,7 +15,7 @@
 #' "inst/extdata" but large raw data files can be read from sources external
 #' to the package source tree.
 #'
-#' Configuration is controlled via the config.yml file created at the package root.
+#' Configuration is controlled via the datapackager.yml file created at the package root.
 #' Its properties include a list of R and Rmd files that are to be rendered / sourced and
 #' which read data and do the actual processing.
 #' It also includes a list of r object names created by those files. These objects
@@ -33,7 +33,7 @@
 #' Once the package is built and installed, the data objects created in the package are accessible via
 #' the \code{data()} API, and
 #' Calling \code{datapackage_skeleton()} and passing in R / Rmd file names, and r object names
-#' constructs a skeleton data package source tree and an associated \code{config.yml} file.
+#' constructs a skeleton data package source tree and an associated \code{datapackager.yml} file.
 #'
 #' Calling \code{package_build()} sets the build process in motion.
 #' @examples

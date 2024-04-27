@@ -21,7 +21,7 @@
 #' find_me <- datapackager_object_read("find_me") # This would appear in an Rmd processed by
 #'                                     # DataPackageR to access the object named "find_me" created
 #'                                     # by a previous script. "find_me" would also need to
-#'                                     # appear in the objects property of config.yml
+#'                                     # appear in the objects property of datapackager.yml
 #' }
 #' }
 datapackager_object_read <- function(name) {

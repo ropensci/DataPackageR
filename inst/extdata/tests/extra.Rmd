@@ -9,8 +9,8 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-This file is processed second in the `config.yml` file. It therefore has access to the data objects
-created by `subsetCars.Rmd`, the file that is processed first in the `config.yml`.
+This file is processed second in the `datapackager.yml` file. It therefore has access to the data objects
+created by `subsetCars.Rmd`, the file that is processed first in the `datapackager.yml`.
 
 ## Reading objects from previously run files
 
