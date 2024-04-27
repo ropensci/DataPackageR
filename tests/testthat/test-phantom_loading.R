@@ -7,7 +7,7 @@ testthat::test_that(
     )
     pkg_name <- "mtcars20"
     on.exit(
-      if (pkg_name %in% sessioninfo::package_info('attached')$package){
+      if (pkg_name %in% names(utils::sessionInfo()$otherPkgs)){
         pkgload::unload(pkg_name)
       }
     )
@@ -24,7 +24,7 @@ testthat::test_that(
     expect_no_warning(package_build(pkg_path, install = FALSE))
     # test phantom pkg loading side effect from roxygen2::roxygenise()
     expect_false(
-      res1 <- pkg_name %in% sessioninfo::package_info('attached')$package
+      res1 <- pkg_name %in% names(utils::sessionInfo()$otherPkgs)
     )
 
     # reset for next test
@@ -33,7 +33,7 @@ testthat::test_that(
     # test phantom pkg loading side effect from roxygen2::roxygenise()
     expect_no_warning(document(pkg_path, install = FALSE))
     expect_false(
-      res2 <- pkg_name %in% sessioninfo::package_info('attached')$package
+      res2 <- pkg_name %in% names(utils::sessionInfo()$otherPkgs)
     )
   }
 )

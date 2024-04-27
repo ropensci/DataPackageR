@@ -95,7 +95,7 @@ package_build <- function(packageName = NULL,
   .multilog_trace("Building documentation")
   local({
     on.exit({
-      if (packageName %in% sessioninfo::package_info('attached')$package){
+      if (packageName %in% names(utils::sessionInfo()$otherPkgs)){
         pkgload::unload(packageName)
       }
     })

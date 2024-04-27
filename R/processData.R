@@ -769,7 +769,7 @@ document <- function(path = ".", install = FALSE, ...) {
   .multilog_trace("Rebuilding data package documentation.")
   local({
     on.exit({
-      if (basename(path) %in% sessioninfo::package_info('attached')$package){
+      if (basename(path) %in% names(utils::sessionInfo()$otherPkgs)){
         pkgload::unload(basename(path))
       }
     })
