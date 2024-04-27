@@ -53,14 +53,14 @@ Imports:
     desc,
     yaml,
     purrr,
-    roxygen2 (>= 6.0.1),
-    devtools (>= 1.12.0),
+    roxygen2,
     stringr,
     futile.logger,
     rprojroot,
     usethis,
     crayon,
-    withr
+    pkgbuild,
+    pkgload
 VignetteBuilder: knitr
 RoxygenNote: 7.3.1
 Encoding: UTF-8
@@ -69,9 +69,10 @@ Suggests:
     testthat,
     covr,
     data.tree,
+    withr
 URL:
-    https://github.com/ropensci/DataPackageR/,
+    https://github.com/ropensci/DataPackageR,
     https://docs.ropensci.org/DataPackageR/
 BugReports: https://github.com/ropensci/DataPackageR/issues
-SystemRequirements: pandoc (>= 1.12.3) - http://pandoc.org
+SystemRequirements: pandoc (>= 1.12.3) - https://pandoc.org
 Language: en-US

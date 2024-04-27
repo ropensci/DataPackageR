@@ -32,7 +32,9 @@
 #' @noRd
 DataPackageR <- function(arg = NULL, deps = TRUE) {
   if (! getOption('DataPackageR_verbose', TRUE)){
-    withr::local_options(list(usethis.quiet = TRUE))
+    old_usethis_quiet <- getOption('usethis.quiet')
+    on.exit(options(usethis.quiet = old_usethis_quiet))
+    options(usethis.quiet = TRUE)
   }
   pkg_dir <- arg
   if (getOption('DataPackageR_verbose', TRUE)) cat("\n")
@@ -40,7 +42,7 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
 
   #set the option that DataPackageR is building the package. On exit ensures when it leaves, it will set it back to false
   options("DataPackageR_packagebuilding" = TRUE)
-  on.exit(options("DataPackageR_packagebuilding" = FALSE))
+  on.exit(options("DataPackageR_packagebuilding" = FALSE), add = TRUE)
 
   # validate that render_root exists.
   # if it's an old temp dir, what then?
@@ -769,14 +771,14 @@ document <- function(path = ".", install = FALSE, ...) {
   .multilog_trace("Rebuilding data package documentation.")
   local({
     on.exit({
-      if (basename(path) %in% devtools::package_info('attached')$package){
-        devtools::unload(basename(path))
+      if (basename(path) %in% names(utils::sessionInfo()$otherPkgs)){
+        pkgload::unload(basename(path))
       }
     })
-    devtools::document(pkg = path)
+    roxygen2::roxygenize(package.dir = path)
   })
-  location <- devtools::build(
-    pkg = path, path = dirname(path),
+  location <- pkgbuild::build(
+    path = path, dest_path = dirname(path),
     vignettes = FALSE, quiet = TRUE
   )
   # try to install and then reload the package in the current session

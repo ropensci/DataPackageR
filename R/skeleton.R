@@ -53,7 +53,9 @@ datapackage_skeleton <-
              raw_data_dir = character(),
              dependencies = character()) {
     if (! getOption('DataPackageR_verbose', TRUE)){
-      withr::local_options(list(usethis.quiet = TRUE))
+      old_usethis_quiet <- getOption('usethis.quiet')
+      on.exit(options(usethis.quiet = old_usethis_quiet))
+      options(usethis.quiet = TRUE)
     }
     if (is.null(name)) {
       stop("Must supply a package name", call. = FALSE)

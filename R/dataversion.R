@@ -26,7 +26,7 @@
 #'
 #'    package_build(file.path(tempdir(),pname), install = FALSE)
 #'
-#'    devtools::load_all(file.path(tempdir(),pname))
+#'    pkgload::load_all(file.path(tempdir(),pname))
 #'    data_version(pname)
 #' }
 data_version <- function(pkg, lib.loc = NULL) {
@@ -98,7 +98,7 @@ data_version <- function(pkg, lib.loc = NULL) {
 #'    code_files = f)
 #' package_build(file.path(tempdir(),pname), install = FALSE)
 #'
-#' devtools::load_all(file.path(tempdir(),pname))
+#' pkgload::load_all(file.path(tempdir(),pname))
 #'
 #' assert_data_version(data_package_name = pname,version_string = "0.1.0",acceptable = "equal")
 #' }

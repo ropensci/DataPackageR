@@ -70,7 +70,7 @@ datapackage_skeleton(name=pname,
 package_build(file.path(tempdir(), pname), install = FALSE)
 
 # "install" the data package
-devtools::load_all(file.path(tempdir(), pname))
+pkgload::load_all(file.path(tempdir(), pname))
 
 # read the data version
 data_version(pname)
@@ -91,7 +91,7 @@ readLines(list.files(pattern="R", path = file.path(tempdir(),pname,"R"), full = 
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://github.com/ropensci/DataPackageR/}
+  \item \url{https://github.com/ropensci/DataPackageR}
   \item \url{https://docs.ropensci.org/DataPackageR/}
   \item Report bugs at \url{https://github.com/ropensci/DataPackageR/issues}
 }

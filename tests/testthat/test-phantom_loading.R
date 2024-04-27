@@ -7,8 +7,8 @@ testthat::test_that(
     )
     pkg_name <- "mtcars20"
     on.exit(
-      if (pkg_name %in% devtools::package_info('attached')$package){
-        devtools::unload(pkg_name)
+      if (pkg_name %in% names(utils::sessionInfo()$otherPkgs)){
+        pkgload::unload(pkg_name)
       }
     )
     # remove this directory on exit
@@ -24,17 +24,16 @@ testthat::test_that(
     expect_no_warning(package_build(pkg_path, install = FALSE))
     # test phantom pkg loading side effect from roxygen2::roxygenise()
     expect_false(
-      res1 <- pkg_name %in% devtools::package_info('attached')$package
+      res1 <- pkg_name %in% names(utils::sessionInfo()$otherPkgs)
     )
 
     # reset for next test
-    if (res1) devtools::unload(pkg_name)
+    if (res1) pkgload::unload(pkg_name)
 
     # test phantom pkg loading side effect from roxygen2::roxygenise()
-    # which is called by devtools::document()
     expect_no_warning(document(pkg_path, install = FALSE))
     expect_false(
-      res2 <- pkg_name %in% devtools::package_info('attached')$package
+      res2 <- pkg_name %in% names(utils::sessionInfo()$otherPkgs)
     )
   }
 )
