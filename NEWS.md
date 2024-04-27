@@ -21,7 +21,7 @@
 * New global option `DataPackageR_verbose` to suppress console output, e.g. during unit testing
 
 # DataPackageR 0.15.8
-* Fix to datapackager_object_read that was causing a test to break. `get` needs to have `inherits=FALSE`. 
+* Fix to datapackager_object_read that was causing a test to break. `get` needs to have `inherits=FALSE`.
 * Other fixes for `usethis` 1.6.0
 * Fixes to tests that were failing on CRAN
 * In `package_build`, remove `devtools::reload` and put `devtools::unload` and in front of install.packages
@@ -88,7 +88,7 @@
 - Improved package test.
 - R scripts processed properly into vignettes.
 - Packages installed and loaded after build to make vignettes and data sets accessible in same R session.
-- 
+-
 
 # DataPackageR 0.13.6
 

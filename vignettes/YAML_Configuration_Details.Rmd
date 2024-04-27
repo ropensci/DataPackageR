@@ -1,7 +1,7 @@
 ---
 title: "YAML Configuration Details"
 date: "`r Sys.Date()`"
-output: 
+output:
   rmarkdown::html_vignette:
     keep_md: TRUE
     toc: yes
@@ -11,7 +11,7 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\usepackage[utf8]{inputenc}
   %\usepackage{graphicx}
-editor_options: 
+editor_options:
   chunk_output_type: inline
 ---
 
@@ -39,24 +39,24 @@ The main section of the file is the `configuration:` section.
 
 It has three properties:
 
-- `files:` 
-  
+- `files:`
+
 The files (`R` or `Rmd`) to be processed by DataPackageR. They are processed in the order shown. Users running multi-script workflows with dependencies between the scripts need to ensure the files are processed in the correct order. Here `subsetCars.Rmd` is the only file to process. The name is transformed to an absolute path within the package.
-  
+
 Each file itself has just one property:
-  
-  - `enabled:` 
-    
+
+  - `enabled:`
+
   A logical `yes`, `no` flag indicating whether the file should be rendered during the build, or whether it should be skipped.
 
   This is useful for 'turning off' long running processing tasks if they have not changed. Disabling processing of a file will not overwrite existing documentation or data objects created during previous builds.
-  
-- `objects:` 
-  
+
+- `objects:`
+
 The names of the data objects created by the processing files, to be stored in the package. These names are compared against the objects created in the render environment by each file. The names must match.
 
-- `render_root:` 
-  
+- `render_root:`
+
 The directory where the `Rmd` or `R` files will be rendered which will default to a randomly named subdirectory given by `tempdir()`. This render location will allow workflows that use multiple scripts, and will create file system artifacts to function correctly by simply writing to and reading from the working directory.
 
 ## Editing the YAML config file.
@@ -67,31 +67,31 @@ DataPackageR provides a number of API calls to construct, read, modify, and writ
 
 ### YAML config API calls.
 
-#### `construct_yml_config` 
+#### `construct_yml_config`
 
   Make an r object representing a YAML config file.
-  
+
 ##### Example
-  The YAML config shown above was created by: 
+  The YAML config shown above was created by:
 ```{r, eval = rmarkdown::pandoc_available()}
-# Note this is done by the datapackage_skeleton. 
-# The user does not usually need to call 
+# Note this is done by the datapackage_skeleton.
+# The user does not usually need to call
 # construct_yml_config()
 yml <- DataPackageR::construct_yml_config(
   code = "subsetCars.Rmd",
   data = "cars_over_20"
   )
 ```
-  
-  
-#### `yml_find` 
+
+
+#### `yml_find`
 
   Read a yaml config file from a package path into an r object.
-  
+
 ##### Example
 
   Read the YAML config file from the `mtcars20` example.
-  
+
 ```{r eval=FALSE}
 # returns an r object representation of
 # the config file.
@@ -100,17 +100,17 @@ mtcars20_config <- yml_find(
 )
 ```
 
-#### `yml_list_objects` 
+#### `yml_list_objects`
 
   List the `objects` in a config read by `yml_find`.
-  
+
 ##### Example
 
 ```{r, comment="", eval = rmarkdown::pandoc_available()}
   yml_list_objects(yml)
 ```
-  
-#### `yml_list_files` 
+
+#### `yml_list_files`
 
   List the `files` in a config read by `yml_find`.
 
@@ -119,8 +119,8 @@ mtcars20_config <- yml_find(
 ```{r, comment="", eval = rmarkdown::pandoc_available()}
   yml_list_files(yml)
 ```
-  
-#### `yml_disable_compile` 
+
+#### `yml_disable_compile`
 
   Disable compilation of named files in a config read by `yml_find`.
 
@@ -134,7 +134,7 @@ yml_disabled <- yml_disable_compile(
 cat(as.yaml(yml_disabled))
 ```
 
-#### `yml_enable_compile` 
+#### `yml_enable_compile`
 
   Enable compilation of named files in a config read by `yml_find`.
 
@@ -148,10 +148,10 @@ yml_enabled <- yml_enable_compile(
 cat(as.yaml(yml_enabled))
 ```
 
-#### `yml_add_files` 
-  
+#### `yml_add_files`
+
   Add named files to a config read by `yml_find`.
-  
+
 ##### Example
 
 ```{r, comment="", echo = 1, eval = rmarkdown::pandoc_available()}
@@ -162,7 +162,7 @@ yml_twofiles <- yml_add_files(
 # cat(as.yaml(yml_twofiles))
 ```
 
-#### `yml_add_objects` 
+#### `yml_add_objects`
 
   Add named objects to a config read by `yml_find`.
 
@@ -176,7 +176,7 @@ yml_twoobj <- yml_add_objects(
 # cat(as.yaml(yml_twoobj))
 ```
 
-#### `yml_remove_files` 
+#### `yml_remove_files`
 
   Remove named files from a config read by `yml_find`.
 
@@ -190,7 +190,7 @@ yml_twoobj <- yml_remove_files(
 # cat(as.yaml(yml_twoobj))
 ```
 
-#### `yml_remove_objects` 
+#### `yml_remove_objects`
 
   Remove named objects from a config read by `yml_find`.
 
@@ -204,7 +204,7 @@ yml_oneobj <- yml_remove_objects(
 # cat(as.yaml(yml_oneobj))
 ```
 
-#### `yml_write` 
+#### `yml_write`
 
   Write a modified config to its package path.
 

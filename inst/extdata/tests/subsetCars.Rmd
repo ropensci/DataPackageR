@@ -9,7 +9,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 This is a simple Rmd file that demonstrates how DataPackageR processes Rmarkdown files and creates data sets
-that are then stored in an R data package. 
+that are then stored in an R data package.
 
 In the `config.yml` for this example, this file is listed first, and therefore processed first.
 
@@ -28,31 +28,31 @@ Let's say, for some reason, we are only interested in the stopping distances of 
 cars_over_20 = subset(cars, speed > 20)
 ```
 
-The data frame `cars_over_20` now holds this information. 
+The data frame `cars_over_20` now holds this information.
 
-# Storing data set objects and making making accessible to other processing scripts. 
+# Storing data set objects and making making accessible to other processing scripts.
 
 When DataPackageR processes this file, it creates this `cars_over_20` object. After processing the file it does several things:
 
-1. It compares the objects in the rmarkdown render environment of `subsetCars.Rmd` against the objects listed in the `config.yml` file `objects` property. 
+1. It compares the objects in the rmarkdown render environment of `subsetCars.Rmd` against the objects listed in the `config.yml` file `objects` property.
 2. It finds `cars_over_20` is listed there, so it stores it in a new environment.
-3. That environment is passed to subsequent R and Rmd files. Specifically when the `extra.Rmd` file is processed, it has access to an environment object that holds all the `objects` (defined in the yaml config) that have already been created and processed. This environment is passed into subsequent scripts at the `render()` call. 
+3. That environment is passed to subsequent R and Rmd files. Specifically when the `extra.Rmd` file is processed, it has access to an environment object that holds all the `objects` (defined in the yaml config) that have already been created and processed. This environment is passed into subsequent scripts at the `render()` call.
 
-All of the above is done automatically. The user only needs to list the objects to be stored and passed to other scripts in the `config.yml` file. 
+All of the above is done automatically. The user only needs to list the objects to be stored and passed to other scripts in the `config.yml` file.
 
-The `datapackager_object_read()` API can be used to retrieve these objects from the environment. 
+The `datapackager_object_read()` API can be used to retrieve these objects from the environment.
 
 ### Storing objects in the data package
 
-In addition to passing around an environment to subsequent scripts, the `cars_over_20` object is stored in the data package `/data` directory as an `rda` file. 
+In addition to passing around an environment to subsequent scripts, the `cars_over_20` object is stored in the data package `/data` directory as an `rda` file.
 
-Note that this is all done automatically. The user does not need to explicitly save anything, they only need to list the objects to be store in the `config.yml`. 
+Note that this is all done automatically. The user does not need to explicitly save anything, they only need to list the objects to be store in the `config.yml`.
 
-This object is then accessible in the resulting package via the `data()` API, and its documentation is accessible via `?cars_over_20`. 
+This object is then accessible in the resulting package via the `data()` API, and its documentation is accessible via `?cars_over_20`.
 
 ### Data object documentation
 
-The documentation for the `cars_over_20` object is created in a `subsetCars.R` file in the `/R` directory of the data package. 
+The documentation for the `cars_over_20` object is created in a `subsetCars.R` file in the `/R` directory of the data package.
 
 While the data object document stub is created automatically, it must be edited by the user to provide additional details about the data object.
 
