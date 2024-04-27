@@ -15,8 +15,8 @@ test_that("can_read_pkg_description,  data_version", {
     r_object_names = c("cars_over_20", "pressure")
   )
   DataPackageR:::read_pkg_description(file.path(tempdir(), "subsetCars"))
-  on.exit(devtools::unload("subsetCars"))
-  devtools::load_all(file.path(tempdir(), "subsetCars"))
+  on.exit(pkgload::unload("subsetCars"))
+  pkgload::load_all(file.path(tempdir(), "subsetCars"))
   expected_version <-
     structure(list(c(0L, 1L, 0L)),
       class = c("package_version", "numeric_version")

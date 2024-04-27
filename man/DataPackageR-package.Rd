@@ -70,7 +70,7 @@ datapackage_skeleton(name=pname,
 package_build(file.path(tempdir(), pname), install = FALSE)
 
 # "install" the data package
-devtools::load_all(file.path(tempdir(), pname))
+pkgload::load_all(file.path(tempdir(), pname))
 
 # read the data version
 data_version(pname)

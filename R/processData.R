@@ -769,14 +769,14 @@ document <- function(path = ".", install = FALSE, ...) {
   .multilog_trace("Rebuilding data package documentation.")
   local({
     on.exit({
-      if (basename(path) %in% devtools::package_info('attached')$package){
-        devtools::unload(basename(path))
+      if (basename(path) %in% sessioninfo::package_info('attached')$package){
+        pkgload::unload(basename(path))
       }
     })
-    devtools::document(pkg = path)
+    roxygen2::roxygenize(package.dir = path)
   })
-  location <- devtools::build(
-    pkg = path, path = dirname(path),
+  location <- pkgbuild::build(
+    path = path, dest_path = dirname(path),
     vignettes = FALSE, quiet = TRUE
   )
   # try to install and then reload the package in the current session

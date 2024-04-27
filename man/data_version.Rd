@@ -33,7 +33,7 @@ datapackage_skeleton(name = pname,
 
    package_build(file.path(tempdir(),pname), install = FALSE)
 
-   devtools::load_all(file.path(tempdir(),pname))
+   pkgload::load_all(file.path(tempdir(),pname))
    data_version(pname)
 }
 }

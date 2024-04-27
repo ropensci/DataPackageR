@@ -11,8 +11,6 @@
 #' @param install \code{logical} automatically install and load the package after building. Default FALSE
 #' @param ... additional arguments passed to \code{install.packages} when \code{install=TRUE}.
 #' @returns Character vector. File path of the built package.
-#' @importFrom roxygen2 roxygenise roxygenize
-#' @importFrom devtools build_vignettes build parse_deps reload
 #' @importFrom usethis use_build_ignore use_rstudio proj_set use_directory
 #' @importFrom rprojroot is_r_package
 #' @importFrom rmarkdown pandoc_available
@@ -97,15 +95,15 @@ package_build <- function(packageName = NULL,
   .multilog_trace("Building documentation")
   local({
     on.exit({
-      if (packageName %in% devtools::package_info('attached')$package){
-        devtools::unload(packageName)
+      if (packageName %in% sessioninfo::package_info('attached')$package){
+        pkgload::unload(packageName)
       }
     })
-    roxygen2::roxygenise(package_path, clean = TRUE)
+    roxygen2::roxygenize(package_path, clean = TRUE)
   })
   .multilog_trace("Building package")
-  location <- build(package_path,
-    path = dirname(package_path),
+  location <- pkgbuild::build(path = package_path,
+    dest_path = dirname(package_path),
     vignettes = vignettes,
     quiet = ! getOption('DataPackageR_verbose', TRUE)
   )
