@@ -313,7 +313,7 @@ $(document).ready(function () {
 
 
 <p>This is a simple Rmd file that demonstrates how DataPackageR processes Rmarkdown files and creates data sets that are then stored in an R data package.</p>
-<p>In the <code>config.yml</code> for this example, this file is listed first, and therefore processed first.</p>
+<p>In the <code>datapackager.yml</code> for this example, this file is listed first, and therefore processed first.</p>
 <p>This particular document simply subsets the <code>cars</code> data set:</p>
 <pre class="r"><code>summary(cars)</code></pre>
 <pre><code>##      speed           dist       
@@ -333,16 +333,16 @@ $(document).ready(function () {
 <h1>Storing data set objects and making making accessible to other processing scripts.</h1>
 <p>When DataPackageR processes this file, it creates this <code>cars_over_20</code> object. After processing the file it does several things:</p>
 <ol style="list-style-type: decimal">
-<li>It compares the objects in the rmarkdown render environment of <code>subsetCars.Rmd</code> against the objects listed in the <code>config.yml</code> file <code>objects</code> property.</li>
+<li>It compares the objects in the rmarkdown render environment of <code>subsetCars.Rmd</code> against the objects listed in the <code>datapackager.yml</code> file <code>objects</code> property.</li>
 <li>It finds <code>cars_over_20</code> is listed there, so it stores it in a new environment.</li>
 <li>That environment is passed to subsequent R and Rmd files. Specifically when the <code>extra.Rmd</code> file is processed, it has access to an environment object that holds all the <code>objects</code> (defined in the yaml config) that have already been created and processed. This environment is passed into subsequent scripts at the <code>render()</code> call.</li>
 </ol>
-<p>All of the above is done automatically. The user only needs to list the objects to be stored and passed to other scripts in the <code>config.yml</code> file.</p>
+<p>All of the above is done automatically. The user only needs to list the objects to be stored and passed to other scripts in the <code>datapackager.yml</code> file.</p>
 <p>The <code>datapackager_object_read()</code> API can be used to retrieve these objects from the environment.</p>
 <div id="storing-objects-in-the-data-package" class="section level3">
 <h3>Storing objects in the data package</h3>
 <p>In addition to passing around an environment to subsequent scripts, the <code>cars_over_20</code> object is stored in the data package <code>/data</code> directory as an <code>rda</code> file.</p>
-<p>Note that this is all done automatically. The user does not need to explicitly save anything, they only need to list the objects to be store in the <code>config.yml</code>.</p>
+<p>Note that this is all done automatically. The user does not need to explicitly save anything, they only need to list the objects to be store in the <code>datapackager.yml</code>.</p>
 <p>This object is then accessible in the resulting package via the <code>data()</code> API, and its documentation is accessible via <code>?cars_over_20</code>.</p>
 </div>
 <div id="data-object-documentation" class="section level3">
