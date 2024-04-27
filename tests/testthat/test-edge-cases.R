@@ -139,12 +139,11 @@ test_that("local edge case block 5", {
 })
 
 
-test_that("local edge case block 6", {
+test_that(".digest_data_env output as expected", {
   e <- new.env()
-  d <- list(DataVersion = "0.1.0")
   assign("a", 10, e)
   expect_equal(
-    DataPackageR:::.digest_data_env("a", e, d),
+    DataPackageR:::.digest_data_env("a", e, "0.1.0"),
     list(
       DataVersion = "0.1.0",
       a = "2522027d230e3dfe02d8b6eba1fd73e1"
@@ -152,12 +151,28 @@ test_that("local edge case block 6", {
   )
 })
 
-test_that("local edge case block 7", {
-  e <- new.env()
-  d <- list()
-  assign("a", 10, e)
-  suppressWarnings(expect_error(DataPackageR:::.digest_data_env("a", e, d)))
+test_that("validate_DataVersion works as expected", {
+  expect_error(validate_DataVersion(NULL))
+  expect_error(validate_DataVersion(NA_character_))
+  expect_error(validate_DataVersion(c('1.0.0', '2.0.2')))
+  expect_error(validate_DataVersion(1.0))
+  expect_error(validate_DataVersion(""))
+  expect_equal(validate_DataVersion('0.1.0'), '0.1.0')
+  # works as expected on valid input
+  expect_equal(
+    validate_DataVersion(package_version('0.1.0')),
+    '0.1.0'
+  )
+  # converts back to character if input package_version class
+  expect_true(
+    inherits(
+      validate_DataVersion(package_version('0.1.0')),
+      'character'
+    )
+  )
+})
 
+test_that(".check_dataversion_string works as expected", {
   suppressWarnings(expect_error(DataPackageR:::.check_dataversion_string(
     list(DataVersion = "1.1.1"),
     list(DataVersion = "1.a.1")
@@ -281,13 +296,14 @@ test_that("local edge case block 8", {
     name = "foo",
     path = td
   ))
+  expect_no_error(validate_package_skeleton(file.path(td, 'foo')))
   suppressWarnings(
     unlink(td_foo,
            recursive = TRUE,
            force = TRUE
     )
   )
-  expect_error(DataPackageR:::read_pkg_description("foo"))
+  expect_error(validate_package_skeleton(file.path(td, 'foo')))
 })
 
 

@@ -54,7 +54,6 @@ Imports:
     yaml,
     purrr,
     roxygen2,
-    stringr,
     futile.logger,
     rprojroot,
     usethis,

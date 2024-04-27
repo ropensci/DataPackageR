@@ -50,8 +50,9 @@ data_version <- function(pkg, lib.loc = NULL) {
 }
 
 .increment_data_version <-
-  function(pkg_description, new_data_digest, which = "patch") {
-    if (!which %in% c("major", "minor", "patch")) {
+  function(pkg_desc, new_data_digest, which = "patch") {
+    which_options <- c("major", "minor", "patch")
+    if (!which %in% which_options) {
       stop(
         paste0(
           "version component to increment",
@@ -61,15 +62,16 @@ data_version <- function(pkg, lib.loc = NULL) {
         )
       )
     }
-    verstring <-
-      strsplit(pkg_description[["DataVersion"]], "\\.")[[1]]
-    names(verstring) <- c("major", "minor", "patch")
-    verstring[which] <-
-      as.character(as.numeric(verstring[which]) + 1)
-    verstring <- paste(verstring, collapse = ".")
-    pkg_description[["DataVersion"]] <- verstring
+    verstring <- validate_DataVersion(pkg_desc$get('DataVersion'))
+    # convert back into package_version after validation
+    # to be able to use base R subsetting facilities
+    verstring <- as.package_version(verstring)
+    m <- match(which, which_options)
+    verstring[1, m] <- as.integer(verstring[1, m]) + 1L
+    verstring <- validate_DataVersion(verstring)
+    pkg_desc$set('DataVersion', verstring)
     new_data_digest[["DataVersion"]] <- verstring
-    list(pkg_description = pkg_description, new_data_digest = new_data_digest)
+    list(pkg_description = pkg_desc, new_data_digest = new_data_digest)
   }
 
 #' Assert that a data version in a data package matches an expectation.
