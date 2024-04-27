@@ -13,7 +13,7 @@ Authors@R:
               email = "ellishughes@live.com",
               comment = c(ORCID = "0000-0003-0637-4436")),
       person(given = "Jimmy", family = "Fulp",
-              role = c("ctb"), 
+              role = c("ctb"),
               email = "williamjfulp@gmail.com"),
       person(given = "Marie", family = "Vendettuoli",
               role = c("ctb"),
@@ -23,7 +23,7 @@ Authors@R:
               email = "dslager@scharp.org",
               comment = c(ORCID = "0000-0003-2525-2039")),
       person(given = "Jason", family = "Taylor",
-              role = c("ctb"), 
+              role = c("ctb"),
               email = "jmtaylor@fredhutch.org"),
       person(given = "Kara", family = "Woo",
               role = "rev",
@@ -32,15 +32,15 @@ Authors@R:
               role = "rev",
       comment = "William reviewed the package for rOpenSci, see <https://github.com/ropensci/onboarding/issues/230>"))
 Version: 0.15.9.9000
-Description: A framework to help construct R data packages in a 
-  reproducible manner. Potentially time consuming processing of 
-  raw data sets into analysis ready data sets is done in a reproducible 
+Description: A framework to help construct R data packages in a
+  reproducible manner. Potentially time consuming processing of
+  raw data sets into analysis ready data sets is done in a reproducible
   manner and decoupled from the usual 'R CMD build' process so that
-  data sets can be processed into R objects in the data package and 
+  data sets can be processed into R objects in the data package and
   the data package can then be shared, built, and installed by others
   without the need to repeat computationally costly data processing.
   The package maintains data provenance by turning the data processing
-  scripts into package vignettes, as well as enforcing documentation 
+  scripts into package vignettes, as well as enforcing documentation
   and version checking of included data objects. Data packages can be
   version controlled on 'GitHub', and used to share data for manuscripts,
   collaboration and reproducible research.

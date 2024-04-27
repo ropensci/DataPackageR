@@ -2,7 +2,7 @@
 title: README
 output: github_document
 bibliography: bibliography.bib
-editor_options: 
+editor_options:
   chunk_output_type: inline
 ---
 
@@ -42,7 +42,7 @@ You have diverse raw data sets that you need to preprocess and tidy in order to:
 
 - Perform data analysis
 - Write a report
-- Publish a paper 
+- Publish a paper
 - Share data with colleagues and collaborators
 - Save time in the future when you return to this project but have forgotten all about what you did.
 
@@ -55,67 +55,67 @@ You have diverse raw data sets that you need to preprocess and tidy in order to:
   As described [elsewhere](https://github.com/ropensci/rrrpkg), packaging your data promotes reproducibility.
   R's packaging infrastructure promotes unit testing, documentation, a reproducible build system, and has many other benefits.
   Coopting it for packaging data sets is a natural fit.
-  
+
 - **Collaboration.**
-  
+
   A data set packaged in R is easy to distribute and share among collaborators, and is easy to install and use.
   All the hard work you've put into documenting and standardizing the tidy data set comes right along with the data package.
 
 - **Documentation.**
 
-  R's package system allows us to document data objects. What's more, the `roxygen2` package makes this very easy to do with [markup tags](https://r-pkgs.org/data.html). 
+  R's package system allows us to document data objects. What's more, the `roxygen2` package makes this very easy to do with [markup tags](https://r-pkgs.org/data.html).
   That documentation is the equivalent of a data dictionary and can be extremely valuable when returning to a project after a period of time.
-  
+
 - **Convenience.**
 
-  Data pre-processing can be time consuming, depending on the data type and raw data sets may be too large to share conveniently in a packaged format. 
+  Data pre-processing can be time consuming, depending on the data type and raw data sets may be too large to share conveniently in a packaged format.
   Packaging and sharing the small, tidied data saves the users computing time and time spent waiting for downloads.
-     
+
 ## Challenges.
 
 - **Package size limits.**
 
   R packages have a 10MB size limit, at least on [CRAN](https://cran.r-project.org/web/packages/policies.html). Bioconductor [ExperimentHub](http://contributions.bioconductor.org/data.html#data) may be able to support larger data packages.
-  
+
   Sharing large volumes of raw data in an R package format is still not ideal, and there are public biological data repositories better suited for raw data: e.g.,  [GEO](https://www.ncbi.nlm.nih.gov/geo/), [SRA](https://www.ncbi.nlm.nih.gov/sra), [ImmPort](https://www.immport.org/), [ImmuneSpace](https://immunespace.org/), [FlowRepository](http://flowrepository.org/).
-  
+
   Tools like [datastorr](https://github.com/traitecoevo/datastorr) can help with this and we hope to integrate this into DataPackageR in the future.
 
 - **Manual effort**
 
   There is still a substantial manual effort to set up the correct directory structures for an R data package. This can dissuade many individuals, particularly new users who have never built an R package, from going this route.
-  
-- **Scale** 
+
+- **Scale**
 
   Setting up and building R data packages by hand is a workable solution for a small project or a small number of projects, but when dealing with many projects each involving many data sets, tools are needed to help automate the process.
-  
+
 ## DataPackageR
 
 DataPackageR provides a number of benefits when packaging your data.
 
 - It aims to automate away much of the tedium of packaging data sets without getting too much in the way, and keeps your processing workflow reproducible.
 
-- It sets up the necessary package structure and files for a data package. 
+- It sets up the necessary package structure and files for a data package.
 
 - It allows you to keep the large, raw data and only ship the packaged tidy data, saving space and time consumers of your data set need to spend downloading and re-processing it.
 
-- It maintains a reproducible record (vignettes) of the data processing along with the package. Consumers of the data package can verify how the processing was done, increasing confidence in your data. 
+- It maintains a reproducible record (vignettes) of the data processing along with the package. Consumers of the data package can verify how the processing was done, increasing confidence in your data.
 
 - It automates construction of the documentation and maintains a data set version and an md5 fingerprint of each data object in the package. If the data changes and the package is rebuilt, the data version is automatically updated.
 
 ## Similar work
 
-There are a number of tools out there that address similar and complementary problems: 
+There are a number of tools out there that address similar and complementary problems:
 
 - **datastorr**
   [github repo](https://github.com/traitecoevo/datastorr)
-  
+
   Simple data retrieval and versioning using GitHub to store data.
-  
+
     - Caches downloads and uses github releases to version data.
     - Deal consistently with translating the file stored online into a loaded data object
-    - Access multiple versions of the data at once 
-    
+    - Access multiple versions of the data at once
+
   `datastorrr` could be used with DataPackageR to store / access remote raw data sets, remotely store / access tidied data that are too large to fit in the package itself.
 
 - **fst**
@@ -127,7 +127,7 @@ There are a number of tools out there that address similar and complementary pro
   [pdf](https://github.com/noamross/2018-04-18-rstats-nyc/blob/master/Noam_Ross_ModernDataPkg_rstatsnyc_2018-04-20.pdf)
 
   A presentation from \@noamross touching on modern tools for open science and reproducibility. Discusses `datastorr` and `fst` as well as standardized metadata and documentation.
- 
+
 - **rrrpkg**
   [github repo](https://github.com/ropensci/rrrpkg)
 
@@ -135,11 +135,11 @@ There are a number of tools out there that address similar and complementary pro
 
 - **template**
   [github repo](https://github.com/ropensci/rrrpkg)
-  
+
   An R package template for data packages.
- 
+
  See the [publication](#publication) for further discussion.
- 
+
 ## Installation
 
 You can install the latest [CRAN](https://cran.r-project.org/package=DataPackageR) release of DataPackageR with:
@@ -157,9 +157,9 @@ remotes::install_github("ropensci/DataPackageR")
 
 ## Blog Post - building packages interactively.
 
-See this [rOpenSci blog post](https://ropensci.org/blog/2018/09/18/datapackager/) on how to build data packages interactively using DataPackageR. 
+See this [rOpenSci blog post](https://ropensci.org/blog/2018/09/18/datapackager/) on how to build data packages interactively using DataPackageR.
 This uses several new interfaces: `use_data_object()`, `use_processing_script()` and `use_raw_dataset()` to build up a data package, rather than assuming
-the user has all the code and data ready to go for `datapackage_skeleton()`. 
+the user has all the code and data ready to go for `datapackage_skeleton()`.
 
 ## Example (assuming all code and data are available)
 
@@ -184,12 +184,12 @@ processing_code <- system.file(
 # We pass in the Rmd file in the `processing_code` variable and the names of the data objects it creates (called "cars_over_20")
 # The new package is called "mtcars20"
 datapackage_skeleton(
-  "mtcars20", force = TRUE, 
-  code_files = processing_code, 
-  r_object_names = "cars_over_20", 
-  path = tempdir()) 
+  "mtcars20", force = TRUE,
+  code_files = processing_code,
+  r_object_names = "cars_over_20",
+  path = tempdir())
 
-# 3. Run the preprocessing code to build the cars_over_20 data set 
+# 3. Run the preprocessing code to build the cars_over_20 data set
 # and reproducibly enclose it in the mtcars20 package.
 # packageName is the full path to the package source directory created at step 2.
 # You'll be prompted for a text description (one line) of the changes you're making.
@@ -198,7 +198,7 @@ datapackage_skeleton(
 # "Package built in non-interactive mode". You may update it later.
 package_build(packageName = file.path(tempdir(),"mtcars20"))
 
-# Update the autogenerated roxygen documentation in data-raw/documentation.R. 
+# Update the autogenerated roxygen documentation in data-raw/documentation.R.
 # edit(file.path(tempdir(),"mtcars20","R","mtcars20.R"))
 
 # 4. Rebuild the documentation.
@@ -238,21 +238,21 @@ In order to have portable and reproducible code, you should not use absolute pat
 Instead, `DataPackageR` provides several APIs to access the data package project root directory, the `inst/extdata` subdirectory, and the `data` subdirectory.
 
 ```{r, eval = FALSE}
-# This returns the datapackage source 
-# root directory. 
-# In an R or Rmd processing script this can be used to build a path to a directory that is exteral to the package, for 
+# This returns the datapackage source
+# root directory.
+# In an R or Rmd processing script this can be used to build a path to a directory that is exteral to the package, for
 # example if we are dealing with very large data sets where data cannot be packaged.
 DataPackageR::project_path()
 
-# This returns the   
-# inst/extdata directory. 
+# This returns the
+# inst/extdata directory.
 # Raw data sets that are included in the package should be placed there.
-# They can be read from that location, which is returned by: 
+# They can be read from that location, which is returned by:
 DataPackageR::project_extdata_path()
 
-# This returns the path to the datapackage  
-# data directory. This can be used to access 
-# stored data objects already created and saved in `data` from 
+# This returns the path to the datapackage
+# data directory. This can be used to access
+# stored data objects already created and saved in `data` from
 # other processing scripts.
 DataPackageR::project_data_path()
 ```
@@ -266,7 +266,7 @@ The publication describing the package, (Finak *et al.*, 2018)<!--@10.12688/gate
 The preprint is on [bioRxiv](https://doi.org/10.1101/342907).
 
 
-## Code of conduct 
+## Code of conduct
 
 Please note that this project is released with a [Contributor Code of Conduct](https://github.com/ropensci/DataPackageR/blob/main/CODE_OF_CONDUCT.md).
   By participating in this project you agree to abide by its terms.

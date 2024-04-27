@@ -2,12 +2,12 @@
 context("conditional build")
 test_that("can add a data item", {
 
-  
+
   library(testthat); library(DataPackageR)
   file <- system.file("extdata", "tests", "subsetCars.Rmd",
                       package = "DataPackageR"
   )
-  
+
   expect_null(
     datapackage_skeleton(
       name = "testRSourcing",
@@ -17,9 +17,9 @@ test_that("can add a data item", {
       r_object_names = c("cars_over_20")
     )
   )
-  
+
   package_build(file.path(tempdir(), "testRSourcing"))
-  
+
   path_rmd <- paste0( tempdir(), "/testRSourcing/data-raw" )
   path_rmd <- normalizePath( path_rmd )
   wd_old <- getwd()
@@ -28,9 +28,9 @@ test_that("can add a data item", {
   writeLines(c("---\ntitle: Rmd to test loading of /R functions\n---\n`r test_func(3)`"), fileConn)
   close(fileConn)
   setwd(wd_old)
-  
+
   path_rmd <- normalizePath( file.path( tempdir(), "testRSourcing", "data-raw", "depRmd.Rmd" ) )
-  
+
   path_pkg <- normalizePath( file.path( tempdir(), "testRSourcing" ) )
   yml <- yml_find( path_pkg )
   yml <- yml_add_files( yml, "depRmd.Rmd" )
@@ -46,7 +46,7 @@ test_that("can add a data item", {
   writeLines(c("test_func <- function(x) x^2"), fileConn)
   close(fileConn)
   setwd(wd_old)
-  
+
   package_build(file.path(tempdir(), "testRSourcing"))
   path_rmd <- file.path( tempdir(), "testRSourcing", "inst", "doc" )
   path_rmd <- normalizePath( path_rmd )
