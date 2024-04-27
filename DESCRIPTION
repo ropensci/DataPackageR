@@ -71,8 +71,8 @@ Suggests:
     data.tree,
     withr
 URL:
-    https://github.com/ropensci/DataPackageR/,
+    https://github.com/ropensci/DataPackageR,
     https://docs.ropensci.org/DataPackageR/
 BugReports: https://github.com/ropensci/DataPackageR/issues
-SystemRequirements: pandoc (>= 1.12.3) - http://pandoc.org
+SystemRequirements: pandoc (>= 1.12.3) - https://pandoc.org
 Language: en-US

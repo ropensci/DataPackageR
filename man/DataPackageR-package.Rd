@@ -91,7 +91,7 @@ readLines(list.files(pattern="R", path = file.path(tempdir(),pname,"R"), full = 
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://github.com/ropensci/DataPackageR/}
+  \item \url{https://github.com/ropensci/DataPackageR}
   \item \url{https://docs.ropensci.org/DataPackageR/}
   \item Report bugs at \url{https://github.com/ropensci/DataPackageR/issues}
 }
