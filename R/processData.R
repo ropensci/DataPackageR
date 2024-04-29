@@ -168,7 +168,7 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
         "Built ",
         ifelse(
           sum(object_tally) == length(object_tally),
-          " all datasets!",
+          "all datasets!",
           paste0(sum(object_tally), " of ",
                  length(object_tally), " data sets.")
         )
