@@ -2,31 +2,21 @@
   write.dcf(data_digest, file.path(path, "DATADIGEST"))
 }
 
-.check_dataversion_string <- function(old_data_digest, new_data_digest) {
-  oldwarn <- options("warn")$warn
-  suppressWarnings({
-    oldv <- strsplit(old_data_digest[["DataVersion"]], "\\.")
-    newv <- strsplit(new_data_digest[["DataVersion"]], "\\.")
-    oldv <- lapply(oldv, as.numeric)[[1]]
-    newv <- lapply(newv, as.numeric)[[1]]
-  })
-  if (any(is.na(oldv)) | any(is.na(newv))) {
-    .multilog_fatal(paste0(
-      "Invalid DataVersion string found ",
-      old_data_digest[["DataVersion"]],
-      " and ", new_data_digest[["DataVersion"]]
-    ))
-  }
-  greater <- apply(t(cbind(oldv, newv)), 2, function(x) x[2] > x[1])
-  equal <- apply(t(cbind(oldv, newv)), 2, function(x) x[2] == x[1])
-  list(
-    isgreater = ((greater[1]) | (equal[1] & greater[2]) |
-      (equal[1] & equal[2] &
-        greater[3])),
-    isequal = all(equal),
-    isless = !((greater[1]) | (equal[1] & greater[2]) |
-      (equal[1] & equal[2] & greater[3])) & !all(equal)
-  )
+#' Check dataversion string
+#'
+#' @param new_data_digest New data digest list with element named "DataVersion"
+#'   containing a valid DataVersion
+#' @param old_data_digest Old data digest list with element named "DataVersion"
+#'   containing a valid DataVersion
+#' @returns Character, ("lower", "equal", or "higher"), where new DataVersion is
+#'   ____ relative to old DataVersion. version
+#' @noRd
+.check_dataversion_string <- function(new_data_digest, old_data_digest) {
+  new <- validate_DataVersion(new_data_digest[["DataVersion"]])
+  old <- validate_DataVersion(old_data_digest[["DataVersion"]])
+  comp <- utils::compareVersion(new, old)
+  txt <- c(lower = -1L, equal = 0L, higher = 1L)
+  names(txt[which(txt == comp)])
 }
 
 .compare_digests <- function(old_digest, new_digest) {

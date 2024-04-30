@@ -393,26 +393,26 @@ do_digests <- function(pkg_dir, dataenv) {
                pkg_path = pkg_dir)
     return(TRUE)
   }
-  string_check <- .check_dataversion_string(
-    old_data_digest,
-    new_data_digest
+  check_new_DataVersion <- .check_dataversion_string(
+    new_data_digest,
+    old_data_digest
   )
   can_write <- FALSE
   same_digests <- .compare_digests(old_data_digest, new_data_digest)
-  if ((! same_digests) && string_check$isgreater){
+  if ((! same_digests) && check_new_DataVersion == "higher"){
     # not sure how this would actually happen
     err_msg <- 'Digest(s) differ but DataVersion had already been incremented'
     .multilog_fatal(err_msg)
     stop(err_msg, call. = FALSE)
   }
-  if (same_digests && string_check$isequal) {
+  if (same_digests && check_new_DataVersion == "equal") {
     can_write <- TRUE
     .multilog_trace(paste0(
       "Processed data sets match ",
       "existing data sets at version ",
       new_data_digest[["DataVersion"]]
     ))
-  } else if ((! same_digests) && string_check$isequal) {
+  } else if ((! same_digests) && check_new_DataVersion == "equal") {
     updated_version <- .increment_data_version(
       pkg_desc,
       new_data_digest
@@ -432,7 +432,7 @@ do_digests <- function(pkg_dir, dataenv) {
       "string incremented automatically to ",
       new_data_digest[["DataVersion"]]
     ))
-  } else if (same_digests && string_check$isgreater) {
+  } else if (same_digests && check_new_DataVersion == "higher") {
     # edge case that shouldn't happen
     # but we test for it in the test suite
     can_write <- TRUE
@@ -440,7 +440,7 @@ do_digests <- function(pkg_dir, dataenv) {
       "Data hasn't changed but the ",
       "DataVersion has been bumped."
     ))
-  } else if (string_check$isless && same_digests) {
+  } else if (check_new_DataVersion == "lower" && same_digests) {
     # edge case that shouldn't happen but
     # we test for it in the test suite.
     .multilog_trace(paste0(
@@ -452,7 +452,7 @@ do_digests <- function(pkg_dir, dataenv) {
                  validate_DataVersion(new_data_digest[["DataVersion"]])
     )
     can_write <- TRUE
-  } else if (string_check$isless && ! same_digests) {
+  } else if (check_new_DataVersion == "lower" && ! same_digests) {
     updated_version <- .increment_data_version(
       pkg_desc,
       new_data_digest
