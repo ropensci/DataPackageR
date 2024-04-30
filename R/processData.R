@@ -245,8 +245,7 @@ validate_yml <- function(pkg_dir){
     .multilog_fatal("YAML is missing 'configuration:' entry")
     stop("exiting", call. = FALSE)
   }
-  if (!all(c("files", "objects") %in%
-           purrr::map(ymlconf, names)[["configuration"]])) {
+  if (!all(c("files", "objects") %in% names(ymlconf$configuration))) {
     .multilog_fatal("YAML is missing files: and objects: entries")
     stop("exiting", call. = FALSE)
   }
@@ -576,8 +575,7 @@ do_doc <- function(pkg_dir, dataenv) {
       full.names = TRUE,
       recursive = FALSE
     )
-  purrr::map(
-    htmlfiles_for_vignettes,
+  lapply(htmlfiles_for_vignettes,
     function(x) {
       file.copy(x,
         file.path(
@@ -589,8 +587,7 @@ do_doc <- function(pkg_dir, dataenv) {
       )
     }
   )
-
-  purrr::map(
+  lapply(
     pdffiles_for_vignettes,
     function(x) {
       file.copy(x,
@@ -603,7 +600,7 @@ do_doc <- function(pkg_dir, dataenv) {
       )
     }
   )
-  utils::capture.output(purrr::map(
+  lapply(
     rmdfiles_for_vignettes,
     function(x) {
       file.copy(x,
@@ -615,14 +612,14 @@ do_doc <- function(pkg_dir, dataenv) {
         overwrite = TRUE
       )
     }
-  ))
+  )
   vignettes_to_process <- list.files(
     path = file.path(dir, "vignettes"),
     pattern = "Rmd$",
     full.names = TRUE,
     recursive = FALSE
   )
-  write_me_out <- purrr::map(vignettes_to_process, function(x) {
+  write_me_out <- lapply(vignettes_to_process, function(x) {
     title <- "Default Vignette Title. Add yaml title: to your document"
     thisfile <- read_file(x)
     stripped_yaml <- gsub("---\\s*\n.*\n---\\s*\n", "", thisfile)

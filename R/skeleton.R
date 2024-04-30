@@ -1,8 +1,7 @@
-#' @importFrom purrr map
 #' @importFrom usethis create_package
 .codefile_validate <- function(code_files) {
   # do they exist?
-  if (! all(unlist(purrr::map(code_files, file.exists)))){
+  if (! all(file.exists(code_files))){
     stop("code_files do not all exist!")
   }
   # are the .Rmd files?

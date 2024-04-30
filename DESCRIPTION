@@ -45,7 +45,6 @@ Imports:
     knitr,
     pkgbuild,
     pkgload,
-    purrr,
     rmarkdown,
     roxygen2,
     rprojroot,
