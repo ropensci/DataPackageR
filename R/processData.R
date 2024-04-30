@@ -95,8 +95,7 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
     if (deps) assign(x = "ENVS", value = ENVS, dataenv)
     .multilog_trace(paste0(
       "Processing ", i, " of ",
-      length(r_files), ": ", r_files[i],
-      "\n"
+      length(r_files), ": ", r_files[i]
     ))
     # config file goes in the root render the r and rmd files
     ## First we spin then render if it's an R file
