@@ -1,11 +1,10 @@
 
 
-# function .doc_autogen() automates the creation of a basic roxygen template for the package and each object in objects_to_keep
-# arguments are pname and ds2kp, normally defined in datasets.R
-# pname is name of package, ds2kp is list of objects to save in data package
+# function .doc_autogen() automates the creation of a basic roxygen template for
+# the package and each object in objects_to_keep arguments are pname and ds2kp,
+# normally defined in datasets.R pname is name of package, ds2kp is list of
+# objects to save in data package
 .doc_autogen <- function(pname, ds2kp, env, path, name = "documentation.R") {
-  links <- c(pname, ds2kp)
-  linksrox <- paste0("\\link{", links, "}")
 
   # create default file to be edited and
   # renamed manually by user, who then rebuilds package
@@ -35,19 +34,15 @@
             "data sets in this data package"
           ),
           "    and/or DataPackageR::load_all",
-          "_datasets() to load them.",
-          "@seealso",
-          linksrox[2:length(links)]
+          "_datasets() to load them."
         )
       ),
       "'_PACKAGE'\n\n\n"
     ), con
   )
 
-  # Cycle through the rest of the files listed
-  # in 'links' and create Roxygen
-  # documentation for each one
-  for (ds in links[2:length(links)]) {
+  # Cycle through the objects and create Roxygen documentation for each one
+  for (ds in ds2kp) {
     type <- class(get(ds, envir = env))[1]
     writeLines(
       .rc(c(
@@ -79,12 +74,7 @@
             paste0(
               "@source The data comes from",
               "________________________."
-            ),
-            "@seealso",
-            # dataset being documented
-            # should not list itself in its
-            # seealsos
-            linksrox[which(links != ds)]
+            )
           )
         ),
         "NULL\n\n\n"
