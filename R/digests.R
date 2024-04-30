@@ -20,35 +20,36 @@
 }
 
 .compare_digests <- function(old_digest, new_digest) {
-  # Returns FALSE when any exisiting data has is changed, new data is added, or data is removed, else return TRUE.
-  # Use .multilog_warn when there is a change and multilog_debug when new data is added.
+  # Returns FALSE when any existing data has is changed, new data is added, or
+  # data is removed, else return TRUE. Use .multilog_trace for all changes since
+  # this is standard behavior during package re-build, and changes are already
+  # output to the console by .qualify_changes()
 
-  existed <- names(new_digest)[names(new_digest) %in% names(old_digest)]
-  added <- setdiff(names(new_digest), existed)
-  removed <- names(old_digest)[!names(old_digest) %in% names(new_digest)]
-  existed <- existed[existed != "DataVersion"]
-
-  if(length(existed) > 0){
-    changed <- names(new_digest)[ unlist(new_digest[existed]) != unlist(old_digest[existed]) ]
-    if(length(changed) > 0){
-      for(name in changed){
-        .multilog_info(paste(name, "has changed."))
-      }
-      return(FALSE)
-    }
+  old_digest[['DataVersion']] <- NULL
+  new_digest[['DataVersion']] <- NULL
+  old_digest <- unlist(old_digest)
+  new_digest <- unlist(new_digest)
+  added <- setdiff(names(new_digest), names(old_digest))
+  removed <- setdiff(names(old_digest), names(new_digest))
+  common <- intersect(names(old_digest), names(new_digest))
+  changed <- common[new_digest[common] != old_digest[common]]
+  out <- TRUE
+  for(name in changed){
+    .multilog_trace(paste(name, "has changed."))
+    out <- FALSE
   }
 
   for(name in removed){
-    .multilog_info(paste(name, "was removed."))
-    return(FALSE)
+    .multilog_trace(paste(name, "was removed."))
+    out <- FALSE
   }
 
   for(name in added){
-    .multilog_info(paste(name, "was added."))
-    return(FALSE)
+    .multilog_trace(paste(name, "was added."))
+    out <- FALSE
   }
 
-  return(TRUE)
+  return(out)
 }
 
 .combine_digests <- function(new, old) {
