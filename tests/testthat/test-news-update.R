@@ -11,7 +11,8 @@ test_that("news file is created", {
     r_object_names = c("cars_over_20")
   )
   package_build(file.path(tempdir(), "subsetCars"))
-  expect_equal(readLines(file.path(tempdir(), "subsetCars", "NEWS.md"))[3], "Package built in non-interactive mode") # nolint
+  news_lines <- readLines(file.path(tempdir(), "subsetCars", "NEWS.md"))
+  expect_true(sum(grepl("Package built in non-interactive mode", news_lines)) == 1) # nolint
   unlink(file.path(tempdir(), "subsetCars"),
     recursive = TRUE,
     force = TRUE

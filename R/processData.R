@@ -384,6 +384,9 @@ do_digests <- function(pkg_dir, dataenv) {
                     interact = getOption(
                       "DataPackageR_interact",
                       interactive()))
+    # this will write list of first time added objects to NEWS
+    changed_objects <- .qualify_changes(new_data_digest, list())
+    .update_news_changed_objects(changed_objects)
     .save_data(new_data_digest,
                pkg_desc$get('DataVersion'),
                ls(dataenv),
