@@ -98,7 +98,7 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Dave Slager \email{dslager@scharp.org} (\href{https://orcid.org/0000-0003-2525-2039}{ORCID}) [contributor]
+\strong{Maintainer}: Dave Slager \email{dslager@fredhutch.org} (\href{https://orcid.org/0000-0003-2525-2039}{ORCID}) [contributor]
 
 Authors:
 \itemize{

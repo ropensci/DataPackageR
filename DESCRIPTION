@@ -1,77 +1,65 @@
-Package: DataPackageR
 Type: Package
+Package: DataPackageR
 Title: Construct Reproducible Analytic Data Sets as R Packages
-Authors@R:
-    c(person(given = "Greg", family = "Finak",
-             role = c("aut","cph"),
-             email = "greg.finak@gmail.com",
-             comment = "Original author and creator of DataPackageR"),
-      person(given = "Paul", family = "Obrecht",
-             role = c("ctb")),
-      person(given = "Ellis", family = "Hughes",
-              role = c("ctb"),
-              email = "ellishughes@live.com",
-              comment = c(ORCID = "0000-0003-0637-4436")),
-      person(given = "Jimmy", family = "Fulp",
-              role = c("ctb"),
-              email = "williamjfulp@gmail.com"),
-      person(given = "Marie", family = "Vendettuoli",
-              role = c("ctb"),
-              comment = c(ORCID = "0000-0001-9321-1410")),
-      person(given = "Dave", family = "Slager",
-              role = c("ctb", "cre"),
-              email = "dslager@scharp.org",
-              comment = c(ORCID = "0000-0003-2525-2039")),
-      person(given = "Jason", family = "Taylor",
-              role = c("ctb"),
-              email = "jmtaylor@fredhutch.org"),
-      person(given = "Kara", family = "Woo",
-              role = "rev",
-              comment = "Kara reviewed the package for rOpenSci, see <https://github.com/ropensci/onboarding/issues/230>"),
-      person(given = "William", family = "Landau",
-              role = "rev",
-      comment = "William reviewed the package for rOpenSci, see <https://github.com/ropensci/onboarding/issues/230>"))
 Version: 0.15.9.9000
+Authors@R:c(
+    person("Greg", "Finak", , "greg.finak@gmail.com", role = c("aut", "cph"),
+           comment = "Original author and creator of DataPackageR"),
+    person("Paul", "Obrecht", role = "ctb"),
+    person("Ellis", "Hughes", , "ellishughes@live.com", role = "ctb",
+           comment = c(ORCID = "0000-0003-0637-4436")),
+    person("Jimmy", "Fulp", , "williamjfulp@gmail.com", role = "ctb"),
+    person("Marie", "Vendettuoli", role = "ctb",
+           comment = c(ORCID = "0000-0001-9321-1410")),
+    person("Dave", "Slager", , "dslager@fredhutch.org", role = c("ctb", "cre"),
+           comment = c(ORCID = "0000-0003-2525-2039")),
+    person("Jason", "Taylor", , "jmtaylor@fredhutch.org", role = "ctb"),
+    person("Kara", "Woo", role = "rev",
+           comment = "Kara reviewed the package for rOpenSci, see <https://github.com/ropensci/onboarding/issues/230>"),
+    person("William", "Landau", role = "rev",
+           comment = "William reviewed the package for rOpenSci, see <https://github.com/ropensci/onboarding/issues/230>")
+  )
 Description: A framework to help construct R data packages in a
-  reproducible manner. Potentially time consuming processing of
-  raw data sets into analysis ready data sets is done in a reproducible
-  manner and decoupled from the usual 'R CMD build' process so that
-  data sets can be processed into R objects in the data package and
-  the data package can then be shared, built, and installed by others
-  without the need to repeat computationally costly data processing.
-  The package maintains data provenance by turning the data processing
-  scripts into package vignettes, as well as enforcing documentation
-  and version checking of included data objects. Data packages can be
-  version controlled on 'GitHub', and used to share data for manuscripts,
-  collaboration and reproducible research.
+    reproducible manner. Potentially time consuming processing of raw data
+    sets into analysis ready data sets is done in a reproducible manner
+    and decoupled from the usual 'R CMD build' process so that data sets
+    can be processed into R objects in the data package and the data
+    package can then be shared, built, and installed by others without the
+    need to repeat computationally costly data processing.  The package
+    maintains data provenance by turning the data processing scripts into
+    package vignettes, as well as enforcing documentation and version
+    checking of included data objects. Data packages can be version
+    controlled on 'GitHub', and used to share data for manuscripts,
+    collaboration and reproducible research.
 License: MIT + file LICENSE
-Depends: R (>= 3.5.0)
-Imports:
-    digest,
-    knitr,
-    rmarkdown,
-    desc,
-    yaml,
-    purrr,
-    roxygen2,
-    futile.logger,
-    rprojroot,
-    usethis,
-    crayon,
-    pkgbuild,
-    pkgload
-VignetteBuilder: knitr
-RoxygenNote: 7.3.1
-Encoding: UTF-8
-Suggests:
-    spelling,
-    testthat,
-    covr,
-    data.tree,
-    withr
-URL:
-    https://github.com/ropensci/DataPackageR,
+URL:https://github.com/ropensci/DataPackageR,
     https://docs.ropensci.org/DataPackageR/
 BugReports: https://github.com/ropensci/DataPackageR/issues
-SystemRequirements: pandoc (>= 1.12.3) - https://pandoc.org
+Depends:
+    R (>= 3.5.0)
+Imports:
+    crayon,
+    desc,
+    digest,
+    futile.logger,
+    knitr,
+    pkgbuild,
+    pkgload,
+    purrr,
+    rmarkdown,
+    roxygen2,
+    rprojroot,
+    usethis,
+    yaml
+Suggests:
+    covr,
+    data.tree,
+    spelling,
+    testthat,
+    withr
+VignetteBuilder:
+    knitr
+Encoding: UTF-8
 Language: en-US
+RoxygenNote: 7.3.1
+SystemRequirements: pandoc - https://pandoc.org

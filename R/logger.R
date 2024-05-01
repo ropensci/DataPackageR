@@ -39,6 +39,10 @@ select_console_appender <- function(){
 
 .multilog_setup <- function(LOGFILE = NULL) {
   if (!is.null(LOGFILE)) {
+    if (file.exists(LOGFILE)){
+      # initial newline to separate from previous run log entries
+      cat("\n", file = LOGFILE, append = TRUE)
+    }
     flog.logger(
       name = "logfile",
       appender = appender.file(LOGFILE),

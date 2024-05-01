@@ -95,8 +95,7 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
     if (deps) assign(x = "ENVS", value = ENVS, dataenv)
     .multilog_trace(paste0(
       "Processing ", i, " of ",
-      length(r_files), ": ", r_files[i],
-      "\n"
+      length(r_files), ": ", r_files[i]
     ))
     # config file goes in the root render the r and rmd files
     ## First we spin then render if it's an R file
@@ -168,7 +167,7 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
         "Built ",
         ifelse(
           sum(object_tally) == length(object_tally),
-          " all datasets!",
+          "all datasets!",
           paste0(sum(object_tally), " of ",
                  length(object_tally), " data sets.")
         )
@@ -520,32 +519,18 @@ do_doc <- function(pkg_dir, dataenv) {
       new = missing_doc
     )
     file.info("Writing merged docs.")
-    local({
-      on.exit(close(docfile))
-      docfile <- file(
-        file.path(pkg_dir, 'data-raw', "documentation.R"),
-        open = "w"
-      )
-      for (i in seq_along(doc_parsed)) {
-        writeLines(text = doc_parsed[[i]], con = docfile)
-      }
-    })
+    writeLines(Reduce(c, doc_parsed),
+               file.path(pkg_dir, 'data-raw', "documentation.R")
+    )
   }
   # Partial build if enabled=FALSE for
   # any file We've disabled an object but don't
   # want to overwrite its documentation
   # or remove it The new approach just builds
   # all the docs independent of what's enabled.
-  save_docs <- do.call(c, doc_parsed)
-  docfile <- file(file.path(pkg_dir, "R",
-                            pattern = paste0(pkg_name, ".R")
-  ),
-  open = "w"
+  writeLines(Reduce(c, doc_parsed),
+             file.path(pkg_dir, "R", paste0(pkg_name, ".R"))
   )
-  for (i in seq_along(save_docs)) {
-    writeLines(text = save_docs[[i]], con = docfile)
-  }
-  close(docfile)
   .multilog_trace(
     paste0(
       "Copied documentation to ",
