@@ -16,18 +16,3 @@ comments <- function(refs) {
   }
   com
 }
-
-#' @importFrom stringr str_trim
-read.description <- function(file) {
-  dcf <- read.dcf(file, keep.white = "Authors@R")
-  dcf_list <- stats::setNames(as.list(dcf[1, ]), colnames(dcf))
-  lapply(dcf_list, stringr::str_trim)
-}
-
-read_pkg_description <- function(path) {
-  desc_path <- file.path(path, "DESCRIPTION")
-  if (!file.exists(desc_path)) {
-    stop("Can't find DESCRIPTION")
-  }
-  read.description(desc_path)
-}

@@ -315,9 +315,54 @@ validate_package_skeleton <- function(pkg_dir){
       stop(err_msg)
     }
   }
+  # check we can read a DESCRIPTION file
+  d <- desc::desc(pkg_dir)
   invisible(pkg_dir)
 }
 
+#' Validate data package description
+#'
+#' @param pkg_dir The top-level directory path for the data package
+#'
+#' @returns validated description object, cf. [desc::desc()]
+#' @noRd
+validate_description <- function(pkg_dir){
+  d <- desc::desc(pkg_dir)
+  dv <- d$get('DataVersion')
+  if (is.na(dv)) {
+    err_msg <- paste0(
+      "DESCRIPTION file must have a DataVersion",
+      " line. i.e. DataVersion: 0.2.0"
+    )
+    .multilog_fatal(err_msg)
+    stop(err_msg, call. = FALSE)
+  }
+  validate_DataVersion(dv)
+  d
+}
+
+#' Validate and return DataVersion
+#'
+#' @param DataVersion Character, e.g. '0.1.1', or a valid base R object of class 'package_version'
+#'
+#' @returns Class 'character', the validated DataVersion, e.g. '0.1.1'
+#' @noRd
+validate_DataVersion <- function(DataVersion){
+  # allow input as package_version
+  if (inherits(DataVersion, 'package_version')){
+    DataVersion <- as.character(DataVersion)
+  }
+  stopifnot(! is.null(DataVersion),
+            is.character(DataVersion),
+            length(DataVersion) == 1,
+            ! is.na(DataVersion)
+  )
+  # base::package_version() does additional version-related validation here
+  dv <- package_version(DataVersion)
+  # error out if it is not a valid 3-number version (major, minor, patch)
+  stopifnot(! is.na(dv[1, 1:3]))
+  as.character(dv)
+}
 
 #' do_digests() function extracted out from DataPackageR
 #'
@@ -329,13 +374,11 @@ validate_package_skeleton <- function(pkg_dir){
 do_digests <- function(pkg_dir, dataenv) {
   # Digest each object
   old_data_digest <- .parse_data_digest(pkg_dir = pkg_dir)
-  description_file <- normalizePath(file.path(pkg_dir, "DESCRIPTION"),
-                                    winslash = "/"
-  )
-  pkg_description <- try(read.description(file = description_file),
-                         silent = TRUE
-  )
-  new_data_digest <- .digest_data_env(ls(dataenv), dataenv, pkg_description)
+  pkg_desc <- validate_description(pkg_dir)
+  new_data_digest <- .digest_data_env(
+    ls(dataenv),
+    dataenv,
+    pkg_desc$get('DataVersion'))
   .newsfile()
   if (is.null(old_data_digest)){
     # first time data digest & early return
@@ -344,7 +387,7 @@ do_digests <- function(pkg_dir, dataenv) {
                       "DataPackageR_interact",
                       interactive()))
     .save_data(new_data_digest,
-               pkg_description,
+               pkg_desc$get('DataVersion'),
                ls(dataenv),
                dataenv,
                old_data_digest = NULL,
@@ -372,7 +415,7 @@ do_digests <- function(pkg_dir, dataenv) {
     ))
   } else if ((! same_digests) && string_check$isequal) {
     updated_version <- .increment_data_version(
-      pkg_description,
+      pkg_desc,
       new_data_digest
     )
     #TODO what objects have changed?
@@ -382,7 +425,7 @@ do_digests <- function(pkg_dir, dataenv) {
                     interact = getOption("DataPackageR_interact", interactive())
     )
     .update_news_changed_objects(changed_objects)
-    pkg_description <- updated_version$pkg_description
+    pkg_desc <- updated_version$pkg_description
     new_data_digest <- updated_version$new_data_digest
     can_write <- TRUE
     .multilog_trace(paste0(
@@ -406,11 +449,13 @@ do_digests <- function(pkg_dir, dataenv) {
       "old but data are unchanged"
     ))
     new_data_digest <- old_data_digest
-    pkg_description[["DataVersion"]] <- new_data_digest[["DataVersion"]]
+    pkg_desc$set('DataVersion',
+                 validate_DataVersion(new_data_digest[["DataVersion"]])
+    )
     can_write <- TRUE
   } else if (string_check$isless && ! same_digests) {
     updated_version <- .increment_data_version(
-      pkg_description,
+      pkg_desc,
       new_data_digest
     )
     # TODO what objects have changed?
@@ -420,13 +465,13 @@ do_digests <- function(pkg_dir, dataenv) {
     )
     .update_news_changed_objects(changed_objects)
 
-    pkg_description <- updated_version$pkg_description
+    pkg_desc <- updated_version$pkg_description
     new_data_digest <- updated_version$new_data_digest
     can_write <- TRUE
   }
   if (can_write) {
     .save_data(new_data_digest,
-               pkg_description,
+               pkg_desc$get('DataVersion'),
                ls(dataenv),
                dataenv,
                old_data_digest = old_data_digest,

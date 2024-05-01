@@ -80,15 +80,9 @@
   return(digest)
 }
 
-.digest_data_env <- function(object_names, dataenv, pkg_description) {
-  if (is.null(pkg_description[["DataVersion"]])) {
-    .multilog_fatal(paste0(
-      "DESCRIPTION file must have a DataVersion",
-      " line. i.e. DataVersion: 0.2.0"
-    ))
-  }
+.digest_data_env <- function(object_names, dataenv, DataVersion) {
   new_data_digest <- list()
-  new_data_digest[["DataVersion"]] <- pkg_description[["DataVersion"]]
+  new_data_digest[["DataVersion"]] <- validate_DataVersion(DataVersion)
   data_objects <- lapply(object_names, function(obj) {
     digest::digest(dataenv[[obj]])
   })
