@@ -17,16 +17,18 @@ test_that("data changes but version out of sync", {
     )
   )
   package_build(file.path(tempdir(), "subsetCars"))
+  news_lines <- readLines(file.path(tempdir(), "subsetCars","NEWS.md"))
+  expect_true(sum(grepl("Added: cars_over_20", news_lines)) == 1)
   config <- yml_find(file.path(tempdir(), "subsetCars"))
   config <- yml_add_files(config, "extra.Rmd")
   config <- yml_add_objects(config, "pressure")
   file.copy(file2, file.path(tempdir(), "subsetCars", "data-raw"))
   yml_write(config)
-  pkg <- desc::desc(file.path(tempdir(), "subsetCars"))
-  pkg$set("DataVersion", "0.0.0")
-  pkg$write()
   package_build(file.path(tempdir(), "subsetCars"))
-  expect_equal(grep("Changed: cars_over_20",readLines(file.path(tempdir(), "subsetCars","NEWS.md"))),4)
+  news_lines <- readLines(file.path(tempdir(), "subsetCars","NEWS.md"))
+  expect_false(any(grepl("Changed: cars_over_20", news_lines)))
+  expect_false(any(grepl("Deleted: cars_over_20", news_lines)))
+  expect_true(sum(grepl("Added: pressure", news_lines)) == 1)
   unlink(file.path(tempdir(), "subsetCars"),
     recursive = TRUE,
     force = TRUE

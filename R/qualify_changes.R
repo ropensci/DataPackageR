@@ -1,20 +1,14 @@
 .qualify_changes <- function(new, old) {
-  new_names <- setdiff(names(new),"DataVersion")
-  old_names <- setdiff(names(old),"DataVersion")
-  added <- NULL
-  deleted <- NULL
-  changed <- NULL
-  added <- setdiff(new_names,old_names)
-  deleted <- setdiff(old_names,new_names)
-  common <- intersect(new_names,old_names)
+  # don't need DataVersion here
+  new[["DataVersion"]] <- NULL
+  old[["DataVersion"]] <- NULL
+  new <- unlist(new)
+  old <- unlist(old)
+  added <- setdiff(names(new), names(old))
+  deleted <- setdiff(names(old), names(new))
+  common <- intersect(names(new), names(old))
   #test for equality
-  changed <- purrr::keep(
-    purrr::map2(new[common], old[common], `!=`),
-    .p = function(x) {
-      x == FALSE
-    }
-  )
-  changed <- names(changed)
+  changed <- common[new[common] != old[common]]
   list(added = added,
        deleted = deleted,
        changed = changed)
