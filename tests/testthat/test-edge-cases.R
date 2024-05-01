@@ -158,6 +158,8 @@ test_that("validate_DataVersion works as expected", {
   expect_error(validate_DataVersion(1.0))
   expect_error(validate_DataVersion(""))
   expect_equal(validate_DataVersion('0.1.0'), '0.1.0')
+  # needs to be a 3-part version
+  expect_error(validate_DataVersion('1.0'))
   # works as expected on valid input
   expect_equal(
     validate_DataVersion(package_version('0.1.0')),

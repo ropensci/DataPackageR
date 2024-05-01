@@ -358,7 +358,10 @@ validate_DataVersion <- function(DataVersion){
             ! is.na(DataVersion)
   )
   # base::package_version() does additional version-related validation here
-  as.character(package_version(DataVersion))
+  dv <- package_version(DataVersion)
+  # error out if it is not a valid 3-number version (major, minor, patch)
+  stopifnot(! is.na(dv[1, 1:3]))
+  as.character(dv)
 }
 
 #' do_digests() function extracted out from DataPackageR
