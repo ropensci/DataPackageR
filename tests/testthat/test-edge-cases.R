@@ -175,10 +175,45 @@ test_that("validate_DataVersion works as expected", {
 })
 
 test_that(".check_dataversion_string works as expected", {
-  suppressWarnings(expect_error(DataPackageR:::.check_dataversion_string(
-    list(DataVersion = "1.1.1"),
-    list(DataVersion = "1.a.1")
-  )))
+  expect_error(
+    DataPackageR:::.check_dataversion_string(
+      list(DataVersion = "1.1.1"),
+      list(DataVersion = NULL)
+    )
+  )
+  expect_error(
+    DataPackageR:::.check_dataversion_string(
+      list(DataVersion = "1.1.1"),
+      list(DataVersion = NA_character_)
+    )
+  )
+  expect_error(
+    DataPackageR:::.check_dataversion_string(
+      list(DataVersion = "1.1.1"),
+      list(DataVersion = "1.a.1")
+    )
+  )
+  expect_equal(
+    DataPackageR:::.check_dataversion_string(
+      list(DataVersion = "1.0.1"),
+      list(DataVersion = "1.0.1")
+    ),
+    "equal"
+  )
+  expect_equal(
+    DataPackageR:::.check_dataversion_string(
+      list(DataVersion = "1.0.1"),
+      list(DataVersion = "1.1.1")
+    ),
+    "lower"
+  )
+  expect_equal(
+    DataPackageR:::.check_dataversion_string(
+      list(DataVersion = "1.0.2"),
+      list(DataVersion = "1.0.1")
+    ),
+    "higher"
+  )
 })
 
 
