@@ -49,6 +49,7 @@ Imports:
     roxygen2,
     rprojroot,
     usethis,
+    utils,
     yaml
 Suggests:
     covr,
