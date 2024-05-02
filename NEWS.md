@@ -1,5 +1,58 @@
 # DataPackageR (development version)
 
+## Bug fixes
+
+* Throw error if data object name is same as package name. Fixes (#62)
+* Fix triplicate warnings when data version changes (#128)
+* Fix bug where automatic updates to NEWS.md and the log file did not reflect the actual changes to data objects (#67)
+  - The actual data packaging and versioning behavior was as intended, but now the NEWS.md and log file reflect that behavior
+* Remove inconsistently auto-generated 'see also' links from package and data object help files
+
+## Significant user-facing changes
+
+* `document()` now defaults to `install = FALSE`, like `package_build()` (#130)
+
+## Minor user-facing improvements
+
+* Tweaks to PDF manual and vignette index titles
+* Tweaks to spacing in console outputs and log file
+* Suppress repetitive log file lines about updating NEWS.md
+* Remove `assertthat`, `devtools`, `stringr`, and `purrr` from Imports
+* Add `pkgbuild` and `pkgload` to Imports
+* Move `withr` from Imports to Suggests
+* Make some long-deprecated functions officially Defunct
+  - `dataVersion()`, renamed years ago to `data_version()`
+  - `datapackage.skeleton()`, renamed years ago to `datapackage_skeleton()`
+  - `keepDataObjects()`
+
+## Internal improvements
+
+* Refactor and split up internal omnibus function `DataPackageR()`
+  - New internal functions
+    - `do_doc()`
+    - `do_digests()`
+    - `validate_pkg_name()`
+    - `validate_package_skeleton()`
+    - `validate_DataVersion()`
+    - `validate_description()`
+    - `validate_yml()`
+    - `get_yml_objects()`
+    - `get_yml_r_files()`
+  - Deleted internal functions
+    - `read.description()`, now uses `desc::desc()`
+    - `read_pkg_description()`, now uses `desc::desc()`
+    - `comment()`, now uses `roxygen2::parse_file()`
+  - Simplify internal functions
+    - `.increment_data_version()`
+    - `.digest_data_env()`
+    - `.save_data()`
+    - `.doc_parse()`
+    - `.check_dataversion_string()`
+  - Use base R `compareVersion()` and class `package_version` to simplify code involving the DataVersion and do additional sanity checks
+* Miscellaneous cleanup and maintenance
+* Make unit tests more independent from each other
+
+
 # DataPackageR 0.15.9
 
 ## Bug fixes
