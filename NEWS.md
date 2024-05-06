@@ -64,7 +64,6 @@
 * Close a file connection, suppressing warnings about orphaned connections
 * Fix broken test that led to archiving on CRAN
 * Fix package documentation method for data packages and DataPackageR itself (r-lib/roxygen2#1491)
-* Fix tests for compatibility with usethis >1.5.2
 
 ## Minor improvements
 
