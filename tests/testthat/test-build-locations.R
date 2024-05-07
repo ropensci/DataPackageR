@@ -42,3 +42,32 @@ test_that("Error on data pkg dirname different from data pkg name", {
                    "name of the data package directory")
   expect_error(package_build(file.path(td, not_sn)), err_msg)
 })
+
+test_that("properly handle relative render_root path from yaml config", {
+  # A lightly modified version of Jason's reprex
+  withr::with_tempdir({
+    datapackage_skeleton("new")
+
+    utils::write.csv(data.frame(x=1:10),
+              file.path('new', 'inst', 'extdata', 'ext.csv'),
+              row.names=F)
+
+    x <- "x <- read.csv(file.path('inst', 'extdata', 'ext.csv'))"
+    writeLines(x, file.path('new', 'data-raw', 'x.R'))
+
+    config <- yml_add_files("new", "x.R")
+    config <- yml_add_objects(config, "x")
+    config <- yml_write(config, "new")
+
+    yml <- yaml::read_yaml(file.path("new", "datapackager.yml"))
+    yml$configuration$render_root$tmp <- NULL
+    yml$configuration$render_root <- "./"
+    yaml::write_yaml(yml, file.path("new", "datapackager.yml"))
+
+    expect_error(package_build())
+
+    withr::with_dir('new', {
+      expect_no_error(package_build())
+    })
+  })
+})

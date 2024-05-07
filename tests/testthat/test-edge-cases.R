@@ -298,7 +298,7 @@ test_that("local edge case block 8", {
          recursive = TRUE
   )
   suppressWarnings(expect_error(yml_list_objects(td_foo)))
-  expect_false(DataPackageR:::.validate_render_root(file.path(td, 'foobar')))
+  expect_error(DataPackageR:::.validate_render_root(file.path(td, 'foobar')))
   suppressWarnings(expect_error(
     DataPackageR:::yml_add_files("subsetCars", "foo.rmd")
   ))

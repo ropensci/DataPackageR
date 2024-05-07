@@ -1,18 +1,15 @@
 .validate_render_root <- function(x) {
-  # catch an error if it doesn't exist
-  render_root <-
-    try(normalizePath(x,
-      mustWork = TRUE,
-      winslash = "/"
-    ), silent = TRUE)
-  if (inherits(render_root, "try-error")) {
-    .multilog_error(paste0("render_root  = ", x, " doesn't exist."))
-    # try creating, even if it's an old temp dir.
-    # This isn't ideal. Would like to rather say it's a temporary
-    # directory and use the current one..
-    return(FALSE)
+  # catch an error if it doesn't exist, otherwise return normalized path
+  # important for handling relative paths in a rmarkdown::render() context
+  if (! dir.exists(x)){
+    .multilog_error(paste0("render_root = ", x, " doesn't exist"))
+    stop(paste0("render_root = ", x, " doesn't exist"))
   }
-  return(TRUE)
+  normalizePath(x, winslash = "/")
+  # old comments below have been retained:
+  # try creating, even if it's an old temp dir.
+  # This isn't ideal. Would like to rather say it's a temporary
+  # directory and use the current one..
 }
 
 
@@ -62,7 +59,7 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
   # get vector of R and Rmd files from validated YAML
   r_files <- file.path(pkg_dir, 'data-raw', get_yml_r_files(ymlconf))
   objects_to_keep <- get_yml_objects(ymlconf)
-  render_root <- .get_render_root(ymlconf)
+  render_root <- .validate_render_root(.get_render_root(ymlconf))
 
   # The test for a valid DESCRIPTION here is no longer needed since
   # we use proj_set().
@@ -263,13 +260,7 @@ validate_yml <- function(pkg_dir){
     stop(err_msg, call. = FALSE)
   }
   render_root <- .get_render_root(ymlconf)
-  if (!.validate_render_root(render_root)) {
-    .multilog_fatal(paste0(
-      "Can't create, or render_root = ",
-      render_root, " doesn't exist"
-    ))
-    stop("error", call. = FALSE)
-  }
+  .validate_render_root(render_root)
   if (length(get_yml_objects(ymlconf)) == 0) {
     .multilog_fatal("You must specify at least one data object.")
     stop("exiting", call. = FALSE)
