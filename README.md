@@ -19,17 +19,23 @@ developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.re
 [![DOI](https://zenodo.org/badge/29267435.svg)](https://doi.org/10.5281/zenodo.1292095)
 <!-- badges: end -->
 
-- [yaml configuration
-  guide](https://docs.ropensci.org/DataPackageR/articles/YAML_Configuration_Details.html)
-- [a more detailed technical
-  vignette](https://docs.ropensci.org/DataPackageR/articles/Using_DataPackageR.html)
+## Installation
 
-> **Important Note**: [datapack](https://github.com/ropensci/datapack)
-> is a *different package* that is used to “create, send and load data
-> from common repositories such as DataONE into the R environment”.
+You can install the latest
+[CRAN](https://cran.r-project.org/package=DataPackageR) release of
+DataPackageR with:
 
-> **This package** is for processing raw data into tidy data sets and
-> bundling them into R packages.
+``` r
+install.packages("DataPackageR")
+```
+
+You can install the latest development version of DataPackageR from
+[GitHub](https://github.com/ropensci/DataPackageR) with:
+
+``` r
+library(remotes)
+remotes::install_github("ropensci/DataPackageR")
+```
 
 ## What problems does DataPackageR tackle?
 
@@ -78,7 +84,7 @@ purpose is to contain, access, and / or document data sets.
   format. Packaging and sharing the small, tidied data saves the users
   computing time and time spent waiting for downloads.
 
-## Challenges.
+## Challenges
 
 - **Package size limits.**
 
@@ -138,66 +144,6 @@ DataPackageR provides a number of benefits when packaging your data.
   If the data changes and the package is rebuilt, the data version is
   automatically updated.
 
-## Similar work
-
-There are a number of tools out there that address similar and
-complementary problems:
-
-- **datastorr** [github repo](https://github.com/traitecoevo/datastorr)
-
-  Simple data retrieval and versioning using GitHub to store data.
-
-  - Caches downloads and uses github releases to version data.
-  - Deal consistently with translating the file stored online into a
-    loaded data object
-  - Access multiple versions of the data at once
-
-  `datastorrr` could be used with DataPackageR to store / access remote
-  raw data sets, remotely store / access tidied data that are too large
-  to fit in the package itself.
-
-- **fst** [github repo](https://github.com/fstpackage/fst)
-
-  `fst` provides lightning fast serialization of data frames.
-
-- **The modern data package**
-  [pdf](https://github.com/noamross/2018-04-18-rstats-nyc/blob/master/Noam_Ross_ModernDataPkg_rstatsnyc_2018-04-20.pdf)
-
-  A presentation from @noamross touching on modern tools for open
-  science and reproducibility. Discusses `datastorr` and `fst` as well
-  as standardized metadata and documentation.
-
-- **rrrpkg** [github repo](https://github.com/ropensci/rrrpkg)
-
-  A document from rOpenSci describing using an R package as a research
-  compendium. Based on ideas originally introduced by Robert Gentleman
-  and Duncan Temple Lang (Gentleman and Lang
-  (2004)<!--@Gentleman2004-oj-->)
-
-- **template** [github repo](https://github.com/ropensci/rrrpkg)
-
-  An R package template for data packages.
-
-See the [publication](#publication) for further discussion.
-
-## Installation
-
-You can install the latest
-[CRAN](https://cran.r-project.org/package=DataPackageR) release of
-DataPackageR with:
-
-``` r
-install.packages("DataPackageR")
-```
-
-You can install the latest version of DataPackageR from
-[GitHub](https://github.com/ropensci/DataPackageR) with:
-
-``` r
-library(remotes)
-remotes::install_github("ropensci/DataPackageR")
-```
-
 ## Blog Post - building packages interactively.
 
 See this [rOpenSci blog
@@ -207,7 +153,7 @@ new interfaces: `use_data_object()`, `use_processing_script()` and
 `use_raw_dataset()` to build up a data package, rather than assuming the
 user has all the code and data ready to go for `datapackage_skeleton()`.
 
-## Example (assuming all code and data are available)
+## Example
 
 ``` r
 library(DataPackageR)
@@ -230,12 +176,12 @@ processing_code <- system.file(
 # We pass in the Rmd file in the `processing_code` variable and the names of the data objects it creates (called "cars_over_20")
 # The new package is called "mtcars20"
 datapackage_skeleton(
-  "mtcars20", force = TRUE, 
-  code_files = processing_code, 
-  r_object_names = "cars_over_20", 
-  path = tempdir()) 
-#> ✔ Creating 'C:/Users/dslager/AppData/Local/Temp/RtmpaIslsQ/mtcars20/'
-#> ✔ Setting active project to 'C:/Users/dslager/AppData/Local/Temp/RtmpaIslsQ/mtcars20'
+  "mtcars20", force = TRUE,
+  code_files = processing_code,
+  r_object_names = "cars_over_20",
+  path = tempdir())
+#> ✔ Creating '/tmp/RtmpU0javb/mtcars20/'
+#> ✔ Setting active project to '/tmp/RtmpU0javb/mtcars20'
 #> ✔ Creating 'R/'
 #> ✔ Writing 'DESCRIPTION'
 #> Package: mtcars20
@@ -251,7 +197,7 @@ datapackage_skeleton(
 #> RoxygenNote: 7.3.1
 #> ✔ Writing 'NAMESPACE'
 #> ✔ Setting active project to '<no active project>'
-#> ✔ Setting active project to 'C:/Users/dslager/AppData/Local/Temp/RtmpaIslsQ/mtcars20'
+#> ✔ Setting active project to '/tmp/RtmpU0javb/mtcars20'
 #> ✔ Added DataVersion string to 'DESCRIPTION'
 #> ✔ Creating 'data-raw/'
 #> ✔ Creating 'data/'
@@ -259,7 +205,7 @@ datapackage_skeleton(
 #> ✔ Copied subsetCars.Rmd into 'data-raw'
 #> ✔ configured 'datapackager.yml' file
 
-# 3. Run the preprocessing code to build the cars_over_20 data set 
+# 3. Run the preprocessing code to build the cars_over_20 data set
 # and reproducibly enclose it in the mtcars20 package.
 # packageName is the full path to the package source directory created at step 2.
 # You'll be prompted for a text description (one line) of the changes you're making.
@@ -270,8 +216,9 @@ package_build(packageName = file.path(tempdir(),"mtcars20"))
 #> 
 #> ✔ 1 data set(s) created by subsetCars.Rmd
 #> • cars_over_20
-#> ☘ Built  all datasets!
+#> ☘ Built all datasets!
 #> Non-interactive NEWS.md file update.
+#> * Added: cars_over_20
 #> ✔ Creating 'vignettes/'
 #> ✔ Creating 'inst/doc/'
 #> ℹ Loading mtcars20
@@ -279,14 +226,14 @@ package_build(packageName = file.path(tempdir(),"mtcars20"))
 #> Writing 'mtcars20.Rd'
 #> Writing 'cars_over_20.Rd'
 #> ── R CMD build ─────────────────────────────────────────────────────────────────
-#>          checking for file 'C:\Users\dslager\AppData\Local\Temp\RtmpaIslsQ\mtcars20/DESCRIPTION' ...  ✔  checking for file 'C:\Users\dslager\AppData\Local\Temp\RtmpaIslsQ\mtcars20/DESCRIPTION' (432ms)
-#>       ─  preparing 'mtcars20':
-#>    checking DESCRIPTION meta-information ...     checking DESCRIPTION meta-information ...   ✔  checking DESCRIPTION meta-information
-#>       ─  checking for LF line-endings in source and make files and shell scripts
-#>       ─  checking for empty or unneeded directories
-#>       ─  looking to see if a 'data/datalist' file should be added
-#>   ─  building 'mtcars20_1.0.tar.gz'
-#>      
+#> * checking for file ‘/tmp/RtmpU0javb/mtcars20/DESCRIPTION’ ... OK
+#> * preparing ‘mtcars20’:
+#> * checking DESCRIPTION meta-information ... OK
+#> * checking for LF line-endings in source and make files and shell scripts
+#> * checking for empty or unneeded directories
+#> * looking to see if a ‘data/datalist’ file should be added
+#> * building ‘mtcars20_1.0.tar.gz’
+#> 
 #> Next Steps 
 #> 1. Update your package documentation. 
 #>    - Edit the documentation.R file in the package source data-raw subdirectory and update the roxygen markup. 
@@ -298,14 +245,13 @@ package_build(packageName = file.path(tempdir(),"mtcars20"))
 #>    - Set up a github repository for your pacakge. 
 #>    - Add the github repository as a remote of your local package repository. 
 #>    -  git push  your local repository to gitub.
-#> [1] "C:/Users/dslager/AppData/Local/Temp/RtmpaIslsQ/mtcars20_1.0.tar.gz"
+#> [1] "/tmp/RtmpU0javb/mtcars20_1.0.tar.gz"
 
-# Update the autogenerated roxygen documentation in data-raw/documentation.R. 
+# Update the autogenerated roxygen documentation in data-raw/documentation.R.
 # edit(file.path(tempdir(),"mtcars20","R","mtcars20.R"))
 
 # 4. Rebuild the documentation.
 document(file.path(tempdir(),"mtcars20"))
-#> ℹ Updating mtcars20 documentation
 #> ℹ Loading mtcars20
 #> [1] TRUE
 
@@ -356,32 +302,88 @@ project root directory, the `inst/extdata` subdirectory, and the `data`
 subdirectory.
 
 ``` r
-# This returns the datapackage source 
-# root directory. 
-# In an R or Rmd processing script this can be used to build a path to a directory that is exteral to the package, for 
+# This returns the datapackage source
+# root directory.
+# In an R or Rmd processing script this can be used to build a path to a directory that is exteral to the package, for
 # example if we are dealing with very large data sets where data cannot be packaged.
 DataPackageR::project_path()
 
-# This returns the   
-# inst/extdata directory. 
+# This returns the
+# inst/extdata directory.
 # Raw data sets that are included in the package should be placed there.
-# They can be read from that location, which is returned by: 
+# They can be read from that location, which is returned by:
 DataPackageR::project_extdata_path()
 
-# This returns the path to the datapackage  
-# data directory. This can be used to access 
-# stored data objects already created and saved in `data` from 
+# This returns the path to the datapackage
+# data directory. This can be used to access
+# stored data objects already created and saved in `data` from
 # other processing scripts.
 DataPackageR::project_data_path()
 ```
 
-## Preprint and publication. <a id = "publication"></a>
+## Vignettes
+
+[yaml configuration
+guide](https://docs.ropensci.org/DataPackageR/articles/YAML_Configuration_Details.html)
+
+[a more detailed technical
+vignette](https://docs.ropensci.org/DataPackageR/articles/Using_DataPackageR.html)
+
+## Preprint and publication <a id = "publication"></a>
 
 The publication describing the package, (Finak *et al.*,
 2018)<!--@10.12688/gatesopenres.12832.2-->, is now available at [Gates
 Open Research](https://gatesopenresearch.org/articles/2-31/v2) .
 
 The preprint is on [bioRxiv](https://doi.org/10.1101/342907).
+
+## Similar work
+
+DataPackageR is for processing raw data into tidy data sets and bundling
+them into R packages. (Note:
+[datapack](https://github.com/ropensci/datapack) is a **different
+package** that is used to “create, send and load data from common
+repositories such as DataONE into the R environment”.)
+
+There are a number of tools out there that address similar and
+complementary problems:
+
+- **datastorr** [github repo](https://github.com/traitecoevo/datastorr)
+
+  Simple data retrieval and versioning using GitHub to store data.
+
+  - Caches downloads and uses github releases to version data.
+  - Deal consistently with translating the file stored online into a
+    loaded data object
+  - Access multiple versions of the data at once
+
+  `datastorrr` could be used with DataPackageR to store / access remote
+  raw data sets, remotely store / access tidied data that are too large
+  to fit in the package itself.
+
+- **fst** [github repo](https://github.com/fstpackage/fst)
+
+  `fst` provides lightning fast serialization of data frames.
+
+- **The modern data package**
+  [pdf](https://github.com/noamross/2018-04-18-rstats-nyc/blob/master/Noam_Ross_ModernDataPkg_rstatsnyc_2018-04-20.pdf)
+
+  A presentation from @noamross touching on modern tools for open
+  science and reproducibility. Discusses `datastorr` and `fst` as well
+  as standardized metadata and documentation.
+
+- **rrrpkg** [github repo](https://github.com/ropensci/rrrpkg)
+
+  A document from rOpenSci describing using an R package as a research
+  compendium. Based on ideas originally introduced by Robert Gentleman
+  and Duncan Temple Lang (Gentleman and Lang
+  (2004)<!--@Gentleman2004-oj-->)
+
+- **template** [github repo](https://github.com/ropensci/rrrpkg)
+
+  An R package template for data packages.
+
+See the [publication](#publication) for further discussion.
 
 ## Code of conduct
 
