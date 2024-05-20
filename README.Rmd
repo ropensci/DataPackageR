@@ -29,12 +29,20 @@ DataPackageR is used to reproducibly process raw data into packaged, analysis-re
 [![DOI](https://zenodo.org/badge/29267435.svg)](https://doi.org/10.5281/zenodo.1292095)
 <!-- badges: end -->
 
-- [yaml configuration guide](https://docs.ropensci.org/DataPackageR/articles/YAML_Configuration_Details.html)
-- [a more detailed technical vignette](https://docs.ropensci.org/DataPackageR/articles/Using_DataPackageR.html)
+## Installation
 
-> **Important Note**: [datapack](https://github.com/ropensci/datapack) is a *different package* that is used to "create, send and load data from common repositories such as DataONE into the R environment".
+You can install the latest [CRAN](https://cran.r-project.org/package=DataPackageR) release of DataPackageR with:
 
-> **This package** is for processing raw data into tidy data sets and bundling them into R packages.
+```{r, eval=FALSE}
+install.packages("DataPackageR")
+```
+
+You can install the latest development version of DataPackageR from [GitHub](https://github.com/ropensci/DataPackageR) with:
+
+```{r, eval=FALSE}
+library(remotes)
+remotes::install_github("ropensci/DataPackageR")
+```
 
 ## What problems does DataPackageR tackle?
 
@@ -71,7 +79,7 @@ You have diverse raw data sets that you need to preprocess and tidy in order to:
   Data pre-processing can be time consuming, depending on the data type and raw data sets may be too large to share conveniently in a packaged format.
   Packaging and sharing the small, tidied data saves the users computing time and time spent waiting for downloads.
 
-## Challenges.
+## Challenges
 
 - **Package size limits.**
 
@@ -103,65 +111,13 @@ DataPackageR provides a number of benefits when packaging your data.
 
 - It automates construction of the documentation and maintains a data set version and an md5 fingerprint of each data object in the package. If the data changes and the package is rebuilt, the data version is automatically updated.
 
-## Similar work
-
-There are a number of tools out there that address similar and complementary problems:
-
-- **datastorr**
-  [github repo](https://github.com/traitecoevo/datastorr)
-
-  Simple data retrieval and versioning using GitHub to store data.
-
-    - Caches downloads and uses github releases to version data.
-    - Deal consistently with translating the file stored online into a loaded data object
-    - Access multiple versions of the data at once
-
-  `datastorrr` could be used with DataPackageR to store / access remote raw data sets, remotely store / access tidied data that are too large to fit in the package itself.
-
-- **fst**
-  [github repo](https://github.com/fstpackage/fst)
-
-  `fst` provides lightning fast serialization of data frames.
-
-- **The modern data package**
-  [pdf](https://github.com/noamross/2018-04-18-rstats-nyc/blob/master/Noam_Ross_ModernDataPkg_rstatsnyc_2018-04-20.pdf)
-
-  A presentation from \@noamross touching on modern tools for open science and reproducibility. Discusses `datastorr` and `fst` as well as standardized metadata and documentation.
-
-- **rrrpkg**
-  [github repo](https://github.com/ropensci/rrrpkg)
-
-  A document from rOpenSci describing using an R package as a research compendium. Based on ideas originally introduced by Robert Gentleman and Duncan Temple Lang (Gentleman and Lang (2004)<!--@Gentleman2004-oj-->)
-
-- **template**
-  [github repo](https://github.com/ropensci/rrrpkg)
-
-  An R package template for data packages.
-
- See the [publication](#publication) for further discussion.
-
-## Installation
-
-You can install the latest [CRAN](https://cran.r-project.org/package=DataPackageR) release of DataPackageR with:
-
-```{r, eval=FALSE}
-install.packages("DataPackageR")
-```
-
-You can install the latest version of DataPackageR from [GitHub](https://github.com/ropensci/DataPackageR) with:
-
-```{r, eval=FALSE}
-library(remotes)
-remotes::install_github("ropensci/DataPackageR")
-```
-
 ## Blog Post - building packages interactively.
 
 See this [rOpenSci blog post](https://ropensci.org/blog/2018/09/18/datapackager/) on how to build data packages interactively using DataPackageR.
 This uses several new interfaces: `use_data_object()`, `use_processing_script()` and `use_raw_dataset()` to build up a data package, rather than assuming
 the user has all the code and data ready to go for `datapackage_skeleton()`.
 
-## Example (assuming all code and data are available)
+## Example
 
 ```{r minimal_example}
 library(DataPackageR)
@@ -258,13 +214,58 @@ DataPackageR::project_data_path()
 ```
 
 
-## Preprint and publication. <a id = "publication"></a>
+## Vignettes
+
+[yaml configuration guide](https://docs.ropensci.org/DataPackageR/articles/YAML_Configuration_Details.html)
+
+[a more detailed technical vignette](https://docs.ropensci.org/DataPackageR/articles/Using_DataPackageR.html)
+
+## Preprint and publication <a id = "publication"></a>
 
 The publication describing the package, (Finak *et al.*, 2018)<!--@10.12688/gatesopenres.12832.2-->, is now available at   [Gates Open Research](https://gatesopenresearch.org/articles/2-31/v2) .
 
 
 The preprint is on [bioRxiv](https://doi.org/10.1101/342907).
 
+## Similar work
+
+DataPackageR is for processing raw data into tidy data sets and bundling them into R packages. (Note: [datapack](https://github.com/ropensci/datapack) is a **different package** that is used to "create, send and load data from common repositories such as DataONE into the R environment".)
+
+
+There are a number of tools out there that address similar and complementary problems:
+
+- **datastorr**
+  [github repo](https://github.com/traitecoevo/datastorr)
+
+  Simple data retrieval and versioning using GitHub to store data.
+
+    - Caches downloads and uses github releases to version data.
+    - Deal consistently with translating the file stored online into a loaded data object
+    - Access multiple versions of the data at once
+
+  `datastorrr` could be used with DataPackageR to store / access remote raw data sets, remotely store / access tidied data that are too large to fit in the package itself.
+
+- **fst**
+  [github repo](https://github.com/fstpackage/fst)
+
+  `fst` provides lightning fast serialization of data frames.
+
+- **The modern data package**
+  [pdf](https://github.com/noamross/2018-04-18-rstats-nyc/blob/master/Noam_Ross_ModernDataPkg_rstatsnyc_2018-04-20.pdf)
+
+  A presentation from \@noamross touching on modern tools for open science and reproducibility. Discusses `datastorr` and `fst` as well as standardized metadata and documentation.
+
+- **rrrpkg**
+  [github repo](https://github.com/ropensci/rrrpkg)
+
+  A document from rOpenSci describing using an R package as a research compendium. Based on ideas originally introduced by Robert Gentleman and Duncan Temple Lang (Gentleman and Lang (2004)<!--@Gentleman2004-oj-->)
+
+- **template**
+  [github repo](https://github.com/ropensci/rrrpkg)
+
+  An R package template for data packages.
+
+ See the [publication](#publication) for further discussion.
 
 ## Code of conduct
 
