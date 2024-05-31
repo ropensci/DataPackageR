@@ -24,6 +24,7 @@
   - `dataVersion()`, renamed years ago to `data_version()`
   - `datapackage.skeleton()`, renamed years ago to `datapackage_skeleton()`
   - `keepDataObjects()`
+* Keep existing DataPackageR_verbose option if set outside of package
 
 ## Internal improvements
 
