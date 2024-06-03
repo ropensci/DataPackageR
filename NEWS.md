@@ -1,4 +1,4 @@
-# DataPackageR (development version)
+# DataPackageR 0.16.0
 
 ## Bug fixes
 

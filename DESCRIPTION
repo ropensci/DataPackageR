@@ -1,8 +1,8 @@
 Type: Package
 Package: DataPackageR
 Title: Construct Reproducible Analytic Data Sets as R Packages
-Version: 0.15.9.9000
-Authors@R:c(
+Version: 0.16.0
+Authors@R: c(
     person("Greg", "Finak", , "greg.finak@gmail.com", role = c("aut", "cph"),
            comment = "Original author and creator of DataPackageR"),
     person("Paul", "Obrecht", role = "ctb"),
@@ -32,7 +32,7 @@ Description: A framework to help construct R data packages in a
     controlled on 'GitHub', and used to share data for manuscripts,
     collaboration and reproducible research.
 License: MIT + file LICENSE
-URL:https://github.com/ropensci/DataPackageR,
+URL: https://github.com/ropensci/DataPackageR,
     https://docs.ropensci.org/DataPackageR/
 BugReports: https://github.com/ropensci/DataPackageR/issues
 Depends:
