@@ -11,6 +11,11 @@ datapackage_skeleton(
 )
 package_build(file.path(tempdir(), "subsetCars"))
 usethis::proj_set(file.path(tempdir(), "subsetCars"))
+test_that("path functions throw no warning when file does not exist", {
+  expect_no_warning(project_path('zzzZZZ333.txt'))
+  expect_no_warning(project_extdata_path('zzzZZZ333.txt'))
+  expect_no_warning(project_data_path('zzzZZZ333.txt'))
+})
 test_that("project_path works with file arguments", {
   expect_equal(project_path("DESCRIPTION"), expected = file.path(usethis::proj_get(), "DESCRIPTION")) # nolint
 })
