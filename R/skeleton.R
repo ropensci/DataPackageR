@@ -27,7 +27,6 @@
 #' @param raw_data_dir \code{character} pointing to a raw data directory. Will be moved with all its subdirectories to "inst/extdata"
 #' @param dependencies \code{vector} of \code{character}, paths to R files that will be moved to "data-raw" but not included in the yaml config file. e.g., dependency scripts.
 #' @returns No return value, called for side effects
-#' @importFrom crayon bold green
 #' @examples
 #' if(rmarkdown::pandoc_available()){
 #' f <- tempdir()
@@ -87,7 +86,7 @@ datapackage_skeleton <-
     description$set_dep("R", "Depends", ">= 3.5.0")
     description$set("Roxygen" = "list(markdown = TRUE)")
     description$write()
-    .done(paste0("Added DataVersion string to ", crayon::blue("'DESCRIPTION'")))
+    .done(paste0("Added DataVersion string to ", cli::col_blue("'DESCRIPTION'")))
 
     usethis::use_directory("data-raw")
     usethis::use_directory("data")
@@ -135,7 +134,7 @@ datapackage_skeleton <-
         for (y in x) {
           file.copy(y, file.path(package_path, "data-raw"), overwrite = TRUE)
           .done(paste0("Copied ", basename(y),
-                       " into ", crayon::blue("'data-raw'")))
+                       " into ", cli::col_blue("'data-raw'")))
         }
       }
     }
@@ -146,7 +145,7 @@ datapackage_skeleton <-
         file.copy(x, file.path(package_path, "inst/extdata"),
           recursive = TRUE, overwrite = TRUE
         )
-        .done(paste0("Moved data into ", crayon::blue("'inst/extdata'")))
+        .done(paste0("Moved data into ", cli::col_blue("'inst/extdata'")))
       }
     }
     .copy_files_to_data_raw(code_files, obj = "code")
@@ -155,7 +154,7 @@ datapackage_skeleton <-
 
     yml <- construct_yml_config(code = code_files, data = r_object_names)
     yaml::write_yaml(yml, file = file.path(package_path, "datapackager.yml"))
-    .done(paste0("configured ", crayon::blue("'datapackager.yml'"), " file"))
+    .done(paste0("configured ", cli::col_blue("'datapackager.yml'"), " file"))
 
 
     oldrdfiles <-
@@ -184,7 +183,7 @@ datapackage_skeleton <-
   }
 
 .done <- function(...) {
-  .bullet(paste0(...), bullet = crayon::green("\u2714"))
+  .bullet(paste0(...), bullet = cli::col_green("\u2714"))
 }
 
 .bullet <- function(lines, bullet) {

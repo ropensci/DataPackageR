@@ -104,9 +104,9 @@ use_processing_script <- function(file = NULL, title = NULL, author = NULL, over
   #check if the given file or directory already exists
   if (utils::file_test("-f",file.path(proj_path,"data-raw",file))|utils::file_test("-d",file.path(proj_path,"data-raw",file))) { #nolint
     if (overwrite) {
-      .bullet(paste0("Courtesy warning: ", basename(file), " exists in ",crayon::blue("'data-raw'"),", and ",crayon::red("WILL")," be overwritten."),bullet = crayon::red("\u2622")) #nolint
+      .bullet(paste0("Courtesy warning: ", basename(file), " exists in ",cli::col_blue("'data-raw'"),", and ",cli::col_red("WILL")," be overwritten."),bullet = cli::col_red("\u2622")) #nolint
     } else {
-      .bullet(paste0("Courtesy warning: ", basename(file), " exists in ",crayon::blue("'data-raw'"),", and ",crayon::red("WILL NOT")," be overwritten."),bullet = crayon::red("\u2622")) #nolint
+      .bullet(paste0("Courtesy warning: ", basename(file), " exists in ",cli::col_blue("'data-raw'"),", and ",cli::col_red("WILL NOT")," be overwritten."),bullet = cli::col_red("\u2622")) #nolint
     }
   }
   raw_file <- suppressWarnings(normalizePath(file))
@@ -137,7 +137,7 @@ use_processing_script <- function(file = NULL, title = NULL, author = NULL, over
     # we have a valid file name and should create it.
     if (file.exists(file.path(proj_path, "data-raw", basename(raw_file))) &&
         !overwrite) {
-      .bullet(paste0("Skipping file creation: pass overwrite = TRUE to use_processing_script()"), bullet = crayon::red("\u2622")) #nolint
+      .bullet(paste0("Skipping file creation: pass overwrite = TRUE to use_processing_script()"), bullet = cli::col_red("\u2622")) #nolint
     } else {
       if (getOption('DataPackageR_verbose', TRUE)){
         cat("Attempting to create ", raw_file)
