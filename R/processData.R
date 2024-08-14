@@ -680,7 +680,8 @@ project_path <- function(file = NULL) {
   if (is.null(file)) {
     return(usethis::proj_get())
   } else {
-    return(normalizePath(file.path(usethis::proj_get(), file), winslash = "/"))
+    return(normalizePath(file.path(usethis::proj_get(), file), winslash = "/",
+                         mustWork = FALSE))
   }
 }
 
@@ -707,7 +708,8 @@ project_extdata_path <- function(file = NULL) {
         usethis::proj_get(),
         "inst", "extdata", file
       ),
-      winslash = "/"
+      winslash = "/",
+      mustWork = FALSE
     ))
   }
 }
@@ -734,7 +736,8 @@ project_data_path <- function(file = NULL) {
         usethis::proj_get(),
         "data", file
       ),
-      winslash = "/"
+      winslash = "/",
+      mustWork = FALSE
     ))
   }
 }
