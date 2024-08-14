@@ -4,10 +4,10 @@
                interactive()
              )) {
     if (interactive()&interact) {
-      cat(crayon::cyan("Enter a text description of the changes for the NEWS.md file.\n")) #nocov
+      cat(cli::col_cyan("Enter a text description of the changes for the NEWS.md file.\n")) #nocov
     }else{
       if (getOption('DataPackageR_verbose', TRUE)){
-        cat(crayon::cyan("Non-interactive NEWS.md file update.\n"))
+        cat(cli::col_cyan("Non-interactive NEWS.md file update.\n"))
       }
     }
     change_description <-
@@ -85,7 +85,7 @@
   .write_changes <- function(string, news_con, what = NULL) {
     if (length(string) != 0) {
       if (getOption('DataPackageR_verbose', TRUE)){
-        cat(crayon::cyan(paste0("* ",what,": ",string,"\n")), sep = "")
+        cat(cli::col_cyan(paste0("* ",what,": ",string,"\n")), sep = "")
       }
        writeLines(text = paste0("* ",what,": ", string),
                   con = news_con,

@@ -156,7 +156,7 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
       .bullet(
         .add_newlines_to_vector(
           objects_to_keep[which(objects_to_keep %in% object_names)]),
-        crayon::red("\u2022")
+        cli::col_red("\u2022")
       )
     }
     .bullet(
@@ -171,8 +171,8 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
       ),
       ifelse(
         sum(object_tally) == length(object_tally),
-        crayon::green("\u2618"),
-        crayon::green("\u2605")
+        cli::col_green("\u2618"),
+        cli::col_green("\u2605")
       )
     )
     if (sum(objects_to_keep %in% object_names) > 0) {

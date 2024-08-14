@@ -38,7 +38,7 @@ BugReports: https://github.com/ropensci/DataPackageR/issues
 Depends:
     R (>= 3.5.0)
 Imports:
-    crayon,
+    cli,
     desc,
     digest,
     futile.logger,
@@ -61,5 +61,5 @@ VignetteBuilder:
     knitr
 Encoding: UTF-8
 Language: en-US
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
 SystemRequirements: pandoc - https://pandoc.org

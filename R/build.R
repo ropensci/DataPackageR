@@ -117,17 +117,17 @@ package_build <- function(packageName = NULL,
 
 .next_steps <- function() {
   if (! getOption('DataPackageR_verbose', TRUE)) return(invisible(NULL))
-  cat(crayon::green(crayon::bold("Next Steps")), "\n") # nolint
-  cat(crayon::white(crayon::yellow(crayon::bold("1. Update your package documentation.")), "\n")) # nolint
-  cat(crayon::white("   - Edit the documentation.R file in the package source", crayon::green("data-raw"), "subdirectory and update the roxygen markup."), "\n") # nolint
-  cat(crayon::white("   - Rebuild the package documentation with ", crayon::red("document()"), "."), "\n") # nolint
-  cat(crayon::white(crayon::yellow(crayon::bold("2. Add your package to source control.")), "\n")) # nolint
-  cat(crayon::white("   - Call ", crayon::red("git init ."), " in the package source root directory."), "\n") # nolint
-  cat(crayon::white("   - ", crayon::red("git add"), " the package files."), "\n") # nolint
-  cat(crayon::white("   - ", crayon::red("git commit"), " your new package."), "\n") # nolint
-  cat(crayon::white("   - Set up a github repository for your pacakge."), "\n") # nolint
-  cat(crayon::white("   - Add the github repository as a remote of your local package repository."), "\n") # nolint
-  cat(crayon::white("   - ", crayon::red("git push"), " your local repository to gitub."), "\n") # nolint
+  cat(cli::col_green(cli::style_bold("Next Steps")), "\n") # nolint
+  cat(cli::col_white(cli::col_yellow(cli::style_bold("1. Update your package documentation.")), "\n")) # nolint
+  cat(cli::col_white("   - Edit the documentation.R file in the package source", cli::col_green("data-raw"), "subdirectory and update the roxygen markup."), "\n") # nolint
+  cat(cli::col_white("   - Rebuild the package documentation with ", cli::col_red("document()"), "."), "\n") # nolint
+  cat(cli::col_white(cli::col_yellow(cli::style_bold("2. Add your package to source control.")), "\n")) # nolint
+  cat(cli::col_white("   - Call ", cli::col_red("git init ."), " in the package source root directory."), "\n") # nolint
+  cat(cli::col_white("   - ", cli::col_red("git add"), " the package files."), "\n") # nolint
+  cat(cli::col_white("   - ", cli::col_red("git commit"), " your new package."), "\n") # nolint
+  cat(cli::col_white("   - Set up a github repository for your pacakge."), "\n") # nolint
+  cat(cli::col_white("   - Add the github repository as a remote of your local package repository."), "\n") # nolint
+  cat(cli::col_white("   - ", cli::col_red("git push"), " your local repository to gitub."), "\n") # nolint
 }
 
 #' Check that pkg name inferred from pkg path is same as pkg name in DESCRIPTION
