@@ -69,7 +69,14 @@ datapackage_skeleton <-
     }
     package_path <- usethis::create_package(
       path = file.path(path, name),
-      rstudio = FALSE, open = FALSE
+      # fields override for usethis 3.0.0 ORCID placeholder, errors out in R 4.5
+      # https://github.com/r-lib/usethis/issues/2059
+      fields = list(
+        `Authors@R` = paste0(
+          "person(\"First\", \"Last\", email = \"first.last",
+          "@example.com\", role = c(\"aut\", \"cre\"))"
+        )
+      ), rstudio = FALSE, open = FALSE
     )
     # compatibility between usethis 1.4 and 1.5.
     if(is.character(package_path)){
