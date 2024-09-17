@@ -1,7 +1,7 @@
 Type: Package
 Package: DataPackageR
 Title: Construct Reproducible Analytic Data Sets as R Packages
-Version: 0.16.0.9000
+Version: 0.16.1
 Authors@R: c(
     person("Greg", "Finak", , "greg.finak@gmail.com", role = c("aut", "cph"),
            comment = "Original author and creator of DataPackageR"),
