@@ -71,7 +71,6 @@ datapackage_skeleton <-
       path = file.path(path, name),
       # fields override for usethis 3.0.0 ORCID placeholder, errors out in R 4.5
       # https://github.com/r-lib/usethis/issues/2059
-      # can remove fields argument here once fixed upstream
       fields = list(
         `Authors@R` = paste0(
           "person(\"First\", \"Last\", email = \"first.last",
