@@ -80,9 +80,6 @@ datapackage_skeleton <-
     }
     description <-
       desc::desc(file = file.path(package_path, "DESCRIPTION"))
-    description$set_authors(
-      utils::person("First", "Last", , "first.last@example.com",
-                    role = c("aut", "cre")))
     description$set("DataVersion" = "0.1.0")
     description$set("Version" = "1.0")
     description$set("Package" = name)
