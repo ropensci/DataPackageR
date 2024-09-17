@@ -1,5 +1,12 @@
 # DataPackageR (development version)
 
+## Minor user-facing improvements
+* Suppress warning from project*_path() functions when file does not exist (#160)
+
+## Maintenance
+* Remove dependency on crayon package, switch to cli package (#159)
+* Remove invalid ORCID placeholder created by usethis that caused failing CRAN checks (#162)
+
 # DataPackageR 0.16.0
 
 ## Bug fixes
