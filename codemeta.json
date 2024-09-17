@@ -8,13 +8,13 @@
   "codeRepository": "https://github.com/ropensci/DataPackageR",
   "issueTracker": "https://github.com/ropensci/DataPackageR/issues",
   "license": "https://spdx.org/licenses/MIT",
-  "version": "0.16.0",
+  "version": "0.16.1",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
     "url": "https://r-project.org"
   },
-  "runtimePlatform": "R version 4.4.0 (2024-04-24 ucrt)",
+  "runtimePlatform": "R version 4.4.1 (2024-06-14)",
   "provider": {
     "@id": "https://cran.r-project.org",
     "@type": "Organization",
@@ -156,15 +156,15 @@
     },
     "2": {
       "@type": "SoftwareApplication",
-      "identifier": "crayon",
-      "name": "crayon",
+      "identifier": "cli",
+      "name": "cli",
       "provider": {
         "@id": "https://cran.r-project.org",
         "@type": "Organization",
         "name": "Comprehensive R Archive Network (CRAN)",
         "url": "https://cran.r-project.org"
       },
-      "sameAs": "https://CRAN.R-project.org/package=crayon"
+      "sameAs": "https://CRAN.R-project.org/package=cli"
     },
     "3": {
       "@type": "SoftwareApplication",
@@ -305,7 +305,7 @@
     },
     "SystemRequirements": "pandoc - https://pandoc.org"
   },
-  "fileSize": "866.798KB",
+  "fileSize": "860.52KB",
   "releaseNotes": "https://github.com/ropensci/DataPackageR/blob/master/NEWS.md",
   "readme": "https://github.com/ropensci/DataPackageR/blob/main/README.md",
   "contIntegration": ["https://github.com/ropensci/DataPackageR/actions", "https://app.codecov.io/gh/ropensci/DataPackageR?branch=main"],
