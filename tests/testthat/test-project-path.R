@@ -23,7 +23,7 @@ test_that("project_data_path works with file arguments", {
   expect_equal(project_data_path("cars_over_20.rda"), expected = file.path(usethis::proj_get(), "data", "cars_over_20.rda")) # nolint
 })
 test_that("project_extdata_path works with file arguments", {
-  expect_equal(project_extdata_path("Logfiles/processing.log"), expected = file.path(usethis::proj_get(), "inst", "extdata", "Logfiles", "processing.log")) # nolint
+  expect_equal(project_extdata_path("Logfiles/subsetCars.html"), expected = file.path(usethis::proj_get(), "inst", "extdata", "Logfiles", "subsetCars.html")) # nolint
 })
 unlink(file.path(tempdir(), "subsetCars"),
   recursive = TRUE,
