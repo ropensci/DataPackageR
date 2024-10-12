@@ -262,11 +262,7 @@ construct_yml_config <- function(code = NULL, data = NULL, render_root = NULL) {
       silent = TRUE
       )
     if (inherits(render_root, "try-error")) {
-      .multilog_fatal(paste0(
-        dirname(render_root),
-        " doesn't exist!"
-      ))
-      stop("error", call. = FALSE)
+      stop(paste(dirname(render_root), "doesn't exist!"))
     }
     yml[["configuration"]]$render_root <- render_root
   }
@@ -281,7 +277,6 @@ construct_yml_config <- function(code = NULL, data = NULL, render_root = NULL) {
   } else if (length(x$configuration$render_root) != 0) {
     return(x$configuration$render_root)
   } else {
-    .multilog_fatal("render_root is not set in yaml")
-    stop("error", call. = FALSE)
+    stop("render_root is not set in yaml")
   }
 }

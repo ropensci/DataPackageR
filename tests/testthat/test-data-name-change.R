@@ -39,7 +39,10 @@ test_that("data object can be renamed", {
   datapackage_skeleton(pname, tempdir(), force = TRUE)
   addData("mtcars", pname)
   expect_no_error(changeName("mtcars", "mtcars2", pname))
-  expect_error(removeName("mtcars2", "mtcars.R", pname), "exiting")
+  expect_error(
+    removeName("mtcars2", "mtcars.R", pname),
+    "You must specify at least one data object."
+  )
 
   ## test change when two objects are present
   pname <- "nameChangeTest2"

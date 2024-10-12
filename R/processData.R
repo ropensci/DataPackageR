@@ -219,18 +219,15 @@ validate_yml <- function(pkg_dir){
     full.names = TRUE
   )
   if (length(ymlfile) == 0) {
-    .multilog_fatal(paste0("Yaml configuration file not found at ", pkg_dir))
-    stop("exiting", call. = FALSE)
+    stop(paste("Yaml configuration file not found at", pkg_dir))
   }
   ymlconf <- read_yaml(ymlfile)
   # test that the structure of the yaml file is correct!
   if (!"configuration" %in% names(ymlconf)) {
-    .multilog_fatal("YAML is missing 'configuration:' entry")
-    stop("exiting", call. = FALSE)
+    stop("YAML is missing 'configuration:' entry")
   }
   if (!all(c("files", "objects") %in% names(ymlconf$configuration))) {
-    .multilog_fatal("YAML is missing files: and objects: entries")
-    stop("exiting", call. = FALSE)
+    stop("YAML is missing files: and objects: entries")
   }
   # files that have enable: TRUE
   stopifnot("configuration" %in% names(ymlconf))
@@ -247,24 +244,18 @@ validate_yml <- function(pkg_dir){
   render_root <- .get_render_root(ymlconf)
   .validate_render_root(render_root)
   if (length(get_yml_objects(ymlconf)) == 0) {
-    .multilog_fatal("You must specify at least one data object.")
-    stop("exiting", call. = FALSE)
+    stop("You must specify at least one data object.")
   }
   r_files <- get_yml_r_files(ymlconf)
   if (length(r_files) == 0) {
-    .multilog_fatal("No files enabled for processing!")
-    stop("error", call. = FALSE)
+    stop("No files enabled for processing!")
   }
   if (any(duplicated(r_files))){
-    err_msg <- "Duplicate R files specified in YAML."
-    .multilog_fatal(err_msg)
-    stop(err_msg, call. = FALSE)
+    stop("Duplicate R files specified in YAML.")
   }
   for (file in r_files){
     if (! file.exists(file.path(pkg_dir, 'data-raw', file))){
-      err_msg <- paste("Missing R file specified in YAML:", file)
-      .multilog_fatal(err_msg)
-      stop(err_msg, call. = FALSE)
+      stop(paste("Missing R file specified in YAML:", file))
     }
   }
   return(ymlconf)
@@ -283,9 +274,7 @@ validate_package_skeleton <- function(pkg_dir){
   dirs <- file.path(pkg_dir, c("R", "inst", "data", "data-raw"))
   for (dir in dirs){
     if (! utils::file_test(dir, op = "-d")){
-      err_msg <- paste("Missing required subdirectory", dir)
-      .multilog_fatal(err_msg)
-      stop(err_msg)
+      stop(paste("Missing required subdirectory", dir))
     }
   }
   # check we can read a DESCRIPTION file
@@ -303,12 +292,10 @@ validate_description <- function(pkg_dir){
   d <- desc::desc(pkg_dir)
   dv <- d$get('DataVersion')
   if (is.na(dv)) {
-    err_msg <- paste0(
+    stop(paste(
       "DESCRIPTION file must have a DataVersion",
-      " line. i.e. DataVersion: 0.2.0"
-    )
-    .multilog_fatal(err_msg)
-    stop(err_msg, call. = FALSE)
+      "line. i.e. DataVersion: 0.2.0"
+    ))
   }
   validate_DataVersion(dv)
   d
@@ -375,9 +362,7 @@ do_digests <- function(pkg_dir, dataenv) {
   same_digests <- .compare_digests(old_data_digest, new_data_digest)
   if ((! same_digests) && check_new_DataVersion == "higher"){
     # not sure how this would actually happen
-    err_msg <- 'Digest(s) differ but DataVersion had already been incremented'
-    .multilog_fatal(err_msg)
-    stop(err_msg, call. = FALSE)
+    stop('Digest(s) differ but DataVersion had already been incremented')
   }
   if (same_digests && check_new_DataVersion == "equal") {
     can_write <- TRUE
