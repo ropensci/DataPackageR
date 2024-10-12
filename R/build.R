@@ -14,7 +14,6 @@
 #' @importFrom rprojroot is_r_package
 #' @importFrom rmarkdown pandoc_available
 #' @importFrom yaml read_yaml
-#' @importFrom futile.logger flog.logger flog.trace appender.file flog.debug flog.info flog.warn flog.error flog.fatal flog.appender flog.threshold INFO TRACE appender.console appender.tee
 #' @importFrom knitr knit spin
 #' @details Note that if \code{package_build} returns an error when rendering an \code{.Rmd}
 #' internally, but that same \code{.Rmd} can be run successfully manually using \code{rmarkdown::render},
