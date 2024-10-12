@@ -1,5 +1,17 @@
 # DataPackageR (development version)
 
+## Significant user-facing changes
+* Remove functionality for logging to a logfile (#163)
+* Remove 'log' argument from package_build() (#163)
+
+## Unchanged
+* User still sees same messages, warnings, and errors on the console
+* Changes to data objects still automatically added to the data package NEWS.md
+* For now, rendered output files still written to inst/extdata/Logfiles
+
+## Maintenance
+* Drop dependency on futile.logger package, which has not been updated since 2016.
+
 # DataPackageR 0.16.1
 
 ## Minor user-facing improvements
