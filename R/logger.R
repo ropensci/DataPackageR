@@ -1,6 +1,3 @@
-.multilog_warn <- function(msg) {
-  flog.warn(msg, name = "console")
-}
 .multilog_fatal <- function(msg) {
   flog.fatal(msg, name = "console")
 }

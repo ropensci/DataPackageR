@@ -85,10 +85,9 @@ package_build <- function(packageName = NULL,
   # Check that directory name matches package name
   validate_pkg_name(package_path)
 
-  # Return success if we've processed everything
-  success <-
-    DataPackageR(arg = package_path, deps = deps)
-  if (! success) .multilog_warn("DataPackageR failed")
+  # Process everything
+  DataPackageR(arg = package_path, deps = deps)
+
   local({
     on.exit({
       if (packageName %in% names(utils::sessionInfo()$otherPkgs)){
