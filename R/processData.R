@@ -49,7 +49,6 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
   # open a log file
   LOGFILE <- file.path(logpath, "processing.log")
   .multilog_setup(LOGFILE)
-  .multilog_thresold(console = INFO, logfile = TRACE)
   # validate package
   validate_package_skeleton(pkg_dir)
   # validate datapackager.yml

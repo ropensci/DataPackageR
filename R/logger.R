@@ -8,10 +8,6 @@
   flog.error(msg, name = "console")
 }
 
-.multilog_thresold <- function(console = INFO, logfile = TRACE) {
-  flog.threshold(console, name = "console")
-}
-
 select_console_appender <- function(){
   if (getOption('DataPackageR_verbose', TRUE)){
     appender.console()
