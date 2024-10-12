@@ -4,9 +4,6 @@
 .multilog_fatal <- function(msg) {
   flog.fatal(msg, name = "console")
 }
-.multilog_error <- function(msg) {
-  flog.error(msg, name = "console")
-}
 
 select_console_appender <- function(){
   if (getOption('DataPackageR_verbose', TRUE)){

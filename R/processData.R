@@ -2,7 +2,6 @@
   # catch an error if it doesn't exist, otherwise return normalized path
   # important for handling relative paths in a rmarkdown::render() context
   if (! dir.exists(x)){
-    .multilog_error(paste0("render_root = ", x, " doesn't exist"))
     stop(paste0("render_root = ", x, " doesn't exist"))
   }
   normalizePath(x, winslash = "/")
