@@ -88,12 +88,7 @@ package_build <- function(packageName = NULL,
   # Return success if we've processed everything
   success <-
     DataPackageR(arg = package_path, deps = deps)
-  if (success){
-    .multilog_trace("DataPackageR succeeded")
-  } else {
-    .multilog_warn("DataPackageR failed")
-  }
-  .multilog_trace("Building documentation")
+  if (! success) .multilog_warn("DataPackageR failed")
   local({
     on.exit({
       if (packageName %in% names(utils::sessionInfo()$otherPkgs)){
@@ -102,7 +97,6 @@ package_build <- function(packageName = NULL,
     })
     roxygen2::roxygenize(package_path, clean = TRUE)
   })
-  .multilog_trace("Building package")
   location <- pkgbuild::build(path = package_path,
     dest_path = dirname(package_path),
     vignettes = vignettes,

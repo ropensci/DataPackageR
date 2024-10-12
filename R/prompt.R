@@ -53,7 +53,6 @@
 .newsfile <- function() {
   newsfile <- file.path(usethis::proj_get(), "NEWS.md")
   if (!file.exists(newsfile)) {
-    .multilog_trace("NEWS.md file not found, creating!")
     file.create(newsfile)
   }
   return(newsfile)

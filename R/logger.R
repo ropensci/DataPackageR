@@ -1,6 +1,3 @@
-.multilog_trace <- function(msg) {
-  flog.trace(msg, name = "console")
-}
 .multilog_warn <- function(msg) {
   flog.warn(msg, name = "console")
 }

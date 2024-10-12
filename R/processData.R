@@ -50,10 +50,8 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
   LOGFILE <- file.path(logpath, "processing.log")
   .multilog_setup(LOGFILE)
   .multilog_thresold(console = INFO, logfile = TRACE)
-  .multilog_trace(paste0("Logging to ", LOGFILE))
   # validate package
   validate_package_skeleton(pkg_dir)
-  .multilog_trace("Processing data")
   # validate datapackager.yml
   ymlconf <- validate_yml(pkg_dir)
   # get vector of R and Rmd files from validated YAML
@@ -90,10 +88,6 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
     # assign ENVS into dataenv.
     # provide functions in the package to read from it (if deps = TRUE)
     if (deps) assign(x = "ENVS", value = ENVS, dataenv)
-    .multilog_trace(paste0(
-      "Processing ", i, " of ",
-      length(r_files), ": ", r_files[i]
-    ))
     # config file goes in the root render the r and rmd files
     ## First we spin then render if it's an R file
     flag <- FALSE
@@ -137,11 +131,6 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
     object_tally <- object_tally | objects_to_keep %in% object_names
     already_built <- unique(c(already_built,
                               objects_to_keep[objects_to_keep %in% object_names]))
-    .multilog_trace(paste0(
-      sum(objects_to_keep %in% object_names),
-      " data set(s) created by ",
-      basename(r_files[i])
-    ))
     .done(paste0(
       sum(objects_to_keep %in% object_names),
       " data set(s) created by ",
@@ -191,7 +180,6 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
   do_doc(pkg_dir, dataenv)
   # copy html files to vignettes
   .ppfiles_mkvignettes(dir = pkg_dir)
-  .multilog_trace("Done")
   return(TRUE)
 }
 
@@ -246,7 +234,6 @@ validate_yml <- function(pkg_dir){
     .multilog_fatal("YAML is missing files: and objects: entries")
     stop("exiting", call. = FALSE)
   }
-  .multilog_trace("Reading yaml configuration")
   # files that have enable: TRUE
   stopifnot("configuration" %in% names(ymlconf))
   stopifnot("files" %in% names(ymlconf[["configuration"]]))
@@ -282,7 +269,6 @@ validate_yml <- function(pkg_dir){
       stop(err_msg, call. = FALSE)
     }
   }
-  .multilog_trace(paste0("Found ", r_files))
   return(ymlconf)
 }
 
@@ -397,11 +383,6 @@ do_digests <- function(pkg_dir, dataenv) {
   }
   if (same_digests && check_new_DataVersion == "equal") {
     can_write <- TRUE
-    .multilog_trace(paste0(
-      "Processed data sets match ",
-      "existing data sets at version ",
-      new_data_digest[["DataVersion"]]
-    ))
   } else if ((! same_digests) && check_new_DataVersion == "equal") {
     updated_version <- .increment_data_version(
       pkg_desc,
@@ -417,26 +398,13 @@ do_digests <- function(pkg_dir, dataenv) {
     pkg_desc <- updated_version$pkg_description
     new_data_digest <- updated_version$new_data_digest
     can_write <- TRUE
-    .multilog_trace(paste0(
-      "Data has been updated and DataVersion ",
-      "string incremented automatically to ",
-      new_data_digest[["DataVersion"]]
-    ))
   } else if (same_digests && check_new_DataVersion == "higher") {
     # edge case that shouldn't happen
     # but we test for it in the test suite
     can_write <- TRUE
-    .multilog_trace(paste0(
-      "Data hasn't changed but the ",
-      "DataVersion has been bumped."
-    ))
   } else if (check_new_DataVersion == "lower" && same_digests) {
     # edge case that shouldn't happen but
     # we test for it in the test suite.
-    .multilog_trace(paste0(
-      "New DataVersion is less than ",
-      "old but data are unchanged"
-    ))
     new_data_digest <- old_data_digest
     pkg_desc$set('DataVersion',
                  validate_DataVersion(new_data_digest[["DataVersion"]])
@@ -520,12 +488,6 @@ do_doc <- function(pkg_dir, dataenv) {
   # all the docs independent of what's enabled.
   writeLines(Reduce(c, doc_parsed),
              file.path(pkg_dir, "R", paste0(pkg_name, ".R"))
-  )
-  .multilog_trace(
-    paste0(
-      "Copied documentation to ",
-      file.path(pkg_dir, "R", paste0(pkg_name, ".R"))
-    )
   )
   # TODO test that we have documented
   # everything successfully and that all files
@@ -789,7 +751,6 @@ document <- function(path = ".", install = FALSE, ...) {
     to = file.path(path, "R", docfile),
     overwrite = TRUE
   )
-  .multilog_trace("Rebuilding data package documentation.")
   local({
     on.exit({
       if (basename(path) %in% names(utils::sessionInfo()$otherPkgs)){
