@@ -35,10 +35,7 @@ yml_find <- function(path) {
   path <- normalizePath(path, winslash = "/")
   config_yml <- is_r_package$find_file("datapackager.yml", path = path)
   if (!file.exists(config_yml)) {
-    stop("Can't find a datapackager.yml config at ",
-      dirname(config_yml),
-      call. = FALSE
-    )
+    stop("Can't find a datapackager.yml config at ", dirname(config_yml))
   }
   config <- yaml::yaml.load_file(config_yml)
   attr(config, "path") <- config_yml
@@ -182,8 +179,7 @@ yml_write <- function(config, path = NULL) {
       paste0(
         "config must be a datapackager.yml configuration",
         " in r object representation, as ready by yml_find()"
-      ),
-      call. = FALSE
+      )
     )
   }
   if (is.null(path)) {
