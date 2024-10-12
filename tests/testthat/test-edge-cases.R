@@ -225,8 +225,6 @@ test_that("local edge case block 8", {
   utils::package.skeleton("foo", path = td,
                           environment = test_env, force = TRUE)
   td_foo <- file.path(td, 'foo')
-  DataPackageR:::.multilog_setup(file.path(td,"test.log"))
-  DataPackageR:::.multilog_thresold(INFO, TRACE)
   # data in digest changes while names do not
   suppressWarnings(expect_false({
     DataPackageR:::.compare_digests(
