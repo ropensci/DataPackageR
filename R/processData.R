@@ -45,9 +45,6 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
 
   logpath <- file.path(pkg_dir, "inst", "extdata", "Logfiles")
   dir.create(logpath, recursive = TRUE, showWarnings = FALSE)
-  # open a log file
-  LOGFILE <- file.path(logpath, "processing.log")
-  .multilog_setup(LOGFILE)
   # validate package
   validate_package_skeleton(pkg_dir)
   # validate datapackager.yml

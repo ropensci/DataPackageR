@@ -6,7 +6,6 @@
 #'
 #' @param packageName \code{character} path to package source directory. Defaults to the current path when NULL.
 #' @param vignettes \code{logical} specify whether to build vignettes. Default FALSE.
-#' @param log log level \code{INFO,WARN,DEBUG,FATAL}
 #' @param deps \code{logical} should we pass data objects into subsequent scripts? Default TRUE
 #' @param install \code{logical} automatically install and load the package after building. Default FALSE
 #' @param ... additional arguments passed to \code{install.packages} when \code{install=TRUE}.
@@ -43,11 +42,9 @@
 #' }
 package_build <- function(packageName = NULL,
                           vignettes = FALSE,
-                          log = INFO,
                           deps = TRUE,
                           install = FALSE,
                           ...) {
-  .multilog_setup(LOGFILE = NULL)
   if (is.null(packageName)) {
     packageName <- "."
     # use normalizePath
