@@ -88,10 +88,11 @@ package_build <- function(packageName = NULL,
   # Return success if we've processed everything
   success <-
     DataPackageR(arg = package_path, deps = deps)
-  ifelse(success,
-    .multilog_trace("DataPackageR succeeded"),
+  if (success){
+    .multilog_trace("DataPackageR succeeded")
+  } else {
     .multilog_warn("DataPackageR failed")
-  )
+  }
   .multilog_trace("Building documentation")
   local({
     on.exit({
