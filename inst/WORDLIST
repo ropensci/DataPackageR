@@ -10,6 +10,7 @@ FlowRepository
 Hadley
 ImmPort
 ImmuneSpace
+Logfiles
 ORCID
 Pre
 Preprint
@@ -41,6 +42,7 @@ gitignore
 https
 incrementing
 loc
+logfile
 md
 mtcars
 mydata
