@@ -169,11 +169,7 @@ A description of your changes to the package
 [The rest of the file]
 ```
 
-### Logging the build process.
-
-DataPackageR uses the `futile.logger` package to log progress.
-
-If there are errors in the processing, the script will notify you via logging to console and to  `/private/tmp/Test/inst/extdata/Logfiles/processing.log`. Errors should be corrected and the build repeated.
+### The build.
 
 If everything goes smoothly, you will have a new package built in the parent directory.
 
