@@ -48,7 +48,6 @@ package_build <- function(packageName = NULL,
                           install = FALSE,
                           ...) {
   .multilog_setup(LOGFILE = NULL)
-  # flog.appender(appender.console())
   if (is.null(packageName)) {
     packageName <- "."
     # use normalizePath
@@ -56,16 +55,12 @@ package_build <- function(packageName = NULL,
     packageName <- basename(package_path)
     # Is this a package root?
     if (!is_r_package$find_file() == package_path) {
-      flog.fatal(paste0(package_path,
-                        " is not an R package root directory"),
-                 name = "console")
-      stop("exiting", call. = FALSE)
+      stop(paste(package_path, "is not an R package root directory"))
     }
   } else {
     package_path <- normalizePath(packageName, winslash = "/")
     if (!file.exists(package_path)) {
-      flog.fatal(paste0("Non existent package ", packageName), name = "console")
-      stop("exiting", call. = FALSE)
+      stop(paste("Non existent package", packageName))
     }
     packageName <- basename(package_path)
   }
@@ -73,12 +68,13 @@ package_build <- function(packageName = NULL,
   # subdirectory
   tryCatch({is_r_package$find_file(path = package_path)},
            error = function(cond){
-             flog.fatal(paste0(
-               package_path,
-               " is not a valid R package directory beneath ",
-               getwd()
-             ), name = "console")
-             stop("exiting", call. = FALSE)
+             stop(
+               paste(
+                 package_path,
+                 "is not a valid R package directory beneath",
+                 getwd()
+               )
+             )
            }
   )
 
@@ -136,10 +132,8 @@ validate_pkg_name <- function(package_path){
   )$get("Package")
   path_pkg_name <- basename(package_path)
   if (desc_pkg_name != path_pkg_name){
-    err_msg <- paste("Data package name in DESCRIPTION does not match",
-                     "name of the data package directory")
-    flog.fatal(err_msg, name = "console")
-    stop(err_msg, call. = FALSE)
+    stop(paste("Data package name in DESCRIPTION does not match",
+               "name of the data package directory"))
   }
   desc_pkg_name
 }

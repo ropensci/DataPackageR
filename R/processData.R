@@ -237,9 +237,7 @@ validate_yml <- function(pkg_dir){
   # object with same name as package causes problems with
   # overwriting documentation files
   if (basename(pkg_dir) %in% ymlconf$configuration$objects){
-    err_msg <- "Data object not allowed to have same name as data package"
-    flog.fatal(err_msg, name = "console")
-    stop(err_msg, call. = FALSE)
+    stop("Data object not allowed to have same name as data package")
   }
   render_root <- .get_render_root(ymlconf)
   .validate_render_root(render_root)
