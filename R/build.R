@@ -6,7 +6,6 @@
 #'
 #' @param packageName \code{character} path to package source directory. Defaults to the current path when NULL.
 #' @param vignettes \code{logical} specify whether to build vignettes. Default FALSE.
-#' @param log log level \code{INFO,WARN,DEBUG,FATAL}
 #' @param deps \code{logical} should we pass data objects into subsequent scripts? Default TRUE
 #' @param install \code{logical} automatically install and load the package after building. Default FALSE
 #' @param ... additional arguments passed to \code{install.packages} when \code{install=TRUE}.
@@ -15,7 +14,6 @@
 #' @importFrom rprojroot is_r_package
 #' @importFrom rmarkdown pandoc_available
 #' @importFrom yaml read_yaml
-#' @importFrom futile.logger flog.logger flog.trace appender.file flog.debug flog.info flog.warn flog.error flog.fatal flog.appender flog.threshold INFO TRACE appender.console appender.tee
 #' @importFrom knitr knit spin
 #' @details Note that if \code{package_build} returns an error when rendering an \code{.Rmd}
 #' internally, but that same \code{.Rmd} can be run successfully manually using \code{rmarkdown::render},
@@ -43,12 +41,9 @@
 #' }
 package_build <- function(packageName = NULL,
                           vignettes = FALSE,
-                          log = INFO,
                           deps = TRUE,
                           install = FALSE,
                           ...) {
-  .multilog_setup(LOGFILE = NULL)
-  # flog.appender(appender.console())
   if (is.null(packageName)) {
     packageName <- "."
     # use normalizePath
@@ -56,16 +51,12 @@ package_build <- function(packageName = NULL,
     packageName <- basename(package_path)
     # Is this a package root?
     if (!is_r_package$find_file() == package_path) {
-      flog.fatal(paste0(package_path,
-                        " is not an R package root directory"),
-                 name = "console")
-      stop("exiting", call. = FALSE)
+      stop(paste(package_path, "is not an R package root directory"))
     }
   } else {
     package_path <- normalizePath(packageName, winslash = "/")
     if (!file.exists(package_path)) {
-      flog.fatal(paste0("Non existent package ", packageName), name = "console")
-      stop("exiting", call. = FALSE)
+      stop(paste("Non existent package", packageName))
     }
     packageName <- basename(package_path)
   }
@@ -73,26 +64,22 @@ package_build <- function(packageName = NULL,
   # subdirectory
   tryCatch({is_r_package$find_file(path = package_path)},
            error = function(cond){
-             flog.fatal(paste0(
-               package_path,
-               " is not a valid R package directory beneath ",
-               getwd()
-             ), name = "console")
-             stop("exiting", call. = FALSE)
+             stop(
+               paste(
+                 package_path,
+                 "is not a valid R package directory beneath",
+                 getwd()
+               )
+             )
            }
   )
 
   # Check that directory name matches package name
   validate_pkg_name(package_path)
 
-  # Return success if we've processed everything
-  success <-
-    DataPackageR(arg = package_path, deps = deps)
-  ifelse(success,
-    .multilog_trace("DataPackageR succeeded"),
-    .multilog_warn("DataPackageR failed")
-  )
-  .multilog_trace("Building documentation")
+  # Process everything
+  DataPackageR(arg = package_path, deps = deps)
+
   local({
     on.exit({
       if (packageName %in% names(utils::sessionInfo()$otherPkgs)){
@@ -101,7 +88,6 @@ package_build <- function(packageName = NULL,
     })
     roxygen2::roxygenize(package_path, clean = TRUE)
   })
-  .multilog_trace("Building package")
   location <- pkgbuild::build(path = package_path,
     dest_path = dirname(package_path),
     vignettes = vignettes,
@@ -142,10 +128,8 @@ validate_pkg_name <- function(package_path){
   )$get("Package")
   path_pkg_name <- basename(package_path)
   if (desc_pkg_name != path_pkg_name){
-    err_msg <- paste("Data package name in DESCRIPTION does not match",
-                     "name of the data package directory")
-    flog.fatal(err_msg, name = "console")
-    stop(err_msg, call. = FALSE)
+    stop(paste("Data package name in DESCRIPTION does not match",
+               "name of the data package directory"))
   }
   desc_pkg_name
 }

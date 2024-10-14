@@ -7,7 +7,6 @@
 package_build(
   packageName = NULL,
   vignettes = FALSE,
-  log = INFO,
   deps = TRUE,
   install = FALSE,
   ...
@@ -17,8 +16,6 @@ package_build(
 \item{packageName}{\code{character} path to package source directory. Defaults to the current path when NULL.}
 
 \item{vignettes}{\code{logical} specify whether to build vignettes. Default FALSE.}
-
-\item{log}{log level \code{INFO,WARN,DEBUG,FATAL}}
 
 \item{deps}{\code{logical} should we pass data objects into subsequent scripts? Default TRUE}
 

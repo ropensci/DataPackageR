@@ -35,10 +35,7 @@ yml_find <- function(path) {
   path <- normalizePath(path, winslash = "/")
   config_yml <- is_r_package$find_file("datapackager.yml", path = path)
   if (!file.exists(config_yml)) {
-    stop("Can't find a datapackager.yml config at ",
-      dirname(config_yml),
-      call. = FALSE
-    )
+    stop("Can't find a datapackager.yml config at ", dirname(config_yml))
   }
   config <- yaml::yaml.load_file(config_yml)
   attr(config, "path") <- config_yml
@@ -182,8 +179,7 @@ yml_write <- function(config, path = NULL) {
       paste0(
         "config must be a datapackager.yml configuration",
         " in r object representation, as ready by yml_find()"
-      ),
-      call. = FALSE
+      )
     )
   }
   if (is.null(path)) {
@@ -262,11 +258,7 @@ construct_yml_config <- function(code = NULL, data = NULL, render_root = NULL) {
       silent = TRUE
       )
     if (inherits(render_root, "try-error")) {
-      .multilog_fatal(paste0(
-        dirname(render_root),
-        " doesn't exist!"
-      ))
-      stop("error", call. = FALSE)
+      stop(paste(dirname(render_root), "doesn't exist!"))
     }
     yml[["configuration"]]$render_root <- render_root
   }
@@ -281,7 +273,6 @@ construct_yml_config <- function(code = NULL, data = NULL, render_root = NULL) {
   } else if (length(x$configuration$render_root) != 0) {
     return(x$configuration$render_root)
   } else {
-    .multilog_fatal("render_root is not set in yaml")
-    stop("error", call. = FALSE)
+    stop("render_root is not set in yaml")
   }
 }

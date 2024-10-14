@@ -31,7 +31,7 @@ use_raw_dataset <- function(path = NULL, ignore = FALSE) {
   }
   proj_path <- usethis::proj_get()
   if (!utils::file_test("-d", file.path(proj_path, "inst", "extdata"))) {
-    stop(paste0("inst/extdata doesn't exist in ", proj_path), call. = FALSE)
+    stop(paste0("inst/extdata doesn't exist in ", proj_path))
   }
   raw_file <- normalizePath(path)
   if (utils::file_test("-f", raw_file)) {
@@ -99,7 +99,7 @@ use_processing_script <- function(file = NULL, title = NULL, author = NULL, over
   }
   proj_path <- usethis::proj_get()
   if (!utils::file_test("-d", file.path(proj_path, "data-raw"))) {
-    stop(paste0("data-raw doesn't exist in ", proj_path), call. = FALSE)
+    stop(paste0("data-raw doesn't exist in ", proj_path))
   }
   #check if the given file or directory already exists
   if (utils::file_test("-f",file.path(proj_path,"data-raw",file))|utils::file_test("-d",file.path(proj_path,"data-raw",file))) { #nolint
@@ -341,7 +341,7 @@ use_data_object <- function(object_name = NULL) {
 .validate_front_matter <- function(front_matter) {
   front_matter <- .trim_trailing_ws(front_matter)
   if (grepl(":$", front_matter)) {
-    stop("Invalid YAML front matter (ends with ':')", call. = FALSE)
+    stop("Invalid YAML front matter (ends with ':')")
   }
 }
 

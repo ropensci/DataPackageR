@@ -56,13 +56,13 @@ datapackage_skeleton <-
       options(usethis.quiet = TRUE)
     }
     if (is.null(name)) {
-      stop("Must supply a package name", call. = FALSE)
+      stop("Must supply a package name")
     }
     # if (length(r_object_names) == 0) {
-    #  stop("You must specify r_object_names", call. = FALSE)
+    #  stop("You must specify r_object_names")
     # }
     # if (length(code_files) == 0) {
-    #  stop("You must specify code_files", call. = FALSE)
+    #  stop("You must specify code_files")
     # }
     if (force) {
       unlink(file.path(path, name), recursive = TRUE, force = TRUE)
