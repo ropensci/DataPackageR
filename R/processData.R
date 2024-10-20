@@ -84,36 +84,15 @@ DataPackageR <- function(arg = NULL, deps = TRUE) {
     # provide functions in the package to read from it (if deps = TRUE)
     if (deps) assign(x = "ENVS", value = ENVS, dataenv)
     # config file goes in the root render the r and rmd files
-    ## First we spin then render if it's an R file
-    flag <- FALSE
+    ## We also spin to Rmd if it's an R file
     .isRfile <- function(f) {
       grepl("\\.r$", tolower(f))
     }
-    if (flag <- .isRfile(r_files[i])) {
+    if (.isRfile(r_files[i])) {
       knitr::spin(r_files[i],
                   precious = TRUE,
                   knit = FALSE
       )
-      r_files[i] <- paste0(tools::file_path_sans_ext(r_files[i]), ".Rmd")
-      if (! file.exists(r_files[i])){
-        stop(paste0("File: ", r_files[i], " does not exist!"))
-      }
-      lines <- readLines(r_files[i])
-      # do we likely have a yaml header? If not, add one.
-      if (lines[1] != "---") {
-        lines <- c(
-          "---",
-          paste0("title: ", basename(r_files[i])),
-          paste0("author: ", Sys.info()["user"]),
-          paste0("date: ", Sys.Date()),
-          "---",
-          "",
-          lines
-        )
-        con <- file(r_files[i])
-        writeLines(lines, con = con, sep = "\n")
-        close(con)
-      }
     }
     rmarkdown::render(
       input = r_files[i], envir = dataenv,
