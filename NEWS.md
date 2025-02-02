@@ -11,6 +11,7 @@
 
 ## Maintenance
 * Drop dependency on futile.logger package, which has not been updated since 2016.
+* Revert usethis bug workaround from #162, now fixed upstream (#165)
 
 # DataPackageR 0.16.1
 
@@ -154,7 +155,6 @@
 # DataPackageR 0.15.0
 - Prepare for CRAN submission.
 
-
 # DataPackageR 0.14.9
 
 - Moving towards rOpenSci compliance
@@ -164,7 +164,6 @@
 - Improved package test.
 - R scripts processed properly into vignettes.
 - Packages installed and loaded after build to make vignettes and data sets accessible in same R session.
--
 
 # DataPackageR 0.13.6
 
