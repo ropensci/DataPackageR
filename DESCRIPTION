@@ -60,5 +60,5 @@ VignetteBuilder:
     knitr
 Encoding: UTF-8
 Language: en-US
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 SystemRequirements: pandoc - https://pandoc.org
