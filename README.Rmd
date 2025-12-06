@@ -83,7 +83,7 @@ You have diverse raw data sets that you need to preprocess and tidy in order to:
 
 - **Package size limits.**
 
-  R packages have a 10MB size limit, at least on [CRAN](https://cran.r-project.org/web/packages/policies.html). Bioconductor [ExperimentHub](http://contributions.bioconductor.org/data.html#data) may be able to support larger data packages.
+  R packages have a 10MB size limit, at least on [CRAN](https://cran.r-project.org/web/packages/policies.html). Bioconductor [ExperimentHub](https://contributions.bioconductor.org/data.html#data) may be able to support larger data packages.
 
   Sharing large volumes of raw data in an R package format is still not ideal, and there are public biological data repositories better suited for raw data: e.g.,  [GEO](https://www.ncbi.nlm.nih.gov/geo/), [SRA](https://www.ncbi.nlm.nih.gov/sra), [ImmPort](https://www.immport.org/), [ImmuneSpace](https://immunespace.org/), [FlowRepository](http://flowrepository.org/).
 
