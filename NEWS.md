@@ -1,4 +1,4 @@
-# DataPackageR (development version)
+# DataPackageR 0.16.2
 
 ## Significant user-facing changes
 * Remove functionality for logging to a logfile (#163)
